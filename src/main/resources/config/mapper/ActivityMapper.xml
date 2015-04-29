@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cola.machine.calendar.activity.dao.ActivityDao">
+
+	<!-- 新增记录 -->  <!-- type是类的路径 id是影后引用的id -->
+	<resultMap type="cola.machine.calendar.activity.bean.Activity"
+		id="ActivityMap">
+		<id property="activityId" column="ACTIVITYID" />
+		<result property="title" column="TITLE" />
+		<result property="startDate"  column="STARTDATE" />
+		<result property="endDate" column="ENDDATE" />
+		<result property="address" column="ADDRESS" />
+		<result property="description" column="DESCRIPTION" />
+		<result property="type" column="TYPE" />
+		<result property="busyLevel" column="BUSYLEVEL" />
+		<result property="privacy" column="PRIVACY" />
+	</resultMap>
+
+	<select id="selecActivityByActivityId" parameterType="string"
+		resultType="cola.machine.calendar.activity.bean.Activity">
+		SELECT * FROM ACTIVITY WHERE ACTIVITYID = #{ActivityId}
+	</select>
+
+	<insert id="insertActivity" parameterType="cola.machine.calendar.activity.bean.Activity">
+		INSERT INTO
+		ACTIVITY(ACTIVITYID,TITLE,STARTDATE,ENDDATE,ADDRESS,DESCRIPTION,TYPE,BUSYLEVEL)
+		VALUES(#{activityId},#{title},#{startDate},#{endDate},#{address},#{description},#{type},#{busyLevel})
+	</insert>
+
+	<update id="updateActivity" parameterType="cola.machine.calendar.activity.bean.Activity">
+		UPDATE ACTIVITY SET TITLE=#{title},STARTDATE =
+		#{startDate},ENDDATE = #{endDate}
+		,ADDRESS = #{address},DESCRIPTION = #{description},TYPE = #{type},BUSYLEVEL =
+		#{busyLevel} WHERE ACTIVITYID = #{activityId}
+	</update>
+
+	<delete id="deleteActivity" parameterType="java.lang.String">
+		DELETE FROM ACTIVITY WHERE
+		ACTIVITYID = #{ACTIVITYID}
+	</delete>
+
+	<select id="selectActivityBetween2Date" resultType="cola.machine.calendar.activity.bean.Activity"
+		parameterType="java.util.Map">
+		SELECT * FROM ACTIVITY WHERE STARTDATE BETWEEN #{STARTDATE} AND #{ENDDATE}
+		OR ENDDATE BETWEEN #{STARTDATE} AND #{ENDDATE}
+	</select>
+
+</mapper>

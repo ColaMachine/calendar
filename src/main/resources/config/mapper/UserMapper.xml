@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cola.machine.calendar.user.dao.UserMapper">
+ 	
+<!--  新增记录  --> 
+	<resultMap type="cola.machine.calendar.user.bean.User" id="userMap">
+	 <id property="userid" column="userid" />        
+   		<result property="loginname" column="loginname" /> 
+   		<result property="nickname" column="nickname" />
+		<result property="pwd" column="pwd" /> 
+   		<result property="email" column="email" /> 
+ 		<result property="username" column="username" /> 
+    <!-- 	<result property="firstname" column="firstname" />  -->
+ <!--     	<result property="lastname" column="lastname" />     -->
+     	<result property="telno" column="telno" />      
+   </resultMap>
+  	<insert id="insertUser" parameterType="cola.machine.calendar.user.bean.User">
+  		insert into user(userid,loginname,nickname,username,pwd,email,telno) values(#{userid},#{loginname},#{nickname},#{username},#{pwd},#{email},#{telno})
+  	</insert>
+  	  <select id="countAll" resultType="int">
+        select count(*) c from user;
+    </select>
+<!--  查询单条记录	-->
+	<select id="selectUserByUserId" parameterType="string" resultType="cola.machine.calendar.user.bean.User">
+		select * from user where userid = #{userid}
+  	</select>
+  	
+  	<select id="selectUserByEmail" parameterType="string" resultType="cola.machine.calendar.user.bean.User">
+		select * from user where email = #{email}
+  	</select>
+  	
+  	<select id="selectUserByLoginName" parameterType="string" resultType="cola.machine.calendar.user.bean.User">
+	
+		SELECT * FROM user where loginname=#{loginname}
+  	</select>
+<!--  修改记录	-->
+  	<update id="updateUser" parameterType="cola.machine.calendar.user.bean.User">
+  		update user set username = #{username},loginname = #{loginname},pwd = #{pwd} where userid = #{userid}
+  	</update>
+<!--  查询所有记录，查询多条记录即返回结果是一个集合的时候，resultType不是集合类型，而是集合所包含的类型	-->
+  	<select id="selectAll" resultType="cola.machine.calendar.user.bean.User">
+  		select * from user
+  	</select>
+<!--  模糊查询	-->
+  	<select id="fuzzyQuery" resultType="cola.machine.calendar.user.bean.User" parameterType="java.lang.String">
+  		select * from user where username like "%"#{username}"%"
+  	</select>
+	<select id="getUsersByParam" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+  		select * from user where 1=1
+		<if test="loginname != null">  
+			and loginname = #{loginname}  
+		</if>  
+		<if test="nickname != null">  
+			and nickname = #{nickname}  
+		</if>  
+		<if test="email != null">  
+			and email = #{email}  
+		</if>  
+		<if test="pwd != null">  
+			and pwd = #{pwd}  
+		</if>  
+			<if test="telno != null">  
+			and telno = #{telno}  
+		</if>  
+  	</select>
+	
+<!--  删除记录	-->
+	<delete id="deleteUser" parameterType="java.lang.String">
+		delete from user where userid = #{userid}
+	</delete>
+</mapper>
