@@ -7,8 +7,6 @@
  */
 package cola.machine.share.controller;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.Scope;

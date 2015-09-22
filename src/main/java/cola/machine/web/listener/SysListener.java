@@ -1,12 +1,6 @@
 package cola.machine.web.listener;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.util.Properties;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -26,18 +20,16 @@ public class SysListener extends HttpServlet implements ServletContextListener {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SysListener.class);
 
-	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		// 用于在容器关闭时,操作
 	}
 
 	// 用于在容器开启时,操作
-	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		String realPath = sce.getServletContext().getRealPath("/");
 		String contextPath = sce.getServletContext().getContextPath();
 		String contextName = sce.getServletContext().getServletContextName();
-
+/*
 		if (realPath != null) {
 			realPath = realPath.replaceAll("\\\\", File.separator);
 		} else {
@@ -59,17 +51,20 @@ public class SysListener extends HttpServlet implements ServletContextListener {
 		if (StringUtils.isBlank(contextName)) {
 		} else {
 			contextName = "/" + contextName;
-		}
+		}*/
 
 		SysConfig.REALPATH = realPath;// E:/1zzw/Program
-											// Files/apache-tomcat-8.0.15/webapps/MerchantManage/
-		SysConfig.CONTEXTPATH = contextPath;// /MerchantManage/
-		SysConfig.CONTEXTNAME = contextName;// /MerchantManage
-		logger.info("realPath:" + realPath);
-		logger.info("CONTEXTPATH:" + contextPath);
-		logger.info("WebPath:" + contextName);
-		sce.getServletContext().setAttribute("CONTEXTNAME", contextName);
-		sce.getServletContext().setAttribute("CONTEXTPATH", contextPath);
+		logger.info("realPath:" + realPath);							// Files/apache-tomcat-8.0.15/webapps/MerchantManage/
+		
+		SysConfig.PATH = contextPath;// /MerchantManage/
+		sce.getServletContext().setAttribute("path", contextName);
+		logger.info("path:" + contextName);
+//		SysConfig.CONTEXTNAME = contextName;// /MerchantManage
+		
+//		logger.info("CONTEXTPATH:" + contextPath);
+		
+		
+//		sce.getServletContext().setAttribute("CONTEXTPATH", contextPath);
 /*
 		Properties properties = new Properties();
 		try {
