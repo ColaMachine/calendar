@@ -19,7 +19,7 @@ public class ActiveTest {
 	}
 	
 
-	@Test
+//	@Test
 	public void countAll() {
 		try {
 			int num = activeMapper.countAll();

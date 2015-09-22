@@ -18,7 +18,8 @@
 	http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
 	<context:component-scan base-package="cola.machine.calendar.user.controller" />
-
+<context:component-scan base-package="cola.machine.calendar.activity.controller" />
+<context:component-scan base-package="cola.machine.share.controller" />
 	<mvc:view-controller path="/" view-name="index" />
 
 	  <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->  

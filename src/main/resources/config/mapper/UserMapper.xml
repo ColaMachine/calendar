@@ -38,7 +38,11 @@
   	</select>
 <!--  修改记录	-->
   	<update id="updateUser" parameterType="cola.machine.calendar.user.bean.User">
-  		update user set username = #{username},loginname = #{loginname},pwd = #{pwd} where userid = #{userid}
+  		update user set username = #{username},loginname = #{loginname},pwd = #{pwd},active=#{active} where userid = #{userid}
+  	</update>
+  	
+  		<update id="resetPwd" parameterType="cola.machine.calendar.user.bean.User">
+  		update user set pwd = #{pwd}  where userid = #{userid}
   	</update>
 <!--  查询所有记录，查询多条记录即返回结果是一个集合的时候，resultType不是集合类型，而是集合所包含的类型	-->
   	<select id="selectAll" resultType="cola.machine.calendar.user.bean.User">

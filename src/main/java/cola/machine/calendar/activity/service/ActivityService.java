@@ -57,8 +57,7 @@ public interface ActivityService {
 	* @date 2014年4月17日
 	* @throws 
 	*/
-	public List<HashMap> getActivities(int startDate,int endDate);
-	public List<HashMap> getActivities(long startDate,long endDate);
+	public List<HashMap> getActivities(long startDate,long endDate,String userid);
 
 	/** 
 	* @Title: updagteActivitys 
@@ -68,4 +67,13 @@ public interface ActivityService {
 	* @throws 
 	*/
 	public boolean updateActivity(Activity activity);
+
+	/**
+	 * 说明:
+	 * @param list
+	 * @return void
+	 * @author dozen.zhang
+	 * @date 2015年7月2日下午2:31:20
+	 */
+	public void saveActivitys(List<Activity> list);
 }

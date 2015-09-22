@@ -1,7 +1,6 @@
 package cola.machine.calendar.user.bean;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -17,7 +16,20 @@ public class User {
 	private String pwd;
 	@NotNull(message="邮箱不能为空")  @Email (message="请填写真实的邮箱")
 	private String email;
-/*
+	
+	/** 
+	 *是否激活
+	 */
+	private boolean active;
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	/*
 	private String firstname;
 
 	private String lastname;

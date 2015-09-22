@@ -11,6 +11,15 @@ package cola.machine.calendar.activity.bean;
 public class Activity {
 	public static String BUSYLEVEL_BUSY="1";
 	public static String BUSYLEVEL_IDLE="0";
+	
+	public boolean isdel;
+	public boolean isIsdel() {
+		return isdel;
+	}
+	public void setIsdel(boolean isdel) {
+		this.isdel = isdel;
+	}
+
 	/** 
 	* @Fields title :活动标题
 	*/ 
@@ -23,14 +32,14 @@ public class Activity {
 	private String activityId;
 	//开始时间
 	/** 
-	* @Fields startDate : 开始时间 YYYY-MM-DD H24:MI:SS
+	* @Fields startTime : 开始时间 YYYY-MM-DD H24:MI:SS
 	*/ 
-	private int startDate;
+	private long startTime;
 	//结束时间
 	/** 
-	* @Fields endDate :结束时间 YYYY-MM-DD H24:MI:SS
+	* @Fields endTime :结束时间 YYYY-MM-DD H24:MI:SS
 	*/ 
-	private int endDate;
+	private long endTime;
 	//地点
 	/** 
 	* @Fields address :发生的地点
@@ -81,29 +90,29 @@ public class Activity {
 	 * 获取开始时间
 	 * @return
 	 */
-	public long getStartDate() {
-		return startDate;
+	public long getStartTime() {
+		return startTime;
 	}
 	/**
 	 * 设置开始时间
 	 * @param startDate
 	 */
-	public void setStartDate(int startDate) {
-		this.startDate = startDate;
+	public void setStartTime(int startTime) {
+		this.startTime = startTime;
 	}
 	/**
 	 * 设置结束时间
 	 * @return
 	 */
-	public long getEndDate() {
-		return endDate;
+	public long getEndTime() {
+		return endTime;
 	}
 	/**
 	 * 设置结束时间
 	 * @param endDate
 	 */
-	public void setEndDate(int endDate) {
-		this.endDate = endDate;
+	public void setEndTime(int endTime) {
+		this.endTime = endTime;
 	}
 	/**
 	 * 获得活动地址

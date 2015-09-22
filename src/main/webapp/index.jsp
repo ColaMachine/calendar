@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="cola.machine.calendar.user.bean.User" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -248,6 +249,7 @@ body,
                 <li><a href="#">美食</a></li>
                 <li><a href="#">日常用品</a></li>
                 <li><a href="#">服务</a></li>
+                  <li><a target="_blank" href="<%=path%>/calendar2/CalendarView.html">日历</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="#">Separated link</a></li>
@@ -262,10 +264,24 @@ body,
             <button type="submit" class="btn btn-default">提交</button>
           </form>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="<%=path%>/items.jsp">4s服务</a></li>
+           <!--  <li><a href="<%=path%>/items.jsp">4s服务</a></li>
             <li><a href="#">微信</a></li>
-            <li><a href="mailto:likegadfly@163.com">邮件</a></li>
-               <li><a target="_blank" href="<%=path%>/calendar/CalendarView.html">日历</a></li>
+            <li><a href="mailto:likegadfly@163.com">邮件</a></li> -->
+          
+            </li>
+              <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%User user = (User )(request.getSession().getAttribute("user")); %><%=user.getUsername()%> 
+            <%if(!user.isActive()){%>
+            <span style="color:red">(未激活)</span>
+           <% }%> <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+              
+           
+                <li><a target="_blank"   href="<%=path%>/logout">退出登录</a></li>
+                <li class="divider"></li>
+                <li><a target="_blank"  href="<%=path%>/user/view">修改个人信息</a></li>
+              </ul>
+            </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -273,8 +289,34 @@ body,
     
     <div class="container">
 <div class="row">
+  <%if(!user.isActive()){%>
+  <div class="alert alert-warning" role="alert">
+  您的账号尚未进行邮件激活,请尽快去邮箱激活账号
+</div>
+          
+           <% }%>
 <div class="col-sm-12">
-
+<div class="row">
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <img data-holder-rendered="true" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MiAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjkzIiB5PSIxMDAiIHN0eWxlPSJmaWxsOiNBQUFBQUE7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6MTFwdDtkb21pbmFudC1iYXNlbGluZTpjZW50cmFsIj4yNDJ4MjAwPC90ZXh0PjwvZz48L3N2Zz4=" style="height: 200px; width: 100%; display: block;" data-src="holder.js/100%x200" alt="100%x200">
+          <div class="caption">
+            <h3 id="thumbnail-label">Thumbnail label<a class="anchorjs-link" href="#thumbnail-label"><span class="anchorjs-icon"></span></a></h3>
+            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+            <p><a href="#" class="btn btn-primary" role="button">修改</a> <a href="#" class="btn btn-default" role="button">删除</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+        <img data-holder-rendered="true" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MiAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjkzIiB5PSIxMDAiIHN0eWxlPSJmaWxsOiNBQUFBQUE7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6MTFwdDtkb21pbmFudC1iYXNlbGluZTpjZW50cmFsIj4yNDJ4MjAwPC90ZXh0PjwvZz48L3N2Zz4=" style="height: 200px; width: 100%; display: block;" data-src="holder.js/100%x200" alt="100%x200">
+         
+          <div class="caption">
+            <h3 id="thumbnail-label">添加<a class="anchorjs-link" href="#thumbnail-label"><span class="anchorjs-icon"></span></a></h3>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 </div>
       <div class="page-header">

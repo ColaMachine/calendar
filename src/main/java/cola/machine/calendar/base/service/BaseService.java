@@ -2,10 +2,13 @@ package cola.machine.calendar.base.service;
 
 import java.util.HashMap;
 
+import cola.machine.constants.SysConfig;
+
 public interface BaseService {
-	   String SUCCESS="1";
-	   String FAIL="0";
-	   String RESULT="result";
-	   String MSG="msg";
-	   String ERRORS="errors";
+	   String SUCC=SysConfig.AJAX_SUCC;
+	   String FAIL=SysConfig.AJAX_FAIL;
+	   String RESULT=SysConfig.AJAX_RESULT;
+	   String MSG=SysConfig.AJAX_MSG;
+	   String ERRORS=SysConfig.AJAX_ERRORS;
+	   
 }

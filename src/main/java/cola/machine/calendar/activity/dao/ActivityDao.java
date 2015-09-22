@@ -50,6 +50,15 @@ public interface ActivityDao {
 	*/
 	public void updateActivity(Activity activity);
 	
+	
+	/**
+	 * 说明:根据id得到activity
+	 * @param activityId
+	 * @return
+	 * @author dozen.zhang
+	 * @date 2015年5月28日下午5:29:26
+	 */
+	public Activity getActivityById(String activityId);
 	/** 
 	* @Title: deleteActivity 
 	* @Description: 删除活动

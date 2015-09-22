@@ -21,12 +21,13 @@ import javax.servlet.http.HttpSession;
 public class LoginFilter implements Filter {
 	protected FilterConfig filterConfig = null;
 	private String redirectURL = null;
-	private List notCheckURLList = new ArrayList();
+	 List<String> notCheckURLList = new ArrayList<String>();
+//	private String[] notCheckUrlArr;
 	private String sessionKey = null;
 
 	public void destroy() {
 		// VIP Auto-generated method stub
-
+//		notCheckUrlArr=null;
 		notCheckURLList.clear();
 
 	}
@@ -70,18 +71,23 @@ public class LoginFilter implements Filter {
 	private boolean checkRequestURIIntNotFilterList(HttpServletRequest request) {
 		String uri = request.getServletPath()
 				+ (request.getPathInfo() == null ? "" : request.getPathInfo());
-		System.out.println(uri +"\t exists:"+notCheckURLList.contains(uri));
-		return notCheckURLList.contains(uri);
+	//	System.out.println(uri +"\t exists:"+notCheckURLList.contains(uri));
+//		return notCheckURLList.contains(uri);
+		for(String s: notCheckURLList){
+			if(uri.matches(s))
+				return true;
+		}
+		return false;
 	}
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 		this.filterConfig = filterConfig;
 		redirectURL = filterConfig.getInitParameter("redirectURL");
 		sessionKey = filterConfig.getInitParameter("checkSessionKey");
-
+		
 		String notCheckURLListStr = filterConfig
 				.getInitParameter("notCheckURLList");
-
+		notCheckURLListStr=notCheckURLListStr.replaceAll("[\\r\\n\\s\\t]","");
 		if (notCheckURLListStr != null) {
 			StringTokenizer st = new StringTokenizer(notCheckURLListStr, ";");
 			notCheckURLList.clear();
@@ -89,6 +95,8 @@ public class LoginFilter implements Filter {
 				notCheckURLList.add(st.nextToken());
 			}
 		}
+		
+//		notCheckUrlArr=(String[])notCheckURLList.toArray();
 	}
 
 }

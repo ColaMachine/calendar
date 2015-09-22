@@ -975,3 +975,12 @@ $.validator.addMethod("ziprange", function(value, element) {
 	var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))[0-9]{8})$/;
 	return this.optional(element) || (length == 11 && mobile.test(value));
 	}, "请正确填写您的手机号码");
+		
+		jQuery.validator.addMethod("isemail", function(value, element) {
+			return this.optional(element) ||  /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(value);
+			}, "请输入有效的邮箱地址");
+		
+			
+			
+			
+	

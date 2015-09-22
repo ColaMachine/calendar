@@ -21,13 +21,13 @@
     </select>
 <!--  查询单条记录	-->
 	<select id="selectActiveById" parameterType="string" resultType="cola.machine.calendar.user.bean.Active">
-		select * from user where activeid = #{activeid}
+		select * from active where activeid = #{activeid}
   	</select>
   	
   
 <!--  修改记录	-->
   	<update id="updateActive" parameterType="cola.machine.calendar.user.bean.Active">
-  		update active set actived = 1  where activeid = #{activeid}
+  		update active set actived = 1  ,activedtime=CURRENT_TIMESTAMP()  where activeid = #{activeid}
   	</update>
 <!--  查询所有记录，查询多条记录即返回结果是一个集合的时候，resultType不是集合类型，而是集合所包含的类型	-->
   

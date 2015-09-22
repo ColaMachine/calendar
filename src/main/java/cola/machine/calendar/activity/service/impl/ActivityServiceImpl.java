@@ -12,9 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import cola.machine.calendar.activity.bean.Activity;
 import cola.machine.calendar.activity.dao.ActivityDao;
 import cola.machine.calendar.activity.service.ActivityService;
+import cola.machine.util.UUIDUtil;
 
 
 
@@ -37,10 +40,21 @@ public class ActivityServiceImpl implements ActivityService{
 	}
 
 	/* (non-Javadoc)
+	 * 保存日历活动 arrangements
 	 * @see cola.machine.calendar.activity.service.ActivityService#saveActivity(cola.machine.calendar.activity.bean.Activity)
 	 */
 	public boolean saveActivity(Activity activity) {
+		
+		//
 		if(activity!=null){
+			if(StringUtils.isNotBlank(activity.getActivityId())){
+				Activity activityFromDb =activityDao.getActivityById(activity.getActivityId());
+				if(activityFromDb!=null){
+					activityDao.updateActivity(activity);
+					return true;
+				}
+			}
+			activity.setActivityId(UUIDUtil.getUUID());
 			activityDao.insertActivity(activity);
 			return true;
 		}else{
@@ -64,20 +78,36 @@ public class ActivityServiceImpl implements ActivityService{
 		return true;
 	}
 
-	public List<HashMap> getActivities(int startDate, int endDate) {
+	public List<HashMap> getActivities(long startDate, long endDate,String userid) {
 		Map map =new HashMap();
-		map.put("STARTDATE",startDate);
-		map.put("ENDDATE",endDate);
+		map.put("STARTTIME",startDate);//23885280
+		map.put("ENDTIME",endDate);//23893920
+		map.put("USERID",userid);//23893920
 		return activityDao.selectActivityBetween2Date(map);
 	}
 	
-	public List<HashMap> getActivities(long startDate, long endDate) {
-		return getActivities((int)(startDate/60000),(int)(endDate/60000));
-	}
+/*	public List<HashMap> getActivities(long startDate, long endDate) {
+		return getActivities((startDate/60000),(endDate/60000));
+	}*/
 
 	public boolean updateActivity(Activity activity) {
 		 activityDao.updateActivity(activity);
 		 return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see cola.machine.calendar.activity.service.ActivityService#saveActivitys(java.util.List)
+	 * @author colamachine
+	 */
+	@Override
+	public void saveActivitys(List<Activity> list) {
+		for(Activity activity:list){
+			if(activity.isdel){
+				this.deleteActivityById(activity.getActivityId());
+			}else
+			this.saveActivity(activity);
+		}
+		
 	}
 
 }

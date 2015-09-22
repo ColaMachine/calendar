@@ -10,8 +10,8 @@
 		id="ActivityMap">
 		<id property="activityId" column="ACTIVITYID" />
 		<result property="title" column="TITLE" />
-		<result property="startDate"  column="STARTDATE" />
-		<result property="endDate" column="ENDDATE" />
+		<result property="startTime"  column="STARTTIME" />
+		<result property="endTime" column="ENDTIME" />
 		<result property="address" column="ADDRESS" />
 		<result property="description" column="DESCRIPTION" />
 		<result property="type" column="TYPE" />
@@ -26,13 +26,13 @@
 
 	<insert id="insertActivity" parameterType="cola.machine.calendar.activity.bean.Activity">
 		INSERT INTO
-		ACTIVITY(ACTIVITYID,TITLE,STARTDATE,ENDDATE,ADDRESS,DESCRIPTION,TYPE,BUSYLEVEL)
-		VALUES(#{activityId},#{title},#{startDate},#{endDate},#{address},#{description},#{type},#{busyLevel})
+		ACTIVITY(ACTIVITYID,TITLE,STARTTIME,ENDTIME,ADDRESS,DESCRIPTION,TYPE,BUSYLEVEL)
+		VALUES(#{activityId},#{title},#{startTime},#{endTime},#{address},#{description},#{type},#{busyLevel})
 	</insert>
 
 	<update id="updateActivity" parameterType="cola.machine.calendar.activity.bean.Activity">
-		UPDATE ACTIVITY SET TITLE=#{title},STARTDATE =
-		#{startDate},ENDDATE = #{endDate}
+		UPDATE ACTIVITY SET TITLE=#{title},STARTTIME =
+		#{startTime},ENDTIME = #{endTime}
 		,ADDRESS = #{address},DESCRIPTION = #{description},TYPE = #{type},BUSYLEVEL =
 		#{busyLevel} WHERE ACTIVITYID = #{activityId}
 	</update>
@@ -44,8 +44,14 @@
 
 	<select id="selectActivityBetween2Date" resultType="cola.machine.calendar.activity.bean.Activity"
 		parameterType="java.util.Map">
-		SELECT * FROM ACTIVITY WHERE STARTDATE BETWEEN #{STARTDATE} AND #{ENDDATE}
-		OR ENDDATE BETWEEN #{STARTDATE} AND #{ENDDATE}
+		SELECT * FROM ACTIVITY WHERE STARTTIME BETWEEN #{STARTTIME} AND #{ENDTIME}
+		OR ENDTIME BETWEEN #{STARTTIME} AND #{ENDTIME}
 	</select>
-
+	
+		<select id="getActivityById" resultType="cola.machine.calendar.activity.bean.Activity"
+		parameterType="java.lang.String">
+		SELECT * FROM ACTIVITY WHERE ACTIVITYID=#{ACTIVITYID}
+	</select>
+	
+	
 </mapper>

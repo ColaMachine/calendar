@@ -19,7 +19,9 @@
     <description>Spring core configuration</description>  
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
   </listener> 
-  
+  <listener>
+    	<listener-class>cola.machine.web.listener.SysListener</listener-class>
+	</listener>	
 	<!-- Spring Mvc -->
 	<servlet>
 		<servlet-name>springMVC</servlet-name>
@@ -52,7 +54,9 @@
 		</init-param>
 		<init-param>
 			<param-name>notCheckURLList</param-name>
-			<param-value>/login/login.html;/login/register.html;/login;/login/;/register;/login/login.js;/login/login.css;/css/bootstrap.min.css;/js/jquery.min.js;/js/jquery.validate.js;/js/additional-methods.js;/loginPost;/registerPost</param-value>
+			<param-value>/login/login.html;/login/register.html;/login;/login/;/register;/login/login.js;/login/login.css;/css/bootstrap.min.css;/js/jquery.min.js;/js/jquery.validate.js;/js/additional-methods.js;/loginPost;/registerPost;/pwdreset;/active/\w*;/img/.*
+			;/forgetpwd;/js/common.js;/pwdresetPost;/forgetpwd/save;/pwdrst/save;/pwdrst/edit;/pwdrst;/.*\.jpg;/validatecode;/share/qq;
+			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>redirectURL</param-name>

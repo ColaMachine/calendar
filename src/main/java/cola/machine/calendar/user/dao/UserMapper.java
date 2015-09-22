@@ -25,4 +25,6 @@ public interface UserMapper {
 	public User selectUserByEmail(String name);
 	
 	public List<HashMap> getUsersByParam(HashMap map);
+
+	public void restPwd(User user);
 }
