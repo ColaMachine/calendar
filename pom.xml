@@ -93,9 +93,9 @@
 		<dependency>
 			<groupId>com.awifi</groupId>
 			<artifactId>awifi-core</artifactId>
-			<scope>system</scope>
+			<!-- <scope>system</scope>
 			<systemPath>/home/colamachine/git/awifi-core/target/awifi-core.jar</systemPath>
-			<version>1.0.2</version>
+		 -->	<version>1.0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -199,22 +199,21 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.1</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.4</version>
-			<!-- <scope>provided</scope> -->
-			  <scope>system</scope>  
-            <systemPath>/home/colamachine/software/apache-tomcat-8.0.18/lib/servlet-api.jar</systemPath>  
+				<dependency>
+  			<groupId>javax.servlet</groupId>
+  			<artifactId>javax.servlet-api</artifactId>
+  			<version>3.1.0</version>
+  			<scope>test</scope>
 		</dependency>
+
+		<!-- JSP API -->
 		<dependency>
-			<groupId>javax.servlet</groupId>
+			<groupId>org.apache.tomcat</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>2.0</version>
-			<!-- <scope>provided</scope> -->
-			 <scope>system</scope>  
-            <systemPath>/home/colamachine/software/apache-tomcat-8.0.18/lib/jsp-api.jar</systemPath>  
-		</dependency> 
+			<version>6.0.32</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- JSTL -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -347,7 +346,7 @@
         </configuration>
       </plugin>
       
-      <plugin>
+   <!--    <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-dependency-plugin</artifactId>
     <version>2.2</version>
@@ -366,7 +365,7 @@
             </configuration>
         </execution>
     </executions>
-</plugin>
+</plugin> -->
     </plugins>
 	</build>
 	

@@ -86,16 +86,23 @@ function changeForm2JsoTemp(formId) {
 	return jso;
 }
 
+
+
+
 function changeForm2Jso(formId) {
 	var jso = {};
 	var arr = $( formId).serializeArray();
 	for (var i = 0; i < arr.length; i++) {
 		jso["" + arr[i].name] = arr[i].value;
 	}
-
 	return jso;
 }
-
+function filJso2Form(formId,jso){
+	var arr = $( formId).serializeArray();
+	for (var i = 0; i < arr.length; i++) {
+		$(formId).find("input[name='"+ arr[i].name+"']").val(jso[ arr[i].name]);
+	}
+}
 /**
  * 
  */
@@ -1008,3 +1015,230 @@ function LoadJS( id, fileUrl )
     oHead.appendChild( oScript); 
 
 } 
+
+
+
+
+/**
+ * 
+ * 
+ * Author: zzw <zzw1986@gmail.com>
+ * 
+ * 
+ * File: common.js Create Date: 2014-04-10 19:54:40
+ * 
+ * 
+**/
+/**
+ * 对于模态框 tab页进行自动绑定触发事件
+ */
+function pageinit(){
+	$("*[data-toggle='modal']").each(function(){
+		if($(this).attr("data-target")){
+			$(this).on("click",function(){
+				showMask();
+				$($(this).attr("data-target")).show();
+			});
+		}
+		
+	});
+	
+	$("*[data-dismiss='modal']").each(function(){
+		$(this).on("click",function(){
+		hideMask();
+		$(this).closest(".modal").hide();
+		});
+		
+	});
+	
+	$(".menu li").each(function(){
+		$(this).on("click",function(){
+			$(".select").removeClass("select");
+			$(this).addClass("select");
+		});
+	})
+	
+	$(".nav-tabs li").each(function(){
+		$(this).on("click",function(){
+			$(".active").removeClass("active");
+			$(this).addClass("active");
+		});
+	});
+}
+
+
+
+    
+function initGrid(gridParam){
+	 $(grid_selector).jqGrid(gridParam);
+	 return  $(grid_selector);
+}
+
+
+
+
+/**
+ * 闭包
+ */
+Function.prototype.Apply = function(thisObj)
+{
+    var _method = this;
+    return function(data)
+    {
+        return _method.apply(thisObj,[data]);
+    };
+};
+
+function goMvcUrl(str){
+	  mvc.routeRun(str);
+}
+
+function ajaxResultHandler(result){
+	//权限问题
+	//登陆问题
+	if(typeof result =='string'){
+		result= eval("("+result+")");
+	}
+	if(result.r!=1){
+		if(result.r==504  ){
+			alert(result.msg);
+			window.location=WEBCONTEXT+"/login";
+			
+		}
+		if(result.r==505  ){
+			alert(result.msg);
+		}
+		return result;
+	}
+	else
+	return result;
+}
+
+function showMask(){
+	if($(".mask").length==0){
+		$("body").append($("<div class=\"mask\" > </div>"));
+	}
+	$(".mask").show()
+}
+
+function showModal(id,w,h){
+	if(typeof h !='undefined' && h!=null )
+	$(id).css("height",h);
+	if(typeof w !='undefined' && w!=null )
+	$(id).css("width",w);
+	$(id).show();
+	showMask();
+}
+
+
+
+function hideModal(id){
+	$(id).hide();
+	$(".mask").hide()
+}
+
+function showErrorMsg(formid,msg){
+	var div = $(formid).find(".alert");
+	if(div.length==0){
+		var div = $("<div class=\"alert alert-danger\"></div>");
+		 $(formid).find(".modal-body").prepend(div);
+	}
+	div.eq(0).html(msg);
+	div.eq(0).show();
+}
+
+
+function clearErrorMsg(formid){
+	 $(formid).find(".alert").hide();
+}
+
+function showWait(msg){
+	
+	showMask()
+	$(".wait").show();
+}
+function hideWait(){
+	hideWaitTrue();
+	///setTimeout("hideWaitTrue()",100);
+	
+}
+function hideWaitTrue(){
+	$(".mask").hide()
+	$(".wait").hide();
+}
+
+
+function zWidgetBase(){
+	showMask();
+	if($(".widget").length>0){
+		
+	}else{
+		$("body").append("<div class='widget'></div>");
+	}
+}
+function zconfirm(msg,title,fn){
+	zWidgetBase();
+	var html=$("<div class=\"zwidget_wrap\">"+
+	"<div class=\"zwidget_header\"><span>"+title+"</span> <a onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><img class=\"zclose\" src=\"/static/img/closeIcon.png\"></img></a></div>"+
+	"<div class=\"zbody\">"+
+	"<div class=\"zinfo-icon\"><img src=\"/static/img/exclamation.png\"/></div>"+
+	"<div class=\"zinfo\">"+msg+"</div>"+
+	"<div class=\"zbutton_wrap\"><a onclick=\"$(this).parent().parent().parent().hide();$('.mask').hide()\">确定</a></div>"+
+	"</div>"+
+	"</div>");
+	$(".widget").html(html);
+	if (typeof(fn) != "undefined") 
+	$(html).find(".zbutton_wrap").find("a").click(fn);
+}
+
+
+function zdialogue(msg,title,src,fontcolor,fn){
+	zWidgetBase();
+	var html=$("<div class=\"zwidget_wrap\">"+
+	"<div class=\"zwidget_header\"><span>"+title+"</span> <a onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><img class=\"zclose\" src=\"/static/img/closeIcon.png\"></img></a></div>"+
+	"<div class=\"zbody\">"+
+	"<div class=\"zinfo-icon\"><img src=\""+src+"\"/></div>"+
+	"<div class=\"zinfo\" style=\"color:"+fontcolor+"\">"+msg+"</div>"+
+	"<div class=\"zbutton_wrap\"><a onclick=\"$(this).parent().parent().parent().hide();$('.mask').hide()\">确定</a></div>"+
+	"</div>"+
+	"</div>");
+	$(".widget").html(html);
+	if (typeof(fn) != "undefined") 
+	$(html).find(".zbutton_wrap").find("a").click(fn);
+}
+function zdialogue(jso){
+	zWidgetBase();
+	var html=$("<div class=\"zwidget_wrap\">"+
+	"<div class=\"zwidget_header\"><span>"+jso.title+"</span> <a class=\"zclose\" onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><img  src=\"/static/img/closeIcon.png\"></img></a></div>"+
+	"<div class=\"zbody\">"+
+	"<div class=\"zinfo-icon\"><img src=\""+jso.src+"\"/></div>"+
+	"<div class=\"zinfo\" style=\"color:"+jso.fontcolor+"\">"+jso.msg+"</div>"+
+	"<div class=\"zbutton_wrap\"><a onclick=\"$(this).parent().parent().parent().hide();$('.mask').hide()\">确定</a></div>"+
+	"</div>"+
+	"</div>");
+	$(".widget").html(html);
+	if (typeof(jso.okfn) != "undefined") 
+		$(html).find(".zbutton_wrap").find("a").click(jso.okfn);
+	
+	if (typeof(jso.cancelfn) != "undefined") 
+		$(html).find(".zwidget_header").find(".zclose").click(jso.cancelfn);
+}
+
+function zalert(msg,title,fn){
+	zWidgetBase();
+	var html=$("<div class=\"zwidget_wrap\">"+
+	"<div class=\"zwidget_header\"><span>"+title+"</span> <a class='zclose'  onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><i class=' fa fa-close'></i></a></div>"+
+	"<div class=\"zbody\">"+
+	"<div class=\"zinfo-icon\"><i  class='fa fa-check-circle'></i></div>"+
+	"<div class=\"zinfo\">"+msg+"</div>"+
+	"<div class=\" zbutton_wrap\"><a class='btn btn-primary' onclick=\"$(this).parent().parent().parent().hide();$('.mask').hide()\">确定</a></div>"+
+	"</div>"+
+	"</div>");
+	$(".widget").html(html);
+	if (typeof(fn) != "undefined") 
+	$(html).find(".zbutton_wrap").find("a").click(fn);
+}
+function zerror(msg,title,fn){
+	zdialogue({"msg":msg,"title":title,fontcolor:"#777777",src:"/static/img/exclamation.png",okfn:fn});
+}
+

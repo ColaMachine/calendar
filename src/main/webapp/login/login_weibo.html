@@ -5,11 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>登录</title>
 
- <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+ <link href="../css/font-awesome.min.css" type="text/css" rel="stylesheet">
                         
                         
+                     
                                          
 <style type="text/css">
+body{
+padding:0px;
+margin:0px;
+}
 .login-cover{
 background-image:url("http://img.t.sinajs.cn/t6/style/images/growth/login/bg_nologin1.jpg?201508191903");
 }
@@ -65,15 +70,31 @@ margin-bottom:10px;/**确保每项之间有空隙*/
 .login_form .input_wrap .fa{
 	margin-left:8px;
 }
-
+.login_form .input_wrap .fa{
+	color:gray;
+}
+.login_form .input_wrap .fa:hover{
+	color:#b6b6b6;
+}
 
 .login_form .input_wrap .z_input{
 	margin-top:0px;
 	border:0px;
-	width:230px;
+	outline:0px;
+	width:215px;
 }
-.cur{
-cursor:hand;
+.cur {
+	cursor:pointer;
+	
+}
+.fa-close{
+ float:right;
+margin-top:0px;
+margin-right:0px; 
+}
+.fa-refresh {
+    display: inline-block;
+    animation: 2s linear 0s normal none infinite running spin;
 }
 </style>
 
@@ -96,6 +117,7 @@ cursor:hand;
 					<div class="input_wrap ">
 					<i class="fa fa-user"></i>
 						<input type="text" class="z_input"  placeholder="邮箱/账号/手机号"/>
+					<a  class="fa fa-close"></a>
 					</div>
 				</div>
 				
@@ -103,7 +125,7 @@ cursor:hand;
 					<div class="input_wrap ">
 					<i class="fa fa-lock"></i>
 						<input type="password" class="z_input"  placeholder="请输入密码"/>
-					<a  class="cur fa fa-close"></a>
+					<a  class="fa fa-close"></a>
 					</div>
 				</div>
 				
@@ -113,5 +135,7 @@ cursor:hand;
 		</div>
 	</div>
 </div>
+
+
 </body>
 </html>
