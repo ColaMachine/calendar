@@ -2,14 +2,15 @@ package cola.machine.util;
 
 import org.apache.commons.lang.StringUtils;
 
+import core.action.ResultDTO;
 import cola.machine.common.msgbox.MsgReturn;
 
 public class RegexUtil {
-	public static MsgReturn isEmail(String email){
+	public static ResultDTO email(String email){
 		if(email.matches("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\\.[a-zA-Z0-9_-]{2,3}){1,2})$")){
-			return  new MsgReturn(true,"");
+			return  ResultUtil.getSuccResult();
 		}else{
-			return new MsgReturn(false,"请输入有效的邮箱地址");
+			return ResultUtil.getWrongResultFromCfg("err.email.format");
 		}
 	}
 	
@@ -20,13 +21,13 @@ public class RegexUtil {
 	 * @author dozen.zhang
 	 * @date 2015年5月20日下午5:00:33
 	 */
-	public static MsgReturn isPwd(String pwd){
+	public static ResultDTO pwd(String pwd){
 		if(StringUtils.isBlank(pwd)  ){
-			 return new MsgReturn(false,"密码不能为空");
+			return ResultUtil.getWrongResultFromCfg("err.pwd.empty");
 		}else if(pwd.length() <6 || pwd.length()>15){
-			 return new MsgReturn(false,"密码长度在6~15个字符");
+			return ResultUtil.getWrongResultFromCfg("err.email.leng");
 		}
-		 return  new MsgReturn(true,"");
+		 return ResultUtil.getSuccResult();
 	}
 	
 }

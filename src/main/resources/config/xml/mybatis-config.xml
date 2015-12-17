@@ -2,14 +2,14 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-	<typeAliases>
+	<!-- <typeAliases>
 		<typeAlias type="cola.machine.calendar.user.bean.User"
 			alias="User" />
 			<typeAlias type="cola.machine.calendar.user.bean.Active"
 			alias="Active" />
 		<typeAlias type="cola.machine.calendar.activity.bean.Activity"
 			alias="Activity" />
-	</typeAliases>
+	</typeAliases> -->
 
 	<!-- <mappers>
 		<mapper resource="config/mapper/UserMapper.xml"/>

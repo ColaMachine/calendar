@@ -8,9 +8,24 @@ import cola.machine.util.FilePath;
 
 /**
  * 系统错误信息实现类
- * @author liuhualuo
+ * @author 
  */
 public class ErrorMessage {
+	/** 系统错误 **/
+	public static final int SYSTEM=1;
+	/** 应用级别错误(前端参数错误) **/
+	public static final int PARAM=2;
+	/** 业务级别错误(service自身处理出错) **/
+	public static final int SERVICE=3;
+	/** 依赖级别错误(service调用第三方服务出错) **/
+	public static final int THIRD=4;
+	/** 交互级别错误(正常业务逻辑,非错误,需要通知用户,如角色名重复) **/
+	public static final int NOTIFI=5;
+	/** 未知异常 **/
+	public static final int EXCEPTION=99; 
+	
+	
+	
     private static Properties msgProp;
 
     /**

@@ -17,9 +17,7 @@
 	http://www.springframework.org/schema/task 
 	http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-	<context:component-scan base-package="cola.machine.calendar.user.controller" />
-<context:component-scan base-package="cola.machine.calendar.activity.controller" />
-<context:component-scan base-package="cola.machine.share.controller" />
+	<context:component-scan base-package="cola.machine.action" />
 	<mvc:view-controller path="/" view-name="index" />
 
 	  <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->  
@@ -39,7 +37,9 @@
 	<!-- 开启这个配置，spring才能识别@Scheduled注解   -->  
     <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>  
     <task:scheduler id="qbScheduler" pool-size="10"/>  
-	
+	  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+   <property name="basePackage" value="com.opms.mapper"/> 
+</bean> 
     <!-- SpringMVC在超出上传文件限制时，会抛出org.springframework.web.multipart.MaxUploadSizeExceededException -->  
     <!-- 该异常是SpringMVC在检查上传的文件信息时抛出来的，而且此时还没有进入到Controller方法中 -->  
     <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
@@ -143,11 +143,11 @@
 
 
 	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
-<!-- 	<bean
+ 	<!-- <bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/view/" />
-		<property name="suffix" value=".jsp" />
-	</bean> -->
+		<property name="prefix" value="/static/" />
+		<property name="suffix" value=".html" />
+	</bean>  -->
 
 
 

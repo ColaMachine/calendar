@@ -3,26 +3,26 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cola.machine.calendar.user.dao.PwdrstMapper">
+<mapper namespace="cola.machine.dao.PwdrstMapper">
  	
 <!--  新增记录  --> 
-	<resultMap type="cola.machine.calendar.user.bean.Pwdrst" id="pwdrstMap">
+	<resultMap type="cola.machine.bean.Pwdrst" id="pwdrstMap">
 	 <id property="idpwdrst" column="idpwdrst" />        
    		<result property="userid" column="userid" /> 
    		<result property="createtime" column="createtime" /> 
  		<result property="used" column="used" /> 
 			<result property="resettime" column="resettime" /> 
    </resultMap>
-  	<insert id="insertPwdrst" parameterType="cola.machine.calendar.user.bean.Pwdrst">
+  	<insert id="insertPwdrst" parameterType="cola.machine.bean.Pwdrst">
   		insert into pwdrst(idpwdrst,userid,createtime,used) values(#{idpwdrst},#{userid},#{createtime},#{used})
   	</insert>
   	
 <!--  查询单条记录	-->
-	<select id="selectPwdrstById" parameterType="string" resultType="cola.machine.calendar.user.bean.Pwdrst">
+	<select id="selectPwdrstById" parameterType="string" resultType="cola.machine.bean.Pwdrst">
 		select * from pwdrst  where idpwdrst = #{idpwdrst}
   	</select>
   	
-  <select id="selectUnusedPwdrstByUserId" parameterType="string" resultType="cola.machine.calendar.user.bean.Pwdrst">
+  <select id="selectUnusedPwdrstByUserId" parameterType="string" resultType="cola.machine.bean.Pwdrst">
 		select * from pwdrst  where used=0 and userid=#{userid}
   	</select>
 <!--  修改记录	-->

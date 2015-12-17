@@ -1,12 +1,5 @@
 package cola.machine.common.msgbox;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import cola.machine.constants.SysConfig;
-import cola.machine.core.page.ListPage;
-import cola.machine.core.page.Page;
 
 /*{
  r : 0,
@@ -18,7 +11,7 @@ import cola.machine.core.page.Page;
  }
  }*/
 public class MsgReturn {
-	private boolean result;
+/*	private boolean result;
 	private String msg;
 	private Object data;
 	private Page page;
@@ -30,13 +23,13 @@ public class MsgReturn {
 		this.result = b;
 		this.msg = msg;
 	}
-	/**
+	*//**
 	 * 构造函数
 	 * @paramb :是否成功
 	 * @param:返回消息
 	 * @param:分页列表信息
 	 * @return msgResturn;
-	 */
+	 *//*
 	public MsgReturn(boolean b, String msg,ListPage listPage) {
 		this.result = b;
 		this.msg = msg;
@@ -58,11 +51,11 @@ public class MsgReturn {
 		this.msg = msg;
 	}
 
-	/*
+	
 	 * public List<String> getErrors() { return errors; } public void
 	 * setErrors(List<String> errors) { this.errors = errors; } public void
 	 * addError(String error){ this.errors.add(error); }
-	 */
+	 
 
 	public String toJsonStr() {
 		return cola.machine.util.JsonUtils.toJsonString(this.toMap());
@@ -97,22 +90,22 @@ public class MsgReturn {
 		this.data = data;
 	}
 
-	/*
+	
 	 * public void addData(String key,Object value){ this.data.put(key, value);
 	 * }
-	 */
+	 
 
 	public String toString() {
 		return this.toJsonStr();
 	}
-/**
+*//**
  * 
  * 说明:demo
  * @param args
  * @return void
  * @author dozen.zhang
  * @date 2015年6月29日上午11:31:35
- */
+ *//*
 	public static void main(String args[]) {
 		MsgReturn msgBox = new MsgReturn();
 		msgBox.setMsg("操作成功");
@@ -135,5 +128,5 @@ public class MsgReturn {
 		msgBox.setListPage(listPage);
 		System.out.println(msgBox.toJsonStr());
 	}
-
+*/
 }

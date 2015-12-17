@@ -7,6 +7,12 @@
 -->
 <configuration scan="true" scanPeriod="30 seconds">
 	 <contextName>MerchanManageLogging</contextName>
+	 
+	 <root level="ERROR">
+		<appender-ref ref="console" level="INFO"/>
+		<appender-ref ref="file"  level="INFO"/>
+	</root>
+	
 	<property name="tip" value="信息:" />
 	<!--tomcat 的log路径-->
 	<property name="logback.logs.path" value="${catalina.base}/logs/" />
@@ -52,8 +58,5 @@
 	<!--SSH2-->
 <!-- 	<logger name="org.springframework" level="ERROR"/>
 	<logger name="org.hibernate" level="ERROR"/> -->
-	<root level="ERROR">
-		<appender-ref ref="console" level="ERROR"/>
-		<appender-ref ref="file"  level="ERROR"/>
-	</root>
+	
 </configuration>

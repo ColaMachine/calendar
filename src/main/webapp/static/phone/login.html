@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="format-detection" content="telephone=no" />
+		<title>微网站</title>
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/comm.css">
+		<link rel="stylesheet" href="css/login/main.css">
+		<link rel="stylesheet" href="css/footer.css">
+	</head>
+
+	<body>
+		<header>
+			<nav>
+				<div class="logo row-10 back-blue center-text">
+					<img class="row-5-2 logo-icon" src="img/header/logo.png" alt="logo">
+				</div>
+			</nav>
+		</header>
+
+		<div class="container">
+			<div class="row-9" style="text-align: center;padding-bottom: 0.5rem;min-height: 25px;"><span class="errorMsg"></span></div>
+			<div class="row-9">
+				<input type="text" name="username" placeholder="输入手机号"  maxlength="11">
+			</div>
+			<div class="row-9">
+				<input type="password" name="password" placeholder="输入密码" >
+			</div>
+			<div class="row-9">
+				<a href="password.html"><span class="right small-text light-gray-text forget">忘记密码</span></a>
+			</div>
+			<div class="row-9 button">
+				<div class="row-4-7 left">
+					<a href="register.html">
+						<button class="back-gray gray-text">注册免费上网</button>
+					</a>
+				</div>
+				<div class="row-4-7 right">
+					<button class="back-orange" id="login">登录</button>
+				</div>
+			</div>
+		</div>
+
+		<footer class="row-10 footer light-gray-text">
+			<div class="row-9 center-text footer-top">
+				<span class="small-text">本系统由中国电信爱WiFi运营中心提供支持</span>
+			</div>
+			<div class="row-9 center-text footer-bottom">
+				<span class="small-text">400-8252-525</span>
+			</div>
+		</footer>
+
+		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="js/touch.js"></script>
+		<script type="text/javascript" src="js/comm/uri.js"></script>
+		<script type="text/javascript" src="js/comm/util.js"></script>
+		<script type="text/javascript" src="js/login/login.js"></script>
+	</body>
+
+</html>

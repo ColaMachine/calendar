@@ -1,41 +1,24 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.Date;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
-import cola.machine.calendar.user.bean.User;
+import org.apache.tools.ant.util.DateUtils;
 
 
 
 public class test {
+	/**
+	 * 说明:
+	 * @param args
+	 * @return void
+	 * @author dozen.zhang
+	 * @date 2015年12月15日下午11:15:17
+	 */
 	public static void main(String[] args)
 	{
-		User user =new User();
-//		user.setEmail("123@qq.com");
-		user.setEmail("123");
-		user.setLoginname("123");
-		user.setPwd("123");
-		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-		Validator validator = factory.getValidator();
-
-		Set<ConstraintViolation<User>> constraintViolations =validator.validate(user);
-	//	Set<ConstraintViolation<User>> constraintViolations =validator.validateValue(User.class,"email",null, javax.validation.groups.Default.class);
-		if (!constraintViolations.isEmpty()) {
-			HashMap errorMap = new HashMap();
-			for (ConstraintViolation<User> constraintViolation : constraintViolations) {
-				errorMap.put(constraintViolation.getPropertyPath(),
-						constraintViolation.getMessage());
-				System.out.println(constraintViolation.getPropertyPath()+"    "+constraintViolation.getMessage());
-			}
 		
-		}
+		Date date = new Date();
+		Long vl=24167250l;// date.getTime();
+		System.out.println("124333"+DateUtils.format(vl*6000, "yyyy-MM-dd HH:mm:ss"));
+		System.out.println((vl %(24*60))/60);
 		
 	}
 }

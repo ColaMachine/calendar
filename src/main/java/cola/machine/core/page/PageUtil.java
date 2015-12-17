@@ -1,5 +1,7 @@
 package cola.machine.core.page;
 
+import com.awifi.core.page.Page;
+
 
 public class PageUtil {
 	public static Page createPage(int everyPage,int currentPage,int totalCount) {  
@@ -18,8 +20,8 @@ public class PageUtil {
     }  
       
     public static Page createPage(Page page,int totalCount) {  
-        int everyPage = getEveryPage(page.getEveryPage());  
-        int currentPage = getCurrentPage(page.getCurrentPage());  
+        int everyPage = getEveryPage(page.getPageSize());  
+        int currentPage = getCurrentPage(page.getCurPage());  
         int totalPage = getTotalPage(everyPage, totalCount);  
         int beginIndex = getBeginIndex(everyPage, currentPage);  
         boolean hasPrePage = getHasPrePage(currentPage);  

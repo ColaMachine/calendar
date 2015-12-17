@@ -2,6 +2,8 @@ package cola.machine.core.page;
 
 import java.util.List;
 
+import com.awifi.core.page.Page;
+
 
 public class ListPage<T> {
 	private Page page;

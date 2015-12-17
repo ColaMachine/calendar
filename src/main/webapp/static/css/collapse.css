@@ -1,0 +1,75 @@
+﻿@CHARSET "UTF-8";
+@media screen and (max-width: 1201px) { 
+.page .menu-wrap {
+	width: 50px;
+}
+.page .main-wrap {
+	margin-left: 50px;
+}
+.page .menu>ul.nav>li>a>.nav-text {
+	display: none;
+}
+.page .menu>ul.nav>li>a>.nav-caret{
+    display: none;
+}
+.page .menu>ul.nav>li>ul>li .nav-icon{
+  /*   display: none; */
+}
+.page .menu li:hover>ul{
+   /*  display: block; */
+}
+.page .menu li li>ul{
+   /*  display: none; */
+}
+.page .menu>ul.nav>li>ul>li .nav-text{
+    margin-left:5px;
+    padding-left:5px;
+}
+.page .menu>ul.nav>li>ul {
+	position: absolute;
+	left: 50px;
+	top: 0px;
+	diplay: block;
+	width: 100px;
+	z-index: 2000;
+	background-color:  #2E3E4E;
+}
+
+
+
+
+.page .menu-wrap {
+    width: 50px;
+}
+.page .main-wrap {
+    margin-left: 50px;
+}
+.page .menu>ul.nav>li>a>.nav-text {
+    display: none;
+}
+.page .menu>ul.nav>li>a>.nav-caret{
+    display: none;
+}
+.page .menu>ul.nav>li>ul>li .nav-icon{
+  /*   display: none; */
+}
+.page .menu li:hover>ul{
+   /*  display: block; */
+}
+.page .menu li li>ul{
+   /*  display: none; */
+}
+.page .menu>ul.nav>li>ul>li .nav-text{
+    margin-left:5px;
+    padding-left:5px;
+}
+.page .menu>ul.nav>li>ul {
+    position: absolute;
+    left: 50px;
+    top: 0px;
+    diplay: block;
+    width: 100px;
+    z-index: 2000;
+    background-color:  #2E3E4E;
+}
+}

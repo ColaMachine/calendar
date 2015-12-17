@@ -1,17 +1,10 @@
 package cola.machine.calendar.user;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-import java.util.List;
-
 import org.junit.Before;
-import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import cola.machine.calendar.user.bean.User;
-import cola.machine.calendar.user.service.UserService;
+import cola.machine.service.UserService;
 
 public class UserTest {
 	UserService userService = null;

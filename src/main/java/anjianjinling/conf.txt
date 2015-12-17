@@ -1,0 +1,45 @@
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 1000
+mousepress
+delay 10000

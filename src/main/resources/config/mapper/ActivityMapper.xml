@@ -3,10 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cola.machine.calendar.activity.dao.ActivityDao">
+<mapper namespace="cola.machine.dao.ActivityDao">
 
 	<!-- 新增记录 -->  <!-- type是类的路径 id是影后引用的id -->
-	<resultMap type="cola.machine.calendar.activity.bean.Activity"
+	<resultMap type="cola.machine.bean.Activity"
 		id="ActivityMap">
 		<id property="activityId" column="ACTIVITYID" />
 		<result property="title" column="TITLE" />
@@ -15,22 +15,23 @@
 		<result property="address" column="ADDRESS" />
 		<result property="description" column="DESCRIPTION" />
 		<result property="type" column="TYPE" />
+		<result property="userId" column="USERID" />
 		<result property="busyLevel" column="BUSYLEVEL" />
 		<result property="privacy" column="PRIVACY" />
 	</resultMap>
 
 	<select id="selecActivityByActivityId" parameterType="string"
-		resultType="cola.machine.calendar.activity.bean.Activity">
+		resultType="cola.machine.bean.Activity">
 		SELECT * FROM ACTIVITY WHERE ACTIVITYID = #{ActivityId}
 	</select>
 
-	<insert id="insertActivity" parameterType="cola.machine.calendar.activity.bean.Activity">
+	<insert id="insertActivity" parameterType="cola.machine.bean.Activity">
 		INSERT INTO
-		ACTIVITY(ACTIVITYID,TITLE,STARTTIME,ENDTIME,ADDRESS,DESCRIPTION,TYPE,BUSYLEVEL)
-		VALUES(#{activityId},#{title},#{startTime},#{endTime},#{address},#{description},#{type},#{busyLevel})
+		ACTIVITY(ACTIVITYID,TITLE,STARTTIME,ENDTIME,ADDRESS,DESCRIPTION,TYPE,BUSYLEVEL,USERID)
+		VALUES(#{activityId},#{title},#{startTime},#{endTime},#{address},#{description},#{type},#{busyLevel},#{userId})
 	</insert>
 
-	<update id="updateActivity" parameterType="cola.machine.calendar.activity.bean.Activity">
+	<update id="updateActivity" parameterType="cola.machine.bean.Activity">
 		UPDATE ACTIVITY SET TITLE=#{title},STARTTIME =
 		#{startTime},ENDTIME = #{endTime}
 		,ADDRESS = #{address},DESCRIPTION = #{description},TYPE = #{type},BUSYLEVEL =
@@ -42,13 +43,15 @@
 		ACTIVITYID = #{ACTIVITYID}
 	</delete>
 
-	<select id="selectActivityBetween2Date" resultType="cola.machine.calendar.activity.bean.Activity"
+	<select id="selectActivityBetween2Date" resultType="cola.machine.bean.Activity"
 		parameterType="java.util.Map">
-		SELECT * FROM ACTIVITY WHERE STARTTIME BETWEEN #{STARTTIME} AND #{ENDTIME}
-		OR ENDTIME BETWEEN #{STARTTIME} AND #{ENDTIME}
+		SELECT * FROM ACTIVITY WHERE USERID=#{USERID} AND  (STARTTIME BETWEEN #{STARTTIME} AND #{ENDTIME}
+		OR ENDTIME BETWEEN #{STARTTIME} AND #{ENDTIME})
 	</select>
 	
-		<select id="getActivityById" resultType="cola.machine.calendar.activity.bean.Activity"
+    
+	
+		<select id="getActivityById" resultType="cola.machine.bean.Activity"
 		parameterType="java.lang.String">
 		SELECT * FROM ACTIVITY WHERE ACTIVITYID=#{ACTIVITYID}
 	</select>

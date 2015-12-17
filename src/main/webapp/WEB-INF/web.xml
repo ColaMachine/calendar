@@ -4,22 +4,29 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
   <display-name>colamachine</display-name>
-  
-  <!-- <context-param>
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>classpath:log4j.properties</param-value>
+  </context-param>
+  <context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:config/xml/applicationContext*.xml
 		</param-value>
-	</context-param> -->
-<!--   <listener>  
+	</context-param>
+   <listener>  
     <description>Spring core configuration</description>  
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
-  </listener>  -->
+  </listener> 
   <listener>
     	<listener-class>cola.machine.web.listener.SysListener</listener-class>
 	</listener>	
 	<!-- Spring Mvc -->
-	<!-- <servlet>
+	<!-- <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/static/*</url-pattern>
+    </servlet-mapping> -->
+	 <servlet>
 		<servlet-name>springMVC</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
@@ -30,8 +37,12 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>springMVC</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping> -->
+		<url-pattern>*.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>springMVC</servlet-name>
+        <url-pattern>*.json</url-pattern>
+    </servlet-mapping>
 
 
   
@@ -50,13 +61,13 @@
 		</init-param>
 		<init-param>
 			<param-name>notCheckURLList</param-name>
-			<param-value>/login/login.html;/login/register.html;/login;/login/;/register;/login/login.js;/login/login.css;/css/bootstrap.min.css;/js/jquery.min.js;/js/jquery.validate.js;/js/additional-methods.js;/loginPost;/registerPost;/pwdreset;/active/\w*;/img/.*
-			;/forgetpwd;/js/common.js;/pwdresetPost;/forgetpwd/save;/pwdrst/save;/pwdrst/edit;/pwdrst;/.*\.jpg;/validatecode;/share/qq;
+			<param-value>/static/.*;/login.htm;/register.htm;/loginPost.json;/registerPost.json;/pwdreset.htm;/active/\w*;/img/.*
+			;/forgetpwd;/pwdresetPost;/forgetpwd/save;/pwdrst/save;/pwdrst/edit;/pwdrst;/.*\.jpg;/validatecode;/share/qq;
 			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>redirectURL</param-name>
-			<param-value>/login</param-value>
+			<param-value>/login.htm</param-value>
 		</init-param>
 		
 		
@@ -67,11 +78,11 @@
     </filter-mapping> -->
     
  
-    <!--  <filter-mapping>
+    <filter-mapping>
         <filter-name>loginfilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
- -->
+
 
     
     
@@ -85,6 +96,6 @@
 		<url-pattern>*.ajax</url-pattern> 
 	</servlet-mapping>  -->
     <welcome-file-list>
-        <welcome-file>/calendar/index</welcome-file>
+        <welcome-file>/calendar/login</welcome-file>
     </welcome-file-list>
 </web-app>

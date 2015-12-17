@@ -273,7 +273,7 @@ var loginValidator = function() {
 		}
 		$.post(CONTEXTPATH+"/loginPost",jso,function(data){
 			if(data[AJAX_RESULT]==AJAX_SUCC){
-				window.location=CONTEXTPATH+"/index";
+				window.location=CONTEXTPATH+"/index.htm";
 			}else{
 				var ul = 	$("#login_form").find(".failure").find("ul");
 				ul.empty();
