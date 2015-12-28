@@ -45,25 +45,9 @@ public class Generator {
     private static Logger logger =LoggerFactory.getLogger(Generator.class);
     public void genController(ZTable table){
 
-        try {
-            BufferedReader br =new BufferedReader(new FileReader(new File("/home/colamachine/workspace/calendar/src/main/resources/code/Controller.tpl")));
-            String s ;
-            StringBuffer templateStr= new StringBuffer();
-            while  ((s=br.readLine())!=null){
-                templateStr.append(s+"\r\n");
-            }
-            Configuration cfg = new Configuration();
-            StringTemplateLoader temp = new StringTemplateLoader();
-            temp.putTemplate("controller", templateStr.toString());
-            cfg.setDefaultEncoding("UTF-8");
-            cfg.setTemplateLoader(temp);
+       try{
             Template template;
-
             template = cfg.getTemplate("controller");
-
-            Map root = new HashMap();
-
-            root.put("table", table);
             StringWriter writer = new StringWriter();
             template.process(root, writer);
             System.out.println(writer.toString());
@@ -76,30 +60,11 @@ public class Generator {
         }
     
     }
-
-    public void genService(ZTable table){
-        StringBuffer sb =new StringBuffer();
-        String type="";
-        String typeName="";
-        try {
-            BufferedReader br =new BufferedReader(new FileReader(new File("/home/colamachine/workspace/calendar/src/main/resources/code/Service.tpl")));
-            String s ;
-            StringBuffer templateStr= new StringBuffer();
-            while  ((s=br.readLine())!=null){
-                templateStr.append(s+"\r\n");
-            }
-            Configuration cfg = new Configuration();
-            StringTemplateLoader temp = new StringTemplateLoader();
-            temp.putTemplate("service", templateStr.toString());
-            cfg.setDefaultEncoding("UTF-8");
-            cfg.setTemplateLoader(temp);
-            Template template;
-
-            template = cfg.getTemplate("service");
-
-            Map root = new HashMap();
-            root.put("javaType", new JavaTypeDirective());
-            root.put("table", table);
+    private Map root = new HashMap();
+    public void genService(){
+      try{
+            Template template = cfg.getTemplate("service");
+            
             StringWriter writer = new StringWriter();
             template.process(root, writer);
             System.out.println(writer.toString());
@@ -152,25 +117,11 @@ public class Generator {
         
 
         try {
-            BufferedReader br =new BufferedReader(new FileReader(new File("/home/colamachine/workspace/calendar/src/main/resources/code/Bean.tpl")));
-            String s ;
-            StringBuffer templateStr= new StringBuffer();
-            while  ((s=br.readLine())!=null){
-                templateStr.append(s+"\r\n");
-            }
-            Configuration cfg = new Configuration();
-            StringTemplateLoader temp = new StringTemplateLoader();
-            temp.putTemplate("controller", templateStr.toString());
-            cfg.setDefaultEncoding("UTF-8");
-            cfg.setTemplateLoader(temp);
+          
             Template template;
 
             template = cfg.getTemplate("controller");
 
-            Map root = new HashMap();
-
-            root.put("table", table);
-            root.put("content", sb.toString());
             StringWriter writer = new StringWriter();
             template.process(root, writer);
             System.out.println(writer.toString());
@@ -231,6 +182,7 @@ public class Generator {
         }
         return templateStr.toString();
     }
+    private Configuration cfg;
     public void init(){ 
         
         StringBuffer sb =new StringBuffer();
@@ -238,14 +190,17 @@ public class Generator {
         String typeName="";
         try {
            
-            
+            table =load( PathManager.getInstance().getHomePath().resolve("src/main/resources/code.cfg"));
+            table.init();
+            root.put("javaType", new JavaTypeDirective());
+            root.put("table", table);
          /*   Configuration config=new Configuration();
              //设置要解析的模板所在的目录，并加载模板文件
             config.setDirectoryForTemplateLoading(file);
             //设置包装器，并将对象包装为数据模型
             config.setObjectWrapper(new DefaultObjectWrapper());*/
             
-            Configuration cfg = new Configuration();
+             cfg = new Configuration();
             StringTemplateLoader temp = new StringTemplateLoader();
             
             String serviceTpl = this.readFile2Str("src/main/resources/code/Service.tpl");
@@ -265,26 +220,22 @@ public class Generator {
             temp.putTemplate("viewHtml", viewHtmlTpl);
             cfg.setDefaultEncoding("UTF-8");
             cfg.setTemplateLoader(temp);
+            
+            
         }catch(Exception e){
             
         }
-        FreeMarkerUtil.processTemplate(templatePath, templateName, templateEncoding, root, out);
+       // FreeMarkerUtil.processTemplate(templatePath, templateName, templateEncoding, root, out);
     }
+    ZTable table;
     public static void main(String[] args) {
         Generator gen =new Generator();
-        try {
-           
-            ZTable table =gen.load( PathManager.getInstance().getHomePath().resolve("src/main/resources/code.cfg"));
-            gen.int();
-            table.init();
-            System.out.println(table.getCols().size());
+            gen.init();
+            //System.out.println(table.getCols().size());
             //gen.genController(table);
            // gen.genBean(table);
-            gen.genService(table);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+            gen.genService();
+       
     }
     
     /**

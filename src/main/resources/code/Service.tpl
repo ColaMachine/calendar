@@ -94,7 +94,7 @@ public class ${Abc}Service extends BaseService {
         permissionMapper.deleteByPrimaryKey(${table.pk.name});
     }   
     /**
-    * 说明:根据主键删除数据
+    * 说明:根据主键获取数据
     * description:delete by key
     * @param id
     * @return void
