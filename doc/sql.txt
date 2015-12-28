@@ -1,0 +1,302 @@
+CREATE TABLE `access_token` (
+  `id` bigint(20) DEFAULT NULL,
+  `access_token` varchar(255) NOT NULL,
+  `token_type` varchar(255) DEFAULT NULL,
+  `expires` varchar(255) DEFAULT NULL,
+  `refresh_token` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `client_id` varchar(255) DEFAULT NULL,
+  `createdtime` datetime DEFAULT NULL,
+  `modifiedtime` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `active` (
+  `userid` varchar(40) NOT NULL,
+  `activeid` varchar(40) NOT NULL,
+  `createdtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `activedtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `actived` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`activeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `activity` (
+  `ACTIVITYID` varchar(40) NOT NULL,
+  `TITLE` varchar(40) DEFAULT NULL,
+  `STARTTIME` int(11) DEFAULT NULL,
+  `ENDTIME` int(11) DEFAULT NULL,
+  `ADDRESS` varchar(40) DEFAULT NULL,
+  `USERID` varchar(40) DEFAULT NULL,
+  `DESCRIPTION` varchar(40) DEFAULT NULL,
+  `TYPE` char(1) DEFAULT NULL,
+  `PRIVACY` char(1) DEFAULT NULL,
+  `BUSYLEVEL` char(1) DEFAULT NULL,
+  PRIMARY KEY (`ACTIVITYID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `app_c3p0_test_table` (
+  `a` char(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `app_exception_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ClassName` varchar(255) DEFAULT NULL,
+  `sid` int(11) DEFAULT NULL,
+  `msg` text,
+  `lineNumber` int(11) DEFAULT NULL,
+  `time` timestamp NULL DEFAULT NULL,
+  `params` varchar(512) DEFAULT NULL,
+  `requesturl` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `client` (
+  `id` bigint(20) DEFAULT NULL,
+  `client_id` varchar(255) NOT NULL,
+  `client_secret` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `pwdrst` (
+  `idpwdrst` varchar(32) NOT NULL,
+  `userid` varchar(45) NOT NULL,
+  `createtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `used` tinyint(1) NOT NULL,
+  `resettime` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`idpwdrst`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `t_auditlog_history_2014` (
+  `id` varchar(40) NOT NULL COMMENT 'ID',
+  `operationType` varchar(50) DEFAULT NULL COMMENT '操作类型',
+  `operatorName` varchar(50) DEFAULT NULL COMMENT '操作人姓名',
+  `preValue` text COMMENT '旧值',
+  `curValue` text COMMENT '新值',
+  `operationTime` datetime DEFAULT NULL COMMENT '操作时间',
+  `operationClass` varchar(500) DEFAULT NULL COMMENT '操作类',
+  `operationClassID` varchar(50) DEFAULT NULL COMMENT '记录ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作记录';
+
+CREATE TABLE `t_auditlog_history_2015` (
+  `id` varchar(40) NOT NULL COMMENT 'ID',
+  `operationType` varchar(50) DEFAULT NULL COMMENT '操作类型',
+  `operatorName` varchar(50) DEFAULT NULL COMMENT '操作人姓名',
+  `preValue` text COMMENT '旧值',
+  `curValue` text COMMENT '新值',
+  `operationTime` datetime DEFAULT NULL COMMENT '操作时间',
+  `operationClass` varchar(500) DEFAULT NULL COMMENT '操作类',
+  `operationClassID` varchar(50) DEFAULT NULL COMMENT '记录ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作记录';
+
+CREATE TABLE `t_auditlog_history_2016` (
+  `id` varchar(40) NOT NULL COMMENT 'ID',
+  `operationType` varchar(50) DEFAULT NULL COMMENT '操作类型',
+  `operatorName` varchar(50) DEFAULT NULL COMMENT '操作人姓名',
+  `preValue` text COMMENT '旧值',
+  `curValue` text COMMENT '新值',
+  `operationTime` datetime DEFAULT NULL COMMENT '操作时间',
+  `operationClass` varchar(500) DEFAULT NULL COMMENT '操作类',
+  `operationClassID` varchar(50) DEFAULT NULL COMMENT '记录ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作记录';
+
+CREATE TABLE `t_dic_data` (
+  `id` varchar(40) NOT NULL,
+  `name` varchar(60) NOT NULL COMMENT '名称',
+  `code` varchar(60) DEFAULT NULL COMMENT '编码',
+  `pid` varchar(50) DEFAULT NULL COMMENT '父ID',
+  `sort` int(11) DEFAULT NULL COMMENT '排序',
+  `remark` varchar(2000) DEFAULT NULL COMMENT '描述',
+  `state` varchar(2) DEFAULT '是' COMMENT '是否有效',
+  `typekey` varchar(20) DEFAULT NULL COMMENT '类型',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公共字典';
+
+CREATE TABLE `t_fwlog_history_2014` (
+  `id` varchar(100) NOT NULL COMMENT 'ID',
+  `startDate` datetime DEFAULT NULL COMMENT '访问时间',
+  `strDate` varchar(100) DEFAULT NULL COMMENT '访问时间(毫秒)',
+  `tomcat` varchar(50) DEFAULT NULL COMMENT 'Tomcat',
+  `userCode` varchar(300) DEFAULT NULL COMMENT '登陆账号',
+  `userName` varchar(200) DEFAULT NULL COMMENT '姓名',
+  `sessionId` varchar(300) DEFAULT NULL COMMENT 'sessionId',
+  `ip` varchar(200) DEFAULT NULL COMMENT 'IP',
+  `fwUrl` varchar(3000) DEFAULT NULL COMMENT '访问菜单',
+  `menuName` varchar(100) DEFAULT NULL COMMENT '菜单名称',
+  `isqx` varchar(2) DEFAULT NULL COMMENT '是否有权限访问',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='访问日志';
+
+CREATE TABLE `t_fwlog_history_2015` (
+  `id` varchar(100) NOT NULL COMMENT 'ID',
+  `startDate` datetime DEFAULT NULL COMMENT '访问时间',
+  `strDate` varchar(100) DEFAULT NULL COMMENT '访问时间(毫秒)',
+  `tomcat` varchar(50) DEFAULT NULL COMMENT 'Tomcat',
+  `userCode` varchar(300) DEFAULT NULL COMMENT '登陆账号',
+  `userName` varchar(200) DEFAULT NULL COMMENT '姓名',
+  `sessionId` varchar(300) DEFAULT NULL COMMENT 'sessionId',
+  `ip` varchar(200) DEFAULT NULL COMMENT 'IP',
+  `fwUrl` varchar(3000) DEFAULT NULL COMMENT '访问菜单',
+  `menuName` varchar(100) DEFAULT NULL COMMENT '菜单名称',
+  `isqx` varchar(2) DEFAULT NULL COMMENT '是否有权限访问',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='访问日志';
+
+CREATE TABLE `t_fwlog_history_2016` (
+  `id` varchar(100) NOT NULL COMMENT 'ID',
+  `startDate` datetime DEFAULT NULL COMMENT '访问时间',
+  `strDate` varchar(100) DEFAULT NULL COMMENT '访问时间(毫秒)',
+  `tomcat` varchar(50) DEFAULT NULL COMMENT 'Tomcat',
+  `userCode` varchar(300) DEFAULT NULL COMMENT '登陆账号',
+  `userName` varchar(200) DEFAULT NULL COMMENT '姓名',
+  `sessionId` varchar(300) DEFAULT NULL COMMENT 'sessionId',
+  `ip` varchar(200) DEFAULT NULL COMMENT 'IP',
+  `fwUrl` varchar(3000) DEFAULT NULL COMMENT '访问菜单',
+  `menuName` varchar(100) DEFAULT NULL COMMENT '菜单名称',
+  `isqx` varchar(2) DEFAULT NULL COMMENT '是否有权限访问',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='访问日志';
+
+CREATE TABLE `t_menu` (
+  `id` varchar(40) NOT NULL,
+  `name` varchar(60) DEFAULT NULL,
+  `pid` varchar(40) DEFAULT NULL,
+  `description` varchar(2000) DEFAULT NULL COMMENT '描述',
+  `pageurl` varchar(3000) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL COMMENT '0.功能按钮,1.导航菜单',
+  `state` varchar(2) DEFAULT '是' COMMENT '是否有效',
+  `sort` int(11) DEFAULT NULL,
+  `icon` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单';
+
+CREATE TABLE `t_org` (
+  `id` varchar(40) NOT NULL COMMENT '编号',
+  `name` varchar(60) DEFAULT NULL COMMENT '名称',
+  `comcode` varchar(40) DEFAULT NULL COMMENT '代码',
+  `pid` varchar(40) DEFAULT NULL COMMENT '上级部门ID',
+  `sysid` varchar(40) DEFAULT NULL COMMENT '子系统ID',
+  `type` int(11) DEFAULT NULL COMMENT '0,组织机构 1.部门',
+  `leaf` int(11) DEFAULT NULL COMMENT '叶子节点(0:树枝节点;1:叶子节点)',
+  `sortno` int(11) DEFAULT NULL COMMENT '排序号',
+  `description` varchar(2000) DEFAULT NULL COMMENT '描述',
+  `state` varchar(2) DEFAULT '是' COMMENT '是否有效(否/是)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='部门';
+
+CREATE TABLE `t_permission` (
+  `id` varchar(40) NOT NULL,
+  `code` varchar(45) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `pid` varchar(45) DEFAULT NULL,
+  `orderBy` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `t_per_res` (
+  `id` varchar(40) NOT NULL,
+  `perId` varchar(40) DEFAULT NULL,
+  `resId` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `t_resource` (
+  `id` varchar(40) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `prop` varchar(200) DEFAULT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `pid` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `t_role` (
+  `id` varchar(40) NOT NULL COMMENT '角色ID',
+  `name` varchar(60) DEFAULT NULL COMMENT '角色名称',
+  `code` varchar(255) DEFAULT NULL COMMENT '权限编码',
+  `pid` varchar(40) DEFAULT NULL COMMENT '上级角色ID',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `state` varchar(2) DEFAULT '是' COMMENT '是否有效(否/是)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色';
+
+CREATE TABLE `t_role_menu` (
+  `id` varchar(40) NOT NULL COMMENT '编号',
+  `roleId` varchar(40) NOT NULL COMMENT '角色编号',
+  `menuId` varchar(40) NOT NULL COMMENT '菜单编号',
+  PRIMARY KEY (`id`),
+  KEY `fk_t_role_menu_roleId_t_role_id` (`roleId`),
+  KEY `fk_t_role_menu_menuId_t_menu_id` (`menuId`),
+  CONSTRAINT `fk_t_role_menu_menuId_t_menu_id` FOREIGN KEY (`menuId`) REFERENCES `t_menu` (`id`),
+  CONSTRAINT `fk_t_role_menu_roleId_t_role_id` FOREIGN KEY (`roleId`) REFERENCES `t_role` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色菜单中间表';
+
+CREATE TABLE `t_role_per` (
+  `id` varchar(40) NOT NULL,
+  `roleId` varchar(40) DEFAULT NULL,
+  `perId` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `t_user` (
+  `id` varchar(40) NOT NULL COMMENT '编号',
+  `name` varchar(30) DEFAULT NULL COMMENT '姓名',
+  `account` varchar(40) DEFAULT NULL COMMENT '账号',
+  `password` varchar(40) DEFAULT NULL COMMENT '密码',
+  `sex` varchar(2) DEFAULT '男' COMMENT '性别',
+  `mobile` varchar(16) DEFAULT NULL COMMENT '手机号码',
+  `email` varchar(60) DEFAULT NULL COMMENT '邮箱',
+  `weixinId` varchar(200) DEFAULT NULL COMMENT '微信Id',
+  `userType` int(11) NOT NULL,
+  `state` varchar(10) DEFAULT '是' COMMENT '是否有效,是/否',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户';
+
+CREATE TABLE `t_user_org` (
+  `id` varchar(40) NOT NULL COMMENT '编号',
+  `userId` varchar(40) NOT NULL COMMENT '用户编号',
+  `orgId` varchar(40) NOT NULL COMMENT '机构编号',
+  `manager` varchar(2) DEFAULT '否' COMMENT '是否主管,是/否',
+  PRIMARY KEY (`id`),
+  KEY `fk_t_user_org_userId_t_user_id` (`userId`),
+  KEY `fk_t_user_org_orgId_t_org_id` (`orgId`),
+  CONSTRAINT `fk_t_user_org_orgId_t_org_id` FOREIGN KEY (`orgId`) REFERENCES `t_org` (`id`),
+  CONSTRAINT `fk_t_user_org_userId_t_user_id` FOREIGN KEY (`userId`) REFERENCES `t_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户部门中间表';
+
+CREATE TABLE `t_user_role` (
+  `id` varchar(40) NOT NULL COMMENT '编号',
+  `userId` varchar(40) NOT NULL COMMENT '用户编号',
+  `roleId` varchar(40) NOT NULL COMMENT '角色编号',
+  PRIMARY KEY (`id`),
+  KEY `fk_t_user_role_userId_t_user_id` (`userId`),
+  KEY `fk_t_user_role_roleId_t_role_id` (`roleId`),
+  CONSTRAINT `fk_t_user_role_roleId_t_role_id` FOREIGN KEY (`roleId`) REFERENCES `t_role` (`id`),
+  CONSTRAINT `fk_t_user_role_userId_t_user_id` FOREIGN KEY (`userId`) REFERENCES `t_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色中间表';
+
+CREATE TABLE `user` (
+  `userid` varchar(40) NOT NULL,
+  `loginname` varchar(40) NOT NULL,
+  `nickname` varchar(40) DEFAULT NULL,
+  `pwd` varchar(40) NOT NULL,
+  `email` varchar(40) NOT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `telno` varchar(11) DEFAULT NULL,
+  `createtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `loginname_UNIQUE` (`loginname`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
+  UNIQUE KEY `telno_UNIQUE` (`telno`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `weixin_menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `weixinId` varchar(200) NOT NULL COMMENT '微信Id',
+  `name` varchar(50) DEFAULT NULL COMMENT '名称',
+  `pid` varchar(50) NOT NULL COMMENT '上级Id',
+  `linkType` varchar(200) NOT NULL COMMENT '跳转方式',
+  `linkId` varchar(2000) NOT NULL COMMENT '跳转业务Id',
+  `href` varchar(2000) NOT NULL COMMENT '跳转地址',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
