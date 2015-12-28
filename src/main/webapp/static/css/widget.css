@@ -54,15 +54,20 @@
 }
 .zbutton_wrap{
 	padding:15px 15px;
+	postion:relative;
 }
-.zbutton_wrap a{
-	padding:3px;
-	display:block;
+.zwidget_wrap .zfooter{
+	padding-left:5px;
+	padding-right:5px;
+}
+.zbutton_wrap .btn{
+	/* padding:3px; */
+/* 	display:inline-block;
 	text-align:center;
 	line-height:1.6;
 	color:#ffffff;
-	background-color:#4777C8;
-	width:100%;
+	background-color:#4777C8; */
+	/* width:100%; */
 }
 .fa-check-circle{
 	color:rgb(62,189,89);

@@ -63,7 +63,7 @@ public class MongoDBTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void add(){
 		queryAll();
 		print("count:"+users.count());
@@ -88,13 +88,13 @@ public class MongoDBTest {
 		queryAll();
 		users.drop();
 	}	
-	@Test
+//	@Test
 	public void remove(){
 		queryAll();
 		print("删除id =4de :"+users.remove(new BasicDBObject("_id",new ObjectId("565e9a29a2df949942a45ab7"))).getN());
 		print("remove age>=24:"+users.remove(new BasicDBObject("_id",new BasicDBObject("$gt",24))).getN());
 	}
-	@Test
+//	@Test
 	public void modify(){
 		print("修改:"+users.update(new BasicDBObject("_id",new ObjectId("565e9a29a2df949942a45ab7")),
 				new BasicDBObject("age",99)
@@ -111,7 +111,7 @@ public class MongoDBTest {
 				true//modify mutil  true:if has mutil data dos't modify
 				).getN());
 	}
-	@Test
+//	@Test
 	public void query(){
 		print("find id= 4de:"+users.find(new BasicDBObject("_id",new ObjectId("565e9a29a2df949942a45ab7"))).toArray());
 		

@@ -21,13 +21,10 @@ var CONTEXTPATH="/calendar";
 function AjaxFun(url, inputData, callback, options, callbackOnError) {
 	var contextUrl = window.location.href;
 	options = options || {};
-	options.url = CONTEXTPATH + url;
-	options.type = "POST";
-
+	options.url =  url;
+	options.type = options.type||"POST";
 	options.data = inputData;
-
 	//options.data = encodeURIComponent(JSON.stringify(inputData));
-
 	if (typeof options.async == 'undifined')
 		options.async = false;
 	var param = options.inputData;
@@ -49,14 +46,19 @@ function AjaxFun(url, inputData, callback, options, callbackOnError) {
 		}
 		if (typeof callbackOnError == 'function') {
 			callbackOnError(errorThrown);
-		} else {
+		} else {alert(typeof callbackOnError);
 			alert('参数不是function');
 		}
 	};
 	delete options['inputData'];
-
 	$.ajax(options);
 };
+function Get(url,callback){
+	AjaxFun(url,null,callback,{type:"get"});
+}
+function Post(url,data,callback){
+	AjaxFun(url,data,callback);
+}
 /**
  * 
  */
@@ -505,8 +507,11 @@ function getCellValue(id, index) {
 }
 
 function goPage(currentPage, everyPage) {
-	window.location.href = $("#searchForm")[0].action + "?fy=1&currentPage="
-			+ currentPage + "&everyPage=" + everyPage;
+	console.log(currentPage);
+	zMenu.loadPage(currentPage);
+	return;
+//	window.location.href = $("#searchForm")[0].action + "?fy=1&currentPage="
+//			+ currentPage + "&everyPage=" + everyPage;
 }
 
 function openMenu(id) {
@@ -518,22 +523,46 @@ function openMenu(level1, level2) {
 
 }
 function getAuditHtml(value) {
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"auditinfo('"+value+"')\" >审核</a>";
+	var strs= "";
+	for(var i=0;i<arguments.length;i++){
+		strs+="'"+arguments[i]+"',";
+	}
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"auditInfo("+strs.substr(1)+")\" >审核</a>";
 }
 function getEditHtml(value) {
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"editinfo('"+value+"')\" >修改</a>";
+	var strs= "";
+	for(var i=0;i<arguments.length;i++){
+		strs+=",'"+arguments[i]+"'";
+	}
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"editInfo("+strs.substr(1)+")\" >修改</a>";
 }
 function getDelHtml(value) {
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"deleteinfo('"+value+"')\" >删除</a>";
+	var strs= "";
+	for(var i=0;i<arguments.length;i++){
+		strs+=",'"+arguments[i]+"'";
+	}
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"deleteInfo("+strs.substr(1)+")\" >删除</a>";
 }
 function getViewHtml(value) {
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"viewinfo('"+value+"')\" >查看</a>";
+	var strs= "";
+	for(var i=0;i<arguments.length;i++){
+		strs+=",'"+arguments[i]+"'";
+	}
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"viewInfo("+strs.substr(1)+")\" >查看</a>";
 }
 function getLockHtml(value) {
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"lockinfo('"+value+"')\" >禁用</a>";
+	var strs= "";
+	for(var i=0;i<arguments.length;i++){
+		strs+=",'"+arguments[i]+"'";
+	}
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"lockinfo("+strs.substr(1)+")\" >禁用</a>";
 	}
 function getUnLockHtml(value) {
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"unlockinfo('"+value+"')\" >启用</a>";
+	var strs= "";
+	for(var i=0;i<arguments.length;i++){
+		strs+=",'"+arguments[i]+"'";
+	}
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"unlockinfo("+strs.substr(1)+")\" >启用</a>";
 	}
 /*function getEditHtml1(value) {
 	return "<div title=\"\" style=\"float:left;cursor:pointer;\" class=\"ui-pg-div ui-inline-edit\" id=\"jEditButton_1\" onclick=\"editinfo('"
@@ -1175,7 +1204,7 @@ function zWidgetBase(){
 	}else{
 		$("body").append("<div class='widget'></div>");
 	}
-}
+}/*
 function zconfirm(msg,title,fn){
 	zWidgetBase();
 	var html=$("<div class=\"zwidget_wrap\">"+
@@ -1183,19 +1212,19 @@ function zconfirm(msg,title,fn){
 	"<div class=\"zbody\">"+
 	"<div class=\"zinfo-icon\"><img src=\"/static/img/exclamation.png\"/></div>"+
 	"<div class=\"zinfo\">"+msg+"</div>"+
-	"<div class=\"zbutton_wrap\"><a onclick=\"$(this).parent().parent().parent().hide();$('.mask').hide()\">确定</a></div>"+
+	"<div class=\"zbutton_wrap\"><a style='width:20%' onclick=\"$(this).parent().parent().parent().hide();$('.mask').hide()\">确定</a><a style='width:20%' onclick=\"$(this).parent().parent().parent().hide();$('.mask').hide()\">确定</a></div>"+
 	"</div>"+
 	"</div>");
 	$(".widget").html(html);
 	if (typeof(fn) != "undefined") 
 	$(html).find(".zbutton_wrap").find("a").click(fn);
-}
+}*/
 
-
+/*
 function zdialogue(msg,title,src,fontcolor,fn){
 	zWidgetBase();
 	var html=$("<div class=\"zwidget_wrap\">"+
-	"<div class=\"zwidget_header\"><span>"+title+"</span> <a onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><img class=\"zclose\" src=\"/static/img/closeIcon.png\"></img></a></div>"+
+	"<div class=\"zwidget_header\"><span>"+title+"</span> <a onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><img class=\"zclose\" src=\""+PATH+"/static/img/closeIcon.png\"></img></a></div>"+
 	"<div class=\"zbody\">"+
 	"<div class=\"zinfo-icon\"><img src=\""+src+"\"/></div>"+
 	"<div class=\"zinfo\" style=\"color:"+fontcolor+"\">"+msg+"</div>"+
@@ -1205,27 +1234,43 @@ function zdialogue(msg,title,src,fontcolor,fn){
 	$(".widget").html(html);
 	if (typeof(fn) != "undefined") 
 	$(html).find(".zbutton_wrap").find("a").click(fn);
-}
+}*/
 function zdialogue(jso){
-	zWidgetBase();
-	var html=$("<div class=\"zwidget_wrap\">"+
-	"<div class=\"zwidget_header\"><span>"+jso.title+"</span> <a class=\"zclose\" onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><img  src=\"/static/img/closeIcon.png\"></img></a></div>"+
-	"<div class=\"zbody\">"+
-	"<div class=\"zinfo-icon\"><img src=\""+jso.src+"\"/></div>"+
+	showMask()
+	if(StringUtil.isBlank(jso.title)){
+		jso.title="提示";
+	}
+	var html=$("<div class=\"zwidget_wrap \">"+
+	"<div class=\"zwidget_header\"><span>"+jso.title+"</span> <a class='zclose'  onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><i class=' fa fa-close'></i></a></div>"+
+	"<div class=\"zbody \">"+
+	"<div class=\"zinfo-icon\"><i  class='fa fa-check-circle'></i></div>"+//<img src=\""+jso.src+"\"/>
 	"<div class=\"zinfo\" style=\"color:"+jso.fontcolor+"\">"+jso.msg+"</div>"+
-	"<div class=\"zbutton_wrap\"><a onclick=\"$(this).parent().parent().parent().hide();$('.mask').hide()\">确定</a></div>"+
-	"</div>"+
+	"</div><div class='zfooter' ><div class=\"zbutton_wrap row\">"+
+	(jso.type== "confirm"?"<button type=\"button\" class=\"col-xs-5 pull-left btn btn-primary\" >确定</button><button type=\"button\" class=\"col-xs-5 pull-right btn btn-default\" >取消</button>":
+		"<button class='col-xs-12 btn btn-primary' >确定</button>")+
+	"</div></div>"+
 	"</div>");
 	$(".widget").html(html);
-	if (typeof(jso.okfn) != "undefined") 
-		$(html).find(".zbutton_wrap").find("a").click(jso.okfn);
+	if (typeof(jso.okfn) != "undefined") {
+		$(html).find(".zbutton_wrap").find(".btn-primary").click(jso.okfn);
+	}
+		
+	$(html).find(".btn").click(function(){$(html).fadeOut();$(".mask").fadeOut()});
 	
-	if (typeof(jso.cancelfn) != "undefined") 
+	if (typeof(jso.cancelfn) != "undefined") {
+		$(html).find(".zbutton_wrap").find(".btn-default").click(jso.okfn);
 		$(html).find(".zwidget_header").find(".zclose").click(jso.cancelfn);
+		$(html).find(".zwidget_header").find(".zclose").click(function(){$(html).fadeOut();$(".mask").fadeOut()});
+	}else{
+		$(html).find(".zwidget_header").find(".zclose").click(function(){$(html).fadeOut();$(".mask").fadeOut()});
+	}
 }
-
+/*
 function zalert(msg,title,fn){
 	zWidgetBase();
+	if(StringUtil.isBlank(title)){
+		title="提示";
+	}
 	var html=$("<div class=\"zwidget_wrap\">"+
 	"<div class=\"zwidget_header\"><span>"+title+"</span> <a class='zclose'  onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><i class=' fa fa-close'></i></a></div>"+
 	"<div class=\"zbody\">"+
@@ -1237,8 +1282,40 @@ function zalert(msg,title,fn){
 	$(".widget").html(html);
 	if (typeof(fn) != "undefined") 
 	$(html).find(".zbutton_wrap").find("a").click(fn);
-}
+}*/
 function zerror(msg,title,fn){
-	zdialogue({"msg":msg,"title":title,fontcolor:"#777777",src:"/static/img/exclamation.png",okfn:fn});
+	zdialogue({"msg":msg,type:"alert","title":title,fontcolor:"#777777",src:PATH+"/static/img/exclamation.png",okfn:fn});
+}
+function zconfirm(msg,title,okfn,cancelfn){
+	zdialogue({"msg":msg,type:"confirm","title":title,fontcolor:"#777777",src:PATH+"/static/img/exclamation.png",okfn:okfn,cancelfn:cancelfn});
+}
+function zalert(msg,title,fn){
+	zdialogue({"msg":msg,type:"alert","title":title,fontcolor:"#777777",src:PATH+"/static/img/nike.png",okfn:fn});
 }
 
+var Tool={};
+Tool.isNull=function(it){
+	if(it==null || typeof it=='undefinded'){
+		return true;
+	}
+	return null;
+}
+var StringUtil={};
+StringUtil.isNull=function(it){
+	if(it==null || typeof it=='undefinded' || it==''){
+		return true;
+	}
+	return null;
+}
+StringUtil.isBlank=function(it){
+	if(it==null || typeof it=='undefinded' || it==''){
+		return true;
+	}
+	return null;
+}
+
+function getParam(key){
+	if(window.data)
+		return window.data[key];
+	return null;
+}

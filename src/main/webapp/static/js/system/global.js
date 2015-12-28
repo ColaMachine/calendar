@@ -90,19 +90,19 @@ function isSuccessFully(str){
 	var strs =str.split("||");
 	alert(strs[1]);
 }
+
+
+
 /**
  *日历活动对象 
  */
-function calendarEvent(id,title,timeStart,timeEnd){
+function calendarEvent(id,title,day,startTime,endTime){
 	//基础信息
 	this.id=id||"";
-	this.day="";//格式yyyy-MM-dd
+	this.day=day||"";//格式yyyy-MM-dd
 	this.title=title||"";//标题
-	
-	
-	
-	this.timeEnd=timeEnd||"";//hh:mm
-	this.timeStart=timeStart||"";//hh:mm
+	this.startTime=startTime||"";//hh:mm
+	this.endTime=endTime||"";//hh:mm
 	this.isdel=false;
 	this.lastChangeTime=new Date().getTime();
 	//叠排
@@ -257,7 +257,7 @@ function getSect(){
 function bubbleSort(arr){
 	
 	for(var i=0;i<arr.length;i++){
-		console.log(arr[i].id);
+		console.log("arr[i].id:"+arr[i].id);
 		console.log($$("event_"+arr[i].id));
 		arr[i].top=parseInt($$("event_"+arr[i].id).offsetTop);
 		

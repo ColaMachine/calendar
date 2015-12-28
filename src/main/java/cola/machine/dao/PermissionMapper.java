@@ -1,5 +1,8 @@
 package cola.machine.dao;
 
+import java.util.HashMap;
+import java.util.List;
+
 import cola.machine.bean.Permission;
 
 public interface PermissionMapper {
@@ -50,4 +53,13 @@ public interface PermissionMapper {
      * @mbggenerated Sat Dec 12 10:26:59 CST 2015
      */
     int updateByPrimaryKey(Permission record);
+
+    /**
+     * 说明:全部查询
+     * @return
+     * @return list<cola.machine.service.Permission>
+     * @author dozen.zhang
+     * @date 2015年12月21日下午5:01:39
+     */
+    List<Permission> selectByParam(HashMap map);
 }

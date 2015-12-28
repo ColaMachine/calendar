@@ -21,8 +21,10 @@
 <link href="${path}/static/css/grid.css" rel="stylesheet" type="text/css" />
 <link href="${path}/static/css/head.css" rel="stylesheet" type="text/css" />
  <link href="${path}/static/css/global.css" rel="stylesheet" type="text/css" /> 
+ <link href="${path}/static/css/widget.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" >
 var WEBCONTEXT="${path}";
+var PATH="${path}";
 </script>
 <script type="text/javascript" src="${path}/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="${path}/static/js/common.js"></script>
@@ -30,7 +32,7 @@ var WEBCONTEXT="${path}";
 <script type="text/javascript" src="${path}/static/js/validmsg.js"></script>
 <script type="text/javascript" src="${path}/static/js/DateUtils.js"></script>
 <script type="text/javascript" src="${path}/static/js/grid.js"></script>
-
+<script type="text/javascript" src="${path}/static/js/jquery.form.js"></script>
 <script language="javascript" type="text/javascript" src="${path}/static/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${path}/static/js/jquery.validate.js"></script>
 <script type="text/javascript" src="${path}/static/js/additional-methods.js"></script>
@@ -39,12 +41,22 @@ var WEBCONTEXT="${path}";
 </head>
 <body>
 <div id="page" class="page" style="">
-	
+	   <div class=" menu-wrap clearfix dark">
+        <div class="logo">
+            <!-- <span class="logo-head">aWiFi</span> -->
+            
+            <%-- <img src="${path}/statics/img/logo.png"></img>
+ --%>           
+             <div class="logo-desc" ><span class="logo-desc-text"'>后台管理系统</span><span class="nav-icon"><i onclick="$('#page').toggleClass('collapse1')" style="" class="fa fa-reorder">&nbsp;</i></span></div>
+        </div>
+        <div id="menu" class="menu">
+        </div>
+    </div>
 	<div class="main-wrap">
-		<div class="head-wrap navbar white">
+		<div  class="head-wrap navbar white">
 		
 		<div class="navbar-item pull-left h5 ng-binding"  ng-bind="$state.current.data.title" id="pageTitle">Widgets</div>
-				<div class="dropdown pull-left navbar-item "  style="vertical-align:middle">
+<!-- 				<div class="dropdown pull-left navbar-item "  style="vertical-align:middle">
   <button class="btn btn-default dropdown-toggle" type="button" 
   id="dropdownMenu1" data-toggle="dropdown" 
   aria-haspopup="true" aria-expanded="true">
@@ -57,7 +69,7 @@ var WEBCONTEXT="${path}";
     <li><a href="#">Something else here</a></li>
     <li><a href="#">Separated link</a></li>
   </ul>
-</div>
+</div> -->
 				<ul class="login-info navbak navbar-nav pull-right">
 					<li class="nav-item dropdown pos-stc-xs"><a class="nav-link"
 						href="" data-toggle="dropdown">
@@ -66,28 +78,22 @@ var WEBCONTEXT="${path}";
 					</li>
 
 					<li class="nav-item dropdown">
-                    <div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Dropdown
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a href="#">Action</a></li>
-    <li><a href="#">Another action</a></li>
-    <li><a href="#">Something else here</a></li>
-    <li><a href="#">Separated link</a></li>
-  </ul>
-</div><a aria-expanded="false"
+                    <a aria-expanded="false"
 						class="nav-link clear" href="" data-toggle="dropdown">&nbsp;<span
 							class="avatar w-32"><img src="img/a0.jpg"
 								alt="..."> <i class="on b-white bottom"></i></span></a>
+								<ul id="menu1" class="pull-right dropdown-menu" aria-labelledby="drop4">
+          <li><a href="#">登出</a></li>
+          <li role="separator" class="divider"></li>
+     <li><a href="#">修改资料</a></li>
+        </ul>
 					</li>
 					
 					<!-- <li><a><img style="width:50px ;height:50px;" alt="头像" src="img/a0.jpg" /></a>  
 			</li>-->
 		
 			</ul>
-			<div class="collapse navbar-toggleable-sm"   id="collapse">
+			<!-- <div class="collapse navbar-toggleable-sm"   id="collapse">
                     <form
                         class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m ng-pristine ng-valid ng-scope"
                         role="search">
@@ -119,10 +125,12 @@ var WEBCONTEXT="${path}";
                                     ui-sref="app.contact">Contact</a>
                             </div></li>
                     </ul>
-                </div>
+                </div> -->
 		</div>
-
+    <div class="footer-wrap"></div>
+    <div id="main " class="body-wrapper " >
 		<div id="main " class="main-content  container " >
+    
 		<div class="row white" style="color:black;margin-top:15px;">
 		  <div class="col-xs-4 ">
 		  hello
@@ -131,7 +139,7 @@ var WEBCONTEXT="${path}";
           hello123123
           </div>
 		</div>
-		<h1>123123333333333333333333333333333333</h1>
+		<h1></h1>
 		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 		<!-- 	<div id="modal" class="modal" >
 				<div class="modal-footer">
@@ -144,38 +152,13 @@ var WEBCONTEXT="${path}";
 		</div><!--  main content 结束 -->
 	</div>
 	
-	<div class="menu-wrap clearfix dark">
-        <div class="logo">
-            <!-- <span class="logo-head">aWiFi</span> -->
-            
-            <%-- <img src="${path}/statics/img/logo.png"></img>
- --%>           
-             <div class="logo-desc" onclick="$('#page').addClass('page')">Log4U</div>
-        </div>
-        <div id="menu" class="menu">
-            <ul class="nav">
-                <li class="select"><a href="" ><span>日志管理</span><i class="fa fa-angle-down"></i></a>
-                <ul ><li ><a href="${path}/log/listRequestLog"><span>访问日志</span></a></li>
-                <li ><a href="${path}/log/listExceptionLog"><span>异常日志</span></a></li>
-                </ul>
-                </li>
-                <li ><a href=""><span>券管理</span><i class="fa fa-angle-down"></i></a></li>
-                <!--<li ><a href="/kaqm/statics/html/portal/index.html" ><span>portal</span></a> 
-                <ul style="display:none">
-                <li ><a href="/kaqm/statics/html/portal/index.html"><span>portal</span></a>
-                <li ><a href="/kaqm/statics/html/portal/index.html"><span>portal</span></a>
-                <li ><a href="/kaqm/statics/html/portal/index.html"><span>portal</span></a>
-                
-                </ul>-->
-                
-                </li>
-            </ul>
-        </div>
-    </div>
+</div>
     
-	<div class="mask" ></div>
+
      
 </div>
+<div class="widget"></div>
+    <div class="mask" ></div>
 </body>
 <script type="text/javascript" src="${path}/static/js/index.js"></script>
 
@@ -187,9 +170,13 @@ var menuList=[
               {id:21,name:"访问日志A",url:"${path}/log/listRequestLog",pid:2},
               {id:22,name:"访问日志B",url:"${path}/log/listRequestLog",pid:2},
               {id:5,name:"用户管理",url:"",pid:0,icon:"fa fa-diamond"},
-              {id:6,name:"角色管理",url:"${path}/auth/listRoles",pid:5},
-              {id:7,name:"日历",url:"${path}/static/html/CalendarView.html",icon:"fa fa-bank",pid:0},
-              {id:8,name:"文件上传",url:"${path}/static/html/imageUpload.html",icon:"fa fa-bank",pid:0}
+              {id:6,name:"角色管理",url:"${path}/auth/role/list.htm",pid:5},
+              {id:7,name:"日历",url:"${path}/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
+              {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},
+              {id:9,name:"手机登录页面",url:"${path}/static/phone/login.html",icon:"fa fa-spinner",pid:8},
+              {id:10,name:"上传图片",url:"${path}/static/html/imageCompress.html",icon:"fa fa-bank",pid:8},
+              {id:11,name:"列表",url:"${path}/static/html/example/table.html",icon:"fa fa-spinner",pid:8},
+              {id:11,name:"alert",url:"${path}/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
               ]
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 </script>

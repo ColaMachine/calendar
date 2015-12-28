@@ -1158,7 +1158,7 @@
 			var ts = this, grid = {
 				width_sum : 0,
 			/*
-			 * curpage:1, pagesize:15, totalpage:1,
+			 * curPage:1, pageSize:15, totalPage:1,
 			 */
 			/*
 			 * width_sum:0,
@@ -1166,7 +1166,7 @@
 			 * multiselect:false, url:'', grid_selector:"", pager_selector:"",
 			 * searchParams:{}, colNames:[], colModel:[], loadComplete:null,
 			 * rowNum:0, selrow:null, data:null,
-			 * page:{curpage:1,pagesize:15,totalpage:0,totalcount:0},
+			 * page:{curPage:1,pageSize:15,totalPage:0,totalcount:0},
 			 */
 
 			};
@@ -2849,8 +2849,8 @@
 				initParam : function() {
 					this.each(function() {
 
-						this.p.searchParams.curpage = this.p.page.curpage;
-						this.p.searchParams.pagesize = this.p.page.pagesize;
+						this.p.searchParams.curPage = this.p.page.curPage;
+						this.p.searchParams.pageSize = this.p.page.pageSize;
 					});
 
 				},
@@ -2867,7 +2867,7 @@
 					this.each(function() {
 						var $t = this;
 						this.p.searchParams = json;
-						this.p.page.curpage = 1;
+						this.p.page.curPage = 1;
 						$($t).jqGrid("ajaxRequest");
 					});
 
@@ -2889,10 +2889,10 @@
 				goPre : function(event) {
 					var $t = event.data.t;
 
-					if ($t.p.page.curpage == 1)
+					if ($t.p.page.curPage == 1)
 						return;
 					else
-						$t.p.page.curpage--;
+						$t.p.page.curPage--;
 
 					$($t).jqGrid("ajaxRequest");
 				},
@@ -2915,16 +2915,16 @@
 				
 				goNext : function(event) {
 					var $t = event.data.t;
-
-					if ($t.p.page.curpage >= $t.p.page.totalpage)
+					//console.log("curPage:"+$t.p.page.curPage+"totalPage")
+					if ($t.p.page.curPage >= $t.p.page.totalPage)
 						return;
-					$t.p.page.curpage++;
+					$t.p.page.curPage++;
 					$($t).jqGrid("ajaxRequest");
 
 				},
 				goPage : function(event) {
 					var $t = event.data.t;
-					$t.p.page.curpage = event.data.curpage;
+					$t.p.page.curPage = event.data.curPage;
 					$($t).jqGrid("ajaxRequest");
 				},
 				getCell : function(rownum, colnum) {
@@ -2956,7 +2956,7 @@
 				},
 				reloadGrid : function() {
 					this.each(function() {
-						this.p.page.curpage=1;
+						this.p.page.curPage=1;
 						var $t = this;
 						$(this).jqGrid("ajaxRequest");
 					});
@@ -2968,8 +2968,8 @@
 						var $t = this;
 						//合并参数
 						$(this).jqGrid("initParam");
-						//		this.p.searchParams.curpage= this.p.page.curpage;
-						//		this.p.searchParams.pagesize= this.p.page.pagesize;
+						//		this.p.searchParams.curPage= this.p.page.curPage;
+						//		this.p.searchParams.pageSize= this.p.page.pageSize;
 						
 						/* Protocol.request(this.p.url,{parameter:this.p.searchParams,
 				                success:$.fn.jqGrid.ajaxCallBack.Apply($(this)),scope:$t});  */
@@ -2977,9 +2977,9 @@
 							ajaxResultHandler(data);
 							$($t).jqGrid("ajaxCallBack",data);
 						});*/
-						if(this.p.searchParams.curpage==null){
-							this.p.searchParams.curpage=1;
-							this.p.searchParams.pagesize=10;
+						if(this.p.searchParams.curPage==null){
+							this.p.searchParams.curPage=1;
+							this.p.searchParams.pageSize=10;
 						}
 						 $.ajax({
 
@@ -2990,24 +2990,25 @@
 				             data:this.p.searchParams,
 
 				             dataType: "json",
-				             error:function(XMLHttpRequest, textStatus, errorThrown){hideWait();
+				             error:function(XMLHttpRequest, textStatus, errorThrown){
+				            	 hideWait();
 				            	 if(XMLHttpRequest.status=403){
 				            		 try{
 				            		 var result =  eval("("+XMLHttpRequest.responseText+")");
 				            		if(result){
 				            		 if(result.r=505){
-				            			 alert(result.msg);
+				            			 zalert(result.msg);
 				            			 return;
 				            		 }
 				            		}else{
-				            			alert(result);return;
+				            			zalert(result);return;
 				            		}
 				            		 }catch(e){
 				            			
 				            		 }
 				            		 
 				            	 }
-				            	 alert("请求异常");
+				            	 zalert("请求异常");
 				            	 return;
 				                 //通常情况下textStatus和errorThrown只有其中一个包含信息
 
@@ -3211,12 +3212,12 @@
 								if (page == null)
 									return;
 								//一般是显示5个页数
-								//从 curpage -2 开始 到 curpage+2
+								//从 curPage -2 开始 到 curPage+2
 								var total = 1;
-								var pageHtml = "<nav class=\"nav\"> <ul class=\"pagination pagination-lg\"><li><a href=\"javascript:void(0)\" class=\"page_bg pre\" aria-label=\"Previous\">上一页</a>";
+								var pageHtml = "<nav class=\"nav\"> <ul class=\"pagination pagination-sm\"><li><a href=\"javascript:void(0)\" class=\"page_bg pre \" aria-label=\"Previous\">上一页</a>";
 
-								var min = 0, max = page.totalpage;
-								var middel = page.curpage;
+								var min = 0, max = page.totalPage;
+								var middel = page.curPage;
 								var _min = 0, _max = 0;
 								_min = (middel - 2) < 1 ? 1 : (middel - 2);
 								_max = (middel + 2) > max ? max : (middel + 2);
@@ -3236,7 +3237,7 @@
 									pageHtml += "<li class=\"  num\"><a href=\"javascript:void(0)\" >"+1+"</a></li><li >...</li>";
 								}
 								for (var i = _min; i <= _max; i++) {
-									if (i == page.curpage)
+									if (i == page.curPage)
 										pageHtml += "<li class=\"  num\" ><span class='curr page_bg'>"
 												+ i + "</span></li>";
 									else
@@ -3245,26 +3246,27 @@
 								}
 								
 								
-								if(_max<page.totalpage){
-									pageHtml += "<li >...</li><li class=\"  num\" ><a href=\"javascript:void(0)\" >"+page.totalpage+"</a></li>";
+								if(_max<page.totalPage){
+									pageHtml += "<li >...</li><li class=\"  num\" ><a href=\"javascript:void(0)\" >"+page.totalPage+"</a></li>";
 								}
 								//加上最后一页 和...号
 								/*
-								for(var i=page.curpage-4;i<page.curpage+4;i++){
+								for(var i=page.curPage-4;i<page.curPage+4;i++){
 									if(i<1){
 										continue;
 									}
 									total++;
-									if(i==page.curpage)
+									if(i==page.curPage)
 									pageHtml+="<li class=\"active\" ><a href=\"#\">"+i+"</a></li>";
 									else
 										pageHtml+="<li  ><a href=\"#\" >"+i+"</a></li>";
 									if(total>10)
 										break;
-									if(i>=page.totalpage)
+									if(i>=page.totalPage)
 										break;
 								}*/
-								pageHtml += "<li><a href=\"javascript:void(0)\" class=\"page_bg next\" aria-label=\"Next\">下一页</a></li><li>共"+page.totalpage+"页，"+page.totalcount+"条信息</li></ul></nav>";
+								console.log(page);
+								pageHtml += "<li><a href=\"javascript:void(0)\" class=\"page_bg next\" aria-label=\"Next\">下一页</a></li><span>共"+page.totalPage+"页，"+page.totalCount+"条信息</span></ul></nav>";
 
 								$(this.p.pager_selector).html(pageHtml);
 								$(this.p.pager_selector).find(".pre")
@@ -3279,7 +3281,7 @@
 								for (var i = 0; i < eles.length ; i++) {
 									
 									$(eles[i]).click({
-										curpage : $(eles[i]).text(),
+										curPage : $(eles[i]).text(),
 										t : this
 									}, $.fn.jqGrid.goPage);
 								}

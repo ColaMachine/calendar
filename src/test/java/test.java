@@ -1,6 +1,11 @@
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.tools.ant.util.DateUtils;
+
+import cola.machine.util.DateUtil;
 
 
 
@@ -14,11 +19,21 @@ public class test {
 	 */
 	public static void main(String[] args)
 	{
+	    Calendar cal = Calendar.getInstance();
+	    TimeZone timeZone = cal.getTimeZone();
+	    System.out.println(timeZone.getID());
+	    System.out.println(timeZone.getDisplayName());
+	    Date now = new Date();
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
+
+
+	    String hehe = dateFormat.format( now );
+	    System.out.println(hehe); 
+		System.out.println(new Date().getTime());
+		Long vl=24167130*60000l;//new Date().getTime();// date.getTime();
 		
-		Date date = new Date();
-		Long vl=24167250l;// date.getTime();
-		System.out.println("124333"+DateUtils.format(vl*6000, "yyyy-MM-dd HH:mm:ss"));
-		System.out.println((vl %(24*60))/60);
+		System.out.println("123"+DateUtil.formatToString(new Date(vl), "yyyy-MM-dd HH:mm:ss"));
+		System.out.println(vl /60000/24/60);
 		
 	}
 }

@@ -32,6 +32,7 @@ var zMenu={
 		},
 		addEvent:function(id){
 			var _this = this;
+			var menuWrap = document.getElementById(id);
 			$("#"+id).find('ul a').click(function(event){
 				
 				event.preventDefault();
@@ -45,7 +46,7 @@ var zMenu={
 					//查找当前所属的li状态是否是打开状态的
 					if($(this).parent().hasClass('open')){//console.log("rm open");
 						$(this).parent().removeClass('open');
-						//$(this).parent().find("ul").eq(0).slideUp(200,function(){});
+						$(this).parent().find("ul").eq(0).slideUp(200,function(){});
 					}else{//console.log("add open");
 					//$(".mark").removeClass("mark");
 					//$(this).addClass("mark");
@@ -55,7 +56,7 @@ var zMenu={
 						
 						
 						$(this).parent().siblings().filter('.open').removeClass('open');
-						//$(this).parent().find("ul").eq(0).slideDown(100);
+						$(this).parent().find("ul").eq(0).slideDown(100);
 						$(this).parent().addClass('open');
 					}
 				}else{
@@ -78,6 +79,22 @@ var zMenu={
 		
 		},
 		loadPage: function(url, fun){
+			window.data={};
+			//截取参数
+			var position=url.indexOf("?");
+			if(position>0){
+				var paramsStr= url.substring(position+1);
+				console.log("paramsStr:"+paramsStr);
+				var arr= paramsStr.split("&");
+				
+				for(var i=0;i<arr.length;i++){
+					var keyVal=arr[i].split("=");
+					var key=keyVal[0];
+					var val=keyVal[1];
+					console.log(keyVal[0]+":"+keyVal[1]);
+					window.data[key]=val;
+				}
+		}
 			//	jLoading.start();
 				$.ajax({
 					type: 'GET',

@@ -78,8 +78,76 @@ function parseDate(dateStr,format){
 	return new Date(date);
 }
 
-
-
+function getDayTimeStamp(daystr){
+	var date = parseDate(daystr,"yyyy-MM-dd");
+	
+	return parseInt(date.getTime()/1000/60/24/60);
+}
+function hhmmStamp2Str(val){
+	var hh=parseInt(val/60);
+	var mm=val%60;
+	if(hh<10)
+		hh="0"+hh;
+	if(mm<10)
+		mm="0"+mm;
+	return hh+":"+mm;
+}
+function YMDStamp2Str(val){
+	var date = new Date(val*24*60*60000).format("yyyy-MM-dd");
+	return date;
+}
+/**
+ * 根据精确到分钟的时间戳 换得 改天0点0分0秒对应的精确到分钟的时间戳
+ * @param val
+ * @returns
+ */
+function getDateTime(val){
+	var date = new Date(val*60000);
+	 date.setMinutes(0);
+	 date.setHours(0);
+	 date.setSeconds(0);
+	 return parseInt(date.getTime()/6000);
+}
+/**
+ * 根据精确到分钟的时间戳 换得 该时间戳的时分数值量
+ * @param val
+ * @returns
+ */
+function getHMTime(val){
+	var date = new Date(val*60000);
+	 return parseInt(date.getHours()*60+date.getMinutes());
+}
+function add4HHMM(timeStart,minutes){
+	var arr= timeStart.split(":");
+	var h1 =parseInt(arr[0]);
+	var m1= parseInt(arr[1]);
+	h1=h1+parseInt(minutes/60);
+	m1+=minutes%60;
+	if(m1==60)
+		{m1=0;h1+=1;}
+	if(h1<10)
+		h1="0"+h1;
+	if(m1<10)
+		m1="0"+m1;
+	return h1+":"+m1;
+}
+/**
+ * 计算两个hh:mm时间的差 分钟
+ * @param timeStart
+ * @param timeEnd
+ * @returns {Number}
+ */
+function getTimeLongsBetweenHHMM(timeStart,timeEnd){
+	
+	var arr= timeStart.split(":");
+	var h1 =parseInt(arr[0]);
+	var m1= parseInt(arr[1]);
+	 arr= timeEnd.split(":");
+	var h2= parseInt(arr[0]);
+	var m2= parseInt(arr[1]);
+	console.log("getTimeLongsBetweenHHMM:"+((h2-h1)*60+ m2-m1));
+	return (h2-h1)*60+ m2-m1;
+}
 /**
  * 增加天数 建议挪入 dateUtils 2015-05-29 11:31:21
  * @param day
@@ -229,7 +297,15 @@ function getTimes(date,time){
 	console.log(date.format("yyyy-MM-dd hh:mm:ss"));
 	return minuteTime;
 }
-
+/**
+ * 
+ * @param date 时间戳/(24*60*60000)
+ * @param time 时间戳%(24*60*60000)
+ * @returns 时间戳/60000
+ */
+function getTimeStamp(date,time){
+	return date*24*60+time;
+}
 var YMD= {
 		year:0,
 		month:0,

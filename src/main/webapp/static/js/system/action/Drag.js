@@ -102,7 +102,7 @@ Drag = {
 			if (Drag.ao.tagName == "DL") {
 				Drag.ao = Drag.ao.parentNode;
 			}
-			
+			console.log("draw");
 	ca.drawClanderEventTo (ce, tX,tY,Drag.ao,scrollTop) ;
 		return;
 		}

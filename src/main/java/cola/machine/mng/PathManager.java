@@ -2,11 +2,14 @@ package cola.machine.mng;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.awifi.util.StringUtils;
 
 import cola.machine.config.Config;
 /**
@@ -154,23 +157,26 @@ public final class PathManager {
      * @throws IOException 抛出异常
      */
     public void updateDirs(Config config) throws IOException {
-        /*
-         * tmpPath=webRootPath.resolve(TMP_DIR);
-         * Files.createDirectories(tmpPath);
-         * if(StringUtils.isBlank(config.getInstance().getImage().getServer_dir(
-         * ))){ imagePath= webRootPath; }else imagePath
-         * =Paths.get(chantToUrl(config.getInstance().getImage().getServer_dir()
-         * )); Files.createDirectories(imagePath);
-         * 
-         * qrcodePath=imagePath.resolve(config.getInstance().getImage().
-         * getQrcode_dir()); Files.createDirectories(qrcodePath);
-         * 
-         * posterPath=imagePath.resolve(config.getInstance().getImage().
-         * getPoster_dir()); Files.createDirectories(posterPath);
-         * 
-         * posterZipPath=imagePath.resolve(config.getInstance().getImage().
-         * getPoster_zip_dir()); Files.createDirectories(posterZipPath);
-         */
+
+        tmpPath = webRootPath.resolve(TMP_DIR);
+        Files.createDirectories(tmpPath);
+        if (StringUtils.isBlank(config.getInstance().getImage().getServerDir())) {
+            imagePath = webRootPath;
+        } else{
+            imagePath=webRootPath.resolve(config.getInstance().getImage().getServerDir());
+        }
+            //imagePath = Paths.get(chantToUrl(config.getInstance().getImage().getServerDir()));
+        Files.createDirectories(imagePath);
+
+        qrcodePath = imagePath.resolve(config.getInstance().getImage().getQrcodeDir());
+        Files.createDirectories(qrcodePath);
+
+        posterPath = imagePath.resolve(config.getInstance().getImage().getPosterDir());
+        Files.createDirectories(posterPath);
+
+        posterZipPath = imagePath.resolve(config.getInstance().getImage().getPosterZipDir());
+        Files.createDirectories(posterZipPath);
+
     }
 
     public Path getPosterPath() {

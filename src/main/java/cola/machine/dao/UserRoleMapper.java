@@ -1,5 +1,7 @@
 package cola.machine.dao;
 
+import java.util.List;
+
 import cola.machine.bean.UserRole;
 
 public interface UserRoleMapper {
@@ -50,4 +52,35 @@ public interface UserRoleMapper {
      * @mbggenerated Sat Dec 12 10:26:59 CST 2015
      */
     int updateByPrimaryKey(UserRole record);
+
+    /**
+     * 根据角色id 删除关联关系
+     * @param id 参数
+     * @author dozen.zhang
+     */
+    void deleteByRoleId(String id);
+
+    /**
+     * 根据用户id删除角色用户对应关系
+     * @param id 参数
+     * @author dozen.zhang
+     */
+    void deleteByUserId(String id);
+
+    /**
+     * 根据角色id 查询绑定的用户个数
+     * 
+     * @param id 参数
+     * @return int
+     */
+    int countByRoleid(String id);
+
+
+    /**
+     * 根据用户id获取用户角色对应关系
+     * @param id 参数
+     * @return List
+     * @author dozen.zhang
+     */
+    List<UserRole> selectByUserId(String id);
 }

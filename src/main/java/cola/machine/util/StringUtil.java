@@ -29,4 +29,11 @@ public class StringUtil {
 		Matcher matcher = pattern.matcher(username);
 		return matcher.find();
 	}
+	
+	public static String getAbc(String abc){
+	    return abc.substring(0, 1).toUpperCase()+abc.substring(1);
+	}
+	public static String getabc(String abc){
+        return abc.substring(0, 1).toLowerCase()+abc.substring(1);
+    }
 }

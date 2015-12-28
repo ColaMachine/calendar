@@ -27,6 +27,11 @@ public class ImageConfig {
      *密码
      */
     private  String serverPwd;            //
+    
+    /** 
+     *图片主要目录 用在共享文件形式的目录
+     */
+    private String mainPath;
     /** 
      *海报目录
      */
@@ -35,6 +40,40 @@ public class ImageConfig {
      *二维码目录
      */
     private String qrcodeDir;            //
+    /** 
+     *图片类型
+     */
+    private String  type;            //
+    
+    public String getMainPath() {
+        return mainPath;
+    }
+
+    public void setMainPath(String mainPath) {
+        this.mainPath = mainPath;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
+    }
+
+    /** 
+     *图片最大容量
+     */
+    private int maxSize;            //
+    
     /** 
      *海报模板目录
      */

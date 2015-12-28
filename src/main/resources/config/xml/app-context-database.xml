@@ -47,6 +47,11 @@
 			<property name="mapperLocations" value="classpath:config/mapper/*Mapper.xml" />
 		
 		<property name="dataSource" ref="dataSource" />
+		<property name="plugins">
+            <list>
+                 <bean class="core.page.PageInterceptor"></bean>
+            </list>
+        </property> 
 	</bean>
 
 	<!--配置文件,配置包名将自动引入包中的所有接口 -->
