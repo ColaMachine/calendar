@@ -121,13 +121,11 @@ public class ${Abc}Controller {
     @RequestMapping(value = "/${abc}/save.json")
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
-     ${Abc} ${abc} =new  ${Abc}();
+        ${Abc} ${abc} =new  ${Abc}();
         <#list table.cols as col>
-        
             String ${col.name} = request.getParameter("${col.name}");
             ${abc}.set${col.name[0]?upper_case}${col.name[1..]}(${col.name}   ) ;
         </#list>
-        
         return ${abc}Service.save(${abc});
     }
 }

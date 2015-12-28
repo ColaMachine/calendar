@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import cola.machine.bean.${Abc};
 import cola.machine.dao.${Abc}Mapper;
+import cola.machine.dao.${Abc}Service;
 import cola.machine.util.CacheUtil;
 import cola.machine.util.ResultUtil;
 import cola.machine.util.UUIDUtil;
@@ -81,15 +82,26 @@ public class ${Abc}Service extends BaseService {
         return new ResultDTO(1, "保存成功");
     }
  
-     /**
-     * 说明:根据主键删除数据
-     * description:delete by key
-     * @param id
-     * @return void
-     * @author dozen.zhang
-     * @date 2015年12月27日下午10:56:38
-     */
+    /**
+    * 说明:根据主键删除数据
+    * description:delete by key
+    * @param id
+    * @return void
+    * @author dozen.zhang
+    * @date 2015年12月27日下午10:56:38
+    */
     public void delete(    <@javaType>${table.pk.type}</@javaType>  ${table.pk.name}){
         permissionMapper.deleteByPrimaryKey(${table.pk.name});
     }   
+    /**
+    * 说明:根据主键删除数据
+    * description:delete by key
+    * @param id
+    * @return void
+    * @author dozen.zhang
+    * @date 2015年12月27日下午10:56:38
+    */
+    public ${Abc} selectByPrimaryKey(<@javaType>${table.pk.type}</@javaType> id){
+       return ${abc}Mapper.selectByPrimaryKey(id);
+    }
 }

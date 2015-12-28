@@ -1,5 +1,5 @@
 /**
- * 版权所有：公众信息
+\ * 版权所有：公众信息
  * 项目名称:calendar
  * 创建者: dozen.zhang
  * 创建日期: 2015年12月26日
@@ -9,7 +9,7 @@ package cola.machine.util.code;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -21,18 +21,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import cola.machine.action.AuthController;
-import cola.machine.config.Config;
-import cola.machine.service.AuthService;
-import cola.machine.util.StringUtil;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,8 +31,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
+import cola.machine.mng.PathManager;
+import cola.machine.util.FreeMarkerUtil;
+import cola.machine.util.StringUtil;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -226,10 +220,62 @@ public class Generator {
             throw new IOException("Failed to load config", e);
         }
     }
+    public String readFile2Str(String path ) throws IOException{
+        File file=PathManager.getInstance().getHomePath().resolve(path).toFile();
+        
+        BufferedReader br =new BufferedReader(new FileReader(file));
+        String s ;
+        StringBuffer templateStr= new StringBuffer();
+        while  ((s=br.readLine())!=null){
+            templateStr.append(s+"\r\n");
+        }
+        return templateStr.toString();
+    }
+    public void init(){ 
+        
+        StringBuffer sb =new StringBuffer();
+        String type="";
+        String typeName="";
+        try {
+           
+            
+         /*   Configuration config=new Configuration();
+             //设置要解析的模板所在的目录，并加载模板文件
+            config.setDirectoryForTemplateLoading(file);
+            //设置包装器，并将对象包装为数据模型
+            config.setObjectWrapper(new DefaultObjectWrapper());*/
+            
+            Configuration cfg = new Configuration();
+            StringTemplateLoader temp = new StringTemplateLoader();
+            
+            String serviceTpl = this.readFile2Str("src/main/resources/code/Service.tpl");
+            String beanTpl = this.readFile2Str("src/main/resources/code/Bean.tpl");
+            String controllerTpl = this.readFile2Str("src/main/resources/code/Controller.tpl");
+            String mapperTpl = this.readFile2Str("src/main/resources/code/Mapper.tpl");
+            String sqlTpl = this.readFile2Str("src/main/resources/code/sql.tpl");
+            String listHtmlTpl = this.readFile2Str("src/main/resources/code/ListHtml.tpl");
+            String editHtmlTpl = this.readFile2Str("src/main/resources/code/EditHtml.tpl");
+            String viewHtmlTpl = this.readFile2Str("src/main/resources/code/ViewHtml.tpl");
+            temp.putTemplate("service", serviceTpl);
+            temp.putTemplate("bean", beanTpl);
+            temp.putTemplate("controller", controllerTpl);
+            temp.putTemplate("mapper", mapperTpl);
+            temp.putTemplate("listHtml", listHtmlTpl);
+            temp.putTemplate("editHtml", editHtmlTpl);
+            temp.putTemplate("viewHtml", viewHtmlTpl);
+            cfg.setDefaultEncoding("UTF-8");
+            cfg.setTemplateLoader(temp);
+        }catch(Exception e){
+            
+        }
+        FreeMarkerUtil.processTemplate(templatePath, templateName, templateEncoding, root, out);
+    }
     public static void main(String[] args) {
         Generator gen =new Generator();
         try {
-            ZTable table =gen.load(Paths.get("/home/colamachine/workspace/calendar/src/main/resources/code.cfg"));
+           
+            ZTable table =gen.load( PathManager.getInstance().getHomePath().resolve("src/main/resources/code.cfg"));
+            gen.int();
             table.init();
             System.out.println(table.getCols().size());
             //gen.genController(table);

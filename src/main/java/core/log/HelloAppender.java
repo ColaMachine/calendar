@@ -1,12 +1,7 @@
 package core.log;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
-
-import com.kfpanda.core.PropertiesUtil;
-import com.zm.module.logengine.util.LogUtil;
 
 public class HelloAppender extends AppenderSkeleton {
 
@@ -15,7 +10,7 @@ public class HelloAppender extends AppenderSkeleton {
 //	@Override
 	protected void append(LoggingEvent event) {
 		
-		LogUtil.debug("helo","hello");
+		//LogUtil.debug("helo","hello");
 		System.out.println("Hello, " + account + " : "+ event.getMessage());
 	}
 
@@ -40,9 +35,9 @@ public class HelloAppender extends AppenderSkeleton {
 	}
 	
 	public static void main(String args[]){
-		PropertiesUtil.init();
+		/*PropertiesUtil.init();
 		 Log log = LogFactory.getLog("helloLog") ;  
-		    log.info("I am ready.") ; 
+		    log.info("I am ready.") ; */
 	}
 }
 

@@ -132,6 +132,14 @@ public final class PathManager {
 
     }
     
+    public Path getHomePath() {
+        return homePath;
+    }
+
+    public void setHomePath(Path homePath) {
+        this.homePath = homePath;
+    }
+
     public Path getClassPath() {
         return classPath;
     }

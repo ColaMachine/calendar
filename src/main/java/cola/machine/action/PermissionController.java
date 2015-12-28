@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cola.machine.bean.Permission;
 import cola.machine.service.AuthService;
+import cola.machine.service.PermissionService;
 import cola.machine.service.UserService;
 import cola.machine.util.ResultUtil;
 
@@ -100,7 +101,7 @@ public class PermissionController {
     @ResponseBody
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
-        ResultDTO result = permissionService.getEntityById(id);
+        ResultDTO result = permissionService.selectByPrimaryKey(id);
         return result;
     }
 

@@ -4,7 +4,7 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="awifi-core-1.0.4.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/awifi-core/awifi-core">
+        <dependent-module archiveName="awifi-core-1.0.6.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/awifi-core/awifi-core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="calendar"/>

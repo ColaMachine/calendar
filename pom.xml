@@ -385,24 +385,23 @@
 			  <groupId>com.awifi</groupId>
 			  <artifactId>awifi-core</artifactId>
 			  <version>1.0.6</version>
-			  <type>pom</type>
 		</dependency>
 		
-		<dependency>
+		<!-- <dependency>
        <groupId>com.zm.module</groupId>
        <artifactId>logengine</artifactId>
        <version>1.0.0</version>
            <scope>system</scope>
             <systemPath>/home/colamachine/git/logengine/target/logengine.jar</systemPath>
         
-</dependency> 
-    <dependency>
+</dependency>  -->
+    <!-- <dependency>
             <groupId>com.awifi</groupId>
             <artifactId>awifi-core</artifactId>
             <scope>system</scope>
             <systemPath>/home/colamachine/git/awifi-core/target/awifi-core.jar</systemPath>
             <version>1.0.6</version>
-        </dependency>
+        </dependency> -->
 	</dependencies>
 	<build>
 	  <!-- <directory>src/main/webtarget</directory> -->

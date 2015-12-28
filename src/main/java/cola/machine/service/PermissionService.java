@@ -86,5 +86,10 @@ public class PermissionService extends BaseService {
     public void delete(String id){
         permissionMapper.deleteByPrimaryKey(id);
     }
+    
+    public Permission selectByPrimaryKey(String id){
+       return permissionMapper.selectByPrimaryKey(id);
+    }
+    
 }
 
