@@ -272,7 +272,9 @@ public final class DateUtil {
 		date.setTime(datetime*60000);
 		System.out.println(DateUtil.formatToString(date,DateUtil.YYYY_MM_DD_HH_MM));
 	}
-	
+	public static void main(String[] args) {
+        DateUtil.printTimestampby60(24187200);
+    }
 
 }
 

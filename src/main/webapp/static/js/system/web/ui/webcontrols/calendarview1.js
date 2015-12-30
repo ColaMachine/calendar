@@ -1729,9 +1729,9 @@ CalendarView.prototype. calendarEventRender=function(ce){
 	//dl_html.id = "event_newEvent";
 	//dl_html.className = "calendarEventBar";
 	dl_html.innerHTML = "<dt >"
-		+ timeStart
+		+ ce.timeStart
 		+ "~"
-		+ timeEnd
+		+ ce.timeEnd
 		+ "</dt> "
 		+ "<DD >"+(StringUtil.isNull(ce.title)?"&nbsp;":ce.title)+"</DD><div  onmouseup=\"Drag.dragEnd();\" onmousedown=\"Drag.drawStart(this);event.cancelBubble=true;\">_</div>";
 
@@ -1835,7 +1835,7 @@ CalendarView.prototype.loadEvents=function(){//alert("before loadevents");
 	/*$.post("http://127.0.0.1:8080/calendar/activity/getActivities",jso,function (data){
 		alert(data[AJAX_RESULT]);
 	});*/
-	AjaxFun("/activity/getActivities.json",jso,this.showActivities.Apply(this));
+	AjaxFun(PATH+"/activity/getActivities.json",jso,this.showActivities.Apply(this));
 };
 
 
@@ -1993,7 +1993,7 @@ function loopCheckAndSave(){
 		arr.push(translateCE2Activity(synStack[key]));
 	}
 	if(arr.length>0){console.log(arr);
-		AjaxFun("/activity/saveActivitys.json",{'jsonstr':	JSON.stringify(arr) },saveHandler);
+		AjaxFun(PATH+"/activity/saveActivitys.json",{'jsonstr':	JSON.stringify(arr) },saveHandler);
 	}else{
 		setTimeout("loopCheckAndSave()",1000);
 	}

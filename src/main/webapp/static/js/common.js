@@ -17,7 +17,7 @@ String.prototype.trim= function(){
     // 用空字符串替代。  
     return this.replace(/(^\s*)|(\s*$)/g, "");  
 }
-var CONTEXTPATH="/calendar";
+var PATH="/calendar";
 function AjaxFun(url, inputData, callback, options, callbackOnError) {
 	var contextUrl = window.location.href;
 	options = options || {};
@@ -30,7 +30,7 @@ function AjaxFun(url, inputData, callback, options, callbackOnError) {
 	var param = options.inputData;
 	options.success = function(outputData) {//alert("success")
 		if(outputData.r=="504"){
-			window.location=CONTEXTPATH+"/login";
+			window.location=PATH+"/login";
 		}
 		if (typeof callback == 'function') {
 			callback(outputData);
@@ -237,7 +237,7 @@ var AreaBox = {
 
 	getProvinceForMulti : function() {
 			
-		$.post(CONTEXTPATH + "/member/getProvince", {}, function(area) {
+		$.post(PATH + "/member/getProvince", {}, function(area) {
 			return function(data){
 			jQuery("<option value='0'>全国</option>").appendTo(area.sProvince);
 			for (var i = 0, length = data.list.length; i < length; i++) {
@@ -251,7 +251,7 @@ var AreaBox = {
 	},
 
 	getCityForMulti : function() {
-		$.post(CONTEXTPATH + "/member/getCity", {
+		$.post(PATH + "/member/getCity", {
 			areaname : this.sProvince.val()
 		}, function(area) {
 			return function(data){
@@ -270,7 +270,7 @@ var AreaBox = {
 	},
 
 	getCountyForMulti : function() {
-		$.post(CONTEXTPATH + "/member/getCounty", {
+		$.post(PATH + "/member/getCounty", {
 			areaname : this.sCity.val()
 		}, function(area) {
 			return function(data){
@@ -655,7 +655,7 @@ function initGrid(gridParam) {
 				}, 0);
 			},
 
-		//	editurl : CONTEXTPATH+"/developerinfo/save",
+		//	editurl : PATH+"/developerinfo/save",
 			// caption: "jqGrid with inline editing",
 
 			autowidth : true
@@ -904,7 +904,7 @@ function initProCitySel(jso) {
 	})
 
 	// 初始化省
-	$.get(CONTEXTPATH + "/member/getProvince", {}, function(data) {
+	$.get(PATH + "/member/getProvince", {}, function(data) {
 
 		jQuery("<option value=''>--请选择--</option>").appendTo("#" + provinceId);
 		for (var i = 0, length = data.list.length; i < length; i++) {
@@ -925,7 +925,7 @@ function initProCitySel(jso) {
 }
 
 function getCity(cityId, provinceId, defCity) {
-	$.post(CONTEXTPATH + "/member/getCity", {
+	$.post(PATH + "/member/getCity", {
 		areaname : $("#" + provinceId).val()
 	}, function(data) {
 		$("#" + cityId).empty();
@@ -989,8 +989,8 @@ function includeJS(data){
 	
 	for(var i=0;i<data.length;i++){
 		if(!isNull(data[i]) ){
-		if(!isNull(CONTEXTPATH) && data[i].indexOf(CONTEXTPATH)==-1){
-			data[i]=CONTEXTPATH+data[i];
+		if(!isNull(PATH) && data[i].indexOf(PATH)==-1){
+			data[i]=PATH+data[i];
 		}
 			document.write("<script id='"+i+"' type='text/javascript' src='"+data[i]+"'  charset='utf-8'> </script>");
 		}
@@ -1005,8 +1005,8 @@ function includeJS(data){
 function includeCSS(data){
 	for(var i=0;i<data.length;i++){
 		if(!isNull(data[i]) ){
-			if(!isNull(CONTEXTPATH) && data[i].indexOf(CONTEXTPATH)==-1){
-				data[i]=CONTEXTPATH+data[i];
+			if(!isNull(PATH) && data[i].indexOf(PATH)==-1){
+				data[i]=PATH+data[i];
 			}
 				document.write("<link rel='stylesheet' href='"+data[i]+"' type='text/css' />");
 		}
@@ -1018,8 +1018,8 @@ function includeCSS(data){
  * 跳转链接同一用此处
  * @param url
  */
-function goUrl(url){
-	window.location=CONTEXTPATH+url;
+function goUrl(url){//alert(url);
+	window.location=PATH+url;
 }
 
 

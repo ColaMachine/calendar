@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.kfpanda.core.PropertiesUtil;
 
 import cola.machine.constants.SysConfig;
 
@@ -28,7 +27,7 @@ public class SysListener extends HttpServlet implements ServletContextListener {
 
 	// 用于在容器开启时,操作
 	public void contextInitialized(ServletContextEvent sce) {
-		PropertiesUtil.init();
+		//PropertiesUtil.init();
 		String realPath = sce.getServletContext().getRealPath("/");
 		String contextPath = sce.getServletContext().getContextPath();
 		String contextName = sce.getServletContext().getServletContextName();

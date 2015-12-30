@@ -79,7 +79,7 @@ public class UserController extends BaseController {
 	/**
 	 * 说明:注册提交
 	 * 
-	 * @param user
+	 * @param user  
 	 * @param request
 	 * @return
 	 * @author dozen.zhang

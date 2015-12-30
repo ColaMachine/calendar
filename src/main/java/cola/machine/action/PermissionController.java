@@ -33,7 +33,7 @@ import com.awifi.core.page.Page;
 import core.action.ResultDTO;
 @Controller
 @RequestMapping("/permission")
-public class PermissionController {
+public class PermissionController extends BaseController {
     /** 日志 **/
     private Logger logger = LoggerFactory.getLogger(PermissionController.class);
     /** 权限service **/
@@ -101,8 +101,8 @@ public class PermissionController {
     @ResponseBody
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
-        ResultDTO result = permissionService.selectByPrimaryKey(id);
-        return result;
+        Permission permission = permissionService.selectByPrimaryKey(id);
+        return this.getResult(1, permission,"");
     }
 
     

@@ -34,7 +34,7 @@ import core.action.ResultDTO;
 <#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
 @Controller
 @RequestMapping("/${abc}")
-public class ${Abc}Controller {
+public class ${Abc}Controller extends BaseController{
     /** 日志 **/
     private Logger logger = LoggerFactory.getLogger(${Abc}Controller.class);
     /** 权限service **/
@@ -93,17 +93,13 @@ public class ${Abc}Controller {
     public Object viewPage( HttpServletRequest request) {
         return "/static/html/${abc}/view${abc}.html";
     }
-    /**
-     * @param id 参数
-     * @param request 发请求
-     * @return Object
-     */
-    @RequestMapping(value = "/${abc}/view.json")
+   
+      @RequestMapping(value = "/${abc}/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
-        ResultDTO result = ${abc}Service.getEntityById(id);
-        return result;
+        ${Abc} bean = ${abc}Service.selectByPrimaryKey(id);
+        return this.getResult(1, bean,"");
     }
 
     

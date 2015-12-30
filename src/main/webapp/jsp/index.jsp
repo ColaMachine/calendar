@@ -170,13 +170,14 @@ var menuList=[
               {id:21,name:"访问日志A",url:"${path}/log/listRequestLog",pid:2},
               {id:22,name:"访问日志B",url:"${path}/log/listRequestLog",pid:2},
               {id:5,name:"用户管理",url:"",pid:0,icon:"fa fa-diamond"},
-              {id:6,name:"角色管理",url:"${path}/auth/role/list.htm",pid:5},
+              {id:6,name:"角色管理",url:"${path}/auth/role/list.htm",pid:5}, 
               {id:7,name:"日历",url:"${path}/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
-              {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},
+               {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},
               {id:9,name:"手机登录页面",url:"${path}/static/phone/login.html",icon:"fa fa-spinner",pid:8},
               {id:10,name:"上传图片",url:"${path}/static/html/imageCompress.html",icon:"fa fa-bank",pid:8},
               {id:11,name:"列表",url:"${path}/static/html/example/table.html",icon:"fa fa-spinner",pid:8},
-              {id:11,name:"alert",url:"${path}/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
+              {id:12,name:"alert",url:"${path}/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
+              {id:13,name:"短信",url:"${path}/static/html/example/alert.html",icon:"fa fa-spinner",pid:0}, 
               ]
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 </script>

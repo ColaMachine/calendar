@@ -7,10 +7,19 @@
  */
 package cola.machine.util.code;
 
+import java.util.Map;
+
 public class ZColum {
 private String name;
 private boolean nn;
 private boolean pk;
+private boolean ai;
+public boolean isAi() {
+    return ai;
+}
+public void setAi(boolean ai) {
+    this.ai = ai;
+}
 private String def;
 public boolean isNn() {
     return nn;
@@ -32,6 +41,13 @@ public void setDef(String def) {
 }
 private String type;
 private String remark;
+private Map showValue;
+public Map getShowValue() {
+    return showValue;
+}
+public void setShowValue(Map showValue) {
+    this.showValue = showValue;
+}
 private String valid;
 public String getName() {
     return name;

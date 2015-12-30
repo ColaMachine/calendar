@@ -182,17 +182,19 @@ var loginValidator = function() {
 				},
 		
 				errorPlacement: function (error, element) {
-					 error.insertAfter(element); 
+					error.insertAfter(element); 
 				},
 		
 				submitHandler: function (form) {
-				register();
+					register();
 					
 				},
 				invalidHandler: function (form) {
 				}
 	        });
-
+	        $("#registerBtn").click(function(){
+	        	register();
+	        })
 	        $('#form-signin input').keypress(function(e) {
 	            if (e.which == 13) {
 	                if ($(e).closest('.form-signin').validate().form()) {
@@ -270,9 +272,9 @@ var loginValidator = function() {
 		if($("#rememberme").attr("checked")=='checked'){//alert("选中了记住我");
 		 setCookie('username',jso.email,365);
 		}
-		$.post(CONTEXTPATH+"/loginPost.json",jso,function(data){
+		$.post(PATH+"/loginPost.json",jso,function(data){
 			if(data[AJAX_RESULT]==AJAX_SUCC){
-				window.location=CONTEXTPATH+"/index.htm";
+				window.location=PATH+"/index.htm";
 			}else{
 				var ul = 	$("#login_form").find(".failure").find("ul");
 				ul.empty();
@@ -286,11 +288,15 @@ var loginValidator = function() {
 			}$("#loginBtn").removeAttr("disabled","");
 		});
 	}
-	function register(){$("#registerBtn").attr("disabled","disabled");
+	function register(){
+		if(!$("#register_form").valid()){
+			return;
+		}
+		$("#registerBtn").attr("disabled","disabled");
 		var jso = changeForm2Jso("#register_form");
-		$.post(CONTEXTPATH+"/registerPost.json",jso,function(data){
+		$.post(PATH+"/registerPost.json",jso,function(data){
 			if(data[AJAX_RESULT]==AJAX_SUCC){
-				window.location=CONTEXTPATH+"/index.htm";
+				window.location=PATH+"/index.htm";
 			}else{
 				var ul = 	$("#register_form").find(".failure").find("ul");
 				ul.empty();

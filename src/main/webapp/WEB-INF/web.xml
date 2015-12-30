@@ -62,7 +62,7 @@
 		<init-param>
 			<param-name>notCheckURLList</param-name>
 			<param-value>/static/.*;/login.htm;/register.htm;/loginPost.json;/registerPost.json;/pwdreset.htm;/active/\w*;/img/.*
-			;/forgetpwd;/pwdresetPost;/forgetpwd/save;/pwdrst/save;/pwdrst/edit;/pwdrst;/.*\.jpg;/validatecode;/share/qq;
+			;/forgetpwd.htm;/pwdresetPost.json;/forgetpwd/save.json;/pwdrst/save.json;/pwdrst/edit.htm;/pwdrst;/.*\.jpg;/validatecode;/share/qq;
 			</param-value>
 		</init-param>
 		<init-param>

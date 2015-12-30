@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import cola.machine.bean.${Abc};
 import cola.machine.dao.${Abc}Mapper;
-import cola.machine.dao.${Abc}Service;
 import cola.machine.util.CacheUtil;
 import cola.machine.util.ResultUtil;
 import cola.machine.util.UUIDUtil;
@@ -48,7 +47,7 @@ public class ${Abc}Service extends BaseService {
      * @date 2015年11月15日下午12:36:24
      */
     public List<${Abc}> list(HashMap params) {
-        return ${abc}Mapper.selectByPage(params);
+        return ${abc}Mapper.selectBeanByMap4Page(params);
     }
     
     /*
@@ -72,8 +71,9 @@ public class ${Abc}Service extends BaseService {
        //判断是更新还是插入
         if (${abc}.get${table.pk.name[0]?upper_case}${table.pk.name[1..]}()==null) {
             <#if table.pk.type?starts_with("varchar")>
+                ${abc}.set${table.pk.name[0]?upper_case}${table.pk.name[1..]}(UUIDUtil.getUUID());
             <#else>
-               ${abc}.set${table.pk.name[0]?upper_case}${table.pk.name[1..]}(UUIDUtil.getUUID());
+               
             </#if>
             ${abc}Mapper.insert(${abc});
         } else {
@@ -90,8 +90,8 @@ public class ${Abc}Service extends BaseService {
     * @author dozen.zhang
     * @date 2015年12月27日下午10:56:38
     */
-    public void delete(    <@javaType>${table.pk.type}</@javaType>  ${table.pk.name}){
-        permissionMapper.deleteByPrimaryKey(${table.pk.name});
+    public void delete(<@javaType>${table.pk.type}</@javaType>  ${table.pk.name}){
+        ${abc}Mapper.deleteByPrimaryKey(${table.pk.name});
     }   
     /**
     * 说明:根据主键获取数据

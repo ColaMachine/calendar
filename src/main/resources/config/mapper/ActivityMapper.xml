@@ -22,30 +22,30 @@
 
 	<select id="selecActivityByActivityId" parameterType="string"
 		resultType="cola.machine.bean.Activity">
-		SELECT * FROM ACTIVITY WHERE ACTIVITYID = #{ActivityId}
+		SELECT * FROM activity WHERE ACTIVITYID = #{ActivityId}
 	</select>
 
 	<insert id="insertActivity" parameterType="cola.machine.bean.Activity">
 		INSERT INTO
-		ACTIVITY(ACTIVITYID,TITLE,STARTTIME,ENDTIME,ADDRESS,DESCRIPTION,TYPE,BUSYLEVEL,USERID)
+		activity(ACTIVITYID,TITLE,STARTTIME,ENDTIME,ADDRESS,DESCRIPTION,TYPE,BUSYLEVEL,USERID)
 		VALUES(#{activityId},#{title},#{startTime},#{endTime},#{address},#{description},#{type},#{busyLevel},#{userId})
 	</insert>
 
 	<update id="updateActivity" parameterType="cola.machine.bean.Activity">
-		UPDATE ACTIVITY SET TITLE=#{title},STARTTIME =
+		UPDATE activity SET TITLE=#{title},STARTTIME =
 		#{startTime},ENDTIME = #{endTime}
 		,ADDRESS = #{address},DESCRIPTION = #{description},TYPE = #{type},BUSYLEVEL =
 		#{busyLevel} WHERE ACTIVITYID = #{activityId}
 	</update>
 
 	<delete id="deleteActivity" parameterType="java.lang.String">
-		DELETE FROM ACTIVITY WHERE
+		DELETE FROM activity WHERE
 		ACTIVITYID = #{ACTIVITYID}
 	</delete>
 
 	<select id="selectActivityBetween2Date" resultType="cola.machine.bean.Activity"
 		parameterType="java.util.Map">
-		SELECT * FROM ACTIVITY WHERE USERID=#{USERID} AND  (STARTTIME BETWEEN #{STARTTIME} AND #{ENDTIME}
+		SELECT * FROM activity WHERE USERID=#{USERID} AND  (STARTTIME BETWEEN #{STARTTIME} AND #{ENDTIME}
 		OR ENDTIME BETWEEN #{STARTTIME} AND #{ENDTIME})
 	</select>
 	
@@ -53,7 +53,7 @@
 	
 		<select id="getActivityById" resultType="cola.machine.bean.Activity"
 		parameterType="java.lang.String">
-		SELECT * FROM ACTIVITY WHERE ACTIVITYID=#{ACTIVITYID}
+		SELECT * FROM activity WHERE ACTIVITYID=#{ACTIVITYID}
 	</select>
 	
 	

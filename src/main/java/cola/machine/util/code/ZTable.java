@@ -22,6 +22,14 @@ import com.google.gson.JsonSerializer;
 
 public class ZTable {
 private String name;
+private String remark;
+public String getRemark() {
+    return remark;
+}
+public void setRemark(String remark) {
+    this.remark = remark;
+}
+
 private ZColum pk;
 public ZColum getPk() {
     return pk;
