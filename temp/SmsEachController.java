@@ -5,7 +5,7 @@
  * 创建日期: 2015年11月15日
  * 文件说明: 
  */
-package cola.machine.action;
+ package cola.machine.action;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cola.machine.bean.Permission;
-import cola.machine.service.AuthService;
-import cola.machine.service.UserService;
+import cola.machine.service.SmsEachService;
+import cola.machine.bean.SmsEach;
 import cola.machine.util.ResultUtil;
 
 import com.awifi.core.page.Page;
 
 import core.action.ResultDTO;
+
 @Controller
 @RequestMapping("/smsEach")
 public class SmsEachController extends BaseController{
@@ -68,7 +68,17 @@ public class SmsEachController extends BaseController{
     @ResponseBody
     public Object list(@RequestParam(value = "curPage", required = false) Integer curPage, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         // 查找所有的角色
-        Page page = new Page(curPage,pageSize);
+        // 查找所有的角色
+        if(curPage==null ){
+            return this.getWrongResultFromCfg("err.param.notnull.curPage");
+        }
+        if(pageSize==null ){
+            return this.getWrongResultFromCfg("err.param.notnull.pageSize");
+        }
+        //Page page = new Page(curPage,pageSize);
+        Page page =new Page();
+        page.setCurPage(curPage);
+        page.setPageSize(pageSize);
         HashMap params =new HashMap();
         params.put("page",page);
         List<SmsEach> smsEachs = smsEachService.list(params);
@@ -96,7 +106,7 @@ public class SmsEachController extends BaseController{
     @ResponseBody
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
-        SmsEach bean = smsEachService.selectByPrimaryKey(id);
+        SmsEach bean = smsEachService.selectByPrimaryKey(Integer.valueOf(id));
         return this.getResult(1, bean,"");
     }
 
@@ -117,17 +127,17 @@ public class SmsEachController extends BaseController{
     public Object save(HttpServletRequest request) throws Exception {
         SmsEach smsEach =new  SmsEach();
             String id = request.getParameter("id");
-            smsEach.setId(id   ) ;
+            smsEach.setId(Integer.valueOf(id)) ;
             String batchId = request.getParameter("batchId");
-            smsEach.setBatchId(batchId   ) ;
+            smsEach.setBatchId(Integer.valueOf(batchId)) ;
             String phone = request.getParameter("phone");
-            smsEach.setPhone(phone   ) ;
+            smsEach.setPhone(Integer.valueOf(phone)) ;
             String sendtime = request.getParameter("sendtime");
-            smsEach.setSendtime(sendtime   ) ;
+            smsEach.setSendtime(Timestamp.valueOf(sendtime)) ;
             String status = request.getParameter("status");
-            smsEach.setStatus(status   ) ;
+            smsEach.setStatus(Integer.valueOf(status)) ;
             String reason = request.getParameter("reason");
-            smsEach.setReason(reason   ) ;
+            smsEach.setReason(String.valueOf(reason)) ;
         return smsEachService.save(smsEach);
     }
 }

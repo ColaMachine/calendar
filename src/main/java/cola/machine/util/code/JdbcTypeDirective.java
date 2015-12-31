@@ -15,7 +15,7 @@ import freemarker.template.TemplateModelException;
  * FreeMarker 自定义指令，用于转换指令内容体中的字母为大写字母。
  * 
  */
-public class JavaTypeDirective implements TemplateDirectiveModel {
+public class JdbcTypeDirective implements TemplateDirectiveModel {
 
 	public void execute(Environment env, Map params, TemplateModel[] loopVars,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
@@ -72,21 +72,21 @@ public class JavaTypeDirective implements TemplateDirectiveModel {
 			String type =String.valueOf(transformedCbuf).trim();
 			String typeName=null;
 			 if(type.startsWith("varchar")){
-		            typeName= "String";
+		            typeName= "VARCHAR";
 		        }else if(type.startsWith("int")){
-		            typeName= "Integer";
+		            typeName= "INT";
 		        }else if(type.startsWith("bigint")){
-		            typeName= "Long";
+		            typeName= "BIGINT";
 		        }else if(type.startsWith("float")){
-		            typeName= "Float";
+		            typeName= "FLOAT";
 		        } else if(type.startsWith("double")){
-		            typeName= "Double";
+		            typeName= "DOUBLE";
 		        } else if(type.startsWith("date")){
-		            typeName= "Date";
+		            typeName= "DATE";
 		        } else if(type.startsWith("timestamp")){
-		            typeName= "Timestamp";
+		            typeName= "TIMESTAMP";
 		        }else if(type.startsWith("text")){
-                    typeName= "String";
+                    typeName= "LONGVARCHAR";
                 }else{
 		            throw new IOException(
 		                    "This directive content doesn't  allow this value"+type+".");

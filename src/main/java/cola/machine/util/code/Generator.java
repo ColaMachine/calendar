@@ -42,213 +42,25 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 public class Generator {
-    private String ctrl="\r\n";
+    private String ctrl = "\r\n";
     private Path homePath;
-    private static Logger logger =LoggerFactory.getLogger(Generator.class);
-    public void genController() throws IOException, TemplateException{
-            writeFile(table.getName()+"Controller.java","controller");
-    }
-    private Map root = new HashMap();
-    public void genService() throws IOException, TemplateException{
-        writeFile(table.getName()+"Service.java","service");
-     /*       Template template = cfg.getTemplate("service");
-            
-            File file =homePath.resolve(StringUtil.getAbc(table.getName())+"Service").toFile();
-            FileWriter writer = new FileWriter(file);  
-            template.process(root, writer);
-            System.out.println(writer.toString());*/
-            
-            
-           /* StringWriter writer = new StringWriter();
-            template.process(root, writer);
-            System.out.println(writer.toString());*/
-    }
-    public void genMapper() throws IOException, TemplateException{
-        writeFile(table.getName()+"Mapper.java","mapper");
-    }
-    public String changeMySqlType2JavaType(String type){
-        String typeName=null;
-        type=type.toLowerCase();
-        if(type.startsWith("varchar")){
-            typeName= "String";
-        }else if(type.startsWith("int")){
-            typeName= "Integer";
-        }else if(type.startsWith("bigint")){
-            typeName= "Long";
-        }else if(type.startsWith("float")){
-            typeName= "Float";
-        } else if(type.startsWith("double")){
-            typeName= "Double";
-        } else if(type.startsWith("date")){
-            typeName= "Date";
-        } else if(type.startsWith("timestamp")){
-            typeName= "Timestamp";
-        } else if(type.startsWith("text")){
-            typeName= "String";
-        }
-        return typeName;
-    }
-    public void genBean() throws IOException, TemplateException{
-        StringBuffer sb =new StringBuffer();
-        String type="";
-        String typeName="";
-        for(ZColum col: table.getCols()){
-            type= col.getType().toLowerCase();
-            sb.append("/**"+col.getRemark()+"**/").append(ctrl);
-            typeName= this.changeMySqlType2JavaType(type);
-            sb.append("    private "+typeName+" "+col.getName()+";").append(ctrl);
-            sb.append("    public "+typeName+" get"+StringUtil.getAbc(col.getName())+"(){").append(ctrl)
-            .append("        return "+col.getName()+";").append(ctrl)
-            .append("    }")
-            .append("    public void set"+StringUtil.getAbc(col.getName())+"("+typeName+" "+col.getName()+"){").append(ctrl)
-            .append("        this."+col.getName()+"="+col.getName()+";").append(ctrl)
-            .append("    }");
-        }
-        
-          root.put("content", sb);
-          writeFile(table.getName()+".java","bean");
+    private static Logger logger = LoggerFactory.getLogger(Generator.class);
 
-          /*  StringWriter writer = new StringWriter();
-            template.process(root, writer);
-            System.out.println(writer.toString());*/
-    }
-    public void writeFile(String name,String  templateName) throws IOException, TemplateException{
-        Template template;
-        template = cfg.getTemplate(templateName);
-        File file =homePath.resolve("temp").resolve(StringUtil.getAbc(name)).toFile();
-       // Files.createFile(homePath.resolve(StringUtil.getAbc(table.getName())));
-        FileWriter writer = new FileWriter(file);  
-        template.process(root, writer);
-        writer.flush();
-        writer.close();
-        System.out.println(writer.toString());
-    }
-   public void genSql() throws IOException, TemplateException{
-       writeFile(table.getName()+".sql","sql");
-    }
-    public void genListHtml(){
-        
-    }
-    public void genEditHtml(){
-        
-    }
-    public void genViewHtml(){
-        
-    }
+    private Map root = new HashMap();
+
     public static Gson createGson() {
         return new GsonBuilder().
-        
-          /*registerTypeAdapter(ZTable.class, new ZTable.Handler()).*/create();
-         
+
+        /* registerTypeAdapter(ZTable.class, new ZTable.Handler()). */create();
+
     }
-    
-    public ZTable load(Path fromFile) throws IOException{
-        
-        logger.info("read config file{}", fromFile);
-       if(!fromFile.toFile().exists()){
-           logger.debug("code.cfg not exists");
-           return null;
-       }
-        try (Reader reader = Files.newBufferedReader(fromFile, Charset.forName("UTF-8"))) {
-            Gson gson = createGson();
-            JsonElement baseConfig = gson.toJsonTree(new ZTable());
-            JsonParser parser = new JsonParser();
-            JsonElement config = parser.parse(reader);
-            if (!config.isJsonObject()) {
-                return new ZTable();
-            } else {
-                merge(baseConfig.getAsJsonObject(), config.getAsJsonObject());
-                return gson.fromJson(baseConfig, ZTable.class);
-            }
-        } catch (JsonParseException e) {
-            throw new IOException("Failed to load config", e);
-        }
-    }
-    public String readFile2Str(String path ) throws IOException{
-        File file=PathManager.getInstance().getHomePath().resolve(path).toFile();
-        
-        BufferedReader br =new BufferedReader(new FileReader(file));
-        String s ;
-        StringBuffer templateStr= new StringBuffer();
-        while  ((s=br.readLine())!=null){
-            templateStr.append(s+"\r\n");
-        }
-        return templateStr.toString();
-    }
-    private Configuration cfg;
-    public void init() throws IOException{ 
-        //创建目录
-        Path homePath=PathManager.getInstance().getHomePath();
-        Files.createDirectories(homePath.resolve("temp"));
-        this.homePath=homePath;
-        StringBuffer sb =new StringBuffer();
-        String type="";
-        String typeName="";
-           
-            table =load( homePath.resolve("src/main/resources/code.cfg"));
-            table.init();
-            root.put("javaType", new JavaTypeDirective());
-            root.put("table", table);
-         /*   Configuration config=new Configuration();
-             //设置要解析的模板所在的目录，并加载模板文件
-            config.setDirectoryForTemplateLoading(file);
-            //设置包装器，并将对象包装为数据模型
-            config.setObjectWrapper(new DefaultObjectWrapper());*/
-            
-             cfg = new Configuration();
-            StringTemplateLoader temp = new StringTemplateLoader();
-            
-            String serviceTpl = this.readFile2Str("src/main/resources/code/Service.tpl");
-            String beanTpl = this.readFile2Str("src/main/resources/code/Bean.tpl");
-            String controllerTpl = this.readFile2Str("src/main/resources/code/Controller.tpl");
-            String mapperTpl = this.readFile2Str("src/main/resources/code/Mapper.tpl");
-            String sqlTpl = this.readFile2Str("src/main/resources/code/sql.tpl");
-//            String listHtmlTpl = this.readFile2Str("src/main/resources/code/ListHtml.tpl");
-//            String editHtmlTpl = this.readFile2Str("src/main/resources/code/EditHtml.tpl");
-//            String viewHtmlTpl = this.readFile2Str("src/main/resources/code/ViewHtml.tpl");
-            temp.putTemplate("service", serviceTpl);
-            temp.putTemplate("bean", beanTpl);
-            temp.putTemplate("controller", controllerTpl);
-            temp.putTemplate("mapper", mapperTpl);
-            temp.putTemplate("sql", sqlTpl);
-//            temp.putTemplate("listHtml", listHtmlTpl);
-//            temp.putTemplate("editHtml", editHtmlTpl);
-//            temp.putTemplate("viewHtml", viewHtmlTpl);
-            cfg.setDefaultEncoding("UTF-8");
-            cfg.setTemplateLoader(temp);
-            
-     
-       // FreeMarkerUtil.processTemplate(templatePath, templateName, templateEncoding, root, out);
-    }
-    ZTable table;
-    public static void main(String[] args) {
-        Generator gen =new Generator();
-            try {
-                gen.init();
-                gen.genBean();
-                gen.genMapper();
-                gen.genService();
-                gen.genController();
-                gen.genSql();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            //System.out.println(table.getCols().size());
-            //gen.genController(table);
-           // gen.genBean(table);
- catch (TemplateException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-           
-       
-    }
-    
     /**
      * 两个jsonobject 合并
-     * @param target 参数
-     * @param from 参数
+     * 
+     * @param target
+     *            参数
+     * @param from
+     *            参数
      */
     public static void merge(JsonObject target, JsonObject from) {
         for (Map.Entry<String, JsonElement> entry : from.entrySet()) {
@@ -266,4 +78,217 @@ public class Generator {
         }
 
     }
+    public ZTable load(Path fromFile) throws IOException {
+
+        logger.info("read config file{}", fromFile);
+        if (!fromFile.toFile().exists()) {
+            logger.info("code.cfg not exists");
+            return null;
+        }
+        try (Reader reader = Files.newBufferedReader(fromFile, Charset.forName("UTF-8"))) {
+            Gson gson = createGson();
+            JsonElement baseConfig = gson.toJsonTree(new ZTable());
+            JsonParser parser = new JsonParser();
+            JsonElement config = parser.parse(reader);
+            if (!config.isJsonObject()) {
+                return new ZTable();
+            } else {
+                merge(baseConfig.getAsJsonObject(), config.getAsJsonObject());
+                return gson.fromJson(baseConfig, ZTable.class);
+            }
+        } catch (JsonParseException e) {
+            throw new IOException("Failed to load config", e);
+        }
+    }
+
+  
+
+    private Configuration cfg;
+
+    public void init() throws IOException {
+        // 创建目录
+        Path homePath = PathManager.getInstance().getHomePath();
+        Files.createDirectories(homePath.resolve("temp"));
+        this.homePath = homePath;
+        StringBuffer sb = new StringBuffer();
+        String type = "";
+        String typeName = "";
+
+        table = load(homePath.resolve("src/main/resources/SmsBatch.cfg"));
+        table.init();
+        root.put("javaType", new JavaTypeDirective());
+        root.put("jdbcType", new JdbcTypeDirective());
+        root.put("table", table);
+        /*
+         * Configuration config=new Configuration(); //设置要解析的模板所在的目录，并加载模板文件
+         * config.setDirectoryForTemplateLoading(file); //设置包装器，并将对象包装为数据模型
+         * config.setObjectWrapper(new DefaultObjectWrapper());
+         */
+
+        cfg = new Configuration();
+        StringTemplateLoader temp = new StringTemplateLoader();
+
+        String serviceTpl = this.readFile2Str("src/main/resources/code/Service.tpl");
+        String beanTpl = this.readFile2Str("src/main/resources/code/Bean.tpl");
+        String controllerTpl = this.readFile2Str("src/main/resources/code/Controller.tpl");
+        String mapperTpl = this.readFile2Str("src/main/resources/code/Mapper.tpl");
+        String mapperXmlTpl = this.readFile2Str("src/main/resources/code/MapperXml.tpl");
+        String sqlTpl = this.readFile2Str("src/main/resources/code/sql.tpl");
+        // String listHtmlTpl =
+        // this.readFile2Str("src/main/resources/code/ListHtml.tpl");
+        // String editHtmlTpl =
+        // this.readFile2Str("src/main/resources/code/EditHtml.tpl");
+        // String viewHtmlTpl =
+        // this.readFile2Str("src/main/resources/code/ViewHtml.tpl");
+        temp.putTemplate("service", serviceTpl);
+        temp.putTemplate("bean", beanTpl);
+        temp.putTemplate("controller", controllerTpl);
+        temp.putTemplate("mapper", mapperTpl);
+        temp.putTemplate("sql", sqlTpl);
+        temp.putTemplate("mapperXml", mapperXmlTpl);
+        
+        // temp.putTemplate("listHtml", listHtmlTpl);
+        // temp.putTemplate("editHtml", editHtmlTpl);
+        // temp.putTemplate("viewHtml", viewHtmlTpl);
+        cfg.setDefaultEncoding("UTF-8");
+        cfg.setTemplateLoader(temp);
+
+        // FreeMarkerUtil.processTemplate(templatePath, templateName,
+        // templateEncoding, root, out);
+    }
+
+    ZTable table;
+    public void writeFile(String name, String templateName) throws IOException, TemplateException {
+        Template template;
+        template = cfg.getTemplate(templateName);
+        File file = homePath.resolve("temp").resolve(StringUtil.getAbc(name)).toFile();
+        // Files.createFile(homePath.resolve(StringUtil.getAbc(table.getName())));
+        FileWriter writer = new FileWriter(file);
+        template.process(root, writer);
+        writer.flush();
+        writer.close();
+        System.out.println(writer.toString());
+    }
+    public String readFile2Str(String path) throws IOException {
+        File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
+
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String s;
+        StringBuffer templateStr = new StringBuffer();
+        while ((s = br.readLine()) != null) {
+            templateStr.append(s + "\r\n");
+        }
+        return templateStr.toString();
+    }
+    public String changeMySqlType2JavaType(String type) {
+        String typeName = null;
+        type = type.toLowerCase();
+        if (type.startsWith("varchar")) {
+            typeName = "String";
+        } else if (type.startsWith("int")) {
+            typeName = "Integer";
+        } else if (type.startsWith("bigint")) {
+            typeName = "Long";
+        } else if (type.startsWith("float")) {
+            typeName = "Float";
+        } else if (type.startsWith("double")) {
+            typeName = "Double";
+        } else if (type.startsWith("date")) {
+            typeName = "Date";
+        } else if (type.startsWith("timestamp")) {
+            typeName = "Timestamp";
+        } else if (type.startsWith("text")) {
+            typeName = "String";
+        }
+        return typeName;
+    }
+    public void genController() throws IOException, TemplateException {
+        logger.info("genController");
+        writeFile(table.getName() + "Controller.java", "controller");
+    }
+
+    public void genService() throws IOException, TemplateException {
+        logger.info("genService");
+        writeFile(table.getName() + "Service.java", "service");
+    }
+
+    public void genMapper() throws IOException, TemplateException {
+        logger.info("genMapper");
+        writeFile(table.getName() + "Mapper.java", "mapper");
+    }
+    public void genMapperXml() throws IOException, TemplateException {
+        logger.info("genMapperXml");
+        writeFile(table.getName() + "Mapper.xml", "mapperXml");
+    }
+
+    public void genBean() throws IOException, TemplateException {
+        logger.info("genBean");
+        StringBuffer sb = new StringBuffer();
+        String type = "";
+        String typeName = "";
+        for (ZColum col : table.getCols()) {
+            type = col.getType().toLowerCase();
+            sb.append("/**" + col.getRemark() + "**/").append(ctrl);
+            typeName = this.changeMySqlType2JavaType(type);
+            sb.append("    private " + typeName + " " + col.getName() + ";").append(ctrl);
+            sb.append("    public " + typeName + " get" + StringUtil.getAbc(col.getName()) + "(){").append(ctrl)
+                    .append("        return " + col.getName() + ";").append(ctrl).append("    }")
+                    .append("    public void set" + StringUtil.getAbc(col.getName()) + "(" + typeName + " "
+                            + col.getName() + "){")
+                    .append(ctrl).append("        this." + col.getName() + "=" + col.getName() + ";").append(ctrl)
+                    .append("    }");
+        }
+
+        root.put("content", sb);
+        writeFile(table.getName() + ".java", "bean");
+
+        /*
+         * StringWriter writer = new StringWriter(); template.process(root,
+         * writer); System.out.println(writer.toString());
+         */
+    }
+
+    public void genSql() throws IOException, TemplateException {
+        logger.info("genSql");
+        writeFile(table.getName() + ".sql", "sql");
+    }
+
+    public void genListHtml() {
+        logger.info("genListHtml");
+    }
+
+    public void genEditHtml() {
+        logger.info("genEditHtml");
+    }
+
+    public void genViewHtml() {
+        logger.info("genViewHtml");
+    }
+
+
+    public static void main(String[] args) {
+        Generator gen = new Generator();
+        try {
+            gen.init();
+            gen.genBean();
+            gen.genMapper();
+            gen.genService();
+            gen.genController();
+            gen.genSql();
+            gen.genMapperXml();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        // System.out.println(table.getCols().size());
+        // gen.genController(table);
+        // gen.genBean(table);
+        catch (TemplateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+  
 }

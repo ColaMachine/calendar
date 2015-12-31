@@ -7,6 +7,7 @@
  */
  package cola.machine.action;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cola.machine.service.SmsBatchService;
-import cola.machine.bean.SmsBatch;
+import cola.machine.service.SmsEachService;
+import cola.machine.bean.SmsEach;
 import cola.machine.util.ResultUtil;
 
 import com.awifi.core.page.Page;
@@ -31,13 +32,13 @@ import com.awifi.core.page.Page;
 import core.action.ResultDTO;
 
 @Controller
-@RequestMapping("/smsBatch")
-public class SmsBatchController extends BaseController{
+@RequestMapping("/smsEach")
+public class SmsEachController extends BaseController{
     /** 日志 **/
-    private Logger logger = LoggerFactory.getLogger(SmsBatchController.class);
+    private Logger logger = LoggerFactory.getLogger(SmsEachController.class);
     /** 权限service **/
     @Autowired
-    private SmsBatchService smsBatchService;
+    private SmsEachService smsEachService;
     
 
     /**
@@ -48,9 +49,9 @@ public class SmsBatchController extends BaseController{
      * @author dozen.zhang
      * @date 2015年11月15日下午12:30:45
      */
-    @RequestMapping(value = "/smsBatch/list.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/smsEach/list.htm", method = RequestMethod.GET)
     public String list() {
-        return "/static/html/smsBatch/listSmsBatch.html";
+        return "/static/html/smsEach/listSmsEach.html";
     }
 
  
@@ -64,7 +65,7 @@ public class SmsBatchController extends BaseController{
      * @author dozen.zhang
      * @date 2015年11月15日下午12:31:55
      */
-    @RequestMapping(value = "/smsBatch/list.json")
+    @RequestMapping(value = "/smsEach/list.json")
     @ResponseBody
     public Object list(@RequestParam(value = "curPage", required = false) Integer curPage, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         // 查找所有的角色
@@ -81,8 +82,8 @@ public class SmsBatchController extends BaseController{
         page.setPageSize(pageSize);
         HashMap params =new HashMap();
         params.put("page",page);
-        List<SmsBatch> smsBatchs = smsBatchService.list(params);
-        return ResultUtil.getResult(smsBatchs, page);
+        List<SmsEach> smsEachs = smsEachService.list(params);
+        return ResultUtil.getResult(smsEachs, page);
     }
     
     
@@ -92,21 +93,21 @@ public class SmsBatchController extends BaseController{
      * @param request 发请求
      * @return Object
      */
-    @RequestMapping(value = "/smsBatch/edit.htm")
+    @RequestMapping(value = "/smsEach/edit.htm")
     public Object edit( HttpServletRequest request) {
         // 查找所有的角色
-        return "/static/html/smsBatch/editsmsBatch.html";
+        return "/static/html/smsEach/editsmsEach.html";
     }
-    @RequestMapping(value = "/smsBatch/view.htm")
+    @RequestMapping(value = "/smsEach/view.htm")
     public Object viewPage( HttpServletRequest request) {
-        return "/static/html/smsBatch/viewsmsBatch.html";
+        return "/static/html/smsEach/viewsmsEach.html";
     }
    
-      @RequestMapping(value = "/smsBatch/view.json")
+      @RequestMapping(value = "/smsEach/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
-        SmsBatch bean = smsBatchService.selectByPrimaryKey(Integer.valueOf(id));
+        SmsEach bean = smsEachService.selectByPrimaryKey(Integer.valueOf(id));
         return this.getResult(1, bean,"");
     }
 
@@ -122,26 +123,22 @@ public class SmsBatchController extends BaseController{
      * @date 2015年11月15日下午1:33:00
      */
     // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
-    @RequestMapping(value = "/smsBatch/save.json")
+    @RequestMapping(value = "/smsEach/save.json")
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
-        SmsBatch smsBatch =new  SmsBatch();
+        SmsEach smsEach =new  SmsEach();
             String id = request.getParameter("id");
-            smsBatch.setId(Integer.valueOf(id)) ;
-            String total = request.getParameter("total");
-            smsBatch.setTotal(Integer.valueOf(total)) ;
-            String succ = request.getParameter("succ");
-            smsBatch.setSucc(Integer.valueOf(succ)) ;
-            String fail = request.getParameter("fail");
-            smsBatch.setFail(Integer.valueOf(fail)) ;
-            String status = request.getParameter("status");
-            smsBatch.setStatus(Integer.valueOf(status)) ;
+            smsEach.setId(Integer.valueOf(id)) ;
+            String batchId = request.getParameter("batchId");
+            smsEach.setBatchId(Integer.valueOf(batchId)) ;
             String phone = request.getParameter("phone");
-            smsBatch.setPhone(String.valueOf(phone)) ;
-            String content = request.getParameter("content");
-            smsBatch.setContent(String.valueOf(content)) ;
-            String sendTime = request.getParameter("sendTime");
-            smsBatch.setSendTime(Timestamp.valueOf(sendTime)) ;
-        return smsBatchService.save(smsBatch);
+            smsEach.setPhone(Integer.valueOf(phone)) ;
+            String sendtime = request.getParameter("sendtime");
+            smsEach.setSendtime(Timestamp.valueOf(sendtime)) ;
+            String status = request.getParameter("status");
+            smsEach.setStatus(Integer.valueOf(status)) ;
+            String reason = request.getParameter("reason");
+            smsEach.setReason(String.valueOf(reason)) ;
+        return smsEachService.save(smsEach);
     }
 }

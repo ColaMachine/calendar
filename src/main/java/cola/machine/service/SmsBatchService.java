@@ -45,7 +45,7 @@ public class SmsBatchService extends BaseService {
      * @date 2015年11月15日下午12:36:24
      */
     public List<SmsBatch> list(HashMap params) {
-        return smsBatchMapper.selectByPage(params);
+        return smsBatchMapper.selectBeanByMap4Page(params);
     }
     
     /*
@@ -68,6 +68,7 @@ public class SmsBatchService extends BaseService {
        
        //判断是更新还是插入
         if (smsBatch.getId()==null) {
+               
             smsBatchMapper.insert(smsBatch);
         } else {
              smsBatchMapper.updateByPrimaryKey(smsBatch);
@@ -83,8 +84,8 @@ public class SmsBatchService extends BaseService {
     * @author dozen.zhang
     * @date 2015年12月27日下午10:56:38
     */
-    public void delete(    Integer  id){
-        permissionMapper.deleteByPrimaryKey(id);
+    public void delete(Integer  id){
+        smsBatchMapper.deleteByPrimaryKey(id);
     }   
     /**
     * 说明:根据主键获取数据

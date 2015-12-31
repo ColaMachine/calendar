@@ -5,6 +5,8 @@
  * 创建日期: 2015年11月15日
  * 文件说明: 
  */
+ <#assign abc="${table.name[0]?lower_case}${table.name[1..]}">
+<#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
 package cola.machine.action;
 
 import java.util.HashMap;
@@ -22,16 +24,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cola.machine.bean.Permission;
-import cola.machine.service.AuthService;
-import cola.machine.service.UserService;
+import cola.machine.service.${Abc}Service;
+import cola.machine.bean.${Abc};
 import cola.machine.util.ResultUtil;
 
 import com.awifi.core.page.Page;
 
 import core.action.ResultDTO;
-<#assign abc="${table.name[0]?lower_case}${table.name[1..]}">
-<#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
+
 @Controller
 @RequestMapping("/${abc}")
 public class ${Abc}Controller extends BaseController{
@@ -70,7 +70,17 @@ public class ${Abc}Controller extends BaseController{
     @ResponseBody
     public Object list(@RequestParam(value = "curPage", required = false) Integer curPage, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         // 查找所有的角色
-        Page page = new Page(curPage,pageSize);
+        // 查找所有的角色
+        if(curPage==null ){
+            return this.getWrongResultFromCfg("err.param.notnull.curPage");
+        }
+        if(pageSize==null ){
+            return this.getWrongResultFromCfg("err.param.notnull.pageSize");
+        }
+        //Page page = new Page(curPage,pageSize);
+        Page page =new Page();
+        page.setCurPage(curPage);
+        page.setPageSize(pageSize);
         HashMap params =new HashMap();
         params.put("page",page);
         List<${Abc}> ${abc}s = ${abc}Service.list(params);
@@ -98,7 +108,7 @@ public class ${Abc}Controller extends BaseController{
     @ResponseBody
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
-        ${Abc} bean = ${abc}Service.selectByPrimaryKey(id);
+        ${Abc} bean = ${abc}Service.selectByPrimaryKey(<@javaType>${table.pk.type}</@javaType>.valueOf(id));
         return this.getResult(1, bean,"");
     }
 
@@ -120,7 +130,7 @@ public class ${Abc}Controller extends BaseController{
         ${Abc} ${abc} =new  ${Abc}();
         <#list table.cols as col>
             String ${col.name} = request.getParameter("${col.name}");
-            ${abc}.set${col.name[0]?upper_case}${col.name[1..]}(${col.name}   ) ;
+            ${abc}.set${col.name[0]?upper_case}${col.name[1..]}(<@javaType>${col.type}</@javaType>.valueOf(${col.name})) ;
         </#list>
         return ${abc}Service.save(${abc});
     }

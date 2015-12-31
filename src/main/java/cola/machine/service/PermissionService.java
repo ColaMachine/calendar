@@ -45,7 +45,8 @@ public class PermissionService extends BaseService {
      * @date 2015年11月15日下午12:36:24
      */
     public List<Permission> list(HashMap params) {
-        return permissionMapper.selectByPage(params);
+        return null;
+        //return permissionMapper.selectBeanByMap(params);
     }
     
     /*
