@@ -48,9 +48,9 @@ public class SmsEachController extends BaseController{
      * @author dozen.zhang
      * @date 2015年11月15日下午12:30:45
      */
-    @RequestMapping(value = "/smsEach/list.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
     public String list() {
-        return "/static/html/smsEach/listSmsEach.html";
+        return "/static/html/smsEach/SmsEachList.html";
     }
 
  
@@ -64,7 +64,7 @@ public class SmsEachController extends BaseController{
      * @author dozen.zhang
      * @date 2015年11月15日下午12:31:55
      */
-    @RequestMapping(value = "/smsEach/list.json")
+    @RequestMapping(value = "/list.json")
     @ResponseBody
     public Object list(@RequestParam(value = "curPage", required = false) Integer curPage, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         // 查找所有的角色
@@ -92,17 +92,17 @@ public class SmsEachController extends BaseController{
      * @param request 发请求
      * @return Object
      */
-    @RequestMapping(value = "/smsEach/edit.htm")
+    @RequestMapping(value = "/edit.htm")
     public Object edit( HttpServletRequest request) {
         // 查找所有的角色
         return "/static/html/smsEach/editsmsEach.html";
     }
-    @RequestMapping(value = "/smsEach/view.htm")
+    @RequestMapping(value = "/view.htm")
     public Object viewPage( HttpServletRequest request) {
         return "/static/html/smsEach/viewsmsEach.html";
     }
    
-      @RequestMapping(value = "/smsEach/view.json")
+      @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
@@ -122,7 +122,7 @@ public class SmsEachController extends BaseController{
      * @date 2015年11月15日下午1:33:00
      */
     // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
-    @RequestMapping(value = "/smsEach/save.json")
+    @RequestMapping(value = "/save.json")
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
         SmsEach smsEach =new  SmsEach();

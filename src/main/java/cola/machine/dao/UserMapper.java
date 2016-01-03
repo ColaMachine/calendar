@@ -2,6 +2,7 @@ package cola.machine.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cola.machine.bean.User;
 
@@ -24,7 +25,7 @@ public interface UserMapper {
 
 	public User selectUserByEmail(String name);
 	
-	public List<HashMap> getUsersByParam(HashMap map);
+	public List<Map> getUsersByParam(Map map);
 
 	public void restPwd(User user);
 }

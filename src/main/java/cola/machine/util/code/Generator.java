@@ -133,6 +133,8 @@ public class Generator {
         String controllerTpl = this.readFile2Str("src/main/resources/code/Controller.tpl");
         String mapperTpl = this.readFile2Str("src/main/resources/code/Mapper.tpl");
         String mapperXmlTpl = this.readFile2Str("src/main/resources/code/MapperXml.tpl");
+        String list = this.readFile2Str("src/main/resources/code/list.tpl");
+        String edit = this.readFile2Str("src/main/resources/code/edit.tpl");
         String sqlTpl = this.readFile2Str("src/main/resources/code/sql.tpl");
         // String listHtmlTpl =
         // this.readFile2Str("src/main/resources/code/ListHtml.tpl");
@@ -146,7 +148,8 @@ public class Generator {
         temp.putTemplate("mapper", mapperTpl);
         temp.putTemplate("sql", sqlTpl);
         temp.putTemplate("mapperXml", mapperXmlTpl);
-        
+        temp.putTemplate("list", list);
+        temp.putTemplate("edit", edit);
         // temp.putTemplate("listHtml", listHtmlTpl);
         // temp.putTemplate("editHtml", editHtmlTpl);
         // temp.putTemplate("viewHtml", viewHtmlTpl);
@@ -160,7 +163,7 @@ public class Generator {
     ZTable table;
     public void writeFile(String name, String templateName) throws IOException, TemplateException {
         Template template;
-        template = cfg.getTemplate(templateName);
+        template = cfg.getTemplate(templateName,"UTF-8");
         File file = homePath.resolve("temp").resolve(StringUtil.getAbc(name)).toFile();
         // Files.createFile(homePath.resolve(StringUtil.getAbc(table.getName())));
         FileWriter writer = new FileWriter(file);
@@ -253,12 +256,15 @@ public class Generator {
         writeFile(table.getName() + ".sql", "sql");
     }
 
-    public void genListHtml() {
+    public void genListHtml() throws IOException, TemplateException {
         logger.info("genListHtml");
+        writeFile(table.getName() + "List.html", "list");
     }
 
-    public void genEditHtml() {
+    public void genEditHtml() throws IOException, TemplateException {
+        
         logger.info("genEditHtml");
+        writeFile(table.getName() + "Edit.html", "edit");
     }
 
     public void genViewHtml() {
@@ -276,6 +282,8 @@ public class Generator {
             gen.genController();
             gen.genSql();
             gen.genMapperXml();
+            gen.genListHtml();
+            gen.genEditHtml();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

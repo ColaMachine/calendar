@@ -45,7 +45,7 @@ public interface ${Abc}Mapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<${Abc}> selectBeanByBean(${Abc} record);
+    List<${Abc}> listByParams(Map map);
     
     /**
      * 说明:根据bean查找bean结果集
@@ -54,7 +54,7 @@ public interface ${Abc}Mapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<${Abc}> selectBeanByMap(HashMap map);
+    List<${Abc}> listByParms4Page(Map map);
     
     /**
      * 说明:根据map查找map结果集
@@ -63,7 +63,7 @@ public interface ${Abc}Mapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<Map> selectMapByBean4Page(${Abc} record);
+   /* List<Map> selectMapByBean4Page(${Abc} record);*/
     
    
     /**
@@ -73,11 +73,11 @@ public interface ${Abc}Mapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<${Abc}> selectBeanByMap4Page(HashMap map);
+    /*List<${Abc}> selectBeanByMap4Page(HashMap map);
     
-    int countByBean(${Abc} record);
+    int countByBean(${Abc} record);*/
     
-    int countByMap(HashMap map);
+    int countByParams(HashMap map);
       
       
 }

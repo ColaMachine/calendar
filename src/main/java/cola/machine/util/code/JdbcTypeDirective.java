@@ -74,7 +74,7 @@ public class JdbcTypeDirective implements TemplateDirectiveModel {
 			 if(type.startsWith("varchar")){
 		            typeName= "VARCHAR";
 		        }else if(type.startsWith("int")){
-		            typeName= "INT";
+		            typeName= "INTEGER";
 		        }else if(type.startsWith("bigint")){
 		            typeName= "BIGINT";
 		        }else if(type.startsWith("float")){

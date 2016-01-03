@@ -9,6 +9,7 @@
 <#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
 package cola.machine.action;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,9 +51,9 @@ public class ${Abc}Controller extends BaseController{
      * @author dozen.zhang
      * @date 2015年11月15日下午12:30:45
      */
-    @RequestMapping(value = "/${abc}/list.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
     public String list() {
-        return "/static/html/${abc}/list${Abc}.html";
+        return "/static/html/${Abc}List.html";
     }
 
  
@@ -66,7 +67,7 @@ public class ${Abc}Controller extends BaseController{
      * @author dozen.zhang
      * @date 2015年11月15日下午12:31:55
      */
-    @RequestMapping(value = "/${abc}/list.json")
+    @RequestMapping(value = "/list.json")
     @ResponseBody
     public Object list(@RequestParam(value = "curPage", required = false) Integer curPage, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         // 查找所有的角色
@@ -94,17 +95,17 @@ public class ${Abc}Controller extends BaseController{
      * @param request 发请求
      * @return Object
      */
-    @RequestMapping(value = "/${abc}/edit.htm")
+    @RequestMapping(value = "/edit.htm")
     public Object edit( HttpServletRequest request) {
         // 查找所有的角色
-        return "/static/html/${abc}/edit${abc}.html";
+        return "/static/html/${Abc}Edit.html";
     }
-    @RequestMapping(value = "/${abc}/view.htm")
+    @RequestMapping(value = "/view.htm")
     public Object viewPage( HttpServletRequest request) {
-        return "/static/html/${abc}/view${abc}.html";
+        return "/static/html/${Abc}View.html";
     }
    
-      @RequestMapping(value = "/${abc}/view.json")
+      @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
@@ -124,7 +125,7 @@ public class ${Abc}Controller extends BaseController{
      * @date 2015年11月15日下午1:33:00
      */
     // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
-    @RequestMapping(value = "/${abc}/save.json")
+    @RequestMapping(value = "/save.json")
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
         ${Abc} ${abc} =new  ${Abc}();

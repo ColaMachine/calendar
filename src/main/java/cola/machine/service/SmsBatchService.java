@@ -45,7 +45,7 @@ public class SmsBatchService extends BaseService {
      * @date 2015年11月15日下午12:36:24
      */
     public List<SmsBatch> list(HashMap params) {
-        return smsBatchMapper.selectBeanByMap4Page(params);
+        return smsBatchMapper.listByParams4Page(params);
     }
     
     /*

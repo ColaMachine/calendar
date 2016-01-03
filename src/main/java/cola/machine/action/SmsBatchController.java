@@ -49,9 +49,9 @@ public class SmsBatchController extends BaseController{
      * @author dozen.zhang
      * @date 2015年11月15日下午12:30:45
      */
-    @RequestMapping(value = "/smsBatch/list.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
     public String list() {
-        return "/static/html/smsBatch/listSmsBatch.html";
+        return "/static/html/SmsBatchList.html";
     }
 
  
@@ -65,7 +65,7 @@ public class SmsBatchController extends BaseController{
      * @author dozen.zhang
      * @date 2015年11月15日下午12:31:55
      */
-    @RequestMapping(value = "/smsBatch/list.json")
+    @RequestMapping(value = "/list.json")
     @ResponseBody
     public Object list(@RequestParam(value = "curPage", required = false) Integer curPage, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         // 查找所有的角色
@@ -93,17 +93,17 @@ public class SmsBatchController extends BaseController{
      * @param request 发请求
      * @return Object
      */
-    @RequestMapping(value = "/smsBatch/edit.htm")
+    @RequestMapping(value = "/edit.htm")
     public Object edit( HttpServletRequest request) {
         // 查找所有的角色
-        return "/static/html/smsBatch/editsmsBatch.html";
+        return "/static/html/SmsBatchEdit.html";
     }
-    @RequestMapping(value = "/smsBatch/view.htm")
+    @RequestMapping(value = "/view.htm")
     public Object viewPage( HttpServletRequest request) {
-        return "/static/html/smsBatch/viewsmsBatch.html";
+        return "/static/html/SmsBatchView.html";
     }
    
-      @RequestMapping(value = "/smsBatch/view.json")
+      @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
@@ -123,7 +123,7 @@ public class SmsBatchController extends BaseController{
      * @date 2015年11月15日下午1:33:00
      */
     // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
-    @RequestMapping(value = "/smsBatch/save.json")
+    @RequestMapping(value = "/save.json")
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
         SmsBatch smsBatch =new  SmsBatch();

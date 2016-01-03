@@ -45,7 +45,7 @@ public class SmsEachService extends BaseService {
      * @date 2015年11月15日下午12:36:24
      */
     public List<SmsEach> list(HashMap params) {
-        return smsEachMapper.selectBeanByMap4Page(params);
+        return smsEachMapper.listByParams4Page(params);
     }
     
     /*

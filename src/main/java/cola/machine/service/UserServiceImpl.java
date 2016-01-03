@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -98,8 +99,8 @@ public class UserServiceImpl implements UserService {
 		return userMapper.countAll();
 	}
 
-	public java.util.List<HashMap> getUsersByParam(HashMap map) {
-		List<HashMap> list = userMapper.getUsersByParam(map);
+	public java.util.List<Map> getUsersByParam(Map map) {
+		List<Map> list = userMapper.getUsersByParam(map);
 		return list;
 	}
 

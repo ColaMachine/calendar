@@ -43,7 +43,7 @@ public interface SmsBatchMapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<SmsBatch> selectBeanByBean(SmsBatch record);
+    List<SmsBatch> listByParms(Map map);
     
     /**
      * 说明:根据bean查找bean结果集
@@ -52,7 +52,7 @@ public interface SmsBatchMapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<SmsBatch> selectBeanByMap(HashMap map);
+    List<SmsBatch> listByParams4Page(Map map);
     
     /**
      * 说明:根据map查找map结果集
@@ -61,7 +61,7 @@ public interface SmsBatchMapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<Map> selectMapByBean4Page(SmsBatch record);
+   /* List<Map> selectMapByBean4Page(SmsBatch record);*/
     
    
     /**
@@ -71,11 +71,11 @@ public interface SmsBatchMapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<SmsBatch> selectBeanByMap4Page(HashMap map);
+    /*List<SmsBatch> selectBeanByMap4Page(HashMap map);
     
-    int countByBean(SmsBatch record);
+    int countByBean(SmsBatch record);*/
     
-    int countByMap(HashMap map);
+    int countByParams(HashMap map);
       
       
 }

@@ -2,6 +2,7 @@ package cola.machine.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import core.action.ResultDTO;
 import cola.machine.bean.User;
@@ -42,7 +43,7 @@ public interface UserService {
 	public User addUser(User user);
 	
 	//public User loginValid(User user);
-	public List<HashMap>  getUsersByParam(HashMap map);
+	public List<Map>  getUsersByParam(Map map);
 	public int countAll();
 
 	/**

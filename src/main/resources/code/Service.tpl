@@ -47,7 +47,7 @@ public class ${Abc}Service extends BaseService {
      * @date 2015年11月15日下午12:36:24
      */
     public List<${Abc}> list(HashMap params) {
-        return ${abc}Mapper.selectBeanByMap4Page(params);
+        return ${abc}Mapper.listByParams4Page(params);
     }
     
     /*
