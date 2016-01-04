@@ -7,6 +7,7 @@
  */
  package cola.machine.action;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class SmsEachController extends BaseController{
      */
     @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
     public String list() {
-        return "/static/html/smsEach/SmsEachList.html";
+        return "/static/html/SmsEachList.html";
     }
 
  
@@ -95,11 +96,11 @@ public class SmsEachController extends BaseController{
     @RequestMapping(value = "/edit.htm")
     public Object edit( HttpServletRequest request) {
         // 查找所有的角色
-        return "/static/html/smsEach/editsmsEach.html";
+        return "/static/html/SmsEachEdit.html";
     }
     @RequestMapping(value = "/view.htm")
     public Object viewPage( HttpServletRequest request) {
-        return "/static/html/smsEach/viewsmsEach.html";
+        return "/static/html/SmsEachView.html";
     }
    
       @RequestMapping(value = "/view.json")
@@ -131,13 +132,15 @@ public class SmsEachController extends BaseController{
             String batchId = request.getParameter("batchId");
             smsEach.setBatchId(Integer.valueOf(batchId)) ;
             String phone = request.getParameter("phone");
-            smsEach.setPhone(Integer.valueOf(phone)) ;
-            String sendtime = request.getParameter("sendtime");
-            smsEach.setSendtime(Timestamp.valueOf(sendtime)) ;
+            smsEach.setPhone(String.valueOf(phone)) ;
+            String sendTime = request.getParameter("sendTime");
+            smsEach.setSendTime(Timestamp.valueOf(sendTime)) ;
             String status = request.getParameter("status");
             smsEach.setStatus(Integer.valueOf(status)) ;
             String reason = request.getParameter("reason");
             smsEach.setReason(String.valueOf(reason)) ;
+        //valid
+       
         return smsEachService.save(smsEach);
     }
 }

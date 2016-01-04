@@ -22,17 +22,17 @@ public class SmsEach {
     }    public void setBatchId(Integer batchId){
         this.batchId=batchId;
     }/**手机号码**/
-    private Integer phone;
-    public Integer getPhone(){
+    private String phone;
+    public String getPhone(){
         return phone;
-    }    public void setPhone(Integer phone){
+    }    public void setPhone(String phone){
         this.phone=phone;
     }/**发送时间**/
-    private Timestamp sendtime;
-    public Timestamp getSendtime(){
-        return sendtime;
-    }    public void setSendtime(Timestamp sendtime){
-        this.sendtime=sendtime;
+    private Timestamp sendTime;
+    public Timestamp getSendTime(){
+        return sendTime;
+    }    public void setSendTime(Timestamp sendTime){
+        this.sendTime=sendTime;
     }/**发送状态**/
     private Integer status;
     public Integer getStatus(){

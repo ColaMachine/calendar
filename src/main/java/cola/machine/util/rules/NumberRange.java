@@ -2,7 +2,6 @@ package cola.machine.util.rules;
 
 import java.math.BigDecimal;
 
-import com.joint.core.constants.ErrorMessage;
 
 public class NumberRange extends Rule {
 	private String min;
@@ -51,7 +50,7 @@ public class NumberRange extends Rule {
 			}else {
 				BigDecimal maxValue = new BigDecimal(max);
 				if(realValue.compareTo(minValue)==-1 || realValue.compareTo(maxValue)==1) {
-					message = ErrorMessage.RULE_NUMBER_RANGE + min + "-" + max;
+					message = "err.param.range." + min + "-" + max;
 					return false;
 				}else {
 					return true;

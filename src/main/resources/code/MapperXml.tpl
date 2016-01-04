@@ -22,12 +22,12 @@
     delete from ${table.name}
     where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}
   </delete>
- <insert id="insert" parameterType="cola.machine.bean.${Abc}" >
+ <insert id="insert" <#if table.pk.ai==true>useGeneratedKeys="true" keyProperty="id"</#if>   parameterType="cola.machine.bean.${Abc}" >
 
     insert into ${table.name} (  <include refid="Base_Column_List" />)
     values (
      <#list table.cols as col>
-      <#if col_index==0><#else>,</#if>${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>}
+      <#if col_index==0><#else>,</#if>${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>}
     </#list>
     )
   </insert>
@@ -43,7 +43,7 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
        <#list table.cols as col>
         <if test="${col.name} != null" >  
-            ${col.name}=${r'#{'}col.name,jdbcType=<@jdbcType>${col.type}</@jdbcType>},
+          ${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>},
         </if>  
     </#list>
     </trim>
@@ -53,7 +53,7 @@
     <set >
      <#list table.cols as col>
         <if test="${col.name} != null" >  
-             ${col.name}=${r'#{'}col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>},
+             ${col.name}=${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>},
         </if>  
     </#list>
     </set>

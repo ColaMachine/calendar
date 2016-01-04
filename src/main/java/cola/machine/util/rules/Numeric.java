@@ -2,7 +2,6 @@ package cola.machine.util.rules;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.joint.core.constants.ErrorMessage;
 
 public class Numeric extends Rule {
 	
@@ -19,7 +18,7 @@ public class Numeric extends Rule {
 				return true;
 			}
 			else {
-				this.setMessage(ErrorMessage.RULE_NUMERIC_ERROR);
+				this.setMessage("err.param.numeric");
 				return false;
 			}
 		}

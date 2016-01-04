@@ -12,9 +12,9 @@ import javax.validation.ValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.joint.core.util.rules.Rule;
 
 import cola.machine.core.msg.ErrorMessage;
+import cola.machine.util.rules.Rule;
 import core.action.ResultDTO;
 
 /**

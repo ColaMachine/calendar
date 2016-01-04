@@ -143,6 +143,8 @@ public class SmsBatchController extends BaseController{
             smsBatch.setContent(String.valueOf(content)) ;
             String sendTime = request.getParameter("sendTime");
             smsBatch.setSendTime(Timestamp.valueOf(sendTime)) ;
+        //valid
+       
         return smsBatchService.save(smsBatch);
     }
 }

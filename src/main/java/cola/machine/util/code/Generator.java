@@ -114,7 +114,7 @@ public class Generator {
         String type = "";
         String typeName = "";
 
-        table = load(homePath.resolve("src/main/resources/SmsBatch.cfg"));
+        table = load(homePath.resolve("src/main/resources/SmsEach.cfg"));
         table.init();
         root.put("javaType", new JavaTypeDirective());
         root.put("jdbcType", new JdbcTypeDirective());
@@ -182,6 +182,20 @@ public class Generator {
             templateStr.append(s + "\r\n");
         }
         return templateStr.toString();
+    }
+    public String getValidStr(){
+       StringBuffer sb=new StringBuffer(" ValidateUtil vu = new ValidateUtil();");
+       for(int i=0;i<table.getCols().size();i++){
+           ZColum zcol =table.getCols().get(0); 
+           zcol.getType().equals(anObject);
+           sb.append("vu.add(\""+zcol.getName()+"\", "+zcol.getName()+", \""+zcol.getRemark()+"\", new Rule[]{new Required(), new Numeric()});");
+           
+       }
+        vu.add("applicationId", applicationId, ParamName.APPLICATION_ID, new Rule[]{new Required(), new Numeric()});
+        String validStr = vu.validateString();
+        if(StringUtils.isBlank(validStr)) {
+            
+        }
     }
     public String changeMySqlType2JavaType(String type) {
         String typeName = null;

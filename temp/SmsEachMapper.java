@@ -43,7 +43,7 @@ public interface SmsEachMapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<SmsEach> listByParms(Map map);
+    List<SmsEach> listByParams(Map map);
     
     /**
      * 说明:根据bean查找bean结果集

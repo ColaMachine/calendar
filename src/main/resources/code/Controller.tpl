@@ -133,6 +133,8 @@ public class ${Abc}Controller extends BaseController{
             String ${col.name} = request.getParameter("${col.name}");
             ${abc}.set${col.name[0]?upper_case}${col.name[1..]}(<@javaType>${col.type}</@javaType>.valueOf(${col.name})) ;
         </#list>
+        //valid
+       
         return ${abc}Service.save(${abc});
     }
 }

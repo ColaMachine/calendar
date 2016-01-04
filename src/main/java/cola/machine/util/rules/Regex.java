@@ -3,8 +3,6 @@ package cola.machine.util.rules;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.joint.core.constants.ErrorMessage;
-
 public class Regex extends Rule{
 	private String reg;
 	private Pattern pattern;
@@ -35,7 +33,7 @@ public class Regex extends Rule{
 		if(value != null && !value.equals("")) {
 			Matcher matcher = this.pattern.matcher(value);
 			if(!matcher.matches()) {
-				message = ErrorMessage.RULE_REGEX_ERROR;
+				message = "err.param.regex";
 				return false;
 			} else {
 				return true;

@@ -23,10 +23,10 @@ public class SmsEach {
     }    public void setBatchId(Integer batchId){
         this.batchId=batchId;
     }/**手机号码**/
-    private Integer phone;
-    public Integer getPhone(){
+    private String phone;
+    public String getPhone(){
         return phone;
-    }    public void setPhone(Integer phone){
+    }    public void setPhone(String phone){
         this.phone=phone;
     }/**发送时间**/
     private Timestamp sendtime;

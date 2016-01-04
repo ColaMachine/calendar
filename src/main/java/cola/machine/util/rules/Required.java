@@ -1,7 +1,5 @@
 package cola.machine.util.rules;
 
-import com.joint.core.constants.ErrorMessage;
-
 public class Required extends Rule{
 	
 	public Required(){
@@ -10,7 +8,7 @@ public class Required extends Rule{
 	
 	public boolean valid(){
 		if(this.getValue()==null || this.getValue().equals("")){
-			this.setMessage(ErrorMessage.RULE_REQUIRED_ERROR);
+			this.setMessage("err.param.nonull");
 			return false;
 		}else {
 			return true;
