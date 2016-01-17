@@ -26,7 +26,6 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.session.RowBounds;
 
-import com.awifi.core.page.Page;
 
 /**
  * 通过拦截<code>StatementHandler</code>的<code>prepare</code>方法，重写sql语句实现物理分页。
@@ -82,7 +81,7 @@ public class PageInterceptor implements Interceptor {
             	Object obj = metaStatementHandler
                         .getValue("delegate.boundSql.parameterObject.page");
             	// 传入了page参数且需要开启分页时
-            	if(obj!=null&&obj instanceof Page &&((Page)obj).isPagination()){
+            	if(obj!=null&&obj instanceof Page){
             		Page page = (Page) metaStatementHandler
             				.getValue("delegate.boundSql.parameterObject.page");
             		String sql = boundSql.getSql();

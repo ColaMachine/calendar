@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.awifi.core.page.Page;
+import core.page.Page;;
+
 
 public class AppExceptionLogExample {
     /**

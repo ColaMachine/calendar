@@ -1,6 +1,6 @@
 package cola.machine.core.page;
 
-import com.awifi.core.page.Page;
+import core.page.Page;
 
 
 public class PageUtil {

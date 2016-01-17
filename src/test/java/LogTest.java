@@ -10,7 +10,7 @@ import cola.machine.bean.AppExceptionLog;
 import cola.machine.bean.AppExceptionLogExample;
 import cola.machine.service.LogService;
 
-import com.awifi.core.page.Page;
+import core.page.Page;
 
 /**
  * 版权所有：公众信息

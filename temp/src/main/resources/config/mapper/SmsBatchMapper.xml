@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cola.machine.dao.SmsBatchMapper">
+  <resultMap id="BaseResultMap" type="cola.machine.bean.SmsBatch">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="total" jdbcType="INTEGER" property="total" />
+      <result column="succ" jdbcType="INTEGER" property="succ" />
+      <result column="fail" jdbcType="INTEGER" property="fail" />
+      <result column="status" jdbcType="INTEGER" property="status" />
+      <result column="phone" jdbcType="LONGVARCHAR" property="phone" />
+      <result column="content" jdbcType="VARCHAR" property="content" />
+      <result column="sendTime" jdbcType="TIMESTAMP" property="sendTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id ,total ,succ ,fail ,status ,phone ,content ,sendTime 
+   
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SmsBatch
+    where id =   #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from SmsBatch
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="cola.machine.bean.SmsBatch" >
+
+    insert into SmsBatch (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=INTEGER}
+,#{total,jdbcType=INTEGER}
+,#{succ,jdbcType=INTEGER}
+,#{fail,jdbcType=INTEGER}
+,#{status,jdbcType=INTEGER}
+,#{phone,jdbcType=LONGVARCHAR}
+,#{content,jdbcType=VARCHAR}
+,#{sendTime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="cola.machine.bean.SmsBatch" >
+    insert into SmsBatch
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           id, 
+        </if>  
+        <if test="total != null" >  
+           total, 
+        </if>  
+        <if test="succ != null" >  
+           succ, 
+        </if>  
+        <if test="fail != null" >  
+           fail, 
+        </if>  
+        <if test="status != null" >  
+           status, 
+        </if>  
+        <if test="phone != null" >  
+           phone, 
+        </if>  
+        <if test="content != null" >  
+           content, 
+        </if>  
+        <if test="sendTime != null" >  
+           sendTime, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=INTEGER},
+        </if>  
+        <if test="total != null" >  
+          #{total,jdbcType=INTEGER},
+        </if>  
+        <if test="succ != null" >  
+          #{succ,jdbcType=INTEGER},
+        </if>  
+        <if test="fail != null" >  
+          #{fail,jdbcType=INTEGER},
+        </if>  
+        <if test="status != null" >  
+          #{status,jdbcType=INTEGER},
+        </if>  
+        <if test="phone != null" >  
+          #{phone,jdbcType=LONGVARCHAR},
+        </if>  
+        <if test="content != null" >  
+          #{content,jdbcType=VARCHAR},
+        </if>  
+        <if test="sendTime != null" >  
+          #{sendTime,jdbcType=TIMESTAMP},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cola.machine.bean.SmsBatch" >
+    update SmsBatch
+    <set >
+        <if test="id != null" >  
+             id=#{id,jdbcType=INTEGER},
+        </if>  
+        <if test="total != null" >  
+             total=#{total,jdbcType=INTEGER},
+        </if>  
+        <if test="succ != null" >  
+             succ=#{succ,jdbcType=INTEGER},
+        </if>  
+        <if test="fail != null" >  
+             fail=#{fail,jdbcType=INTEGER},
+        </if>  
+        <if test="status != null" >  
+             status=#{status,jdbcType=INTEGER},
+        </if>  
+        <if test="phone != null" >  
+             phone=#{phone,jdbcType=LONGVARCHAR},
+        </if>  
+        <if test="content != null" >  
+             content=#{content,jdbcType=VARCHAR},
+        </if>  
+        <if test="sendTime != null" >  
+             sendTime=#{sendTime,jdbcType=TIMESTAMP},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cola.machine.bean.SmsBatch" >
+    update SmsBatch
+    set 
+        <if test="id != null" >  
+
+              id=#{col.name},jdbcType=INTEGER},
+        </if>  
+        <if test="total != null" >  
+,
+              total=#{col.name},jdbcType=INTEGER},
+        </if>  
+        <if test="succ != null" >  
+,
+              succ=#{col.name},jdbcType=INTEGER},
+        </if>  
+        <if test="fail != null" >  
+,
+              fail=#{col.name},jdbcType=INTEGER},
+        </if>  
+        <if test="status != null" >  
+,
+              status=#{col.name},jdbcType=INTEGER},
+        </if>  
+        <if test="phone != null" >  
+,
+              phone=#{col.name},jdbcType=LONGVARCHAR},
+        </if>  
+        <if test="content != null" >  
+,
+              content=#{col.name},jdbcType=VARCHAR},
+        </if>  
+        <if test="sendTime != null" >  
+,
+              sendTime=#{col.name},jdbcType=TIMESTAMP},
+        </if>  
+where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SmsBatch where 1=1
+        <if test="id != null and id != '' ">  
+           and id = #{id}
+        </if>  
+        <if test="total != null and total != '' ">  
+           and total = #{total}
+        </if>  
+        <if test="succ != null and succ != '' ">  
+           and succ = #{succ}
+        </if>  
+        <if test="fail != null and fail != '' ">  
+           and fail = #{fail}
+        </if>  
+        <if test="status != null and status != '' ">  
+           and status = #{status}
+        </if>  
+        <if test="phone != null and phone != '' ">  
+           and phone = #{phone}
+        </if>  
+        <if test="content != null and content != '' ">  
+           and content = #{content}
+        </if>  
+        <if test="sendTime != null and sendTime != '' ">  
+           and sendTime = #{sendTime}
+        </if>  
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SmsBatch where 1=1
+        <if test="id != null and id != '' ">  
+           and id = #{id}
+        </if>  
+        <if test="total != null and total != '' ">  
+           and total = #{total}
+        </if>  
+        <if test="succ != null and succ != '' ">  
+           and succ = #{succ}
+        </if>  
+        <if test="fail != null and fail != '' ">  
+           and fail = #{fail}
+        </if>  
+        <if test="status != null and status != '' ">  
+           and status = #{status}
+        </if>  
+        <if test="phone != null and phone != '' ">  
+           and phone = #{phone}
+        </if>  
+        <if test="content != null and content != '' ">  
+           and content = #{content}
+        </if>  
+        <if test="sendTime != null and sendTime != '' ">  
+           and sendTime = #{sendTime}
+        </if>  
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from SmsBatch where 1=1
+        <if test="id != null and id != '' ">  
+           and id = #{id}
+        </if>  
+        <if test="total != null and total != '' ">  
+           and total = #{total}
+        </if>  
+        <if test="succ != null and succ != '' ">  
+           and succ = #{succ}
+        </if>  
+        <if test="fail != null and fail != '' ">  
+           and fail = #{fail}
+        </if>  
+        <if test="status != null and status != '' ">  
+           and status = #{status}
+        </if>  
+        <if test="phone != null and phone != '' ">  
+           and phone = #{phone}
+        </if>  
+        <if test="content != null and content != '' ">  
+           and content = #{content}
+        </if>  
+        <if test="sendTime != null and sendTime != '' ">  
+           and sendTime = #{sendTime}
+        </if>  
+  </select>
+
+</mapper>

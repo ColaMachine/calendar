@@ -26,8 +26,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cola.machine.service.SmsBatchService;
 import cola.machine.bean.SmsBatch;
 import cola.machine.util.ResultUtil;
+import cola.machine.util.ValidateUtil;
+import cola.machine.util.rules.*;
+import core.page.Page;
 
-import com.awifi.core.page.Page;
+import cola.machine.util.StringUtil;
+import cola.machine.util.ValidateUtil;
 
 import core.action.ResultDTO;
 
@@ -143,6 +147,50 @@ public class SmsBatchController extends BaseController{
             smsBatch.setContent(String.valueOf(content)) ;
             String sendTime = request.getParameter("sendTime");
             smsBatch.setSendTime(Timestamp.valueOf(sendTime)) ;
+        //valid
+           ValidateUtil vu = new ValidateUtil();
+    String validStr="";
+vu.add("id", id, "id",  new Rule[]{new Digits()});
+ validStr = vu.validateString();
+if(StringUtil.isNotEmpty(validStr)) {
+return ResultUtil.getResult(302,validStr);
+}
+vu.add("total", total, "总发送数据",  new Rule[]{new Digits(),new NotEmpty()});
+ validStr = vu.validateString();
+if(StringUtil.isNotEmpty(validStr)) {
+return ResultUtil.getResult(302,validStr);
+}
+vu.add("succ", succ, "成功数量",  new Rule[]{new Digits(),new NotEmpty()});
+ validStr = vu.validateString();
+if(StringUtil.isNotEmpty(validStr)) {
+return ResultUtil.getResult(302,validStr);
+}
+vu.add("fail", fail, "失败数量",  new Rule[]{new Digits(),new NotEmpty()});
+ validStr = vu.validateString();
+if(StringUtil.isNotEmpty(validStr)) {
+return ResultUtil.getResult(302,validStr);
+}
+vu.add("status", status, "状态",  new Rule[]{new Digits(),new NotEmpty()});
+ validStr = vu.validateString();
+if(StringUtil.isNotEmpty(validStr)) {
+return ResultUtil.getResult(302,validStr);
+}
+vu.add("phone", phone, "手机号码",  new Rule[]{new NotEmpty()});
+ validStr = vu.validateString();
+if(StringUtil.isNotEmpty(validStr)) {
+return ResultUtil.getResult(302,validStr);
+}
+vu.add("content", content, "短信内容",  new Rule[]{new Length(500),new NotEmpty()});
+ validStr = vu.validateString();
+if(StringUtil.isNotEmpty(validStr)) {
+return ResultUtil.getResult(302,validStr);
+}
+vu.add("sendTime", sendTime, "定时发送",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss")});
+ validStr = vu.validateString();
+if(StringUtil.isNotEmpty(validStr)) {
+return ResultUtil.getResult(302,validStr);
+}
+
         return smsBatchService.save(smsBatch);
     }
 }

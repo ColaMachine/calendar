@@ -4,13 +4,13 @@
   <resultMap id="BaseResultMap" type="cola.machine.bean.SmsEach">
       <id column="id" jdbcType="INTEGER" property="id" />
       <result column="batchId" jdbcType="INTEGER" property="batchId" />
-      <result column="phone" jdbcType="INTEGER" property="phone" />
-      <result column="sendtime" jdbcType="TIMESTAMP" property="sendtime" />
+      <result column="phone" jdbcType="VARCHAR" property="phone" />
+      <result column="sendTime" jdbcType="TIMESTAMP" property="sendTime" />
       <result column="status" jdbcType="INTEGER" property="status" />
       <result column="reason" jdbcType="VARCHAR" property="reason" />
   </resultMap>
   <sql id="Base_Column_List">
-    id ,batchId ,phone ,sendtime ,status ,reason 
+    id ,batchId ,phone ,sendTime ,status ,reason 
    
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -23,16 +23,16 @@
     delete from SmsEach
     where id = #{id,jdbcType=INTEGER}
   </delete>
- <insert id="insert" parameterType="cola.machine.bean.SmsEach" >
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="cola.machine.bean.SmsEach" >
 
     insert into SmsEach (  <include refid="Base_Column_List" />)
     values (
-id,jdbcType=INTEGER}
-,batchId,jdbcType=INTEGER}
-,phone,jdbcType=INTEGER}
-,sendtime,jdbcType=TIMESTAMP}
-,status,jdbcType=INTEGER}
-,reason,jdbcType=VARCHAR}
+#{id,jdbcType=INTEGER}
+,#{batchId,jdbcType=INTEGER}
+,#{phone,jdbcType=VARCHAR}
+,#{sendTime,jdbcType=TIMESTAMP}
+,#{status,jdbcType=INTEGER}
+,#{reason,jdbcType=VARCHAR}
     )
   </insert>
    <insert id="insertSelective" parameterType="cola.machine.bean.SmsEach" >
@@ -47,8 +47,8 @@ id,jdbcType=INTEGER}
         <if test="phone != null" >  
            phone, 
         </if>  
-        <if test="sendtime != null" >  
-           sendtime, 
+        <if test="sendTime != null" >  
+           sendTime, 
         </if>  
         <if test="status != null" >  
            status, 
@@ -59,22 +59,22 @@ id,jdbcType=INTEGER}
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
         <if test="id != null" >  
-            id=#{col.name,jdbcType=INTEGER},
+          #{id,jdbcType=INTEGER},
         </if>  
         <if test="batchId != null" >  
-            batchId=#{col.name,jdbcType=INTEGER},
+          #{batchId,jdbcType=INTEGER},
         </if>  
         <if test="phone != null" >  
-            phone=#{col.name,jdbcType=INTEGER},
+          #{phone,jdbcType=VARCHAR},
         </if>  
-        <if test="sendtime != null" >  
-            sendtime=#{col.name,jdbcType=TIMESTAMP},
+        <if test="sendTime != null" >  
+          #{sendTime,jdbcType=TIMESTAMP},
         </if>  
         <if test="status != null" >  
-            status=#{col.name,jdbcType=INTEGER},
+          #{status,jdbcType=INTEGER},
         </if>  
         <if test="reason != null" >  
-            reason=#{col.name,jdbcType=VARCHAR},
+          #{reason,jdbcType=VARCHAR},
         </if>  
     </trim>
   </insert>
@@ -82,22 +82,22 @@ id,jdbcType=INTEGER}
     update SmsEach
     <set >
         <if test="id != null" >  
-             id=#{col.name},jdbcType=INTEGER},
+             id=#{id,jdbcType=INTEGER},
         </if>  
         <if test="batchId != null" >  
-             batchId=#{col.name},jdbcType=INTEGER},
+             batchId=#{batchId,jdbcType=INTEGER},
         </if>  
         <if test="phone != null" >  
-             phone=#{col.name},jdbcType=INTEGER},
+             phone=#{phone,jdbcType=VARCHAR},
         </if>  
-        <if test="sendtime != null" >  
-             sendtime=#{col.name},jdbcType=TIMESTAMP},
+        <if test="sendTime != null" >  
+             sendTime=#{sendTime,jdbcType=TIMESTAMP},
         </if>  
         <if test="status != null" >  
-             status=#{col.name},jdbcType=INTEGER},
+             status=#{status,jdbcType=INTEGER},
         </if>  
         <if test="reason != null" >  
-             reason=#{col.name},jdbcType=VARCHAR},
+             reason=#{reason,jdbcType=VARCHAR},
         </if>  
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -115,11 +115,11 @@ id,jdbcType=INTEGER}
         </if>  
         <if test="phone != null" >  
 ,
-              phone=#{col.name},jdbcType=INTEGER},
+              phone=#{col.name},jdbcType=VARCHAR},
         </if>  
-        <if test="sendtime != null" >  
+        <if test="sendTime != null" >  
 ,
-              sendtime=#{col.name},jdbcType=TIMESTAMP},
+              sendTime=#{col.name},jdbcType=TIMESTAMP},
         </if>  
         <if test="status != null" >  
 ,
@@ -144,8 +144,8 @@ where id = #{id,jdbcType=INTEGER}
         <if test="phone != null and phone != '' ">  
            and phone = #{phone}
         </if>  
-        <if test="sendtime != null and sendtime != '' ">  
-           and sendtime = #{sendtime}
+        <if test="sendTime != null and sendTime != '' ">  
+           and sendTime = #{sendTime}
         </if>  
         <if test="status != null and status != '' ">  
            and status = #{status}
@@ -167,8 +167,8 @@ where id = #{id,jdbcType=INTEGER}
         <if test="phone != null and phone != '' ">  
            and phone = #{phone}
         </if>  
-        <if test="sendtime != null and sendtime != '' ">  
-           and sendtime = #{sendtime}
+        <if test="sendTime != null and sendTime != '' ">  
+           and sendTime = #{sendTime}
         </if>  
         <if test="status != null and status != '' ">  
            and status = #{status}
@@ -190,8 +190,8 @@ where id = #{id,jdbcType=INTEGER}
         <if test="phone != null and phone != '' ">  
            and phone = #{phone}
         </if>  
-        <if test="sendtime != null and sendtime != '' ">  
-           and sendtime = #{sendtime}
+        <if test="sendTime != null and sendTime != '' ">  
+           and sendTime = #{sendTime}
         </if>  
         <if test="status != null and status != '' ">  
            and status = #{status}

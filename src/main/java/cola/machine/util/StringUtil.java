@@ -10,7 +10,12 @@ public class StringUtil {
 		}
 		return false;
 	}
-	
+	public static boolean  isBlank(String str){
+		if(str ==null ||  str.length()==0){
+			return true;
+		}
+		return false;
+	}
 	public static boolean  isNotEmpty(String str){
 		
 		return !isEmpty(str);
@@ -29,11 +34,40 @@ public class StringUtil {
 		Matcher matcher = pattern.matcher(username);
 		return matcher.find();
 	}
-	
+	public static boolean checkFloat(String value,int integer,int fraction){
+		String regex= String.format("^[+|-]?\\d{1,%d}(\\.\\d{1,%d})?$", integer,fraction);
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(value);
+		return matcher.find();
+	}
 	public static String getAbc(String abc){
 	    return abc.substring(0, 1).toUpperCase()+abc.substring(1);
 	}
 	public static String getabc(String abc){
         return abc.substring(0, 1).toLowerCase()+abc.substring(1);
     }
+	
+	public  static String join(String join,Object [] strAry){
+		StringBuffer sb=new StringBuffer();
+
+        for(int i=0;i<strAry.length;i++){
+
+             if(i==(strAry.length-1)){
+
+                 sb.append(strAry[i]);
+
+             }else{
+
+                 sb.append(strAry[i]).append(join);
+
+             }
+
+        }
+        return new String(sb);
+	}
+	public static String getContentBetween(String content,String a,String b){
+		int index = content.indexOf(a)+a.length();
+		int last = content.lastIndexOf(b);
+		return content.substring(index, last);
+	}
 }

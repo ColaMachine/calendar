@@ -6,7 +6,6 @@
  * 文件说明: 
  */
 package cola.machine.bean;
-
 import java.sql.Timestamp;
 
 public class SmsEach {
@@ -29,11 +28,11 @@ public class SmsEach {
     }    public void setPhone(String phone){
         this.phone=phone;
     }/**发送时间**/
-    private Timestamp sendtime;
-    public Timestamp getSendtime(){
-        return sendtime;
-    }    public void setSendtime(Timestamp sendtime){
-        this.sendtime=sendtime;
+    private Timestamp sendTime;
+    public Timestamp getSendTime(){
+        return sendTime;
+    }    public void setSendTime(Timestamp sendTime){
+        this.sendTime=sendTime;
     }/**发送状态**/
     private Integer status;
     public Integer getStatus(){

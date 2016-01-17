@@ -15,7 +15,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +24,7 @@ import cola.machine.bean.FwLog;
 import cola.machine.bean.FwLogExample;
 import cola.machine.dao.AppExceptionLogMapper;
 import cola.machine.dao.FwLogMapper;
+import cola.machine.util.StringUtil;
 
 import com.google.gson.Gson;
 @Transactional
@@ -89,7 +89,7 @@ public class LogService {
 		log.setLineNumber(e.getStackTrace()[0].getLineNumber());
 		Gson gson=new Gson();
 		String sid = request.getParameter("sid");
-		if(StringUtils.isBlank(sid))
+		if(StringUtil.isBlank(sid))
 			sid="0";
 		log.setSid(Integer.valueOf(sid));
 		log.setParams(gson.toJson(request.getParameterMap()));

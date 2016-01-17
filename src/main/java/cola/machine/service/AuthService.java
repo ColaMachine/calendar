@@ -27,12 +27,10 @@ import cola.machine.dao.RolePerMapper;
 import cola.machine.dao.UserRoleMapper;
 import cola.machine.util.CacheUtil;
 import cola.machine.util.ResultUtil;
+import cola.machine.util.StringUtil;
 import cola.machine.util.UUIDUtil;
 import cola.machine.util.ValidateUtil;
-
-import com.awifi.core.page.Page;
-import com.awifi.util.StringUtils;
-
+import core.page.Page;
 import core.action.ResultDTO;
 
 @Service("authService")
@@ -80,11 +78,11 @@ private UserRoleMapper userRoleMapper;
 	public ResultDTO saveRoleAndPermission(String id, String roleName,
 			String remark, String permissions) {
 		int serviceCode =001;
-		if (StringUtils.isBlank(roleName)) {
+		if (StringUtil.isBlank(roleName)) {
 			logger.info("err.param.role.remark");
 			return ResultUtil.getWrongResultFromCfg("err.param.role.name");
 		}
-		if (StringUtils.isBlank(remark)) {
+		if (StringUtil.isBlank(remark)) {
 			logger.info("err.param.role.remark");
 			return ResultUtil.getWrongResultFromCfg("err.param.role.remarks");
 		}
@@ -106,7 +104,7 @@ private UserRoleMapper userRoleMapper;
 			// resultDTO.clone(result);
 			return result;
 		}
-		if (StringUtils.isBlank(id)) {
+		if (StringUtil.isBlank(id)) {
 			Role example = new Role();
 			int count = roleMapper.countByName(role.getName());
 			if (count > 0) {
@@ -120,7 +118,7 @@ private UserRoleMapper userRoleMapper;
 		}
 		String[] permissionArr = permissions.split(",");
 		// 先删除相关的角色对应的数据
-		if (!StringUtils.isBlank(id))
+		if (!StringUtil.isBlank(id))
 			rolePerMapper.deleteByRoleId(role.getId());
 		for (String permission : permissionArr) {
 			if (permissionMapper.selectByPrimaryKey(
@@ -251,7 +249,7 @@ private UserRoleMapper userRoleMapper;
      */
     public void updateUserRole(String userId, String roleIds) throws Exception {
         userRoleMapper.deleteByUserId(userId);
-        if (!StringUtils.isEmpty(roleIds)) {
+        if (!StringUtil.isEmpty(roleIds)) {
             String[] ARole = roleIds.split(",");
             UserRole userRole = new UserRole();
             for (int i = 0; i < ARole.length; i++) {
@@ -345,7 +343,7 @@ private UserRoleMapper userRoleMapper;
      * @date 2015年12月21日下午5:43:58
      */
     public Object savePermission(Permission permission) {
-        if(StringUtils.isBlank(permission.getId())){
+        if(StringUtil.isBlank(permission.getId())){
             permission.setId(UUIDUtil.getUUID());
             permissionMapper.insert(permission);
         }else{

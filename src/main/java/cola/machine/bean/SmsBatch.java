@@ -6,7 +6,6 @@
  * 文件说明: 
  */
 package cola.machine.bean;
-
 import java.sql.Timestamp;
 
 public class SmsBatch {
