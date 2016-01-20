@@ -1344,10 +1344,11 @@ CalendarView.prototype.VampireAlgorithm = function(vampires) {
 				// console.log("进入isTouchSide"+left_vampires[i]);
 				if (generation_arr[curr_generation][j] == null)
 					alert("bug");
-
+				console.log("left_vampires"+left_vampires.length);
 				if (isTouchSide(left_vampires[i],
 						generation_arr[curr_generation][j])) {
-					flag = false;console.log("flag1111111111111"+flag);
+					flag = false;
+					console.log("flag1111111111111"+flag);
 					break;
 				}
 			}// console.log("flag"+flag);

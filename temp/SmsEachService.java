@@ -44,10 +44,12 @@ public class SmsEachService extends BaseService {
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
      */
-    public List<SmsEach> list(HashMap params) {
+    public List<SmsEach> listByParams4Page(HashMap params) {
         return smsEachMapper.listByParams4Page(params);
     }
-    
+     public List<SmsEach> listByParams(HashMap params) {
+        return smsEachMapper.listByParams(params);
+    }
     /*
     *//**
      * 说明:

@@ -173,6 +173,8 @@ function getTop(time,hourHeight){
 }
 function isTouchSide(calEvent1,calEvent2){
 	//var start1=parseInt($("event_"+calEvent1.id).style.top,10);
+	if(calEvent1.id==calEvent2.id)
+		return false;
 	var start1=parseInt($$("event_"+calEvent1.id).offsetTop);
 	//var end1=start1+parseInt($("event_"+calEvent1.id).offsetHeight);
 	var end1=start1+parseInt($$("event_"+calEvent1.id).offsetHeight);
@@ -182,7 +184,7 @@ function isTouchSide(calEvent1,calEvent2){
 	//console.log("starta"+start1+" enda"+end1+" startb"+start2+" endb"+end2 +(start1>start2&&start2<end1 ) );
 	//console.log($$("event_"+calEvent1.id).offsetTop);
 	if((start1<start2&&start2<end1 ) || (start1<end2 && end2<end1) ||( start1>=start2&&end1<=end2   )){
-	//	console.log("starta"+start1+" enda"+end1+" startb"+start2+" endb"+end2 +(start1>start2&&start2<end1 ) );
+		console.log("calEvent1.id:"+calEvent1.id+" calEvent2id:"+calEvent2.id+"starta"+start1+" enda"+end1+" startb"+start2+" endb"+end2 +(start1>start2&&start2<end1 ) );
 		return true;
 	}else{
 	return false;

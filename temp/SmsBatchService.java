@@ -44,10 +44,12 @@ public class SmsBatchService extends BaseService {
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
      */
-    public List<SmsBatch> list(HashMap params) {
+    public List<SmsBatch> listByParams4Page(HashMap params) {
         return smsBatchMapper.listByParams4Page(params);
     }
-    
+     public List<SmsBatch> listByParams(HashMap params) {
+        return smsBatchMapper.listByParams(params);
+    }
     /*
     *//**
      * 说明:

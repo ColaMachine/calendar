@@ -40,7 +40,13 @@ public class UserController extends BaseController {
 		// System.out.println(123);
 		return "/static/html/login.html";
 	}
-
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index3(HttpServletRequest request) {
+	    request.setAttribute("path", "/calendar");
+        return "/jsp/index.jsp";
+    }
+	
 	/**
 	 * 说明:登录提交
 	 * 
@@ -247,7 +253,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request) {
 		request.getSession().removeAttribute("user");
-		return "/login";
+		return "/static/html/login.html";
 	}
 
 	@RequestMapping(value = "/user/edit.htm", method = RequestMethod.GET)

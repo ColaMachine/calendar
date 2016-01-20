@@ -21,6 +21,8 @@ $(document).ready(function(){
 	//注册表单初始化
 	registerValidator.init(); 
 	
+	//show user name and password
+	
 
 })
 
@@ -246,7 +248,7 @@ var loginValidator = function() {
 	var username=getCookie('username')
 	//alert(username);
 	$("#login-email").val(username);
-	return;
+	//return;
 	if (username!=null && username!="")
 	  {alert('Welcome again '+username+'!')}
 	else 
@@ -265,12 +267,15 @@ var loginValidator = function() {
 	function login(){
 	//alert($("#login_form").valid());
 		var jso = changeForm2Jso("#login_form");
+		//jso.password=$.md5(jso.password); 
 		//先禁用按钮
 		$("#loginBtn").attr("disabled","disabled");
 		//alert($("#rememberme").attr("checked"));
 		//判断是否使用记住功能
 		if($("#rememberme").attr("checked")=='checked'){//alert("选中了记住我");
-		 setCookie('username',jso.email,365);
+			console.log("username"+jso.email);
+			setCookie('username',jso.email,365);
+			setCookie('password',jso.password,365);
 		}
 		$.post(PATH+"/loginPost.json",jso,function(data){
 			if(data[AJAX_RESULT]==AJAX_SUCC){

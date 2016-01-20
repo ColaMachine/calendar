@@ -16,10 +16,10 @@
     display: none;
 }
 .page .menu>ul.nav>li>ul>li .nav-icon{
-  /*   display: none; */
+     display: none; 
 }
 .page .menu li:hover>ul{
-   /*  display: block; */
+    display: block; 
 }
 .page .menu li li>ul{
    /*  display: none; */

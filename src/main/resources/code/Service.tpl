@@ -46,10 +46,12 @@ public class ${Abc}Service extends BaseService {
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
      */
-    public List<${Abc}> list(HashMap params) {
+    public List<${Abc}> listByParams4Page(HashMap params) {
         return ${abc}Mapper.listByParams4Page(params);
     }
-    
+     public List<${Abc}> listByParams(HashMap params) {
+        return ${abc}Mapper.listByParams(params);
+    }
     /*
     *//**
      * 说明:

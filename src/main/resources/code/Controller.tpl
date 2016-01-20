@@ -84,12 +84,12 @@ public class ${Abc}Controller extends BaseController{
         page.setPageSize(pageSize);
         HashMap params =new HashMap();
         params.put("page",page);
-        List<${Abc}> ${abc}s = ${abc}Service.list(params);
+        List<${Abc}> ${abc}s = ${abc}Service.listByParams4Page(params);
         return ResultUtil.getResult(${abc}s, page);
     }
     
     
-
+    
     /**
      * @param id 参数
      * @param request 发请求

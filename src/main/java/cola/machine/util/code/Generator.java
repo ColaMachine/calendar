@@ -187,14 +187,45 @@ public class Generator {
        StringBuffer sb=new StringBuffer(" ValidateUtil vu = new ValidateUtil();");
        for(int i=0;i<table.getCols().size();i++){
            ZColum zcol =table.getCols().get(0); 
-           zcol.getType().equals(anObject);
-           sb.append("vu.add(\""+zcol.getName()+"\", "+zcol.getName()+", \""+zcol.getRemark()+"\", new Rule[]{new Required(), new Numeric()});");
            
+           sb.append("vu.add(\""+zcol.getName()+"\", "+zcol.getName()+", \""+zcol.getRemark()+"\", new Rule[]{");
+           if(zcol.isNn()){
+               sb.append("new NotNullRule(),");
+           }
+           if(zcol.getType().toLowerCase().startsWith("int")){
+               sb.append("new IntegerRule(),");
+           }
+           if(zcol.getType().toLowerCase().startsWith("bigint")){
+               sb.append("new LongRule(),");
+           }
+           if(zcol.getType().toLowerCase().startsWith("float")){
+               sb.append("new FloatRule(),");
+           }
+           if(zcol.getType().toLowerCase().startsWith("double")){
+               sb.append("new DoubleRule(),");
+           }
+           if(zcol.getType().toLowerCase().startsWith("varchar")){
+               //获取圆括号里的参数
+               sb.append("new VarcharRule(),");
+           }
+           if(zcol.getType().toLowerCase().startsWith("timestamp")){
+               sb.append("new VarcharRule(),");
+           }
        }
         vu.add("applicationId", applicationId, ParamName.APPLICATION_ID, new Rule[]{new Required(), new Numeric()});
         String validStr = vu.validateString();
         if(StringUtils.isBlank(validStr)) {
             
+        }
+    }
+    public String getIntFromKuoHao(String str){
+        int index = str.indexOf("(");
+        if(index==-1){
+            return "";
+        }
+        else{
+            int end =str.indexOf(")");
+            return str.substring(index,end-index);
         }
     }
     public String changeMySqlType2JavaType(String type) {

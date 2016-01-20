@@ -13,6 +13,54 @@
 	           "/static/js/additional-methods.js",
 	          ]);
 	includeCSS(["/static/css/bootstrap.min.css"]);
+	
+	var xmlhttp;
+	function loadXMLDoc(url)
+	{
+	xmlhttp=null;
+	if (window.XMLHttpRequest)
+	  {// code for all new browsers
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else if (window.ActiveXObject)
+	  {// code for IE5 and IE6
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	if (xmlhttp!=null)
+	  {
+	  xmlhttp.onreadystatechange=state_Change;
+	  xmlhttp.open("GET",url,true);
+	  xmlhttp.send(null);
+	  }
+	else
+	  {
+	  alert("Your browser does not support XMLHTTP.");
+	  }
+	}
+
+	function state_Change()
+	{
+	if (xmlhttp.readyState==4)
+	  {// 4 = "loaded"
+	  if (xmlhttp.status==200)
+	    {// 200 = OK
+	    // ...our code here...
+	    }
+	  else
+	    {
+	    alert("Problem retrieving XML data "+xmlhttp.status);
+	    }
+	  }
+	}
+	//loadXMLDoc("http://www.baidu.com");
+window.onload=function(){	
+	
+	var img = new Image();
+	img.onerror = function (){alert('error')};
+	img.onload = function (){alert('ok')};
+	img.src = "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png";
+	
+	}
 </script>
 
 <style type="text/css">
@@ -69,6 +117,40 @@ body {
 </head>
 <body>
 	<div class="container">
+	<form id="login_form" class="form-signin"
+            action="/loginPost" method="post">
+<div class="form-group has-success ">
+  <label class="control-label" for="inputSuccess1">邮件地址</label>
+  <input type="text" class="form-control input-lg" id="inputSuccess1" placeholder="邮件地址">
+</div>
+<div class="form-group has-warning">
+  <label class="control-label" for="inputWarning1">密码</label>
+  <input type="text" class="form-control input-sm" id="inputWarning1" placeholder="密码">
+</div>
+<div class="form-group has-error">
+  <label class="control-label" for="inputError1">验证码</label>
+  <input type="text" class="form-control " id="inputError1" placeholder="验证码">
+</div>
+<div class="has-error">
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="checkboxError" value="option1">
+               记住我
+    </label>
+     <a href="javascript:goUrl('/forgetpwd.htm')" class="pull-right">忘记密码</a>
+  </div>
+
+<div class="form-group has-error">
+  <button class="btn btn-lg btn-primary btn-block" id="registerBtn"
+                type="button">注册</button>
+</div>
+
+
+</div>
+
+</div>
+
+</form>
 		<!-- 登录form -->
 		<form id="login_form" class="form-signin"
 			action="/loginPost" method="post">

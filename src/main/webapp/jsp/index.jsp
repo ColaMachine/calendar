@@ -83,7 +83,7 @@ var PATH="${path}";
 							class="avatar w-32"><img src="img/a0.jpg"
 								alt="..."> <i class="on b-white bottom"></i></span></a>
 								<ul id="menu1" class="pull-right dropdown-menu" aria-labelledby="drop4">
-          <li><a href="#">登出</a></li>
+          <li><a href="/calendar/logout.htm">登出</a></li>
           <li role="separator" class="divider"></li>
      <li><a href="#">修改资料</a></li>
         </ul>

@@ -23,7 +23,7 @@
     delete from SmsEach
     where id = #{id,jdbcType=INTEGER}
   </delete>
- <insert id="insert" parameterType="cola.machine.bean.SmsEach" >
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="cola.machine.bean.SmsEach" >
 
     insert into SmsEach (  <include refid="Base_Column_List" />)
     values (
@@ -106,28 +106,22 @@
     update SmsEach
     set 
         <if test="id != null" >  
-
-              id=#{col.name},jdbcType=INTEGER},
+              id=#{id,jdbcType=INTEGER},
         </if>  
         <if test="batchId != null" >  
-,
-              batchId=#{col.name},jdbcType=INTEGER},
+              batchId=#{batchId,jdbcType=INTEGER},
         </if>  
         <if test="phone != null" >  
-,
-              phone=#{col.name},jdbcType=VARCHAR},
+              phone=#{phone,jdbcType=VARCHAR},
         </if>  
         <if test="sendTime != null" >  
-,
-              sendTime=#{col.name},jdbcType=TIMESTAMP},
+              sendTime=#{sendTime,jdbcType=TIMESTAMP},
         </if>  
         <if test="status != null" >  
-,
-              status=#{col.name},jdbcType=INTEGER},
+              status=#{status,jdbcType=INTEGER},
         </if>  
         <if test="reason != null" >  
-,
-              reason=#{col.name},jdbcType=VARCHAR},
+              reason=#{reason,jdbcType=VARCHAR},
         </if>  
 where id = #{id,jdbcType=INTEGER}
   </update>
