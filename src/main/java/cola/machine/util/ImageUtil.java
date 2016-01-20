@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Path;
+import java.util.Base64;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -27,7 +28,6 @@ import cola.machine.config.Config;
 import cola.machine.config.ImageConfig;
 import cola.machine.mng.PathManager;
 
-import com.awifi.core.encrypt.Base64Util;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
@@ -492,7 +492,8 @@ public class ImageUtil {
     }
 
     private static byte[] decode(String imageData) throws IOException {
-        byte[] data = Base64Util.getBASE64(imageData).getBytes();
+        byte[] data = Base64.getDecoder().decode(imageData);
+     
         for (int i = 0; i < data.length; ++i) {
             if (data[i] < 0) {
                 // 调整异常数据

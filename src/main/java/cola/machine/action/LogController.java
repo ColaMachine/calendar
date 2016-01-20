@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import core.page.Page;
 import cola.machine.bean.AppExceptionLogExample;
 import cola.machine.bean.FwLogExample;
 import cola.machine.service.LogService;
@@ -69,14 +70,13 @@ public class LogController extends BaseController {
 			Model model) throws Exception {
 
 		request.getParameter("pagesize");
-		com.awifi.core.page.Page page = new com.awifi.core.page.Page();
+		Page page = new Page();
 		if (curPage != null) {
 			page.setCurPage(curPage);
 		}
 		if (pageSize != null) {
 			page.setPageSize(pageSize);
 		}
-		page.setPagination(true);
 		FwLogExample fwLogExample = new FwLogExample();
 		fwLogExample.setPage(page);
 		return getResult(logService.listRequests(fwLogExample));
@@ -114,14 +114,13 @@ public class LogController extends BaseController {
 			Model model) throws Exception {
 
 		request.getParameter("pagesize");
-		com.awifi.core.page.Page page = new com.awifi.core.page.Page();
+		Page page = new Page();
 		if (curPage != null) {
 			page.setCurPage(curPage);
 		}
 		if (pageSize != null) {
 			page.setPageSize(pageSize);
 		}
-		page.setPagination(true);
 		AppExceptionLogExample example = new AppExceptionLogExample();
 		example.setPage(page);
 		return getResult(logService.listExceptionLog(example));

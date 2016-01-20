@@ -380,13 +380,13 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.3.2.Final</version>
 		</dependency>
-
+<!-- 
 		<dependency>
 			  <groupId>com.awifi</groupId>
 			  <artifactId>awifi-core</artifactId>
 			  <version>1.0.6</version>
 		</dependency>
-		
+		 -->
 		<!-- <dependency>
        <groupId>com.zm.module</groupId>
        <artifactId>logengine</artifactId>

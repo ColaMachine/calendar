@@ -28,7 +28,7 @@ import cola.machine.service.AuthService;
 import cola.machine.service.UserService;
 import cola.machine.util.ResultUtil;
 
-import com.awifi.core.page.Page;
+import core.page.Page;
 
 import core.action.ResultDTO;
 
@@ -100,7 +100,6 @@ public class AuthController {
         Page page = new Page();
         page.setCurPage(curPage);
         page.setPageSize(pageSize);
-        page.setPagination(true);
         List<Role> roles = authService.listRole(page);
         return ResultUtil.getResult(roles, page);
     }

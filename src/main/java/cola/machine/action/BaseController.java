@@ -6,7 +6,6 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import cola.machine.service.LogService;
+import cola.machine.util.StringUtil;
 
 import com.google.gson.Gson;
 
@@ -82,7 +82,7 @@ public class BaseController extends ResultAction{
 			result = getWrongResultFromCfg(e.getMessage());
 		}
 		String json =request.getParameter("json");
-		if(RequestUtil.isAjaxRequest(request) || StringUtils.isNotBlank(json)){
+		if(RequestUtil.isAjaxRequest(request) || StringUtil.isNotEmpty(json)){
 			try {
 				Gson gson =new Gson();
 				String s= gson.toJson(result);

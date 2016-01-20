@@ -19,7 +19,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -161,10 +163,11 @@ public class Generator {
     }
 
     ZTable table;
-    public void writeFile(String name, String templateName) throws IOException, TemplateException {
+    public void writeFile(String path,String name, String templateName) throws IOException, TemplateException {
         Template template;
         template = cfg.getTemplate(templateName,"UTF-8");
-        File file = homePath.resolve("temp").resolve(StringUtil.getAbc(name)).toFile();
+        homePath.resolve("temp").resolve(path).toFile().mkdirs();
+        File file = homePath.resolve("temp").resolve(path).resolve(StringUtil.getAbc(name)).toFile();
         // Files.createFile(homePath.resolve(StringUtil.getAbc(table.getName())));
         FileWriter writer = new FileWriter(file);
         template.process(root, writer);
@@ -184,39 +187,86 @@ public class Generator {
         return templateStr.toString();
     }
     public String getValidStr(){
-       StringBuffer sb=new StringBuffer(" ValidateUtil vu = new ValidateUtil();");
+       StringBuffer sb=new StringBuffer("    ValidateUtil vu = new ValidateUtil();").append(ctrl);;
+       sb.append("    String validStr=\"\";").append(ctrl);;
        for(int i=0;i<table.getCols().size();i++){
-           ZColum zcol =table.getCols().get(0); 
-           
-           sb.append("vu.add(\""+zcol.getName()+"\", "+zcol.getName()+", \""+zcol.getRemark()+"\", new Rule[]{");
-           if(zcol.isNn()){
-               sb.append("new NotNullRule(),");
+           ZColum zcol =table.getCols().get(i); 
+           String type = zcol.getType();
+         
+           List rules =new ArrayList();
+           List jsrules =new ArrayList();
+           List message=new ArrayList();
+           if(zcol.getType().toLowerCase().startsWith("varchar")){
+        	   int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
+        	   rules.add(String.format("new Length(%d)", length));
+        	   jsrules.add(String.format("minlength:%d", length));
+        	   message.add(String.format("%s不能少于%d个字符", zcol.getName(),length));
            }
            if(zcol.getType().toLowerCase().startsWith("int")){
-               sb.append("new IntegerRule(),");
-           }
-           if(zcol.getType().toLowerCase().startsWith("bigint")){
-               sb.append("new LongRule(),");
+        	   rules.add(String.format("new Digits()"));
+        	   jsrules.add(String.format("digits:true"));
+        	   message.add(String.format("digits:必须输入整数"));
            }
            if(zcol.getType().toLowerCase().startsWith("float")){
-               sb.append("new FloatRule(),");
+        	   int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
+        	   int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
+        	   rules.add(String.format("new Digits(%d,%d)",integer,fraction));
+        	   jsrules.add(String.format("number:true"));
+        	   message.add(String.format("number:必须输入合法的数字（负数，小数）"));
            }
            if(zcol.getType().toLowerCase().startsWith("double")){
-               sb.append("new DoubleRule(),");
+        	   int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
+        	   int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
+        	   rules.add(String.format("new Digits(%d,%d)",integer,fraction));
+        	   jsrules.add(String.format("number:true"));
+        	   message.add(String.format("number:必须输入合法的数字（负数，小数）"));
            }
-           if(zcol.getType().toLowerCase().startsWith("varchar")){
-               //获取圆括号里的参数
-               sb.append("new VarcharRule(),");
+           if(zcol.getType().toLowerCase().equals("date")){
+        	   rules.add(String.format("new Regex(\"yyyy-MM-dd\")"));
+        	   jsrules.add(String.format("date:true"));
+        	   message.add(String.format("number:必须输入合法日期"));
            }
-           if(zcol.getType().toLowerCase().startsWith("timestamp")){
-               sb.append("new VarcharRule(),");
+           if(zcol.getType().toLowerCase().equals("datetime")){
+        	   rules.add(String.format("new Regex(\"yyyy-MM-dd HH:mm:ss\")"));
            }
+           if(zcol.getType().toLowerCase().equals("timestamp")){
+        	   rules.add(String.format("new Regex(\"yyyy-MM-dd HH:mm:ss\")"));
+           }
+           if(zcol.isNn()){
+        	   rules.add(String.format("new NotEmpty()"));
+           }
+           if(StringUtil.isNotEmpty(zcol.getValid())){
+        	   String[] validAry= zcol.getValid().split("||");
+        	   for(int j=0;j<validAry.length;j++){
+        		   if(validAry[j].toLowerCase().startsWith("regex")){
+        			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+        			   rules.add(String.format("new Regex(%s)",content));
+        		   }
+        		   if(validAry[j].toLowerCase().startsWith("email")){
+        			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+        			   rules.add(String.format("new Email(%s)",content));
+        		   }
+        		   if(validAry[j].toLowerCase().startsWith("phone")){
+        			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+        			   rules.add(String.format("new Email(%s)",content));
+        		   }
+        		   if(validAry[j].toLowerCase().startsWith("money")){
+        			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+        			   rules.add(String.format("new Email(%s)",content));
+        		   }
+        	   }
+           }
+           String ruleStr=StringUtil.join(",",rules.toArray());
+           ruleStr=" new Rule[]{"+ruleStr+"}";
+           sb.append("vu.add(\""+zcol.getName()+"\", "+zcol.getName()+", \""+zcol.getRemark()+"\", "+ruleStr+");").append(ctrl);
+           sb.append(" validStr = vu.validateString();").append(ctrl);
+           sb.append("if(StringUtil.isNotEmpty(validStr)) {").append(ctrl);
+           sb.append(String.format("return ResultUtil.getResult(%d,%s);",302,"validStr")).append(ctrl);
+           sb.append("}").append(ctrl);
+
        }
-        vu.add("applicationId", applicationId, ParamName.APPLICATION_ID, new Rule[]{new Required(), new Numeric()});
-        String validStr = vu.validateString();
-        if(StringUtils.isBlank(validStr)) {
-            
-        }
+      return sb.toString();
+        
     }
     public String getIntFromKuoHao(String str){
         int index = str.indexOf("(");
@@ -252,21 +302,22 @@ public class Generator {
     }
     public void genController() throws IOException, TemplateException {
         logger.info("genController");
-        writeFile(table.getName() + "Controller.java", "controller");
+        root.put("validCode", getValidStr());
+        writeFile("src/main/java/cola/machine/action/",table.getName() + "Controller.java", "controller");
     }
 
     public void genService() throws IOException, TemplateException {
         logger.info("genService");
-        writeFile(table.getName() + "Service.java", "service");
+        writeFile("src/main/java/cola/machine/service/",table.getName() + "Service.java", "service");
     }
 
     public void genMapper() throws IOException, TemplateException {
         logger.info("genMapper");
-        writeFile(table.getName() + "Mapper.java", "mapper");
+        writeFile("src/main/java/cola/machine/dao/",table.getName() + "Mapper.java", "mapper");
     }
     public void genMapperXml() throws IOException, TemplateException {
         logger.info("genMapperXml");
-        writeFile(table.getName() + "Mapper.xml", "mapperXml");
+        writeFile("src/main/resources/config/mapper/",table.getName() + "Mapper.xml", "mapperXml");
     }
 
     public void genBean() throws IOException, TemplateException {
@@ -288,7 +339,7 @@ public class Generator {
         }
 
         root.put("content", sb);
-        writeFile(table.getName() + ".java", "bean");
+        writeFile("src/main/java/cola/machine/bean/",table.getName() + ".java", "bean");
 
         /*
          * StringWriter writer = new StringWriter(); template.process(root,
@@ -298,18 +349,18 @@ public class Generator {
 
     public void genSql() throws IOException, TemplateException {
         logger.info("genSql");
-        writeFile(table.getName() + ".sql", "sql");
+        writeFile("",table.getName() + ".sql", "sql");
     }
 
     public void genListHtml() throws IOException, TemplateException {
         logger.info("genListHtml");
-        writeFile(table.getName() + "List.html", "list");
+        writeFile("",table.getName() + "List.html", "list");
     }
 
     public void genEditHtml() throws IOException, TemplateException {
         
         logger.info("genEditHtml");
-        writeFile(table.getName() + "Edit.html", "edit");
+        writeFile("",table.getName() + "Edit.html", "edit");
     }
 
     public void genViewHtml() {
@@ -329,6 +380,7 @@ public class Generator {
             gen.genMapperXml();
             gen.genListHtml();
             gen.genEditHtml();
+            
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

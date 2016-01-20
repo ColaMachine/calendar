@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import cola.machine.core.msg.ErrorMessage;
 
-import com.awifi.core.page.Page;
+import core.page.Page;
 
 import core.action.ResultDTO;
 

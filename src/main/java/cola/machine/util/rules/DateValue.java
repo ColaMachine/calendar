@@ -1,8 +1,8 @@
 package cola.machine.util.rules;
 
-import org.apache.commons.lang3.StringUtils;
 
 import cola.machine.util.DateUtil;
+import cola.machine.util.StringUtil;
 
 
 public class DateValue extends Rule {
@@ -13,7 +13,7 @@ public class DateValue extends Rule {
 	
 	@Override
 	public boolean valid() throws Exception {
-		if (StringUtils.isBlank(this.getValue())) {
+		if (StringUtil.isBlank(this.getValue())) {
 			return true;
 		}
 			

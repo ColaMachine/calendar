@@ -9,9 +9,9 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.awifi.util.StringUtils;
 
 import cola.machine.config.Config;
+import cola.machine.util.StringUtil;
 /**
  * @author dozen.zhang
  *
@@ -168,7 +168,7 @@ public final class PathManager {
 
         tmpPath = webRootPath.resolve(TMP_DIR);
         Files.createDirectories(tmpPath);
-        if (StringUtils.isBlank(config.getInstance().getImage().getServerDir())) {
+        if (StringUtil.isBlank(config.getInstance().getImage().getServerDir())) {
             imagePath = webRootPath;
         } else{
             imagePath=webRootPath.resolve(config.getInstance().getImage().getServerDir());

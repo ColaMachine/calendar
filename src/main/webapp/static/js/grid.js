@@ -3115,7 +3115,12 @@
 					this
 							.each(function() {
 								var $t = this;
-								var html = "<div><table class='table'><tbody>";
+								var html = "<div><table class='table'>";
+								if(this.p.data.length==0){
+								html += "<thead><div style='text-align:center;'>暂无数据</div></thead>";
+								}
+								
+								html += "<tbody>";
 								for (var i = 0; i < this.p.data.length; i++) {
 									html += "<tr >";
 									if(this.p.multiselect){

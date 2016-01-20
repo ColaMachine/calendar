@@ -28,8 +28,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cola.machine.service.${Abc}Service;
 import cola.machine.bean.${Abc};
 import cola.machine.util.ResultUtil;
+import cola.machine.util.ValidateUtil;
+import cola.machine.util.rules.*;
+import core.page.Page;
 
-import com.awifi.core.page.Page;
+import cola.machine.util.StringUtil;
+import cola.machine.util.ValidateUtil;
 
 import core.action.ResultDTO;
 
@@ -134,7 +138,7 @@ public class ${Abc}Controller extends BaseController{
             ${abc}.set${col.name[0]?upper_case}${col.name[1..]}(<@javaType>${col.type}</@javaType>.valueOf(${col.name})) ;
         </#list>
         //valid
-       
+       ${validCode}
         return ${abc}Service.save(${abc});
     }
 }

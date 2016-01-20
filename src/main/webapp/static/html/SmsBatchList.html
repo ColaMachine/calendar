@@ -1,174 +1,5 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="/static/css/grid.css" />
-    <link rel="stylesheet" href="/static/css/widget.css" />
-    <script src="/static/js/lib/jquery-1.11.3.min.js"></script>
-</head>
-<style>
-
-
-body {
-    font-family:microsoft yahei;
-    fony-size:18px;
-}
-
-.body_title {
-    clear: both;
-    overflow: hidden;
-    padding: 13px 0;
-    background-color: #F1F1F1;
-    min-height:34px;
-    line-height:34px;
-    font-size:1.5em;
-    font-weight:200;
-    color:#4777c8;
-    padding-left:2%
-}
-
-label {
-margin:0 0.5em 0 5%;font-size:1.2em
-}
-</style>
-<body>
-<#include "/system/header.html">
-    
-<!-- 菜单-->
-<#include "/system/leftmenu.html">
-
-    <script src="/static/js/grid.js"></script>
-    <script src="/static/js/common.js"></script>
 <div class="rgt_body">
-<div class="body_title">| 权限管理</div>
-    <div class="body_top" >
-        <div  style="padding-left:3%">
-            <button class="btn" onclick="goEdit()">新增角色</button>    
-        </div>
-
-       
-    </div>
-
-    <div id="grid" class="grid"></div>
-    <div id="grid-pager" class="pager"></div>
-
-
-
-</div>
-
-<div class="mask" > </div>
-<div class="widget"> </div>
-<div class="wait" style="display:none;position:absolute;left:50%;top:50%;font-size:30px;" >
-<i class="fa fa-spinner fa -spin" ></i>
-</div>
-
-<script>
-var gridParam = {
-    
-    page:{
-        curpage : 1,
-        pagesize : 10
-    },
-    multiselect : false,
-    url : '/role/listPage',
-    grid_selector : "#grid",
-    pager_selector : "#grid-pager",
-    searchParams : {
-        name : '',
-        curpage : 1,
-        pagesize : 2
-    },
-    colNames : [ 'ID', '角色名称', '角色描述', '操作' ],
-    colModel : [
-            {
-                name : 'id',
-                width : 80
-            },
-            {
-                name : 'rolename',
-                width : 130
-            },
-            {
-                name : 'remarks',
-                width : 90,
-            },
-            
-            {
-                name : 'id',
-                width : 150,
-                formatter : function(value, grid, rows) {
-                        return "<a class='option' name='edit' onclick='viewInfo(\""+value+"\")' >查询</a>"
-                                + "<a class='option'  name='issue' onclick='editInfo(\""+value+"\")' >修改</a>"
-                                + "<a class='option'  name='market' onclick=\"delInfo('"+value+"','"+rows["rolename"]+"')\" >删除</a>";
-                    
-                }
-            } ]
-            
-            /*
-             * ondblClickRow: function(id){
-             * 
-             * alert("双击选中"+id);
-             *  },
-             */
-           
-         /*
-             * onSelectRow: function(id){ alert("单击选中"+id); },
-             */
-};
-this.mygrid = $("#grid").jqGrid(this.gridParam); 
- function goEdit(){
-     window.location='/role/edit';
- }
- function editInfo(id){
-     window.location="/role/edit/"+id;
- }
- function delInfo(id,roleName){
-     //弹窗
-     zconfirm("确定删除角色名称:"+roleName,"删除",function(){
-        $.post("/role/del/"+id,function(result){
-            result=ajaxResultHandler(result);
-            if(result.r==1){
-                zalert("删除成功，角色名："+roleName,"删除",function(){
-                    $("#grid").jqGrid("reloadGrid");
-                });
-                
-            }else {
-                zerror(result.msg,"提醒",function(){
-                });
-            }
-        });
-         
-     });
-     
-    // window.location="/role/del/"+id;
- }
- function viewInfo(id){
-     window.location="/role/viewPage/"+id;
- }
-</script>
-
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="rgt_body">
-<div class="body_title">| 鎵归噺鍙戦�鐭俊</div>
+<div class="body_title">| 批量发送短信</div>
     <div class="body_top" >
     <form class="form-inline app-search">
   
@@ -177,44 +8,43 @@ this.mygrid = $("#grid").jqGrid(this.gridParam);
             <input type="text" class="form-control" id="col.name" name="col.name" placeholder="">
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">鎬诲彂閫佹暟鎹�/label>
+            <label for="exampleInputName2">总发送数据</label>
             <input type="text" class="form-control" id="col.name" name="col.name" placeholder="">
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">鎴愬姛鏁伴噺</label>
+            <label for="exampleInputName2">成功数量</label>
             <input type="text" class="form-control" id="col.name" name="col.name" placeholder="">
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">澶辫触鏁伴噺</label>
+            <label for="exampleInputName2">失败数量</label>
             <input type="text" class="form-control" id="col.name" name="col.name" placeholder="">
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">鐘舵�</label>
+            <label for="exampleInputName2">状态</label>
             <input type="text" class="form-control" id="col.name" name="col.name" placeholder="">
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">鎵嬫満鍙风爜</label>
+            <label for="exampleInputName2">手机号码</label>
             <input type="text" class="form-control" id="col.name" name="col.name" placeholder="">
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">鐭俊鍐呭</label>
+            <label for="exampleInputName2">短信内容</label>
             <input type="text" class="form-control" id="col.name" name="col.name" placeholder="">
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">瀹氭椂鍙戦�</label>
+            <label for="exampleInputName2">定时发送</label>
             <input type="text" class="form-control" id="col.name" name="col.name" placeholder="">
         </div>
-  <button type="submit" class="btn btn-default">鏌ヨ</button>
-   <button type="reset" class="btn btn-default">閲嶇疆</button>
+  <button type="submit" class="btn btn-default">查询</button>
 </form>
         <div >
-            <button class="btn" onclick="addInfo()">鏂板瑙掕壊</button>    
+            <button class="btn" onclick="addInfo()">新增</button>    
         </div>
     </div>
     <div id="grid" class="grid"></div>
     <div id="grid-pager" class="pager"></div>
 </div>
-<script>
+<script type="text/javascript">
 var gridParam = {
     page:{
         curPage : 1,
@@ -228,7 +58,7 @@ var gridParam = {
         name : ''
     },
     colNames : [
-     "id","鎬诲彂閫佹暟鎹�,"鎴愬姛鏁伴噺","澶辫触鏁伴噺","鐘舵�","鎵嬫満鍙风爜","鐭俊鍐呭","瀹氭椂鍙戦�" , '鎿嶄綔' ],
+     "id","总发送数据","成功数量","失败数量","状态","手机号码","短信内容","定时发送" , '操作' ],
     colModel : [
              
                {
@@ -281,11 +111,11 @@ var gridParam = {
             /*
              * ondblClickRow: function(id){
              * 
-             * alert("鍙屽嚮閫変腑"+id);
+             * alert("双击选中"+id);
              *  },
              */
          /*
-             * onSelectRow: function(id){ alert("鍗曞嚮閫変腑"+id); },
+             * onSelectRow: function(id){ alert("单击选中"+id); },
              */
 };
 var mygrid = $("#grid").jqGrid(this.gridParam); 
@@ -295,17 +125,21 @@ var mygrid = $("#grid").jqGrid(this.gridParam);
  function editInfo(id){
      goPage(PATH+"/smsBatch/edit.htm?id="+id);
  }
+ function search(){
+    var jso = changeForm2Jso(".app-search");
+    mygrid.jqGrid("search",jso);
+ }
  function deleteInfo(id){
-     //寮圭獥
-     zconfirm("纭畾鍒犻櫎瑙掕壊鍚嶇О:"+id,"鍒犻櫎",function(){
+     //弹窗
+     zconfirm("确定删除角色名称:"+id,"删除",function(){
         $.post(PATH+"/smsBatch/del.json?id="+id,function(result){
             result=ajaxResultHandler(result);
             if(result.r==1){
-                zalert("鍒犻櫎鎴愬姛锛岃鑹插悕锛�+roleName,"鍒犻櫎",function(){
+                zalert("删除成功，角色名："+roleName,"删除",function(){
                 $("#grid").jqGrid("reloadGrid");
             });
             }else {
-                zerror(result.msg,"鎻愰啋",function(){});
+                zerror(result.msg,"提醒",function(){});
             }
         });
     });

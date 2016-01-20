@@ -54,7 +54,7 @@ public interface ${Abc}Mapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<${Abc}> listByParms4Page(Map map);
+    List<${Abc}> listByParams4Page(Map map);
     
     /**
      * 说明:根据map查找map结果集

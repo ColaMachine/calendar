@@ -14,8 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.awifi.core.encrypt.SHA1;
-import com.awifi.core.random.RandomString;
 
 
 @Controller
@@ -46,7 +44,7 @@ public class ShareController {
 		 url ="http://192.168.0.100:8080/calendar/share/qq";
 		String originStr= "jsapi_ticket="+ticket+"&noncestr="+nonceStr+"&timestamp="+timestamp+"&url="+url;
 		System.out.println("originStr:"+originStr);  
-		String signature = new SHA1().getDigestOfString(originStr.getBytes()).toLowerCase(); 
+		String signature = new ch.ethz.ssh2.crypto.digest.SHA1().digest(out);.getDigestOfString(originStr.getBytes()).toLowerCase(); 
 		System.out.println("signature:"+signature);
 		request.setAttribute("signature", signature);
 		return "/share.jsp";

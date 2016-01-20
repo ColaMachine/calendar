@@ -43,7 +43,7 @@ public interface SmsBatchMapper {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
-    List<SmsBatch> listByParms(Map map);
+    List<SmsBatch> listByParams(Map map);
     
     /**
      * 说明:根据bean查找bean结果集

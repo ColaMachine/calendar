@@ -28,7 +28,7 @@ import cola.machine.service.PermissionService;
 import cola.machine.service.UserService;
 import cola.machine.util.ResultUtil;
 
-import com.awifi.core.page.Page;
+import core.page.Page;
 
 import core.action.ResultDTO;
 @Controller

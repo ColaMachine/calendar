@@ -21,12 +21,10 @@ import cola.machine.bean.Permission;
 import cola.machine.dao.PermissionMapper;
 import cola.machine.util.CacheUtil;
 import cola.machine.util.ResultUtil;
+import cola.machine.util.StringUtil;
 import cola.machine.util.UUIDUtil;
 import cola.machine.util.ValidateUtil;
-
-import com.awifi.core.page.Page;
-import com.awifi.util.StringUtils;
-
+import core.page.Page;
 import core.action.ResultDTO;
 
 @Service("permissionService")
@@ -68,7 +66,7 @@ public class PermissionService extends BaseService {
          //逻辑业务判断判断
        
        //判断是更新还是插入
-        if (permission.getId()==null) {
+        if (StringUtil.isBlank(permission.getId())) {
             permissionMapper.insert(permission);
         } else {
              permissionMapper.updateByPrimaryKey(permission);

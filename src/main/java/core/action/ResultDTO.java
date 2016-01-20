@@ -1,6 +1,6 @@
 package core.action;
 
-import com.awifi.core.page.Page;
+import core.page.Page;
 
 public class ResultDTO {
 	private Integer r;
