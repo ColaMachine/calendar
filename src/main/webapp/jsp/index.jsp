@@ -40,8 +40,9 @@ var PATH="${path}";
 
 </head>
 <body>
+
 <div id="page" class="page" style="">
-	   <div class=" menu-wrap clearfix dark">
+	   <div class=" menu-wrap clearfix dark ">
         <div class="logo">
             <!-- <span class="logo-head">aWiFi</span> -->
             
@@ -130,13 +131,13 @@ var PATH="${path}";
     <div class="footer-wrap"></div>
     <div id="main " class="body-wrapper " >
 		<div id="main " class="main-content  container " >
-    
+        
 		<div class="row white" style="color:black;margin-top:15px;">
 		  <div class="col-xs-4 ">
 		  hello
 		  </div>
 		    <div class="col-xs-8 ">
-          hello123123
+         <div class="tranform-demo" onclick="$('.tranform-demo').toggleClass('tranform-demo2')" >asdasdfasdfaaaaaaaaaaaa</div>
           </div>
 		</div>
 		<h1></h1>
@@ -159,6 +160,7 @@ var PATH="${path}";
 </div>
 <div class="widget"></div>
     <div class="mask" ></div>
+    
 </body>
 <script type="text/javascript" src="${path}/static/js/index.js"></script>
 

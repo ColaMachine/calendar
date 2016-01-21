@@ -9,10 +9,13 @@ package cola.machine.share.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import ch.ethz.ssh2.crypto.digest.SHA1;
 
 
 
@@ -34,7 +37,7 @@ public class ShareController {
 		
 		request.setAttribute("appid", appid);
 		
-		String nonceStr = RandomString.randomString(16);
+		String nonceStr = RandomStringUtils.random(16, "abcdefghijklmnopqrstuvwxyz");
 		
 		request.setAttribute("nonceStr", nonceStr);
 		
@@ -44,7 +47,7 @@ public class ShareController {
 		 url ="http://192.168.0.100:8080/calendar/share/qq";
 		String originStr= "jsapi_ticket="+ticket+"&noncestr="+nonceStr+"&timestamp="+timestamp+"&url="+url;
 		System.out.println("originStr:"+originStr);  
-		String signature = new ch.ethz.ssh2.crypto.digest.SHA1().digest(out);.getDigestOfString(originStr.getBytes()).toLowerCase(); 
+		String signature =SHA1.getDigestOfString(originStr.getBytes()).toLowerCase(); 
 		System.out.println("signature:"+signature);
 		request.setAttribute("signature", signature);
 		return "/share.jsp";

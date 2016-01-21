@@ -76,7 +76,10 @@
     top: 0px;
 }
 .menu-wrap .logo .nav-icon{
-	color:gray;float:right;margin-right:8px;margin-top:5px;
+	 position:absolute;
+	right:2px;
+	top:15px; 
+	color:gray;/* float:right; */margin-right:8px;margin-top:5px; 
 }
 .menu-wrap .logo-head {
     font-weight: bold;
@@ -84,6 +87,8 @@
 }
 
 .menu-wrap .logo-desc {
+	white-space:nowrap; 
+	overflow:hidden;
 	min-height:2.25rem;
     font-size: 1.25rem;
 }
@@ -153,6 +158,14 @@
 	border-color: rgba(0, 0, 0, 0.067);
 }
 /** li a **/
+/* menu li a{
+	white-space:nowrap; 
+	overflow-hidden;
+}
+menu li a span{
+    white-space:nowrap; 
+    overflow-hidden;
+} */
 .menu-wrap .menu li li a {
 	/* padding-left: 15px; */
 	/*   font-size:12px; */
@@ -229,6 +242,8 @@
  */}
 
 .menu-wrap .menu .nav-text {
+	white-space:nowrap; 
+    overflow-hidden;
 	/*  display:inline-block;
     width:100%;
     padding-left:15px; */

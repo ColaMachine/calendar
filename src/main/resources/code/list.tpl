@@ -4,11 +4,12 @@
 <div class="body_title">| ${table.remark}</div>
     <div class="body_top" >
     <form class="form-inline app-search">
-  
   <#list table.cols as col>
         <div class="form-group">
             <label for="exampleInputName2">${col.remark}</label>
-            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="">
+          
+            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="${col.remark}">
+           
         </div>
   </#list>
   <button type="submit" class="btn btn-default">查询</button>

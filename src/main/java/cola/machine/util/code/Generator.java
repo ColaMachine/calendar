@@ -366,7 +366,16 @@ public class Generator {
     public void genViewHtml() {
         logger.info("genViewHtml");
     }
-
+    public String  getSearchBar(){
+        StringBuffer sb =new StringBuffer();
+        List<ZColum> cols =table.getCols();
+        for(int i=0;i<cols.size();i++){
+            ZColum col =cols.get(i);
+            sb.append(" input type=\"text\" class=\"form-control\" id=\""+col.getName()+"\" name=\""+col.getName()+"\" placeholder=\""+col.getRemark()+"\">");
+        }
+        return sb.toString();
+        
+    }
 
     public static void main(String[] args) {
         Generator gen = new Generator();

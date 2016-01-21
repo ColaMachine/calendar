@@ -86,12 +86,12 @@ public class SmsEachController extends BaseController{
         page.setPageSize(pageSize);
         HashMap params =new HashMap();
         params.put("page",page);
-        List<SmsEach> smsEachs = smsEachService.list(params);
+        List<SmsEach> smsEachs = smsEachService.listByParams4Page(params);
         return ResultUtil.getResult(smsEachs, page);
     }
     
     
-
+    
     /**
      * @param id 参数
      * @param request 发请求

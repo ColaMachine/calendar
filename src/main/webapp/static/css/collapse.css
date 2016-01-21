@@ -37,19 +37,161 @@
 	z-index: 2000;
 	background-color:  #2E3E4E;
 }
+}
 
+.menu-wrap
+{
+width:200px;
+position:relative;
+/* animation:showMenu 1s;
+-moz-animation:showMenu 1s; 
+-webkit-animation:showMenu 1s; 
+-o-animation:showMenu 1s; */ 
+transition:width 1s;
+-moz-transition:width 1s; 
+-webkit-transition:width 1s; 
+-o-transition:width 1s; 
+}
+.main-wrap
+{
+margin-left:200px;
+transition:margin-left 1s;
+-moz-transition:margin-left 1s; 
+-webkit-transition:margin-left 1s; 
+-o-transition:margin-left 1s; 
+/* animation:showMain 1s;
+-moz-animation:showMain 1s;
+-webkit-animation:showMain 1s; 
+-o-animation:showMain 1s;  */
+}
+@keyframes showMenu
+{
+0%   {width:50px;}
+100% {width:200px;}
+}
+@keyframes showMain
+{
+0%   {margin-left:50px;}
+100% {margin-left:200px;}
+}
+.collapse1 .logo-desc 
+{
+width:0px;
+/* position:relative;
+animation:hideMenu 1s;
+-moz-animation:hideMenu 1s; 
+-webkit-animation:hideMenu 1s; 
+-o-animation:hideMenu 1s;  */
+}
+.collapse1 .menu-wrap
+{
+width:50px;
+/* position:relative;
+animation:hideMenu 1s;
+-moz-animation:hideMenu 1s; 
+-webkit-animation:hideMenu 1s; 
+-o-animation:hideMenu 1s;  */
+}
+.collapse1 .main-wrap
+{
+margin-left:50px;
+/* animation:hideMain 1s;
+-moz-animation:hideMain 1s; 
+-webkit-animation:hideMain 1s; 
+-o-animation:hideMain 1s;  */
+}
+@keyframes hideMain
+{
+0%   {margin-left:200px;} 
+100% {margin-left:50px;}
+}
+@keyframes showMain
+{
+0%   {margin-left:50px;} 
+100% {margin-left:200px;}
+}
+@keyframes hideMenu
+{
+0%   {width:200px;} 
+100% {width:50px;}
+}
 
+@-moz-keyframes hideMenu /* Firefox */
+{
+0%   {width:200px;}
+100% {width:50px;}
+}
 
+@-webkit-keyframes hideMenu /* Safari and Chrome */
+{
+0%   {width:200px;}
+100% {width:50px;}
+}
 
+@-o-keyframes hideMenu /* Opera */
+{
+0%   {width:200px;}
+100% {width:50px;}
+}
+
+.collapse1{
+animation: myfirst 5s linear 2s infinite alternate;
+/* Firefox: */
+-moz-animation: myfirst 5s linear 2s infinite alternate;
+/* Safari 和 Chrome: */
+-webkit-animation: myfirst 5s linear 2s infinite alternate;
+/* Opera: */
+-o-animation: myfirst 5s linear 2s infinite alternate;
+}
+.logo-desc{
+	 width:200px;
+    transition:width 1s; 
+   
+}
+.collapse1 .logo-desc{
+	width:0px;
+}
+.logo-desc-text{
+	 display:block;
+    transition:display 1s;
 }
 .collapse1 .logo-desc-text{
 	display:none;
 }
+
+
+
+.collapse1 {
+    color:yellow;
+    font-size:14px;
+    transition-property:color;
+    transition-duration: 2s;
+   
+}
+.collapse1 .nav-text {
+    font-size:5px;
+    color:blue;
+}
+
+.tranform-demo{
+	color:yellow;
+    font-size:14px;
+    transition-property:color;
+    transition-duration: 2s;
+   
+}
+.tranform-demo2 {
+    font-size:5px;
+    color:blue;
+    
+}
+
+
 .collapse1 .menu-wrap {
-    width: 50px;
+    /* width: 50px; */
 }
 .collapse1 .main-wrap {
-    margin-left: 50px;
+   /*  margin-left: 50px; */
 }
 .collapse1  .menu>ul.nav>li>a>.nav-text {
     display: none;
@@ -79,3 +221,8 @@
     z-index: 2000;
     background-color:  #2E3E4E;
 }
+/* @keyframes myfirst
+{
+0%   {width:200px;}
+100% {width:0px;}
+} */
