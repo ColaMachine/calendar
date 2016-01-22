@@ -47,7 +47,7 @@ public class ShareController {
 		 url ="http://192.168.0.100:8080/calendar/share/qq";
 		String originStr= "jsapi_ticket="+ticket+"&noncestr="+nonceStr+"&timestamp="+timestamp+"&url="+url;
 		System.out.println("originStr:"+originStr);  
-		String signature =SHA1.getDigestOfString(originStr.getBytes()).toLowerCase(); 
+		String signature ="";//SHA1.getDigestOfString(originStr.getBytes()).toLowerCase(); 
 		System.out.println("signature:"+signature);
 		request.setAttribute("signature", signature);
 		return "/share.jsp";

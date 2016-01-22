@@ -44,6 +44,8 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 public class Generator {
+    
+    String fatherPackage = "";
     private String ctrl = "\r\n";
     private Path homePath;
     private static Logger logger = LoggerFactory.getLogger(Generator.class);
@@ -116,7 +118,7 @@ public class Generator {
         String type = "";
         String typeName = "";
 
-        table = load(homePath.resolve("src/main/resources/SmsEach.cfg"));
+        table = load(homePath.resolve("src/main/resources/SmsBatch.cfg"));
         table.init();
         root.put("javaType", new JavaTypeDirective());
         root.put("jdbcType", new JdbcTypeDirective());

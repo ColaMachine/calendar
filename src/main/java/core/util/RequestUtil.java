@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import core.page.Page;
+
 
 public class RequestUtil {
 	
@@ -43,6 +45,21 @@ public class RequestUtil {
 		out.print(outObj);
 		out.flush();
 		out.close();
+	}
+	
+	/**
+	 * 从request中获取page
+	 * @param request
+	 * @return
+	 * @author dozen.zhang
+	 */
+	public static Page getPage(HttpServletRequest request){
+	    String curPage = request.getParameter("curpage");
+	    String pageSize = request.getParameter("pagesize");
+	    Page page =new Page();
+	    page.setCurPage(Integer.valueOf(curPage));
+	    page.setPageSize(Integer.valueOf(pageSize));
+	    return page;
 	}
 
 }

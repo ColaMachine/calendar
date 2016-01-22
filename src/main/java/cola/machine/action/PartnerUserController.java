@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cola.machine.service.SmsEachService;
-import cola.machine.bean.SmsEach;
+import cola.machine.service.PartnerUserService;
+import cola.machine.bean.PartnerUser;
 import cola.machine.util.ResultUtil;
 import cola.machine.util.ValidateUtil;
 import cola.machine.util.rules.*;
@@ -36,13 +36,13 @@ import cola.machine.util.ValidateUtil;
 import core.action.ResultDTO;
 
 @Controller
-@RequestMapping("/smsEach")
-public class SmsEachController extends BaseController{
+@RequestMapping("/partnerUser")
+public class PartnerUserController extends BaseController{
     /** 日志 **/
-    private Logger logger = LoggerFactory.getLogger(SmsEachController.class);
+    private Logger logger = LoggerFactory.getLogger(PartnerUserController.class);
     /** 权限service **/
     @Autowired
-    private SmsEachService smsEachService;
+    private PartnerUserService partnerUserService;
     
 
     /**
@@ -55,7 +55,7 @@ public class SmsEachController extends BaseController{
      */
     @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
     public String list() {
-        return "/static/html/SmsEachList.html";
+        return "/static/html/PartnerUserList.html";
     }
 
  
@@ -86,8 +86,8 @@ public class SmsEachController extends BaseController{
         page.setPageSize(pageSize);
         HashMap params =new HashMap();
         params.put("page",page);
-        List<SmsEach> smsEachs = smsEachService.listByParams4Page(params);
-        return ResultUtil.getResult(smsEachs, page);
+        List<PartnerUser> partnerUsers = partnerUserService.listByParams4Page(params);
+        return ResultUtil.getResult(partnerUsers, page);
     }
     
     
@@ -100,18 +100,18 @@ public class SmsEachController extends BaseController{
     @RequestMapping(value = "/edit.htm")
     public Object edit( HttpServletRequest request) {
         // 查找所有的角色
-        return "/static/html/SmsEachEdit.html";
+        return "/static/html/PartnerUserEdit.html";
     }
     @RequestMapping(value = "/view.htm")
     public Object viewPage( HttpServletRequest request) {
-        return "/static/html/SmsEachView.html";
+        return "/static/html/PartnerUserView.html";
     }
    
       @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
-        SmsEach bean = smsEachService.selectByPrimaryKey(Integer.valueOf(id));
+        PartnerUser bean = partnerUserService.selectByPrimaryKey(Integer.valueOf(id));
         return this.getResult(1, bean,"");
     }
 
@@ -130,19 +130,13 @@ public class SmsEachController extends BaseController{
     @RequestMapping(value = "/save.json")
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
-        SmsEach smsEach =new  SmsEach();
+        PartnerUser partnerUser =new  PartnerUser();
             String id = request.getParameter("id");
-            smsEach.setId(Integer.valueOf(id)) ;
-            String batchId = request.getParameter("batchId");
-            smsEach.setBatchId(Integer.valueOf(batchId)) ;
-            String phone = request.getParameter("phone");
-            smsEach.setPhone(String.valueOf(phone)) ;
-            String sendTime = request.getParameter("sendTime");
-            smsEach.setSendTime(Timestamp.valueOf(sendTime)) ;
-            String status = request.getParameter("status");
-            smsEach.setStatus(Integer.valueOf(status)) ;
-            String reason = request.getParameter("reason");
-            smsEach.setReason(String.valueOf(reason)) ;
+            partnerUser.setId(Integer.valueOf(id)) ;
+            String userId = request.getParameter("userId");
+            partnerUser.setUserId(Integer.valueOf(userId)) ;
+            String partnerId = request.getParameter("partnerId");
+            partnerUser.setPartnerId(Long.valueOf(partnerId)) ;
         //valid
            ValidateUtil vu = new ValidateUtil();
     String validStr="";
@@ -151,32 +145,17 @@ vu.add("id", id, "id",  new Rule[]{new Digits(),new NotEmpty()});
 if(StringUtil.isNotEmpty(validStr)) {
 return ResultUtil.getResult(302,validStr);
 }
-vu.add("batchId", batchId, "批次号",  new Rule[]{new Digits(),new NotEmpty()});
+vu.add("userId", userId, "用户id",  new Rule[]{new Digits(),new NotEmpty()});
  validStr = vu.validateString();
 if(StringUtil.isNotEmpty(validStr)) {
 return ResultUtil.getResult(302,validStr);
 }
-vu.add("phone", phone, "手机号码",  new Rule[]{new Length(13),new NotEmpty()});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-vu.add("sendTime", sendTime, "发送时间",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss"),new NotEmpty()});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-vu.add("status", status, "发送状态",  new Rule[]{new Digits()});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-vu.add("reason", reason, "失败原因",  new Rule[]{new Length(200)});
+vu.add("partnerId", partnerId, "合作伙伴Id",  new Rule[]{new NotEmpty()});
  validStr = vu.validateString();
 if(StringUtil.isNotEmpty(validStr)) {
 return ResultUtil.getResult(302,validStr);
 }
 
-        return smsEachService.save(smsEach);
+        return partnerUserService.save(partnerUser);
     }
 }

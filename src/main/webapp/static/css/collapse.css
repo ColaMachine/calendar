@@ -38,15 +38,17 @@
 	background-color:  #2E3E4E;
 }
 }
+/***展开动画***/
 
+/***收缩动画****//* 
 .menu-wrap
 {
 width:200px;
 position:relative;
-/* animation:showMenu 1s;
+animation:showMenu 1s;
 -moz-animation:showMenu 1s; 
 -webkit-animation:showMenu 1s; 
--o-animation:showMenu 1s; */ 
+-o-animation:showMenu 1s; 
 transition:width 1s;
 -moz-transition:width 1s; 
 -webkit-transition:width 1s; 
@@ -59,10 +61,10 @@ transition:margin-left 1s;
 -moz-transition:margin-left 1s; 
 -webkit-transition:margin-left 1s; 
 -o-transition:margin-left 1s; 
-/* animation:showMain 1s;
+animation:showMain 1s;
 -moz-animation:showMain 1s;
 -webkit-animation:showMain 1s; 
--o-animation:showMain 1s;  */
+-o-animation:showMain 1s; 
 }
 @keyframes showMenu
 {
@@ -77,28 +79,28 @@ transition:margin-left 1s;
 .collapse1 .logo-desc 
 {
 width:0px;
-/* position:relative;
+position:relative;
 animation:hideMenu 1s;
 -moz-animation:hideMenu 1s; 
 -webkit-animation:hideMenu 1s; 
--o-animation:hideMenu 1s;  */
+-o-animation:hideMenu 1s; 
 }
 .collapse1 .menu-wrap
 {
 width:50px;
-/* position:relative;
+position:relative;
 animation:hideMenu 1s;
 -moz-animation:hideMenu 1s; 
 -webkit-animation:hideMenu 1s; 
--o-animation:hideMenu 1s;  */
+-o-animation:hideMenu 1s; 
 }
 .collapse1 .main-wrap
 {
 margin-left:50px;
-/* animation:hideMain 1s;
+animation:hideMain 1s;
 -moz-animation:hideMain 1s; 
 -webkit-animation:hideMain 1s; 
--o-animation:hideMain 1s;  */
+-o-animation:hideMain 1s; 
 }
 @keyframes hideMain
 {
@@ -116,19 +118,19 @@ margin-left:50px;
 100% {width:50px;}
 }
 
-@-moz-keyframes hideMenu /* Firefox */
+@-moz-keyframes hideMenu Firefox
 {
 0%   {width:200px;}
 100% {width:50px;}
 }
 
-@-webkit-keyframes hideMenu /* Safari and Chrome */
+@-webkit-keyframes hideMenu Safari and Chrome
 {
 0%   {width:200px;}
 100% {width:50px;}
 }
 
-@-o-keyframes hideMenu /* Opera */
+@-o-keyframes hideMenu Opera
 {
 0%   {width:200px;}
 100% {width:50px;}
@@ -136,11 +138,11 @@ margin-left:50px;
 
 .collapse1{
 animation: myfirst 5s linear 2s infinite alternate;
-/* Firefox: */
+Firefox:
 -moz-animation: myfirst 5s linear 2s infinite alternate;
-/* Safari 和 Chrome: */
+Safari 和 Chrome:
 -webkit-animation: myfirst 5s linear 2s infinite alternate;
-/* Opera: */
+Opera:
 -o-animation: myfirst 5s linear 2s infinite alternate;
 }
 .logo-desc{
@@ -158,10 +160,10 @@ animation: myfirst 5s linear 2s infinite alternate;
 .collapse1 .logo-desc-text{
 	display:none;
 }
+ */
 
 
-
-.collapse1 {
+/* .collapse1 {
     color:yellow;
     font-size:14px;
     transition-property:color;
@@ -172,8 +174,8 @@ animation: myfirst 5s linear 2s infinite alternate;
     font-size:5px;
     color:blue;
 }
-
-.tranform-demo{
+ */
+/* .tranform-demo{
 	color:yellow;
     font-size:14px;
     transition-property:color;
@@ -185,10 +187,16 @@ animation: myfirst 5s linear 2s infinite alternate;
     color:blue;
     
 }
-
-
+ */
+ .collapse1 .main-wrap
+{
+margin-left:50px;
+}
+.collapse1 .logo-desc-text{
+    display:none;
+}
 .collapse1 .menu-wrap {
-    /* width: 50px; */
+     width: 50px; 
 }
 .collapse1 .main-wrap {
    /*  margin-left: 50px; */

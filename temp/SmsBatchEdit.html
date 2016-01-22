@@ -1,0 +1,100 @@
+<div class="rgt_body">
+<div class="body_title">| 批量发送短信编辑</div>
+<form id="editForm" class="form-horizontal">
+<input type="hidden" id="id" name="id">
+ <div class="form-group">
+    <label for="total" class="col-sm-2 control-label">总发送数据:</label>
+    <div class="col-sm-10">
+    
+      <input type="text"           
+       class="form-control" id="total" placeholder="">
+     
+    </div>
+ </div> 
+ <div class="form-group">
+    <label for="succ" class="col-sm-2 control-label">成功数量:</label>
+    <div class="col-sm-10">
+    
+      <input type="text"           
+       class="form-control" id="succ" placeholder="">
+     
+    </div>
+ </div> 
+ <div class="form-group">
+    <label for="fail" class="col-sm-2 control-label">失败数量:</label>
+    <div class="col-sm-10">
+    
+      <input type="text"           
+       class="form-control" id="fail" placeholder="">
+     
+    </div>
+ </div> 
+ <div class="form-group">
+    <label for="status" class="col-sm-2 control-label">状态:</label>
+    <div class="col-sm-10">
+    
+      <input type="text"           
+       class="form-control" id="status" placeholder="">
+     
+    </div>
+ </div> 
+ <div class="form-group">
+    <label for="phone" class="col-sm-2 control-label">手机号码:</label>
+    <div class="col-sm-10">
+    
+      <input type="text"           
+       class="form-control" id="phone" placeholder="">
+     
+    </div>
+ </div> 
+ <div class="form-group">
+    <label for="content" class="col-sm-2 control-label">短信内容:</label>
+    <div class="col-sm-10">
+    
+      <input type="text"           
+       class="form-control" id="content" placeholder="">
+     
+    </div>
+ </div> 
+ <div class="form-group">
+    <label for="sendTime" class="col-sm-2 control-label">定时发送:</label>
+    <div class="col-sm-10">
+    
+      <input type="text"   onClick="WdatePicker()"          
+       class="form-control" id="sendTime" placeholder="">
+     
+    </div>
+ </div> 
+ <div class="form-group">
+    <label for="excuteTime" class="col-sm-2 control-label">执行时间:</label>
+    <div class="col-sm-10">
+    
+      <input type="text"   onClick="WdatePicker()"          
+       class="form-control" id="excuteTime" placeholder="">
+     
+    </div>
+ </div> 
+   <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="button" class="btn btn-primary">保存</button>
+       <button type="button" class="btn btn-default">取消</button>
+    </div>
+  </div>
+</form>
+</div>
+</div>
+<script type="text/javascript">
+
+$().ready(function() {
+ $("#editForm").validate({
+      
+    });
+});
+    function save(){
+           if (!$("#editForm").valid())
+                    return;
+    }
+    function cancel(){
+        
+    }
+</script>

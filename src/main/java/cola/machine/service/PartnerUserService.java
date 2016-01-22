@@ -17,8 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import cola.machine.bean.SmsEach;
-import cola.machine.dao.SmsEachMapper;
+import cola.machine.bean.PartnerUser;
+import cola.machine.dao.PartnerUserMapper;
 import cola.machine.util.CacheUtil;
 import cola.machine.util.ResultUtil;
 import cola.machine.util.UUIDUtil;
@@ -29,12 +29,12 @@ import core.page.Page;
 
 import core.action.ResultDTO;
 
-@Service("smsEachService")
-public class SmsEachService extends BaseService {
+@Service("partnerUserService")
+public class PartnerUserService extends BaseService {
     private static final Logger logger = LoggerFactory
-            .getLogger(SmsEachService.class);
+            .getLogger(PartnerUserService.class);
     @Resource
-    private SmsEachMapper smsEachMapper;
+    private PartnerUserMapper partnerUserMapper;
 
     /**
      * 说明:list by page and params
@@ -44,36 +44,36 @@ public class SmsEachService extends BaseService {
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
      */
-    public List<SmsEach> listByParams4Page(HashMap params) {
-        return smsEachMapper.listByParams4Page(params);
+    public List<PartnerUser> listByParams4Page(HashMap params) {
+        return partnerUserMapper.listByParams4Page(params);
     }
-     public List<SmsEach> listByParams(HashMap params) {
-        return smsEachMapper.listByParams(params);
+     public List<PartnerUser> listByParams(HashMap params) {
+        return partnerUserMapper.listByParams(params);
     }
     /*
     *//**
      * 说明:
-     * @param SmsEach
+     * @param PartnerUser
      * @return
      * @return Object
      * @author dozen.zhang
      * @date 2015年11月15日下午1:33:54
      */
-    public ResultDTO save(SmsEach smsEach) {
+    public ResultDTO save(PartnerUser partnerUser) {
         // 进行字段验证
-       ValidateUtil<SmsEach> vu = new ValidateUtil<SmsEach>();
-        ResultDTO result = vu.valid(smsEach);
+       ValidateUtil<PartnerUser> vu = new ValidateUtil<PartnerUser>();
+        ResultDTO result = vu.valid(partnerUser);
         if (result.getR() != 1) {
             return result;
         }
          //逻辑业务判断判断
        
        //判断是更新还是插入
-        if (smsEach.getId()==null) {
+        if (partnerUser.getId()==null) {
                
-            smsEachMapper.insert(smsEach);
+            partnerUserMapper.insert(partnerUser);
         } else {
-             smsEachMapper.updateByPrimaryKey(smsEach);
+             partnerUserMapper.updateByPrimaryKey(partnerUser);
         }
         return new ResultDTO(1, "保存成功");
     }
@@ -87,7 +87,7 @@ public class SmsEachService extends BaseService {
     * @date 2015年12月27日下午10:56:38
     */
     public void delete(Integer  id){
-        smsEachMapper.deleteByPrimaryKey(id);
+        partnerUserMapper.deleteByPrimaryKey(id);
     }   
     /**
     * 说明:根据主键获取数据
@@ -97,7 +97,7 @@ public class SmsEachService extends BaseService {
     * @author dozen.zhang
     * @date 2015年12月27日下午10:56:38
     */
-    public SmsEach selectByPrimaryKey(Integer id){
-       return smsEachMapper.selectByPrimaryKey(id);
+    public PartnerUser selectByPrimaryKey(Integer id){
+       return partnerUserMapper.selectByPrimaryKey(id);
     }
 }

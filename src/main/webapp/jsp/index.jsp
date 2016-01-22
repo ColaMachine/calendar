@@ -180,6 +180,7 @@ var menuList=[
               {id:11,name:"列表",url:"${path}/static/html/example/table.html",icon:"fa fa-spinner",pid:8},
               {id:12,name:"alert",url:"${path}/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
               {id:13,name:"短信",url:"${path}/smsBatch/list.htm",icon:"fa fa-spinner",pid:0}, 
+              {id:14,name:"合作伙伴",url:"${path}/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0}, 
               ]
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 </script>

@@ -71,27 +71,19 @@ public class SmsBatchController extends BaseController{
      */
     @RequestMapping(value = "/list.json")
     @ResponseBody
-    public Object list(@RequestParam(value = "curPage", required = false) Integer curPage, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        // 查找所有的角色
-        // 查找所有的角色
-        if(curPage==null ){
-            return this.getWrongResultFromCfg("err.param.notnull.curPage");
+    public Object list(HttpServletRequest request) {
+        Page page = RequestUtil.getPage(request);
+        if(page ==null){
+             return this.getWrongResultFromCfg("err.param.page");
         }
-        if(pageSize==null ){
-            return this.getWrongResultFromCfg("err.param.notnull.pageSize");
-        }
-        //Page page = new Page(curPage,pageSize);
-        Page page =new Page();
-        page.setCurPage(curPage);
-        page.setPageSize(pageSize);
         HashMap params =new HashMap();
         params.put("page",page);
-        List<SmsBatch> smsBatchs = smsBatchService.list(params);
+        List<SmsBatch> smsBatchs = smsBatchService.listByParams4Page(params);
         return ResultUtil.getResult(smsBatchs, page);
     }
     
     
-
+    
     /**
      * @param id 参数
      * @param request 发请求
@@ -147,6 +139,8 @@ public class SmsBatchController extends BaseController{
             smsBatch.setContent(String.valueOf(content)) ;
             String sendTime = request.getParameter("sendTime");
             smsBatch.setSendTime(Timestamp.valueOf(sendTime)) ;
+            String excuteTime = request.getParameter("excuteTime");
+            smsBatch.setExcuteTime(Timestamp.valueOf(excuteTime)) ;
         //valid
            ValidateUtil vu = new ValidateUtil();
     String validStr="";
@@ -186,6 +180,11 @@ if(StringUtil.isNotEmpty(validStr)) {
 return ResultUtil.getResult(302,validStr);
 }
 vu.add("sendTime", sendTime, "定时发送",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss")});
+ validStr = vu.validateString();
+if(StringUtil.isNotEmpty(validStr)) {
+return ResultUtil.getResult(302,validStr);
+}
+vu.add("excuteTime", excuteTime, "执行时间",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss")});
  validStr = vu.validateString();
 if(StringUtil.isNotEmpty(validStr)) {
 return ResultUtil.getResult(302,validStr);

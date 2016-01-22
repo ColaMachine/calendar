@@ -29,64 +29,13 @@
 <script type="text/javascript">
 
 $().ready(function() {
- $("#signupForm").validate({
-        rules: {
-        
-         <#list table.cols as col>
- <#if col.name!=table.pk.name>
-  email: {
-    required: true,
-    email: true
-   },
-   col.name:{
-    <#if col.nn==true> required: true, </#if> 
-   },
-			 <div class="form-group">
-			    <label for="${col.name}" class="col-sm-2 control-label">${col.remark}:</label>
-			    <div class="col-sm-10">
-			    
-			      <input type="text"  <#if col.type=='timestamp'> onClick="WdatePicker()" </#if>         
-			       class="form-control" id="${col.name}" placeholder="">
-			     
-			    </div>
-			 </div> 
- </#if>
-  </#list>
-   firstname: "required",
-   email: {
-    required: true,
-    email: true
-   },
-   password: {
-    required: true,
-    minlength: 5
-   },
-   confirm_password: {
-    required: true,
-    minlength: 5,
-    equalTo: "#password"
-   }
-  },
-        messages: {
-   firstname: "请输入姓名",
-   email: {
-    required: "请输入Email地址",
-    email: "请输入正确的email地址"
-   },
-   password: {
-    required: "请输入密码",
-    minlength: jQuery.format("密码不能小于{0}个字 符")
-   },
-   confirm_password: {
-    required: "请输入确认密码",
-    minlength: "确认密码不能小于5个字符",
-    equalTo: "两次输入密码不一致不一致"
-   }
-  }
+ $("#editForm").validate({
+      
     });
 });
     function save(){
-        
+           if (!$("#editForm").valid())
+                    return;
     }
     function cancel(){
         

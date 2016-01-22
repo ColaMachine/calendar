@@ -17,8 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import cola.machine.bean.SmsBatch;
-import cola.machine.dao.SmsBatchMapper;
+import cola.machine.bean.PartnerUser;
+import cola.machine.dao.PartnerUserMapper;
 import cola.machine.util.CacheUtil;
 import cola.machine.util.ResultUtil;
 import cola.machine.util.UUIDUtil;
@@ -29,12 +29,12 @@ import core.page.Page;
 
 import core.action.ResultDTO;
 
-@Service("smsBatchService")
-public class SmsBatchService extends BaseService {
+@Service("partnerUserService")
+public class PartnerUserService extends BaseService {
     private static final Logger logger = LoggerFactory
-            .getLogger(SmsBatchService.class);
+            .getLogger(PartnerUserService.class);
     @Resource
-    private SmsBatchMapper smsBatchMapper;
+    private PartnerUserMapper partnerUserMapper;
 
     /**
      * 说明:list by page and params
@@ -44,36 +44,36 @@ public class SmsBatchService extends BaseService {
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
      */
-    public List<SmsBatch> listByParams4Page(HashMap params) {
-        return smsBatchMapper.listByParams4Page(params);
+    public List<PartnerUser> listByParams4Page(HashMap params) {
+        return partnerUserMapper.listByParams4Page(params);
     }
-     public List<SmsBatch> listByParams(HashMap params) {
-        return smsBatchMapper.listByParams(params);
+     public List<PartnerUser> listByParams(HashMap params) {
+        return partnerUserMapper.listByParams(params);
     }
     /*
     *//**
      * 说明:
-     * @param SmsBatch
+     * @param PartnerUser
      * @return
      * @return Object
      * @author dozen.zhang
      * @date 2015年11月15日下午1:33:54
      */
-    public ResultDTO save(SmsBatch smsBatch) {
+    public ResultDTO save(PartnerUser partnerUser) {
         // 进行字段验证
-       ValidateUtil<SmsBatch> vu = new ValidateUtil<SmsBatch>();
-        ResultDTO result = vu.valid(smsBatch);
+       ValidateUtil<PartnerUser> vu = new ValidateUtil<PartnerUser>();
+        ResultDTO result = vu.valid(partnerUser);
         if (result.getR() != 1) {
             return result;
         }
          //逻辑业务判断判断
        
        //判断是更新还是插入
-        if (smsBatch.getId()==null) {
+        if (partnerUser.getId()==null) {
                
-            smsBatchMapper.insert(smsBatch);
+            partnerUserMapper.insert(partnerUser);
         } else {
-             smsBatchMapper.updateByPrimaryKey(smsBatch);
+             partnerUserMapper.updateByPrimaryKey(partnerUser);
         }
         return new ResultDTO(1, "保存成功");
     }
@@ -87,7 +87,7 @@ public class SmsBatchService extends BaseService {
     * @date 2015年12月27日下午10:56:38
     */
     public void delete(Integer  id){
-        smsBatchMapper.deleteByPrimaryKey(id);
+        partnerUserMapper.deleteByPrimaryKey(id);
     }   
     /**
     * 说明:根据主键获取数据
@@ -97,7 +97,7 @@ public class SmsBatchService extends BaseService {
     * @author dozen.zhang
     * @date 2015年12月27日下午10:56:38
     */
-    public SmsBatch selectByPrimaryKey(Integer id){
-       return smsBatchMapper.selectByPrimaryKey(id);
+    public PartnerUser selectByPrimaryKey(Integer id){
+       return partnerUserMapper.selectByPrimaryKey(id);
     }
 }

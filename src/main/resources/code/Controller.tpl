@@ -73,19 +73,11 @@ public class ${Abc}Controller extends BaseController{
      */
     @RequestMapping(value = "/list.json")
     @ResponseBody
-    public Object list(@RequestParam(value = "curPage", required = false) Integer curPage, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        // 查找所有的角色
-        // 查找所有的角色
-        if(curPage==null ){
-            return this.getWrongResultFromCfg("err.param.notnull.curPage");
+    public Object list(HttpServletRequest request) {
+        Page page = RequestUtil.getPage(request);
+        if(page ==null){
+             return this.getWrongResultFromCfg("err.param.page");
         }
-        if(pageSize==null ){
-            return this.getWrongResultFromCfg("err.param.notnull.pageSize");
-        }
-        //Page page = new Page(curPage,pageSize);
-        Page page =new Page();
-        page.setCurPage(curPage);
-        page.setPageSize(pageSize);
         HashMap params =new HashMap();
         params.put("page",page);
         List<${Abc}> ${abc}s = ${abc}Service.listByParams4Page(params);

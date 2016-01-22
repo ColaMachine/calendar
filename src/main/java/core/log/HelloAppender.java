@@ -1,10 +1,10 @@
 package core.log;
-
+/*
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
-
-public class HelloAppender extends AppenderSkeleton {
-
+*/
+public class HelloAppender /*extends AppenderSkeleton*/ {
+/*
 	private String account ;
 	
 //	@Override
@@ -35,9 +35,9 @@ public class HelloAppender extends AppenderSkeleton {
 	}
 	
 	public static void main(String args[]){
-		/*PropertiesUtil.init();
+		PropertiesUtil.init();
 		 Log log = LogFactory.getLog("helloLog") ;  
-		    log.info("I am ready.") ; */
-	}
+		    log.info("I am ready.") ; 
+	}*/
 }
 
