@@ -54,8 +54,8 @@ public class RequestUtil {
 	 * @author dozen.zhang
 	 */
 	public static Page getPage(HttpServletRequest request){
-	    String curPage = request.getParameter("curpage");
-	    String pageSize = request.getParameter("pagesize");
+	    String curPage = request.getParameter("curPage");
+	    String pageSize = request.getParameter("pageSize");
 	    Page page =new Page();
 	    page.setCurPage(Integer.valueOf(curPage));
 	    page.setPageSize(Integer.valueOf(pageSize));

@@ -1,5 +1,5 @@
 <div class="rgt_body">
-<div class="body_title">| 短信发送情况</div>
+<div class="body_title">| 批量发送短信</div>
     <div class="body_top" >
     <form class="form-inline app-search">
         <div class="form-group">
@@ -9,9 +9,27 @@
            
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">批次号</label>
+            <label for="exampleInputName2">总发送数据</label>
           
-            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="批次号">
+            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="总发送数据">
+           
+        </div>
+        <div class="form-group">
+            <label for="exampleInputName2">成功数量</label>
+          
+            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="成功数量">
+           
+        </div>
+        <div class="form-group">
+            <label for="exampleInputName2">失败数量</label>
+          
+            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="失败数量">
+           
+        </div>
+        <div class="form-group">
+            <label for="exampleInputName2">状态</label>
+          
+            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="状态">
            
         </div>
         <div class="form-group">
@@ -21,21 +39,27 @@
            
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">发送时间</label>
+            <label for="exampleInputName2">短信内容</label>
           
-            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="发送时间">
+            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="短信内容">
            
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">发送状态</label>
+            <label for="exampleInputName2">定时发送</label>
           
-            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="发送状态">
+            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="定时发送">
            
         </div>
         <div class="form-group">
-            <label for="exampleInputName2">失败原因</label>
+            <label for="exampleInputName2">创建时间</label>
           
-            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="失败原因">
+            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="创建时间">
+           
+        </div>
+        <div class="form-group">
+            <label for="exampleInputName2">执行时间</label>
+          
+            <input type="text" class="form-control" id="col.name" name="col.name" placeholder="执行时间">
            
         </div>
   <button type="submit" class="btn btn-default">查询</button>
@@ -54,14 +78,14 @@ var gridParam = {
         pageSize : 10
     },
     multiselect : false,
-    url : PATH+'/smsEach/list.json',
+    url : PATH+'/smsBatch/list.json',
     grid_selector : "#grid",
     pager_selector : "#grid-pager",
     searchParams : {
         name : ''
     },
     colNames : [
-     "id","批次号","手机号码","发送时间","发送状态","失败原因" , '操作' ],
+     "id","总发送数据","成功数量","失败数量","状态","手机号码","短信内容","定时发送","创建时间","执行时间" , '操作' ],
     colModel : [
              
                {
@@ -70,17 +94,17 @@ var gridParam = {
             }
              ,
                {
-                name : 'batchId',
+                name : 'total',
                 width : 80
             }
              ,
                {
-                name : 'phone',
+                name : 'succ',
                 width : 80
             }
              ,
                {
-                name : 'sendTime',
+                name : 'fail',
                 width : 80
             }
              ,
@@ -90,7 +114,27 @@ var gridParam = {
             }
              ,
                {
-                name : 'reason',
+                name : 'phone',
+                width : 80
+            }
+             ,
+               {
+                name : 'content',
+                width : 80
+            }
+             ,
+               {
+                name : 'sendTime',
+                width : 80
+            }
+             ,
+               {
+                name : 'createTime',
+                width : 80
+            }
+             ,
+               {
+                name : 'excuteTime',
                 width : 80
             }
             ,
@@ -113,10 +157,10 @@ var gridParam = {
 };
 var mygrid = $("#grid").jqGrid(this.gridParam); 
  function addInfo(){
-    goPage(PATH+'/smsEach/edit.htm');
+    goPage(PATH+'/smsBatch/edit.htm');
  }
  function editInfo(id){
-     goPage(PATH+"/smsEach/edit.htm?id="+id);
+     goPage(PATH+"/smsBatch/edit.htm?id="+id);
  }
  function search(){
     var jso = changeForm2Jso(".app-search");
@@ -125,7 +169,7 @@ var mygrid = $("#grid").jqGrid(this.gridParam);
  function deleteInfo(id){
      //弹窗
      zconfirm("确定删除角色名称:"+id,"删除",function(){
-        $.post(PATH+"/smsEach/del.json?id="+id,function(result){
+        $.post(PATH+"/smsBatch/del.json?id="+id,function(result){
             result=ajaxResultHandler(result);
             if(result.r==1){
                 zalert("删除成功，角色名："+roleName,"删除",function(){
@@ -138,7 +182,7 @@ var mygrid = $("#grid").jqGrid(this.gridParam);
     });
 }
  function viewInfo(id){
-     goPage(PATH+"/smsEach/view.htm?id="+id);
+     goPage(PATH+"/smsBatch/view.htm?id="+id);
  }
 </script>
 

@@ -47,6 +47,9 @@ public class Generator {
     
     String fatherPackage = "";
     private String ctrl = "\r\n";
+    private String tab = "    ";
+    private String tab2 = tab+tab;
+    private String tab3 = tab2+tab;
     private Path homePath;
     private static Logger logger = LoggerFactory.getLogger(Generator.class);
 
@@ -189,8 +192,8 @@ public class Generator {
         return templateStr.toString();
     }
     public String getValidStr(){
-       StringBuffer sb=new StringBuffer("    ValidateUtil vu = new ValidateUtil();").append(ctrl);;
-       sb.append("    String validStr=\"\";").append(ctrl);;
+       StringBuffer sb=new StringBuffer(tab2+"ValidateUtil vu = new ValidateUtil();").append(ctrl);;
+       sb.append(tab2+"String validStr=\"\";").append(ctrl);;
        for(int i=0;i<table.getCols().size();i++){
            ZColum zcol =table.getCols().get(i); 
            String type = zcol.getType();
@@ -260,11 +263,11 @@ public class Generator {
            }
            String ruleStr=StringUtil.join(",",rules.toArray());
            ruleStr=" new Rule[]{"+ruleStr+"}";
-           sb.append("vu.add(\""+zcol.getName()+"\", "+zcol.getName()+", \""+zcol.getRemark()+"\", "+ruleStr+");").append(ctrl);
-           sb.append(" validStr = vu.validateString();").append(ctrl);
-           sb.append("if(StringUtil.isNotEmpty(validStr)) {").append(ctrl);
-           sb.append(String.format("return ResultUtil.getResult(%d,%s);",302,"validStr")).append(ctrl);
-           sb.append("}").append(ctrl);
+           sb.append(tab2+"vu.add(\""+zcol.getName()+"\", "+zcol.getName()+", \""+zcol.getRemark()+"\", "+ruleStr+");").append(ctrl);
+           sb.append(tab2+"validStr = vu.validateString();").append(ctrl);
+           sb.append(tab2+"if(StringUtil.isNotEmpty(validStr)) {").append(ctrl);
+           sb.append(tab3+String.format("return ResultUtil.getResult(%d,%s);",302,"validStr")).append(ctrl);
+           sb.append(tab2+"}").append(ctrl);
 
        }
       return sb.toString();
@@ -351,7 +354,37 @@ public class Generator {
 
     public void genSql() throws IOException, TemplateException {
         logger.info("genSql");
+        StringBuffer sql =new StringBuffer();
+        sql.append("CREATE TABLE `").append(table.getName()).append("` (").append(ctrl);
+        for(int i=0;i<table.getCols().size();i++){
+            ZColum column = table.getCols().get(i);
+            sql.append(tab+"`"+column.getName()+"` "+column.getType());
+            if(column.isNn()){
+                sql.append(" NOT NULL");
+            }else{
+                sql.append(" NULL");
+                if(column.getType().toLowerCase().startsWith("timestamp")&&StringUtil.isBlank(column.getDef())){
+                    sql.append(" DEFAULT NULL");
+                }
+            }
+            if(column.isAi()){
+                sql.append(" AUTO_INCREMENT");
+            }
+            if(StringUtil.isNotEmpty(column.getDef())){
+                if(column.getDef().toLowerCase().equals("now")){
+                    sql.append(" CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+                }else{
+                    sql.append(" DEFAULT "+column.getDef());
+                }
+            }
+            sql.append(" COMMENT '"+column.getRemark()+"',").append(ctrl);
+        }
+        sql.append("PRIMARY KEY (`"+table.getPk().getName()+"`)").append(ctrl);
+        sql.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='"+table.getRemark()+"';");
+        root.put("sql", sql);
         writeFile("",table.getName() + ".sql", "sql");
+        
+        
     }
 
     public void genListHtml() throws IOException, TemplateException {
@@ -362,6 +395,65 @@ public class Generator {
     public void genEditHtml() throws IOException, TemplateException {
         
         logger.info("genEditHtml");
+        /*
+        <#if col.name!=table.pk.name>
+        <div class="form-group">
+           <label for="${col.name}" class="col-sm-2 control-label">${col.remark}:</label>
+           <div class="col-sm-10">
+             <input   <#if col.type!=="int"> type="number" onkeyup="chkFloat(this,8,2)" onafterpaste="chkFloat(this,8,2)" </#if>  <#if col.type=='timestamp'> onClick="WdatePicker()" </#if>         
+              class="form-control" id="${col.name}" placeholder="">
+           </div>
+        </div> 
+        </#if>
+        */
+        StringBuffer sb =new StringBuffer();
+        List<ZColum> cols =table.getCols();
+        for(int i=0;i<cols.size();i++){
+            ZColum zcol =cols.get(i);
+            String type =zcol.getType().toLowerCase();
+            if(zcol.isPk()){
+                sb.append(tab+"<input type=\"hidden\" id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\">").append(ctrl);
+            }else{
+                sb.append(tab+"<div class=\"form-group\">").append(ctrl);
+                sb.append(tab2+String.format("<label for=\"${0}\" class=\"col-sm-2 control-label\">${1}:</label>",zcol.getName(),zcol.getRemark())).append(ctrl);
+                sb.append(tab2+String.format("<div class=\"col-sm-10\">")).append(ctrl);
+                
+                if(type.startsWith("varchar")){
+                    int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
+                    String tagName="input";
+                    if(length>50){
+                        tagName="textarea";
+                    }
+                    sb.append(tab3+String.format("<{0} {3} name=\"{1}\" id=\"{1}\" maxlength=\"{2}\"></{0}>",tagName,zcol.getName(),length,tagName.equals("text")?" type=\"text\" ":"")).append(ctrl);
+                }
+                if(type.startsWith("int")){
+                    sb.append(tab3+String.format("<input type=\"number\" name=\"{0}\" id=\"{0}\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\"></input>",zcol.getName())).append(ctrl);
+                }
+                if(type.startsWith("float")){
+                    int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
+                    int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
+                    sb.append(tab3+String.format("<input type=\"number\" name=\"{0}\" id=\"{0}\" onkeyup=\"chkFloat(this,{1},{2})\" onafterpaste=\"chkFloat(this,{1},{2})\"></input>",zcol.getName(),integer,fraction)).append(ctrl);
+                }
+                if(type.startsWith("double")){
+                    int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
+                    int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
+                    sb.append(tab3+String.format("<input type=\"number\" name=\"{0}\" id=\"{0}\" onkeyup=\"chkFloat(this,{1},{2})\" onafterpaste=\"chkFloat(this,{1},{2})\"></input>",zcol.getName(),integer,fraction)).append(ctrl);
+                }
+                if(type.equals("date")){
+                    rules.add(String.format("new Regex(\"yyyy-MM-dd\")"));
+                    jsrules.add(String.format("date:true"));
+                    message.add(String.format("number:必须输入合法日期"));
+                }
+                if(type.equals("datetime")){
+                    rules.add(String.format("new Regex(\"yyyy-MM-dd HH:mm:ss\")"));
+                }
+                if(type.equals("timestamp")){
+                    rules.add(String.format("new Regex(\"yyyy-MM-dd HH:mm:ss\")"));
+                }
+                sb.append(tab2+String.format("</div")).append(ctrl);
+            }
+            sb.append(" input type=\"text\" class=\"form-control\" id=\""+col.getName()+"\" name=\""+col.getName()+"\" placeholder=\""+col.getRemark()+"\">");
+        }
         writeFile("",table.getName() + "Edit.html", "edit");
     }
 

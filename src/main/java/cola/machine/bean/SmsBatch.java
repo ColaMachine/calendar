@@ -57,5 +57,17 @@ public class SmsBatch {
         return sendTime;
     }    public void setSendTime(Timestamp sendTime){
         this.sendTime=sendTime;
+    }/**创建时间**/
+    private Timestamp createTime;
+    public Timestamp getCreateTime(){
+        return createTime;
+    }    public void setCreateTime(Timestamp createTime){
+        this.createTime=createTime;
+    }/**执行时间**/
+    private Timestamp excuteTime;
+    public Timestamp getExcuteTime(){
+        return excuteTime;
+    }    public void setExcuteTime(Timestamp excuteTime){
+        this.excuteTime=excuteTime;
     }
 }

@@ -32,7 +32,7 @@ import core.page.Page;
 
 import cola.machine.util.StringUtil;
 import cola.machine.util.ValidateUtil;
-
+import core.util.RequestUtil;
 import core.action.ResultDTO;
 
 @Controller
@@ -71,27 +71,19 @@ public class SmsBatchController extends BaseController{
      */
     @RequestMapping(value = "/list.json")
     @ResponseBody
-    public Object list(@RequestParam(value = "curPage", required = false) Integer curPage, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        // 查找所有的角色
-        // 查找所有的角色
-        if(curPage==null ){
-            return this.getWrongResultFromCfg("err.param.notnull.curPage");
+    public Object list(HttpServletRequest request) {
+        Page page = RequestUtil.getPage(request);
+        if(page ==null){
+             return this.getWrongResultFromCfg("err.param.page");
         }
-        if(pageSize==null ){
-            return this.getWrongResultFromCfg("err.param.notnull.pageSize");
-        }
-        //Page page = new Page(curPage,pageSize);
-        Page page =new Page();
-        page.setCurPage(curPage);
-        page.setPageSize(pageSize);
         HashMap params =new HashMap();
         params.put("page",page);
-        List<SmsBatch> smsBatchs = smsBatchService.list(params);
+        List<SmsBatch> smsBatchs = smsBatchService.listByParams4Page(params);
         return ResultUtil.getResult(smsBatchs, page);
     }
     
     
-
+    
     /**
      * @param id 参数
      * @param request 发请求
@@ -131,66 +123,79 @@ public class SmsBatchController extends BaseController{
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
         SmsBatch smsBatch =new  SmsBatch();
-            String id = request.getParameter("id");
-            smsBatch.setId(Integer.valueOf(id)) ;
-            String total = request.getParameter("total");
-            smsBatch.setTotal(Integer.valueOf(total)) ;
-            String succ = request.getParameter("succ");
-            smsBatch.setSucc(Integer.valueOf(succ)) ;
-            String fail = request.getParameter("fail");
-            smsBatch.setFail(Integer.valueOf(fail)) ;
-            String status = request.getParameter("status");
-            smsBatch.setStatus(Integer.valueOf(status)) ;
-            String phone = request.getParameter("phone");
-            smsBatch.setPhone(String.valueOf(phone)) ;
-            String content = request.getParameter("content");
-            smsBatch.setContent(String.valueOf(content)) ;
-            String sendTime = request.getParameter("sendTime");
-            smsBatch.setSendTime(Timestamp.valueOf(sendTime)) ;
+        String id = request.getParameter("id");
+        smsBatch.setId(Integer.valueOf(id)) ;
+        String total = request.getParameter("total");
+        smsBatch.setTotal(Integer.valueOf(total)) ;
+        String succ = request.getParameter("succ");
+        smsBatch.setSucc(Integer.valueOf(succ)) ;
+        String fail = request.getParameter("fail");
+        smsBatch.setFail(Integer.valueOf(fail)) ;
+        String status = request.getParameter("status");
+        smsBatch.setStatus(Integer.valueOf(status)) ;
+        String phone = request.getParameter("phone");
+        smsBatch.setPhone(String.valueOf(phone)) ;
+        String content = request.getParameter("content");
+        smsBatch.setContent(String.valueOf(content)) ;
+        String sendTime = request.getParameter("sendTime");
+        smsBatch.setSendTime(Timestamp.valueOf(sendTime)) ;
+        String createTime = request.getParameter("createTime");
+        smsBatch.setCreateTime(Timestamp.valueOf(createTime)) ;
+        String excuteTime = request.getParameter("excuteTime");
+        smsBatch.setExcuteTime(Timestamp.valueOf(excuteTime)) ;
         //valid
-           ValidateUtil vu = new ValidateUtil();
-    String validStr="";
-vu.add("id", id, "id",  new Rule[]{new Digits()});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-vu.add("total", total, "总发送数据",  new Rule[]{new Digits(),new NotEmpty()});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-vu.add("succ", succ, "成功数量",  new Rule[]{new Digits(),new NotEmpty()});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-vu.add("fail", fail, "失败数量",  new Rule[]{new Digits(),new NotEmpty()});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-vu.add("status", status, "状态",  new Rule[]{new Digits(),new NotEmpty()});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-vu.add("phone", phone, "手机号码",  new Rule[]{new NotEmpty()});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-vu.add("content", content, "短信内容",  new Rule[]{new Length(500),new NotEmpty()});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-vu.add("sendTime", sendTime, "定时发送",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss")});
- validStr = vu.validateString();
-if(StringUtil.isNotEmpty(validStr)) {
-return ResultUtil.getResult(302,validStr);
-}
-
+        ValidateUtil vu = new ValidateUtil();
+        String validStr="";
+        vu.add("id", id, "id",  new Rule[]{new Digits()});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        vu.add("total", total, "总发送数据",  new Rule[]{new Digits(),new NotEmpty()});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        vu.add("succ", succ, "成功数量",  new Rule[]{new Digits(),new NotEmpty()});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        vu.add("fail", fail, "失败数量",  new Rule[]{new Digits(),new NotEmpty()});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        vu.add("status", status, "状态",  new Rule[]{new Digits(),new NotEmpty()});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        vu.add("phone", phone, "手机号码",  new Rule[]{new NotEmpty()});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        vu.add("content", content, "短信内容",  new Rule[]{new Length(500),new NotEmpty()});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        vu.add("sendTime", sendTime, "定时发送",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss")});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        vu.add("createTime", createTime, "创建时间",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss"),new NotEmpty()});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        vu.add("excuteTime", excuteTime, "执行时间",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss")});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
         return smsBatchService.save(smsBatch);
     }
 }

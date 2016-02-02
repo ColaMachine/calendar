@@ -1319,3 +1319,34 @@ function getParam(key){
 		return window.data[key];
 	return null;
 }
+
+
+function chkFloat(number, intLength, floatLength) {
+	var strNumber = number.value;
+	strNumber = strNumber.replace("-", "");
+	var pos = strNumber.indexOf(".");
+	if (pos == -1) {
+		if (strNumber.length > intLength) {
+			number.value = strNumber.substring(0, intLength);
+		}
+	} else {
+		if (strNumber.length - pos > floatLength + 1) {
+			number.value = strNumber.substring(0, pos + floatLength + 1);
+		}
+		if (pos > intLength) {
+			number.value = number.value.substring(0, intLength) + number.value.substring(pos);
+		}
+	}
+}
+
+function chkInt(number, intLength) {
+	var strNumber = number.value;
+	var pos = strNumber.indexOf(".");
+	if (pos == -1) {
+		if (strNumber.length > intLength) {
+			number.value = strNumber.substring(0, intLength);
+		}
+	} else {
+		number.value = strNumber.substring(0, pos);
+	}
+}
