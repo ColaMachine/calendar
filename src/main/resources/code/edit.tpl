@@ -9,10 +9,8 @@
  <div class="form-group">
     <label for="${col.name}" class="col-sm-2 control-label">${col.remark}:</label>
     <div class="col-sm-10">
-    
-      <input type="text"  <#if col.type=='timestamp'> onClick="WdatePicker()" </#if>         
+      <input   <#if col.type!=="int"> type="number" onkeyup="chkFloat(this,8,2)" onafterpaste="chkFloat(this,8,2)" </#if>  <#if col.type=='timestamp'> onClick="WdatePicker()" </#if>         
        class="form-control" id="${col.name}" placeholder="">
-     
     </div>
  </div> 
  </#if>

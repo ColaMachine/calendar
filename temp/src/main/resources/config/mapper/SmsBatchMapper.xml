@@ -10,10 +10,11 @@
       <result column="phone" jdbcType="LONGVARCHAR" property="phone" />
       <result column="content" jdbcType="VARCHAR" property="content" />
       <result column="sendTime" jdbcType="TIMESTAMP" property="sendTime" />
+      <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
       <result column="excuteTime" jdbcType="TIMESTAMP" property="excuteTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id ,total ,succ ,fail ,status ,phone ,content ,sendTime ,excuteTime 
+    id ,total ,succ ,fail ,status ,phone ,content ,sendTime ,createTime ,excuteTime 
    
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -38,6 +39,7 @@
 ,#{phone,jdbcType=LONGVARCHAR}
 ,#{content,jdbcType=VARCHAR}
 ,#{sendTime,jdbcType=TIMESTAMP}
+,#{createTime,jdbcType=TIMESTAMP}
 ,#{excuteTime,jdbcType=TIMESTAMP}
     )
   </insert>
@@ -68,6 +70,9 @@
         <if test="sendTime != null" >  
            sendTime, 
         </if>  
+        <if test="createTime != null" >  
+           createTime, 
+        </if>  
         <if test="excuteTime != null" >  
            excuteTime, 
         </if>  
@@ -96,6 +101,9 @@
         </if>  
         <if test="sendTime != null" >  
           #{sendTime,jdbcType=TIMESTAMP},
+        </if>  
+        <if test="createTime != null" >  
+          #{createTime,jdbcType=TIMESTAMP},
         </if>  
         <if test="excuteTime != null" >  
           #{excuteTime,jdbcType=TIMESTAMP},
@@ -128,6 +136,9 @@
         </if>  
         <if test="sendTime != null" >  
              sendTime=#{sendTime,jdbcType=TIMESTAMP},
+        </if>  
+        <if test="createTime != null" >  
+             createTime=#{createTime,jdbcType=TIMESTAMP},
         </if>  
         <if test="excuteTime != null" >  
              excuteTime=#{excuteTime,jdbcType=TIMESTAMP},
@@ -162,6 +173,9 @@
         <if test="sendTime != null" >  
               sendTime=#{sendTime,jdbcType=TIMESTAMP},
         </if>  
+        <if test="createTime != null" >  
+              createTime=#{createTime,jdbcType=TIMESTAMP},
+        </if>  
         <if test="excuteTime != null" >  
               excuteTime=#{excuteTime,jdbcType=TIMESTAMP},
         </if>  
@@ -195,6 +209,9 @@ where id = #{id,jdbcType=INTEGER}
         <if test="sendTime != null and sendTime != '' ">  
            and sendTime = #{sendTime}
         </if>  
+        <if test="createTime != null and createTime != '' ">  
+           and createTime = #{createTime}
+        </if>  
         <if test="excuteTime != null and excuteTime != '' ">  
            and excuteTime = #{excuteTime}
         </if>  
@@ -227,6 +244,9 @@ where id = #{id,jdbcType=INTEGER}
         <if test="sendTime != null and sendTime != '' ">  
            and sendTime = #{sendTime}
         </if>  
+        <if test="createTime != null and createTime != '' ">  
+           and createTime = #{createTime}
+        </if>  
         <if test="excuteTime != null and excuteTime != '' ">  
            and excuteTime = #{excuteTime}
         </if>  
@@ -258,6 +278,9 @@ where id = #{id,jdbcType=INTEGER}
         </if>  
         <if test="sendTime != null and sendTime != '' ">  
            and sendTime = #{sendTime}
+        </if>  
+        <if test="createTime != null and createTime != '' ">  
+           and createTime = #{createTime}
         </if>  
         <if test="excuteTime != null and excuteTime != '' ">  
            and excuteTime = #{excuteTime}
