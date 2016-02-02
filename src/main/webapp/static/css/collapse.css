@@ -40,15 +40,16 @@
 }
 /***展开动画***/
 
-/***收缩动画****//* 
+/***收缩动画****/
 .menu-wrap
 {
+	overflow:hidden;
 width:200px;
 position:relative;
-animation:showMenu 1s;
+/* animation:showMenu 1s;
 -moz-animation:showMenu 1s; 
 -webkit-animation:showMenu 1s; 
--o-animation:showMenu 1s; 
+-o-animation:showMenu 1s;  */
 transition:width 1s;
 -moz-transition:width 1s; 
 -webkit-transition:width 1s; 
@@ -61,10 +62,10 @@ transition:margin-left 1s;
 -moz-transition:margin-left 1s; 
 -webkit-transition:margin-left 1s; 
 -o-transition:margin-left 1s; 
-animation:showMain 1s;
+/* animation:showMain 1s;
 -moz-animation:showMain 1s;
 -webkit-animation:showMain 1s; 
--o-animation:showMain 1s; 
+-o-animation:showMain 1s;  */
 }
 @keyframes showMenu
 {
@@ -78,29 +79,29 @@ animation:showMain 1s;
 }
 .collapse1 .logo-desc 
 {
-width:0px;
-position:relative;
-animation:hideMenu 1s;
+/* width:0px; */
+/* position:relative; */
+/* animation:hideMenu 1s;
 -moz-animation:hideMenu 1s; 
 -webkit-animation:hideMenu 1s; 
--o-animation:hideMenu 1s; 
+-o-animation:hideMenu 1s;  */
 }
 .collapse1 .menu-wrap
 {
-width:50px;
+width:100px;
 position:relative;
-animation:hideMenu 1s;
+/* animation:hideMenu 1s;
 -moz-animation:hideMenu 1s; 
 -webkit-animation:hideMenu 1s; 
--o-animation:hideMenu 1s; 
+-o-animation:hideMenu 1s;  */
 }
 .collapse1 .main-wrap
 {
 margin-left:50px;
-animation:hideMain 1s;
+/* animation:hideMain 1s;
 -moz-animation:hideMain 1s; 
 -webkit-animation:hideMain 1s; 
--o-animation:hideMain 1s; 
+-o-animation:hideMain 1s;  */
 }
 @keyframes hideMain
 {
@@ -158,23 +159,26 @@ Opera:
     transition:display 1s;
 }
 .collapse1 .logo-desc-text{
-	display:none;
+	/* display:none; */
 }
- */
 
 
-/* .collapse1 {
-    color:yellow;
-    font-size:14px;
-    transition-property:color;
-    transition-duration: 2s;
-   
+
+ .nav-text  {
+   /*  opacity:0.5; */
+   display:inline-block;
+    width:200px;
+  /*     -webkit-transition: opacity 1s ease-in-out;
+    -moz-transition: opacity 1s ease-in-out;
+    -o-transition: opacity 1s ease-in-out; 
+    transition: opacity 1s ease-in-out;*/
 }
 .collapse1 .nav-text {
-    font-size:5px;
-    color:blue;
+	width:0px;
+/*   opacity:1;
+    filter: alpha(opacity=1); */
 }
- */
+
 /* .tranform-demo{
 	color:yellow;
     font-size:14px;

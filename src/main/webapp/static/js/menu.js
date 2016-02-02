@@ -42,11 +42,14 @@ var zMenu={
 				}
 				
 				if(isNull($(this).attr("href"))){
+					var id=$(this).attr("id");
+					var ul="m_u_"+id.substr(4);
 					//console.log($(this).parent().length);
 					//查找当前所属的li状态是否是打开状态的
 					if($(this).parent().hasClass('open')){//console.log("rm open");
 						$(this).parent().removeClass('open');
-						$(this).parent().find("ul").eq(0).slideUp(200,function(){});
+						$("#"+ul).slideUp(200,function(){});
+						//$(this).parent().find("ul").eq(0).slideUp(200,function(){});
 					}else{//console.log("add open");
 					//$(".mark").removeClass("mark");
 					//$(this).addClass("mark");
@@ -55,8 +58,9 @@ var zMenu={
 						//打开当前节点,关闭同级节点里的open元素.
 						
 						
-						$(this).parent().siblings().filter('.open').removeClass('open');
-						$(this).parent().find("ul").eq(0).slideDown(100);
+						//$(this).parent().siblings().filter('.open').removeClass('open');
+						//$(this).parent().find("ul").eq(0).slideDown(100);
+						$("#"+ul).slideDown(100,function(){});
 						$(this).parent().addClass('open');
 					}
 				}else{
@@ -122,7 +126,7 @@ var zMenu={
 		},
 		createLi:function(data,row){
 			var html=
-			"<li ><a href=\""+row[this.urlName]+"\" ><span class='nav-icon'><i class='"+row["icon"]+"'></i></span><span class='nav-text'>"+row[this.menuName]+"</span>"+(isNull(row[this.urlName])?"<span class='nav-caret'><i class=\"fa fa-caret-down\"></i></span>":"")+"</a><ul>";
+			"<li ><a id=\"m_a_"+row["id"]+"\" href=\""+row[this.urlName]+"\" ><span class='nav-icon'><i class='"+row["icon"]+"'></i></span><span class='nav-text'>"+row[this.menuName]+"</span>"+(isNull(row[this.urlName])?"<span class='nav-caret'><i class=\"fa fa-caret-down\"></i></span>":"")+"</a><ul id=\"m_u_"+row["id"]+"\">";
 			for(var i=0;i<data.length;i++){
 				if(typeof data[i][this.pidName] != 'undefined' && data[i][this.pidName] != null && data[i][this.pidName]==row[this.idName]){//说明有子项目
 					html+=this.createLi(data,data[i]);
