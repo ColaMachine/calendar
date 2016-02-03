@@ -255,7 +255,7 @@ function checkCookie() {
 	}
 
 	else {
-		username = prompt('Please enter your name:', "")
+		//username = prompt('Please enter your name:', "")
 		if (username != null && username != "") {
 			setCookie('username', username, 7)
 		}

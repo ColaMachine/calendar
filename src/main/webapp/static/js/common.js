@@ -1339,7 +1339,7 @@ function chkFloat(number, intLength, floatLength) {
 	}
 }
 
-function chkInt(number, intLength) {
+function chkInt(number, intLength) {console.log(number);
 	var strNumber = number.value;
 	var pos = strNumber.indexOf(".");
 	if (pos == -1) {
@@ -1349,4 +1349,14 @@ function chkInt(number, intLength) {
 	} else {
 		number.value = strNumber.substring(0, pos);
 	}
+}
+
+function clearNoNum(obj){   obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符  
+
+obj.value = obj.value.replace(/^\./g,"");  //验证第一个字符是数字而不是. 
+
+ obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的.   
+
+obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+
 }

@@ -193,6 +193,9 @@ public class Generator {
     }
     public String getValidStr(){
        StringBuffer sb=new StringBuffer(tab2+"ValidateUtil vu = new ValidateUtil();").append(ctrl);;
+      StringBuffer jssb=new StringBuffer();
+      StringBuffer jsmsg=new StringBuffer();
+      
        sb.append(tab2+"String validStr=\"\";").append(ctrl);;
        for(int i=0;i<table.getCols().size();i++){
            ZColum zcol =table.getCols().get(i); 
@@ -204,32 +207,32 @@ public class Generator {
            if(zcol.getType().toLowerCase().startsWith("varchar")){
         	   int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
         	   rules.add(String.format("new Length(%d)", length));
-        	   jsrules.add(String.format("minlength:%d", length));
-        	   message.add(String.format("%s不能少于%d个字符", zcol.getName(),length));
+        	   jsrules.add(String.format("maxlength:%d", length));
+        	   message.add(String.format("maxlength:\"%s不能多于%d个字符\"", zcol.getName(),length));
            }
            if(zcol.getType().toLowerCase().startsWith("int")){
         	   rules.add(String.format("new Digits()"));
         	   jsrules.add(String.format("digits:true"));
-        	   message.add(String.format("digits:必须输入整数"));
+        	   message.add(String.format("digits:\"必须输入整数\""));
            }
            if(zcol.getType().toLowerCase().startsWith("float")){
         	   int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
         	   int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
         	   rules.add(String.format("new Digits(%d,%d)",integer,fraction));
         	   jsrules.add(String.format("number:true"));
-        	   message.add(String.format("number:必须输入合法的数字（负数，小数）"));
+        	   message.add(String.format("number:\"必须输入合法的数字（负数，小数）\""));
            }
            if(zcol.getType().toLowerCase().startsWith("double")){
         	   int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
         	   int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
         	   rules.add(String.format("new Digits(%d,%d)",integer,fraction));
         	   jsrules.add(String.format("number:true"));
-        	   message.add(String.format("number:必须输入合法的数字（负数，小数）"));
+        	   message.add(String.format("number:\"必须输入合法的数字（负数，小数）\""));
            }
            if(zcol.getType().toLowerCase().equals("date")){
         	   rules.add(String.format("new Regex(\"yyyy-MM-dd\")"));
-        	   jsrules.add(String.format("date:true"));
-        	   message.add(String.format("number:必须输入合法日期"));
+        	   jsrules.add(String.format("dateISO:true"));
+        	   message.add(String.format("dateISO:\"必须输入合法日期\""));
            }
            if(zcol.getType().toLowerCase().equals("datetime")){
         	   rules.add(String.format("new Regex(\"yyyy-MM-dd HH:mm:ss\")"));
@@ -249,15 +252,15 @@ public class Generator {
         		   }
         		   if(validAry[j].toLowerCase().startsWith("email")){
         			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
-        			   rules.add(String.format("new Email(%s)",content));
+        			   rules.add(String.format("new ZEmail(%s)",content));
         		   }
         		   if(validAry[j].toLowerCase().startsWith("phone")){
         			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
-        			   rules.add(String.format("new Email(%s)",content));
+        			   rules.add(String.format("new ZPhone(%s)",content));
         		   }
         		   if(validAry[j].toLowerCase().startsWith("money")){
         			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
-        			   rules.add(String.format("new Email(%s)",content));
+        			   rules.add(String.format("new ZMoney(%s)",content));
         		   }
         	   }
            }
@@ -268,7 +271,12 @@ public class Generator {
            sb.append(tab2+"if(StringUtil.isNotEmpty(validStr)) {").append(ctrl);
            sb.append(tab3+String.format("return ResultUtil.getResult(%d,%s);",302,"validStr")).append(ctrl);
            sb.append(tab2+"}").append(ctrl);
-
+           jssb.append(zcol.getName()+":{").append(ctrl)
+           .append(StringUtil.join(",",jsrules.toArray()))
+           .append("}").append(ctrl);
+           jsmsg.append(zcol.getName()+":{").append(ctrl)
+           .append(StringUtil.join(",",message.toArray()))
+           .append("}").append(ctrl);
        }
       return sb.toString();
         
@@ -415,7 +423,7 @@ public class Generator {
                 sb.append(tab+"<input type=\"hidden\" id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\">").append(ctrl);
             }else{
                 sb.append(tab+"<div class=\"form-group\">").append(ctrl);
-                sb.append(tab2+String.format("<label for=\"${0}\" class=\"col-sm-2 control-label\">${1}:</label>",zcol.getName(),zcol.getRemark())).append(ctrl);
+                sb.append(tab2+String.format("<label for=\"%s\" class=\"col-sm-2 control-label\">%s:</label>",zcol.getName(),zcol.getRemark())).append(ctrl);
                 sb.append(tab2+String.format("<div class=\"col-sm-10\">")).append(ctrl);
                 
                 if(type.startsWith("varchar")){
@@ -424,36 +432,27 @@ public class Generator {
                     if(length>50){
                         tagName="textarea";
                     }
-                    sb.append(tab3+String.format("<{0} {3} name=\"{1}\" id=\"{1}\" maxlength=\"{2}\"></{0}>",tagName,zcol.getName(),length,tagName.equals("text")?" type=\"text\" ":"")).append(ctrl);
+                    sb.append(tab3+String.format("<%s %s name=\"%s\" id=\"%s\"  class=\"form-control\"  maxlength=\"%d\"></%s>",
+                            tagName,tagName.equals("text")?" type=\"text\" ":"",zcol.getName(),zcol.getName(),length,tagName)).append(ctrl);
                 }
                 if(type.startsWith("int")){
-                    sb.append(tab3+String.format("<input type=\"number\" name=\"{0}\" id=\"{0}\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\"></input>",zcol.getName())).append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"number\" name=\"%s\" id=\"%s\" class=\"form-control\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\"></input>"
+                            ,zcol.getName(),zcol.getName())).append(ctrl);
                 }
-                if(type.startsWith("float")){
+                if(type.startsWith("float") ||type.startsWith("double") ){
                     int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
                     int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
-                    sb.append(tab3+String.format("<input type=\"number\" name=\"{0}\" id=\"{0}\" onkeyup=\"chkFloat(this,{1},{2})\" onafterpaste=\"chkFloat(this,{1},{2})\"></input>",zcol.getName(),integer,fraction)).append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"number\" name=\"%s\" id=\"%s\" class=\"form-control\" onkeyup=\"chkFloat(this,%d,%d)\" onafterpaste=\"chkFloat(this,%d,%d)\"></input>",
+                            zcol.getName(), zcol.getName(),integer,fraction,integer,fraction)).append(ctrl);
                 }
-                if(type.startsWith("double")){
-                    int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
-                    int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
-                    sb.append(tab3+String.format("<input type=\"number\" name=\"{0}\" id=\"{0}\" onkeyup=\"chkFloat(this,{1},{2})\" onafterpaste=\"chkFloat(this,{1},{2})\"></input>",zcol.getName(),integer,fraction)).append(ctrl);
+                if(type.equals("date")||type.equals("datetime")||type.equals("timestamp")){
+                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker()\" class=\"form-control\" name=\"%s\" id=\"%s\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
                 }
-                if(type.equals("date")){
-                    rules.add(String.format("new Regex(\"yyyy-MM-dd\")"));
-                    jsrules.add(String.format("date:true"));
-                    message.add(String.format("number:必须输入合法日期"));
-                }
-                if(type.equals("datetime")){
-                    rules.add(String.format("new Regex(\"yyyy-MM-dd HH:mm:ss\")"));
-                }
-                if(type.equals("timestamp")){
-                    rules.add(String.format("new Regex(\"yyyy-MM-dd HH:mm:ss\")"));
-                }
-                sb.append(tab2+String.format("</div")).append(ctrl);
+                sb.append(tab2+String.format("</div>")).append(ctrl);
+                sb.append(tab+String.format("</div>")).append(ctrl);
             }
-            sb.append(" input type=\"text\" class=\"form-control\" id=\""+col.getName()+"\" name=\""+col.getName()+"\" placeholder=\""+col.getRemark()+"\">");
         }
+        root.put("edithtml", sb.toString());
         writeFile("",table.getName() + "Edit.html", "edit");
     }
 

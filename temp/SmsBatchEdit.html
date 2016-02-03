@@ -1,88 +1,62 @@
 <div class="rgt_body">
 <div class="body_title">| 批量发送短信编辑</div>
 <form id="editForm" class="form-horizontal">
-<input type="hidden" id="id" name="id">
- <div class="form-group">
-    <label for="total" class="col-sm-2 control-label">总发送数据:</label>
-    <div class="col-sm-10">
-    
-      <input type="text"           
-       class="form-control" id="total" placeholder="">
-     
+     <input type="hidden" id="id" name="id">
+    <div class="form-group">
+        <label for="total" class="col-sm-2 control-label">总发送数据:</label>
+        <div class="col-sm-10">
+            <input type="number" name="total" id="total" class="form-control" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
+        </div>
     </div>
- </div> 
- <div class="form-group">
-    <label for="succ" class="col-sm-2 control-label">成功数量:</label>
-    <div class="col-sm-10">
-    
-      <input type="text"           
-       class="form-control" id="succ" placeholder="">
-     
+    <div class="form-group">
+        <label for="succ" class="col-sm-2 control-label">成功数量:</label>
+        <div class="col-sm-10">
+            <input type="number" name="succ" id="succ" class="form-control" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
+        </div>
     </div>
- </div> 
- <div class="form-group">
-    <label for="fail" class="col-sm-2 control-label">失败数量:</label>
-    <div class="col-sm-10">
-    
-      <input type="text"           
-       class="form-control" id="fail" placeholder="">
-     
+    <div class="form-group">
+        <label for="fail" class="col-sm-2 control-label">失败数量:</label>
+        <div class="col-sm-10">
+            <input type="number" name="fail" id="fail" class="form-control" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
+        </div>
     </div>
- </div> 
- <div class="form-group">
-    <label for="status" class="col-sm-2 control-label">状态:</label>
-    <div class="col-sm-10">
-    
-      <input type="text"           
-       class="form-control" id="status" placeholder="">
-     
+    <div class="form-group">
+        <label for="status" class="col-sm-2 control-label">状态:</label>
+        <div class="col-sm-10">
+            <input type="number" name="status" id="status" class="form-control" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
+        </div>
     </div>
- </div> 
- <div class="form-group">
-    <label for="phone" class="col-sm-2 control-label">手机号码:</label>
-    <div class="col-sm-10">
-    
-      <input type="text"           
-       class="form-control" id="phone" placeholder="">
-     
+    <div class="form-group">
+        <label for="phone" class="col-sm-2 control-label">手机号码:</label>
+        <div class="col-sm-10">
+            <textarea  name="phone" id="phone"  class="form-control"  maxlength="100"></textarea>
+        </div>
     </div>
- </div> 
- <div class="form-group">
-    <label for="content" class="col-sm-2 control-label">短信内容:</label>
-    <div class="col-sm-10">
-    
-      <input type="text"           
-       class="form-control" id="content" placeholder="">
-     
+    <div class="form-group">
+        <label for="content" class="col-sm-2 control-label">短信内容:</label>
+        <div class="col-sm-10">
+            <textarea  name="content" id="content"  class="form-control"  maxlength="140"></textarea>
+        </div>
     </div>
- </div> 
- <div class="form-group">
-    <label for="sendTime" class="col-sm-2 control-label">定时发送:</label>
-    <div class="col-sm-10">
-    
-      <input type="text"   onClick="WdatePicker()"          
-       class="form-control" id="sendTime" placeholder="">
-     
+    <div class="form-group">
+        <label for="sendTime" class="col-sm-2 control-label">定时发送:</label>
+        <div class="col-sm-10">
+            <input type="text" onClick="WdatePicker()" class="form-control" name="sendTime" id="sendTime" ></input>
+        </div>
     </div>
- </div> 
- <div class="form-group">
-    <label for="createTime" class="col-sm-2 control-label">创建时间:</label>
-    <div class="col-sm-10">
-    
-      <input type="text"   onClick="WdatePicker()"          
-       class="form-control" id="createTime" placeholder="">
-     
+    <div class="form-group">
+        <label for="createTime" class="col-sm-2 control-label">创建时间:</label>
+        <div class="col-sm-10">
+            <input type="text" onClick="WdatePicker()" class="form-control" name="createTime" id="createTime" ></input>
+        </div>
     </div>
- </div> 
- <div class="form-group">
-    <label for="excuteTime" class="col-sm-2 control-label">执行时间:</label>
-    <div class="col-sm-10">
-    
-      <input type="text"   onClick="WdatePicker()"          
-       class="form-control" id="excuteTime" placeholder="">
-     
+    <div class="form-group">
+        <label for="excuteTime" class="col-sm-2 control-label">执行时间:</label>
+        <div class="col-sm-10">
+            <input type="text" onClick="WdatePicker()" class="form-control" name="excuteTime" id="excuteTime" ></input>
+        </div>
     </div>
- </div> 
+
    <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <button type="button" class="btn btn-primary">保存</button>

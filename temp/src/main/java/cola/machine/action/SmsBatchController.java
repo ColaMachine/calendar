@@ -144,7 +144,7 @@ public class SmsBatchController extends BaseController{
         String excuteTime = request.getParameter("excuteTime");
         smsBatch.setExcuteTime(Timestamp.valueOf(excuteTime)) ;
         //valid
-    ValidateUtil vu = new ValidateUtil();
+        ValidateUtil vu = new ValidateUtil();
         String validStr="";
         vu.add("id", id, "id",  new Rule[]{new Digits()});
         validStr = vu.validateString();
@@ -171,12 +171,12 @@ public class SmsBatchController extends BaseController{
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
-        vu.add("phone", phone, "手机号码",  new Rule[]{new NotEmpty()});
+        vu.add("phone", phone, "手机号码",  new Rule[]{new Length(100),new NotEmpty()});
         validStr = vu.validateString();
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
-        vu.add("content", content, "短信内容",  new Rule[]{new Length(500),new NotEmpty()});
+        vu.add("content", content, "短信内容",  new Rule[]{new Length(140),new NotEmpty()});
         validStr = vu.validateString();
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
