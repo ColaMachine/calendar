@@ -125,10 +125,13 @@ public class ${Abc}Controller extends BaseController{
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
         ${Abc} ${abc} =new  ${Abc}();
-        <#list table.cols as col>
+        /*<#list table.cols as col>
         String ${col.name} = request.getParameter("${col.name}");
-        ${abc}.set${col.name[0]?upper_case}${col.name[1..]}(<@javaType>${col.type}</@javaType>.valueOf(${col.name})) ;
-        </#list>
+        if(!StringUtil.isBlank(${col.name})){
+            ${abc}.set${col.name[0]?upper_case}${col.name[1..]}(<@javaType>${col.type}</@javaType>.valueOf(${col.name})) ;
+        }
+        </#list>*/
+${setParam}
         //valid
 ${validCode}
         return ${abc}Service.save(${abc});

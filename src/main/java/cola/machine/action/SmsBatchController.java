@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cola.machine.service.SmsBatchService;
 import cola.machine.bean.SmsBatch;
+import cola.machine.util.DateUtil;
 import cola.machine.util.ResultUtil;
 import cola.machine.util.ValidateUtil;
 import cola.machine.util.rules.*;
@@ -123,79 +124,128 @@ public class SmsBatchController extends BaseController{
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
         SmsBatch smsBatch =new  SmsBatch();
+        /*
         String id = request.getParameter("id");
-        smsBatch.setId(Integer.valueOf(id)) ;
+        if(!StringUtil.isBlank(id)){
+            smsBatch.setId(Integer.valueOf(id)) ;
+        }
+        
         String total = request.getParameter("total");
-        smsBatch.setTotal(Integer.valueOf(total)) ;
+        if(!StringUtil.isBlank(total)){
+            smsBatch.setTotal(Integer.valueOf(total)) ;
+        }
+        
         String succ = request.getParameter("succ");
-        smsBatch.setSucc(Integer.valueOf(succ)) ;
+        if(!StringUtil.isBlank(succ)){
+            smsBatch.setSucc(Integer.valueOf(succ)) ;
+        }
+        
         String fail = request.getParameter("fail");
-        smsBatch.setFail(Integer.valueOf(fail)) ;
+        if(!StringUtil.isBlank(fail)){
+            smsBatch.setFail(Integer.valueOf(fail)) ;
+        }
+        
         String status = request.getParameter("status");
-        smsBatch.setStatus(Integer.valueOf(status)) ;
+        if(!StringUtil.isBlank(status)){
+            smsBatch.setStatus(Integer.valueOf(status)) ;
+        }
+        
         String phone = request.getParameter("phone");
-        smsBatch.setPhone(String.valueOf(phone)) ;
+        if(!StringUtil.isBlank(phone)){
+            smsBatch.setPhone(String.valueOf(phone)) ;
+        }
+        
         String content = request.getParameter("content");
-        smsBatch.setContent(String.valueOf(content)) ;
+        if(!StringUtil.isBlank(content)){
+            smsBatch.setContent(String.valueOf(content)) ;
+        }
+        
         String sendTime = request.getParameter("sendTime");
-        smsBatch.setSendTime(Timestamp.valueOf(sendTime)) ;
+        if(!StringUtil.isBlank(sendTime)){
+            smsBatch.setSendTime(Timestamp.valueOf(sendTime)) ;
+        }
+        
         String createTime = request.getParameter("createTime");
-        smsBatch.setCreateTime(Timestamp.valueOf(createTime)) ;
+        if(!StringUtil.isBlank(createTime)){
+            smsBatch.setCreateTime(Timestamp.valueOf(createTime)) ;
+        }
+        
         String excuteTime = request.getParameter("excuteTime");
-        smsBatch.setExcuteTime(Timestamp.valueOf(excuteTime)) ;
+        if(!StringUtil.isBlank(excuteTime)){
+            smsBatch.setExcuteTime(Timestamp.valueOf(excuteTime)) ;
+        }
+        */
+        String id = request.getParameter("id");
+        if(!StringUtil.isBlank(id)){
+                smsBatch.setId(Integer.valueOf(id));
+        }
+        String total = request.getParameter("total");
+        if(!StringUtil.isBlank(total)){
+                smsBatch.setTotal(Integer.valueOf(total));
+        }
+        String succ = request.getParameter("succ");
+        if(!StringUtil.isBlank(succ)){
+                smsBatch.setSucc(Integer.valueOf(succ));
+        }
+        String fail = request.getParameter("fail");
+        if(!StringUtil.isBlank(fail)){
+                smsBatch.setFail(Integer.valueOf(fail));
+        }
+        String status = request.getParameter("status");
+        if(!StringUtil.isBlank(status)){
+                smsBatch.setStatus(Integer.valueOf(status));
+        }
+        String phone = request.getParameter("phone");
+        if(!StringUtil.isBlank(phone)){
+                smsBatch.setPhone(String.valueOf(phone));
+        }
+        String content = request.getParameter("content");
+        if(!StringUtil.isBlank(content)){
+                smsBatch.setContent(String.valueOf(content));
+        }
+        String sendTime = request.getParameter("sendTime");
+        if(!StringUtil.isBlank(sendTime)){
+            if(StringUtil.checkNumeric(sendTime)){
+                smsBatch.setSendTime(Timestamp.valueOf(sendTime));
+            }else if(StringUtil.checkDateStr(sendTime, "yyyy-MM-dd")){
+                smsBatch.setSendTime(new Timestamp( DateUtil.parseToDate(sendTime, "yyyy-MM-dd").getTime()));
+            }
+        }
+        String createTime = request.getParameter("createTime");
+        if(!StringUtil.isBlank(createTime)){
+            if(StringUtil.checkNumeric(createTime)){
+                smsBatch.setCreateTime(Timestamp.valueOf(createTime));
+            }else if(StringUtil.checkDateStr(createTime, "yyyy-MM-dd")){
+                smsBatch.setCreateTime(new Timestamp( DateUtil.parseToDate(createTime, "yyyy-MM-dd").getTime()));
+            }
+        }
+        String excuteTime = request.getParameter("excuteTime");
+        if(!StringUtil.isBlank(excuteTime)){
+            if(StringUtil.checkNumeric(excuteTime)){
+                smsBatch.setExcuteTime(Timestamp.valueOf(excuteTime));
+            }else if(StringUtil.checkDateStr(excuteTime, "yyyy-MM-dd")){
+                smsBatch.setExcuteTime(new Timestamp( DateUtil.parseToDate(excuteTime, "yyyy-MM-dd").getTime()));
+            }
+        }
+
         //valid
         ValidateUtil vu = new ValidateUtil();
         String validStr="";
-        vu.add("id", id, "id",  new Rule[]{new Digits()});
+        vu.add("id", id, "id",  new Rule[]{new Digits(10,0)});
+        vu.add("total", total, "总发送数据",  new Rule[]{new Digits(10,0),new NotEmpty()});
+        vu.add("succ", succ, "成功数量",  new Rule[]{new Digits(10,0),new NotEmpty()});
+        vu.add("fail", fail, "失败数量",  new Rule[]{new Digits(10,0),new NotEmpty()});
+        vu.add("status", status, "状态",  new Rule[]{new Digits(10,0),new NotEmpty()});
+        vu.add("phone", phone, "手机号码",  new Rule[]{new Length(100),new NotEmpty()});
+        vu.add("content", content, "短信内容",  new Rule[]{new Length(140),new NotEmpty()});
+        vu.add("sendTime", sendTime, "定时发送",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
+        vu.add("createTime", createTime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss"),new NotEmpty()});
+        vu.add("excuteTime", excuteTime, "执行时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         validStr = vu.validateString();
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
-        vu.add("total", total, "总发送数据",  new Rule[]{new Digits(),new NotEmpty()});
-        validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
-        vu.add("succ", succ, "成功数量",  new Rule[]{new Digits(),new NotEmpty()});
-        validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
-        vu.add("fail", fail, "失败数量",  new Rule[]{new Digits(),new NotEmpty()});
-        validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
-        vu.add("status", status, "状态",  new Rule[]{new Digits(),new NotEmpty()});
-        validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
-        vu.add("phone", phone, "手机号码",  new Rule[]{new NotEmpty()});
-        validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
-        vu.add("content", content, "短信内容",  new Rule[]{new Length(500),new NotEmpty()});
-        validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
-        vu.add("sendTime", sendTime, "定时发送",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss")});
-        validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
-        vu.add("createTime", createTime, "创建时间",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss"),new NotEmpty()});
-        validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
-        vu.add("excuteTime", excuteTime, "执行时间",  new Rule[]{new Regex("yyyy-MM-dd HH:mm:ss")});
-        validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
+
         return smsBatchService.save(smsBatch);
     }
 }

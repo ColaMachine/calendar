@@ -19,6 +19,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import cola.machine.mng.PathManager;
+import cola.machine.util.DateUtil;
 import cola.machine.util.FreeMarkerUtil;
 import cola.machine.util.StringUtil;
 import freemarker.cache.StringTemplateLoader;
@@ -50,6 +52,7 @@ public class Generator {
     private String tab = "    ";
     private String tab2 = tab+tab;
     private String tab3 = tab2+tab;
+    private String tab4 = tab2+tab2;
     private Path homePath;
     private static Logger logger = LoggerFactory.getLogger(Generator.class);
 
@@ -199,49 +202,59 @@ public class Generator {
        sb.append(tab2+"String validStr=\"\";").append(ctrl);;
        for(int i=0;i<table.getCols().size();i++){
            ZColum zcol =table.getCols().get(i); 
-           String type = zcol.getType();
+           String type = zcol.getType().toLowerCase();
          
            List rules =new ArrayList();
            List jsrules =new ArrayList();
            List message=new ArrayList();
-           if(zcol.getType().toLowerCase().startsWith("varchar")){
+           if(type.startsWith("varchar")){
         	   int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
         	   rules.add(String.format("new Length(%d)", length));
         	   jsrules.add(String.format("maxlength:%d", length));
         	   message.add(String.format("maxlength:\"%s不能多于%d个字符\"", zcol.getName(),length));
            }
-           if(zcol.getType().toLowerCase().startsWith("int")){
-        	   rules.add(String.format("new Digits()"));
+           if(type.startsWith("int")){
+               Integer integer=this.getIntFromKuoHao(type);
+               if(integer!=null){
+                   rules.add(String.format("new Digits("+integer+",0)"));
+               }else{
+                   rules.add(String.format("new Digits(10,0)"));
+               }
         	   jsrules.add(String.format("digits:true"));
         	   message.add(String.format("digits:\"必须输入整数\""));
            }
-           if(zcol.getType().toLowerCase().startsWith("float")){
+           if(type.startsWith("float")){
         	   int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
         	   int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
         	   rules.add(String.format("new Digits(%d,%d)",integer,fraction));
         	   jsrules.add(String.format("number:true"));
         	   message.add(String.format("number:\"必须输入合法的数字（负数，小数）\""));
            }
-           if(zcol.getType().toLowerCase().startsWith("double")){
+           if(type.startsWith("double")){
         	   int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
         	   int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
         	   rules.add(String.format("new Digits(%d,%d)",integer,fraction));
         	   jsrules.add(String.format("number:true"));
         	   message.add(String.format("number:\"必须输入合法的数字（负数，小数）\""));
            }
-           if(zcol.getType().toLowerCase().equals("date")){
-        	   rules.add(String.format("new Regex(\"yyyy-MM-dd\")"));
+           if(type.equals("date")){
+        	   rules.add(String.format("new DateValue(\"yyyy-MM-dd\")"));
         	   jsrules.add(String.format("dateISO:true"));
         	   message.add(String.format("dateISO:\"必须输入合法日期\""));
            }
-           if(zcol.getType().toLowerCase().equals("datetime")){
-        	   rules.add(String.format("new Regex(\"yyyy-MM-dd HH:mm:ss\")"));
+           if(type.equals("datetime")){
+        	   rules.add(String.format("new DateValue(\"yyyy-MM-dd HH:mm:ss\")"));
+        	   jsrules.add(String.format("dateISO:true"));
+               message.add(String.format("dateISO:\"必须输入合法日期\""));
            }
-           if(zcol.getType().toLowerCase().equals("timestamp")){
-        	   rules.add(String.format("new Regex(\"yyyy-MM-dd HH:mm:ss\")"));
+           if(type.equals("timestamp")){
+        	   rules.add(String.format("new DateValue(\"yyyy-MM-dd HH:mm:ss\")"));
+        	   jsrules.add(String.format("dateISO:true"));
+               message.add(String.format("dateISO:\"必须输入合法日期\""));
            }
            if(zcol.isNn()){
         	   rules.add(String.format("new NotEmpty()"));
+        	   jsrules.add(String.format("required:true"));
            }
            if(StringUtil.isNotEmpty(zcol.getValid())){
         	   String[] validAry= zcol.getValid().split("||");
@@ -249,46 +262,86 @@ public class Generator {
         		   if(validAry[j].toLowerCase().startsWith("regex")){
         			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
         			   rules.add(String.format("new Regex(%s)",content));
+        			   jsrules.add(String.format("dateISO:true"));
+                       message.add(String.format("dateISO:\"必须输入合法日期\""));
         		   }
         		   if(validAry[j].toLowerCase().startsWith("email")){
         			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
         			   rules.add(String.format("new ZEmail(%s)",content));
+        			   jsrules.add(String.format("email:true"));
+                       message.add(String.format("email:\"必须输入合法日期\""));
         		   }
         		   if(validAry[j].toLowerCase().startsWith("phone")){
         			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
         			   rules.add(String.format("new ZPhone(%s)",content));
+        			   jsrules.add(String.format("phone:true"));
         		   }
         		   if(validAry[j].toLowerCase().startsWith("money")){
         			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
         			   rules.add(String.format("new ZMoney(%s)",content));
+        			   jsrules.add(String.format("money:true"));
         		   }
         	   }
            }
            String ruleStr=StringUtil.join(",",rules.toArray());
            ruleStr=" new Rule[]{"+ruleStr+"}";
            sb.append(tab2+"vu.add(\""+zcol.getName()+"\", "+zcol.getName()+", \""+zcol.getRemark()+"\", "+ruleStr+");").append(ctrl);
-           sb.append(tab2+"validStr = vu.validateString();").append(ctrl);
-           sb.append(tab2+"if(StringUtil.isNotEmpty(validStr)) {").append(ctrl);
-           sb.append(tab3+String.format("return ResultUtil.getResult(%d,%s);",302,"validStr")).append(ctrl);
-           sb.append(tab2+"}").append(ctrl);
-           jssb.append(zcol.getName()+":{").append(ctrl)
-           .append(StringUtil.join(",",jsrules.toArray()))
-           .append("}").append(ctrl);
-           jsmsg.append(zcol.getName()+":{").append(ctrl)
-           .append(StringUtil.join(",",message.toArray()))
-           .append("}").append(ctrl);
+           jssb.append(tab2+zcol.getName()+":{").append(ctrl)
+           .append(tab3+StringUtil.join(",",jsrules.toArray())).append(ctrl)
+           .append(tab2+"},").append(ctrl);
+           jsmsg.append(tab2+zcol.getName()+":{").append(ctrl)
+           .append(tab3+StringUtil.join(",",message.toArray())).append(ctrl)
+           .append(tab2+"},").append(ctrl);
+           
        }
+       sb.append(tab2+"validStr = vu.validateString();").append(ctrl);
+       sb.append(tab2+"if(StringUtil.isNotEmpty(validStr)) {").append(ctrl);
+       sb.append(tab3+String.format("return ResultUtil.getResult(%d,%s);",302,"validStr")).append(ctrl);
+       sb.append(tab2+"}").append(ctrl);
+       root.put("jsrules", jssb.toString());
+       root.put("jsmsg", jsmsg.toString());
       return sb.toString();
         
     }
-    public String getIntFromKuoHao(String str){
+    public String getSetParam(){
+        StringBuffer sb =new StringBuffer();
+        for(int i=0;i<table.getCols().size();i++){
+            ZColum zcol =table.getCols().get(i); 
+            String type = zcol.getType().toLowerCase();
+            sb.append(tab2+"String "+zcol.getName()+" = request.getParameter(\""+zcol.getName()+"\");").append(ctrl)
+            .append(tab2+"if(!StringUtil.isBlank("+zcol.getName()+")){").append(ctrl);
+            if(type.startsWith("date")||type.startsWith("timestamp")||type.startsWith("datetime")){
+                sb.append(tab3+"if(StringUtil.checkNumeric("+zcol.getName()+")){").append(ctrl)
+                .append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"("+changeMySqlType2JavaType(type)+".valueOf("+zcol.getName()+"));").append(ctrl)
+                .append(tab3+"}else if(StringUtil.checkDateStr("+zcol.getName()+", \"yyyy-MM-dd\")){").append(ctrl)
+                .append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"(");
+                if(type.startsWith("timestamp")){
+                    sb.append("new Timestamp( DateUtil.parseToDate("+zcol.getName()+", \"yyyy-MM-dd\").getTime()");
+                }
+                sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
+            }else{
+                sb.append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"("+changeMySqlType2JavaType(type)+".valueOf("+zcol.getName()+"));").append(ctrl);
+            }
+            sb.append(tab2+"}").append(ctrl);
+        }
+           return sb.toString();
+  }
+            
+  
+  
+    public Integer getIntFromKuoHao(String str){
         int index = str.indexOf("(");
         if(index==-1){
-            return "";
+            return null;
         }
         else{
             int end =str.indexOf(")");
-            return str.substring(index,end-index);
+            if(end>index){
+                return Integer.valueOf(str.substring(index,end-index));
+            }else{
+                return null;
+            }
+            
         }
     }
     public String changeMySqlType2JavaType(String type) {
@@ -315,6 +368,8 @@ public class Generator {
     }
     public void genController() throws IOException, TemplateException {
         logger.info("genController");
+       
+        root.put("setParam",  getSetParam());
         root.put("validCode", getValidStr());
         writeFile("src/main/java/cola/machine/action/",table.getName() + "Controller.java", "controller");
     }
@@ -436,8 +491,26 @@ public class Generator {
                             tagName,tagName.equals("text")?" type=\"text\" ":"",zcol.getName(),zcol.getName(),length,tagName)).append(ctrl);
                 }
                 if(type.startsWith("int")){
-                    sb.append(tab3+String.format("<input type=\"number\" name=\"%s\" id=\"%s\" class=\"form-control\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\"></input>"
-                            ,zcol.getName(),zcol.getName())).append(ctrl);
+                    //有一种checkbox 的选项
+                    if(zcol.getShowValue()!=null){
+                        sb.append(tab3+String.format("<select  name=\"%s\" id=\"%s\" class=\"form-control\" >"
+                                ,zcol.getName(),zcol.getName())).append(ctrl);
+                        Map<Integer, String> map =zcol.getShowValue();
+                        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+                            sb.append(tab4+"<optioin value=" + entry.getKey() + ">" + entry.getValue()+"</option>").append(ctrl);
+                        }
+                        sb.append(tab3+"</select>").append(ctrl);
+                    }else{
+                        Integer value =getIntFromKuoHao(type);
+                        int maxlength=10;
+                        if(value==null){
+                            maxlength=10;
+                        }else{
+                            maxlength=value;
+                        }
+                        sb.append(tab3+String.format("<input type=\"number\" name=\"%s\" id=\"%s\" class=\"form-control\" maxlength=\"%d\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\"></input>"
+                                ,zcol.getName(),zcol.getName(),maxlength)).append(ctrl);
+                    }
                 }
                 if(type.startsWith("float") ||type.startsWith("double") ){
                     int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
@@ -452,6 +525,7 @@ public class Generator {
                 sb.append(tab+String.format("</div>")).append(ctrl);
             }
         }
+        
         root.put("edithtml", sb.toString());
         writeFile("",table.getName() + "Edit.html", "edit");
     }

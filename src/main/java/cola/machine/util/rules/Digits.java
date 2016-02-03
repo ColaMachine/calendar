@@ -6,8 +6,8 @@ import cola.machine.util.StringUtil;
 
 
 public class Digits extends Rule {
-	int integer;
-	int fraction;
+	int integer=10;
+	int fraction=0;
 	public Digits() {
 		
 	}

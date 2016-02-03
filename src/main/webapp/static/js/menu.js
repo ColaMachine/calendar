@@ -21,7 +21,7 @@ var zMenu={
 			 this.menuName =option.name;
 			 
 			for(var i=0;i<data.length;i++){
-				if(isNull(data[i][this.pidName])||data[i][this.pidName]==0  ){
+				if(StringUtil.isBlank(data[i][this.pidName])||data[i][this.pidName]==0  ){
 					html+=this.createLi(data,data[i]);
 				}
 			}

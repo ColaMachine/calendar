@@ -12,7 +12,7 @@ import java.util.Set;
 
 import lab.Master;
 
-public class PlusWorker extends Worker{
+public class PlusWorker extends Worker{/*
     public Object handle(Object input){
         Integer i =(Integer)input;
         return i*i*i;
@@ -43,4 +43,4 @@ public static void main(String args[]){
             resultMap.remove(key);
     }
 }
-}
+*/}

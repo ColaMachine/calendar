@@ -1,29 +1,32 @@
 <div class="rgt_body">
 <div class="body_title">| 批量发送短信编辑</div>
-<form id="editForm" class="form-horizontal">
+<form id="editForm" class="form-horizontal" method="post" action="/smsBatch/save.json" enctype="multipart/form-data">
      <input type="hidden" id="id" name="id">
     <div class="form-group">
         <label for="total" class="col-sm-2 control-label">总发送数据:</label>
         <div class="col-sm-10">
-            <input type="number" name="total" id="total" class="form-control" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
+            <input type="number" name="total" id="total" class="form-control" maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
         </div>
     </div>
     <div class="form-group">
         <label for="succ" class="col-sm-2 control-label">成功数量:</label>
         <div class="col-sm-10">
-            <input type="number" name="succ" id="succ" class="form-control" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
+            <input type="number" name="succ" id="succ" class="form-control" maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
         </div>
     </div>
     <div class="form-group">
         <label for="fail" class="col-sm-2 control-label">失败数量:</label>
         <div class="col-sm-10">
-            <input type="number" name="fail" id="fail" class="form-control" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
+            <input type="number" name="fail" id="fail" class="form-control" maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
         </div>
     </div>
     <div class="form-group">
         <label for="status" class="col-sm-2 control-label">状态:</label>
         <div class="col-sm-10">
-            <input type="number" name="status" id="status" class="form-control" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
+            <select  name="status" id="status" class="form-control" >
+                <optioin value=1>未发送</option>
+                <optioin value=2>已发送</option>
+            </select>
         </div>
     </div>
     <div class="form-group">
@@ -59,8 +62,8 @@
 
    <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="button" class="btn btn-primary">保存</button>
-       <button type="button" class="btn btn-default">取消</button>
+      <button type="button" onclick="save()" class="btn btn-primary">保存</button>
+       <button type="button" onclick="cancel()"  class="btn btn-default">取消</button>
     </div>
   </div>
 </form>
@@ -68,16 +71,108 @@
 </div>
 <script type="text/javascript">
 
-$().ready(function() {
- $("#editForm").validate({
-      
+$(document).ready(function() {
+    $("#editForm").validate({
+        rules: {
+                    id:{
+            digits:true
+        },
+        total:{
+            digits:true,required:true
+        },
+        succ:{
+            digits:true,required:true
+        },
+        fail:{
+            digits:true,required:true
+        },
+        status:{
+            digits:true,required:true
+        },
+        phone:{
+            maxlength:100,required:true
+        },
+        content:{
+            maxlength:140,required:true
+        },
+        sendTime:{
+            dateISO:true
+        },
+        createTime:{
+            dateISO:true,required:true
+        },
+        excuteTime:{
+            dateISO:true
+        },
+
+        },
+        messages:{
+                    id:{
+            digits:"必须输入整数"
+        },
+        total:{
+            digits:"必须输入整数"
+        },
+        succ:{
+            digits:"必须输入整数"
+        },
+        fail:{
+            digits:"必须输入整数"
+        },
+        status:{
+            digits:"必须输入整数"
+        },
+        phone:{
+            maxlength:"phone不能多于100个字符"
+        },
+        content:{
+            maxlength:"content不能多于140个字符"
+        },
+        sendTime:{
+            dateISO:"必须输入合法日期"
+        },
+        createTime:{
+            dateISO:"必须输入合法日期"
+        },
+        excuteTime:{
+            dateISO:"必须输入合法日期"
+        },
+
+        }
     });
+    //获取传入参数
+    if(!StringUtil.isBlank(getParam("id"))){
+        $.getJSON("smsBatch/view.json?id="+getParam("id"),function(data){
+            if(data.r==AJAX_SUCC){
+                fillJso2Form("#editForm",data.data);
+            }else{
+                zerror("获取信息失败"+data.msg,"错误",function(){
+                    goPage("smsBatch/list.htm");
+                });
+            }
+            
+        });
+        
+    }
+    
 });
     function save(){
            if (!$("#editForm").valid())
                     return;
+                     var jso = changeForm2Jso("#editForm");
+                     showWait();
+                     $.post(PATH+$("#editForm").attr("action"),jso,function(data){
+                     hideWait();
+                     if(data.r==0){
+                        zalert(data.msg||"保存成功",function(){
+                            goPage("smsBatch/list.htm");
+                        });
+                     }else{
+                        zerror(data.msg, "失败");
+                     }
+                     },'json');
     }
     function cancel(){
-        
+          goPage("smsBatch/list.htm");
     }
 </script>

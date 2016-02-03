@@ -7,7 +7,7 @@
       <result column="succ" jdbcType="INTEGER" property="succ" />
       <result column="fail" jdbcType="INTEGER" property="fail" />
       <result column="status" jdbcType="INTEGER" property="status" />
-      <result column="phone" jdbcType="LONGVARCHAR" property="phone" />
+      <result column="phone" jdbcType="VARCHAR" property="phone" />
       <result column="content" jdbcType="VARCHAR" property="content" />
       <result column="sendTime" jdbcType="TIMESTAMP" property="sendTime" />
       <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
@@ -36,7 +36,7 @@
 ,#{succ,jdbcType=INTEGER}
 ,#{fail,jdbcType=INTEGER}
 ,#{status,jdbcType=INTEGER}
-,#{phone,jdbcType=LONGVARCHAR}
+,#{phone,jdbcType=VARCHAR}
 ,#{content,jdbcType=VARCHAR}
 ,#{sendTime,jdbcType=TIMESTAMP}
 ,#{createTime,jdbcType=TIMESTAMP}
@@ -94,7 +94,7 @@
           #{status,jdbcType=INTEGER},
         </if>  
         <if test="phone != null" >  
-          #{phone,jdbcType=LONGVARCHAR},
+          #{phone,jdbcType=VARCHAR},
         </if>  
         <if test="content != null" >  
           #{content,jdbcType=VARCHAR},
@@ -129,7 +129,7 @@
              status=#{status,jdbcType=INTEGER},
         </if>  
         <if test="phone != null" >  
-             phone=#{phone,jdbcType=LONGVARCHAR},
+             phone=#{phone,jdbcType=VARCHAR},
         </if>  
         <if test="content != null" >  
              content=#{content,jdbcType=VARCHAR},
@@ -149,9 +149,6 @@
   <update id="updateByPrimaryKey" parameterType="cola.machine.bean.SmsBatch" >
     update SmsBatch
     set 
-        <if test="id != null" >  
-              id=#{id,jdbcType=INTEGER},
-        </if>  
         <if test="total != null" >  
               total=#{total,jdbcType=INTEGER},
         </if>  
@@ -165,7 +162,7 @@
               status=#{status,jdbcType=INTEGER},
         </if>  
         <if test="phone != null" >  
-              phone=#{phone,jdbcType=LONGVARCHAR},
+              phone=#{phone,jdbcType=VARCHAR},
         </if>  
         <if test="content != null" >  
               content=#{content,jdbcType=VARCHAR},

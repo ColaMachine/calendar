@@ -3,6 +3,8 @@ package cola.machine.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.mchange.lang.StringUtils;
+
 public class StringUtil {
 	public static boolean  isEmpty(String str){
 		if(str ==null ||  str.length()==0){
@@ -28,6 +30,26 @@ public class StringUtil {
 		return matcher.find();
 	}
 	
+	public static boolean checkNumeric(String str){
+        if (str == null) {
+            return false;
+        }
+        int sz = str.length();
+        for (int i = 0; i < sz; i++) {
+            if (Character.isDigit(str.charAt(i)) == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+	
+	public static boolean checkDateStr(String str,String format){
+	    format=format.replaceAll("[yMdhHms]", "\\\\d");
+	   return str.matches(format);
+	}
+	public static void main(String[] args) {
+        System.out.println(  "2015-01-023".matches("yyyy-MM-dd".replaceAll("[yMdhHms]", "\\\\d")));;
+    }
 	public static boolean checkUserNameValid(String username){
 		String regex = "/^[0-9A-Za-z]*[a-zA-Z]+[0-9A-Za-z]*$";
 		Pattern pattern = Pattern.compile(regex);
@@ -35,7 +57,11 @@ public class StringUtil {
 		return matcher.find();
 	}
 	public static boolean checkFloat(String value,int integer,int fraction){
-		String regex= String.format("^[+|-]?\\d{1,%d}(\\.\\d{1,%d})?$", integer,fraction);
+	    String regex= String.format("^[+|-]?\\d{1,%d}(\\.\\d{1,%d})?$", integer,fraction);
+	    if(fraction==0){
+	        regex= String.format("^[+|-]?\\d{1,%d}$", integer);
+	    }
+		
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(value);
 		return matcher.find();
@@ -49,22 +75,16 @@ public class StringUtil {
 	
 	public  static String join(String join,Object [] strAry){
 		StringBuffer sb=new StringBuffer();
-
         for(int i=0;i<strAry.length;i++){
-
              if(i==(strAry.length-1)){
-
                  sb.append(strAry[i]);
-
              }else{
-
                  sb.append(strAry[i]).append(join);
-
              }
-
         }
         return new String(sb);
 	}
+	
 	public static String getContentBetween(String content,String a,String b){
 		int index = content.indexOf(a)+a.length();
 		int last = content.lastIndexOf(b);

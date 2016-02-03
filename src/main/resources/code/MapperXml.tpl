@@ -63,9 +63,9 @@
     update ${table.name}
     set 
     <#list table.cols as col>
-        <if test="${col.name} != null" >  
-              ${col.name}=${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>},
-        </if>  
+        <#if col.pk!=true >
+              ${col.name}=${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>} <#if (${col_index}==${table.cols?size})>,</#if>  
+        </#if>
     </#list>
 where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}
   </update>

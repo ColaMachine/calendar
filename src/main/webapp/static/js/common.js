@@ -99,10 +99,10 @@ function changeForm2Jso(formId) {
 	}
 	return jso;
 }
-function filJso2Form(formId,jso){
+function fillJso2Form(formId,jso){
 	var arr = $( formId).serializeArray();
 	for (var i = 0; i < arr.length; i++) {
-		$(formId).find("input[name='"+ arr[i].name+"']").val(jso[ arr[i].name]);
+		$(formId).find("[name='"+ arr[i].name+"']").val(jso[ arr[i].name]);
 	}
 }
 /**
@@ -1322,6 +1322,9 @@ function getParam(key){
 
 
 function chkFloat(number, intLength, floatLength) {
+	var strTemp= number.value.toString();
+	number.value=strTemp.replace(/[^\.^\d]*/g,"");
+	console.log(number.value)
 	var strNumber = number.value;
 	strNumber = strNumber.replace("-", "");
 	var pos = strNumber.indexOf(".");
@@ -1338,8 +1341,13 @@ function chkFloat(number, intLength, floatLength) {
 		}
 	}
 }
-
-function chkInt(number, intLength) {console.log(number);
+//alert("1234567890123456789".replace(/\d{10}(\d*)/,""));
+function chkInt(number, intLength) {
+	//number.value="12.45676778";return;
+	var strTemp= number.value.toString();
+	//console.log(strTemp.replace(/[^\d]/g,""));
+	number.value=number.value.replace(/[^\d]/g,"");
+	//alert(1);
 	var strNumber = number.value;
 	var pos = strNumber.indexOf(".");
 	if (pos == -1) {

@@ -6,11 +6,12 @@ import cola.machine.util.StringUtil;
 
 
 public class DateValue extends Rule {
-	
-	public DateValue() {
-		
+	public String formatStr="";
+	public DateValue(String formatStr) {
+		this.formatStr=formatStr;
 	}
-	
+	public DateValue() {
+    }
 	@Override
 	public boolean valid() throws Exception {
 		if (StringUtil.isBlank(this.getValue())) {

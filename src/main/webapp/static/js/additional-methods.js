@@ -966,21 +966,42 @@ $.validator.addMethod("ziprange", function(value, element) {
 
 }));
 	
-	jQuery.validator.addMethod("stringCheck", function(value, element) {
-		return this.optional(element) || /^[A-Za-z0-9]+$/.test(value);
-		}, "只能包括英文字母、数字");
-		// 中文字两个字节
-		jQuery.validator.addMethod("isMobile", function(value, element) {
-	var length = value.length;
-	var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))[0-9]{8})$/;
-	return this.optional(element) || (length == 11 && mobile.test(value));
-	}, "请正确填写您的手机号码");
+$.validator.addMethod("stringCheck", function(value, element) {
+	return this.optional(element) || /^[A-Za-z0-9]+$/.test(value);
+	}, "只能包括英文字母、数字");
+	// 中文字两个字节
+	jQuery.validator.addMethod("isMobile", function(value, element) {
+var length = value.length;
+var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))[0-9]{8})$/;
+return this.optional(element) || (length == 11 && mobile.test(value));
+}, "请正确填写您的手机号码");
 		
-		jQuery.validator.addMethod("isemail", function(value, element) {
-			return this.optional(element) ||  /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(value);
-			}, "请输入有效的邮箱地址");
-		
+jQuery.validator.addMethod("isemail", function(value, element) {
+	return this.optional(element) ||  /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(value);
+	}, "请输入有效的邮箱地址");
+
+
+$.validator.addMethod("money", function(value, element) {
+	//头字幕只能是一个0 或者1-9开头的数字 可以有小数点但是一定要有后位数字
+	 var  re =/^([1-9]{1}[0-9]{0,8}|0)(\.[0-9]{1,2})?$/;
+	 return this.optional(element) ||re.test(value);
+}, "金额格式不正确");
+
+
+$.validator.addMethod("yyyyMMdd", function(value, element) {
+	
+	 var  re =/^(\d{4})-(\d{2})-(\d{2})$/;
+	 re.test(value);
+	 var   dateElement=new   Date(RegExp.$1,parseInt(RegExp.$2,10)-1,RegExp.$3);
+	 
+	return this.optional(element) ||(re.test(value) && 
+	((dateElement.getFullYear()==parseInt(RegExp.$1))&&((dateElement.getMonth()+1)==parseInt(RegExp.$2,10))&&(dateElement.getDate()==parseInt(RegExp.$3)))
+	)
+	;
+}, "日期格式不正确");
 			
-			
-			
+$.validator.addMethod("float",function( value, element, param ) {
+	var  re =new RegExp("^([1-9]{1}[0-9]{0,"+param[0]+"}|0)(\.[0-9]{1,"+param[1]+"})?$");
+	 return this.optional(element) ||re.test(value);
+},"数值格式不正确");			
 	
