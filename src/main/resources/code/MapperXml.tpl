@@ -64,7 +64,7 @@
     set 
     <#list table.cols as col>
         <#if col.pk!=true >
-              ${col.name}=${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>} <#if (${col_index}==${table.cols?size})>,</#if>  
+              ${col.name}=${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>}<#if col_index<table.cols?size-1>,</#if>  
         </#if>
     </#list>
 where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}

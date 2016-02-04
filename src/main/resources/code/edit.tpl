@@ -48,7 +48,7 @@ $(document).ready(function() {
                      $.post(PATH+$("#editForm").attr("action"),jso,function(data){
                      hideWait();
                      if(data.r==0){
-                        zalert(data.msg||"保存成功",function(){
+                        zalert(data.msg||"保存成功","提示",function(){
                             goPage("${abc}/list.htm");
                         });
                      }else{

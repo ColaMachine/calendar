@@ -17,6 +17,8 @@ import core.page.Page;
 import core.action.ResultDTO;
 
 public class ResultUtil {
+    public static int succ=0;
+    public static int fail=1;
 	private static Logger logger =LoggerFactory.getLogger(ResultUtil.class);
 	/**
 	 * 返回成功，默认代码1
@@ -24,7 +26,7 @@ public class ResultUtil {
 	 * @author 宋展辉
 	 */
     public static  ResultDTO getResult(){
-        return getResult(1, null, null,null);
+        return getResult(succ, null, null,null);
     }
     
     /**
@@ -44,12 +46,12 @@ public class ResultUtil {
 	 * @author 宋展辉
 	 */
 	public static  ResultDTO getResult(Object data){
-		return getResult(1, data, null,null);
+		return getResult(succ, data, null,null);
 	}
 	
 	
 	public static ResultDTO getSuccResult(){
-		return getResult(1, null, null,null);
+		return getResult(succ, null, null,null);
 	}
 	
 	public static ResultDTO getSuccResult(String code ){
@@ -60,12 +62,12 @@ public class ResultUtil {
 			msg = "操作成功";
 		}
 //		return getResult(Integer.valueOf(result), msg);
-		return getResult(1, msg);
+		return getResult(succ, msg);
 	}
 	
 	
-	public static ResultDTO getfAILResult(String errcode){
-		return getResult(1, null, null,null);
+	public static ResultDTO getFailResult(String errcode){
+		return getResult(fail, null, null,null);
 	}
 	/**
 	 * 返回成功，数据data,分页page
@@ -74,7 +76,7 @@ public class ResultUtil {
 	 * @author 宋展辉
 	 */
 	public static  ResultDTO getResult(Object data,Page page){
-		return getResult(1, data, null,page);
+		return getResult(succ, data, null,page);
 	}
 	
 	/**

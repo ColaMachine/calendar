@@ -11,12 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cola.machine.core.msg.ErrorMessage;
-
+import cola.machine.util.ResultUtil;
 import core.page.Page;
-
 import core.action.ResultDTO;
 
 public class ResultAction {
+    protected  int SUCC =0;
+    protected  int FAIL =1;
 Logger logger=LoggerFactory.getLogger(this.getClass());
 	/**
 	 * 返回成功，默认代码1
@@ -24,7 +25,7 @@ Logger logger=LoggerFactory.getLogger(this.getClass());
 	 * @author 宋展辉
 	 */
     protected ResultDTO getResult(){
-        return this.getResult(1, null, null,null);
+        return getResult(SUCC, null, null,null);
     }
     
     /**
@@ -44,7 +45,7 @@ Logger logger=LoggerFactory.getLogger(this.getClass());
 	 * @author 宋展辉
 	 */
 	protected ResultDTO getResult(Object data){
-		return getResult(1, data, null,null);
+		return getResult(SUCC, data, null,null);
 	}
 	
 	/**
@@ -54,7 +55,7 @@ Logger logger=LoggerFactory.getLogger(this.getClass());
 	 * @author 宋展辉
 	 */
 	protected ResultDTO getResult(Object data,Page page){
-		return getResult(1, data, null,page);
+		return getResult(SUCC, data, null,page);
 	}
 	
 	/**
@@ -118,4 +119,5 @@ Logger logger=LoggerFactory.getLogger(this.getClass());
 	protected ResultDTO getResult(int result, Object data, String msg , Page page){
         return new ResultDTO(result, data, msg, page);
     }
+	
 }

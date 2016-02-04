@@ -149,24 +149,15 @@
   <update id="updateByPrimaryKey" parameterType="cola.machine.bean.SmsBatch" >
     update SmsBatch
     set 
-       10
-              total=#{total,jdbcType=INTEGER} 
-       10
-              succ=#{succ,jdbcType=INTEGER} 
-       10
-              fail=#{fail,jdbcType=INTEGER} 
-       10
-              status=#{status,jdbcType=INTEGER} 
-       10
-              phone=#{phone,jdbcType=VARCHAR} 
-       10
-              content=#{content,jdbcType=VARCHAR} 
-       10
-              sendTime=#{sendTime,jdbcType=TIMESTAMP} 
-       10
-              createTime=#{createTime,jdbcType=TIMESTAMP} 
-       10
-              excuteTime=#{excuteTime,jdbcType=TIMESTAMP} 
+              total=#{total,jdbcType=INTEGER},  
+              succ=#{succ,jdbcType=INTEGER},  
+              fail=#{fail,jdbcType=INTEGER},  
+              status=#{status,jdbcType=INTEGER},  
+              phone=#{phone,jdbcType=VARCHAR},  
+              content=#{content,jdbcType=VARCHAR},  
+              sendTime=#{sendTime,jdbcType=TIMESTAMP},  
+              createTime=#{createTime,jdbcType=TIMESTAMP},  
+              excuteTime=#{excuteTime,jdbcType=TIMESTAMP}  
 where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="listByParams" parameterType="map" resultMap="BaseResultMap">

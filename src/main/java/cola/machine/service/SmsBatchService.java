@@ -75,7 +75,7 @@ public class SmsBatchService extends BaseService {
         } else {
              smsBatchMapper.updateByPrimaryKey(smsBatch);
         }
-        return new ResultDTO(1, "保存成功");
+        return ResultUtil.getSuccResult();
     }
  
     /**

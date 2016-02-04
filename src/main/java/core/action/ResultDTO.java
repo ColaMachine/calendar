@@ -73,7 +73,7 @@ public class ResultDTO {
 	 * @date 2015年12月14日上午11:44:59
 	 */
 	public boolean isRight(){
-		return this.r==1;
+		return this.r==0;
 	}
 }
 

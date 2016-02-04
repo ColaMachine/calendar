@@ -87,56 +87,55 @@ var gridParam = {
     colNames : [
      "id","总发送数据","成功数量","失败数量","状态","手机号码","短信内容","定时发送","创建时间","执行时间" , '操作' ],
     colModel : [
-             
-               {
+            {
                 name : 'id',
                 width : 80
-            }
-             ,
-               {
+            } ,
+            {
                 name : 'total',
                 width : 80
-            }
-             ,
-               {
+            } ,
+            {
                 name : 'succ',
                 width : 80
-            }
-             ,
-               {
+            } ,
+            {
                 name : 'fail',
                 width : 80
-            }
-             ,
-               {
+            } ,
+            {
                 name : 'status',
                 width : 80
-            }
-             ,
-               {
+            } ,
+            {
                 name : 'phone',
                 width : 80
-            }
-             ,
-               {
+            } ,
+            {
                 name : 'content',
                 width : 80
-            }
-             ,
-               {
+            } ,
+            {
                 name : 'sendTime',
-                width : 80
-            }
-             ,
-               {
+                width : 80,
+                 formatter : function(value, grid, rows) {
+                    return new Date(value).format("yyyy-MM-dd");
+                }
+            } ,
+            {
                 name : 'createTime',
-                width : 80
-            }
-             ,
-               {
+                width : 80,
+                 formatter : function(value, grid, rows) {
+                    return new Date(value).format("yyyy-MM-dd");
+                }
+            } ,
+            {
                 name : 'excuteTime',
-                width : 80
-            }
+                width : 80,
+                 formatter : function(value, grid, rows) {
+                    return new Date(value).format("yyyy-MM-dd");
+                }
+            } 
             ,
             {
                 name : 'id',

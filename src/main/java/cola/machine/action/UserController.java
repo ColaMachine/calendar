@@ -60,8 +60,7 @@ public class UserController extends BaseController {
 		String email = request.getParameter("email");
 		String pwd = request.getParameter("pwd");
 		ResultDTO result = this.userService.loginValid(email, pwd);
-		if (result.getR() == 1) {
-			
+		if (result.isRight()) {
 			  User user = (User)result.getData();
 			  request.getSession().setAttribute("user", user);
 			  result.setData(null);
@@ -105,7 +104,7 @@ public class UserController extends BaseController {
 
 		ResultDTO result = this.userService.saveRegisterUser(user);// .loginValid(loginName,
 																	// pwd);
-		if (result.getR() == 1) {
+		if (result.isRight()) {
 			HttpSession session = request.getSession();
 			user.setPwd("");
 			user.setActive(false);
@@ -146,7 +145,7 @@ public class UserController extends BaseController {
 			request.setAttribute("msg", "激活url无效");
 			return "/error.jsp";
 		}
-		if (result.getR() == 1) {
+		if (result.isRight()) {
 			// 把用户信息传入到session 中并让他登录到首页
 			User user = (User) result.getData();
 			request.getSession().setAttribute("user", user);

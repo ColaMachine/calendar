@@ -497,7 +497,7 @@ public class Generator {
                                 ,zcol.getName(),zcol.getName())).append(ctrl);
                         Map<Integer, String> map =zcol.getShowValue();
                         for (Map.Entry<Integer, String> entry : map.entrySet()) {
-                            sb.append(tab4+"<optioin value=" + entry.getKey() + ">" + entry.getValue()+"</option>").append(ctrl);
+                            sb.append(tab4+"<option value=" + entry.getKey() + ">" + entry.getValue()+"</option>").append(ctrl);
                         }
                         sb.append(tab3+"</select>").append(ctrl);
                     }else{
@@ -519,7 +519,7 @@ public class Generator {
                             zcol.getName(), zcol.getName(),integer,fraction,integer,fraction)).append(ctrl);
                 }
                 if(type.equals("date")||type.equals("datetime")||type.equals("timestamp")){
-                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker()\" class=\"form-control\" name=\"%s\" id=\"%s\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker()\" class=\"form-control\" type2=\"date\" format=\"yyyy-MM-dd\" name=\"%s\" id=\"%s\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
                 }
                 sb.append(tab2+String.format("</div>")).append(ctrl);
                 sb.append(tab+String.format("</div>")).append(ctrl);

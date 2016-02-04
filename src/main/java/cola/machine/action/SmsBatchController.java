@@ -105,7 +105,7 @@ public class SmsBatchController extends BaseController{
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
         SmsBatch bean = smsBatchService.selectByPrimaryKey(Integer.valueOf(id));
-        return this.getResult(1, bean,"");
+        return this.getResult(bean);
     }
 
     
@@ -245,7 +245,7 @@ public class SmsBatchController extends BaseController{
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
-
         return smsBatchService.save(smsBatch);
     }
+   
 }

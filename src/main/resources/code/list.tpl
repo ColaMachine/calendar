@@ -38,11 +38,15 @@ var gridParam = {
      <#list table.cols as col><#if col_index!=0>,</#if>"${col.remark}"</#list> , '操作' ],
     colModel : [
              <#list table.cols as col>
-             <#if col_index!=0>,</#if>
-               {
+            {
                 name : '${col.name}',
-                width : 80
-            }
+                width : 80,
+                <#if col.type=="timestamp">
+                 formatter : function(value, grid, rows) {
+                    return new Date(value).format("yyyy-MM-dd");
+                }
+                </#if>
+            } <#if col_index<table.cols?size-1>,</#if>
              </#list>
             ,
             {

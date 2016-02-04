@@ -100,9 +100,13 @@ function changeForm2Jso(formId) {
 	return jso;
 }
 function fillJso2Form(formId,jso){
-	var arr = $( formId).serializeArray();
+	var arr = $(formId).serializeArray();
 	for (var i = 0; i < arr.length; i++) {
-		$(formId).find("[name='"+ arr[i].name+"']").val(jso[ arr[i].name]);
+		if($(formId).find("[name='"+ arr[i].name+"']").attr("type2")=="date"&& /^\d*$/.test(jso[ arr[i].name])){
+			$(formId).find("[name='"+ arr[i].name+"']").val(new Date(jso[arr[i].name]).format("yyyy-MM-dd"));
+		}else{
+			$(formId).find("[name='"+ arr[i].name+"']").val(jso[ arr[i].name]);
+		}
 	}
 }
 /**
@@ -971,9 +975,9 @@ function searchData(){
     //jQuery("#grid-table").setPostData(searchParams).trigger("reloadGrid");
 }
 //ajax 成功标识位
-var  AJAX_SUCC=1;
+var  AJAX_SUCC=0;
 //ajax 失败标识位
-var AJAX_FAIL=0;
+var AJAX_FAIL=1;
 //ajax 成功与否标识位
 var AJAX_RESULT="r";
 //ajax 返回消息标识位
@@ -1289,7 +1293,7 @@ function zerror(msg,title,fn){
 function zconfirm(msg,title,okfn,cancelfn){
 	zdialogue({"msg":msg,type:"confirm","title":title,fontcolor:"#777777",src:PATH+"/static/img/exclamation.png",okfn:okfn,cancelfn:cancelfn});
 }
-function zalert(msg,title,fn){
+function zalert(msg,title,fn){alert(fn)
 	zdialogue({"msg":msg,type:"alert","title":title,fontcolor:"#777777",src:PATH+"/static/img/nike.png",okfn:fn});
 }
 

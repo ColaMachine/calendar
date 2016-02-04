@@ -3076,7 +3076,7 @@
 							return;
 						this.p.data = result.data;
 						this.p.page = result.page;
-						if(result.r!=1){
+						if(result.r!=AJAX_SUCC){
 							alert(result.msg);
 							return;
 						}

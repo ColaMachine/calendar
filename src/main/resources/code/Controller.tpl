@@ -106,7 +106,7 @@ public class ${Abc}Controller extends BaseController{
     public Object view(HttpServletRequest request) {
         String id = request.getParameter("id");
         ${Abc} bean = ${abc}Service.selectByPrimaryKey(<@javaType>${table.pk.type}</@javaType>.valueOf(id));
-        return this.getResult(1, bean,"");
+        return this.getResult(bean);
     }
 
     

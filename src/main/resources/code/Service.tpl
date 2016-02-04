@@ -81,7 +81,7 @@ public class ${Abc}Service extends BaseService {
         } else {
              ${abc}Mapper.updateByPrimaryKey(${abc});
         }
-        return new ResultDTO(1, "保存成功");
+        return ResultUtil.getSuccResult();
     }
  
     /**

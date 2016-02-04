@@ -24,8 +24,8 @@
         <label for="status" class="col-sm-2 control-label">状态:</label>
         <div class="col-sm-10">
             <select  name="status" id="status" class="form-control" >
-                <optioin value=1>未发送</option>
-                <optioin value=2>已发送</option>
+                <option value=1>未发送</option>
+                <option value=2>已发送</option>
             </select>
         </div>
     </div>
@@ -44,19 +44,19 @@
     <div class="form-group">
         <label for="sendTime" class="col-sm-2 control-label">定时发送:</label>
         <div class="col-sm-10">
-            <input type="text" onClick="WdatePicker()" class="form-control" name="sendTime" id="sendTime" ></input>
+            <input type="text" onClick="WdatePicker()" class="form-control" type2="date" format="yyyy-MM-dd" name="sendTime" id="sendTime" ></input>
         </div>
     </div>
     <div class="form-group">
         <label for="createTime" class="col-sm-2 control-label">创建时间:</label>
         <div class="col-sm-10">
-            <input type="text" onClick="WdatePicker()" class="form-control" name="createTime" id="createTime" ></input>
+            <input type="text" onClick="WdatePicker()" class="form-control" type2="date" format="yyyy-MM-dd" name="createTime" id="createTime" ></input>
         </div>
     </div>
     <div class="form-group">
         <label for="excuteTime" class="col-sm-2 control-label">执行时间:</label>
         <div class="col-sm-10">
-            <input type="text" onClick="WdatePicker()" class="form-control" name="excuteTime" id="excuteTime" ></input>
+            <input type="text" onClick="WdatePicker()" class="form-control" type2="date" format="yyyy-MM-dd" name="excuteTime" id="excuteTime" ></input>
         </div>
     </div>
 
@@ -164,7 +164,7 @@ $(document).ready(function() {
                      $.post(PATH+$("#editForm").attr("action"),jso,function(data){
                      hideWait();
                      if(data.r==0){
-                        zalert(data.msg||"保存成功",function(){
+                        zalert(data.msg||"保存成功","提示",function(){
                             goPage("smsBatch/list.htm");
                         });
                      }else{
