@@ -102,10 +102,40 @@ function changeForm2Jso(formId) {
 function fillJso2Form(formId,jso){
 	var arr = $(formId).serializeArray();
 	for (var i = 0; i < arr.length; i++) {
-		if($(formId).find("[name='"+ arr[i].name+"']").attr("type2")=="date"&& /^\d*$/.test(jso[ arr[i].name])){
-			$(formId).find("[name='"+ arr[i].name+"']").val(new Date(jso[arr[i].name]).format("yyyy-MM-dd"));
-		}else{
-			$(formId).find("[name='"+ arr[i].name+"']").val(jso[ arr[i].name]);
+		var dom = $(formId).find("[name='"+ arr[i].name+"']");
+		if(dom !=null && typeof jso[arr[i].name] !='undefined'){
+			var val="";
+			if(dom.attr("datatype")=="date"&& /^\d*$/.test(jso[ arr[i].name])){
+				val =new Date(jso[arr[i].name]).format("yyyy-MM-dd");
+			}else{
+				val=jso[ arr[i].name];
+			}
+			if(dom.is('span')){
+				dom.text(val);
+			}else{
+				dom.val(val);
+			}
+		}
+	}
+}
+function fillJso2FormSpan(formId,jso){
+	for(var key in jso){
+		var dom = $(formId).find("#"+key);
+		if(dom !=null ){
+			var val="";
+			if(dom.attr("datatype")=="date"&& /^\d*$/.test(jso[key])){
+				val =new Date(jso[key]).format("yyyy-MM-dd");
+			}else if(dom.attr("datatype")=="map"&& /^\d*$/.test(jso[key])){
+				
+				console.log(dom.attr("data"));
+				var map = eval("("+dom.attr("data")+")");
+				val=map[jso[key]];
+			}else{
+				val=jso[key];
+			}
+			if(dom.is('span')){
+				dom.text(val);
+			}
 		}
 	}
 }
@@ -1293,7 +1323,7 @@ function zerror(msg,title,fn){
 function zconfirm(msg,title,okfn,cancelfn){
 	zdialogue({"msg":msg,type:"confirm","title":title,fontcolor:"#777777",src:PATH+"/static/img/exclamation.png",okfn:okfn,cancelfn:cancelfn});
 }
-function zalert(msg,title,fn){alert(fn)
+function zalert(msg,title,fn){
 	zdialogue({"msg":msg,type:"alert","title":title,fontcolor:"#777777",src:PATH+"/static/img/nike.png",okfn:fn});
 }
 

@@ -8,6 +8,7 @@ public class Regex extends Rule{
 	private Pattern pattern;
 	public Regex(String reg){
 		this.reg = reg;
+		pattern = Pattern.compile(reg);
 	}
 	public Regex(Pattern pattern){
 		this.pattern = pattern;
@@ -33,7 +34,7 @@ public class Regex extends Rule{
 		if(value != null && !value.equals("")) {
 			Matcher matcher = this.pattern.matcher(value);
 			if(!matcher.matches()) {
-				message = "err.param.regex";
+				message = "err.param.format";
 				return false;
 			} else {
 				return true;

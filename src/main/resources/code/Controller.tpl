@@ -36,7 +36,7 @@ import cola.machine.util.StringUtil;
 import cola.machine.util.ValidateUtil;
 import core.util.RequestUtil;
 import core.action.ResultDTO;
-
+import cola.machine.util.DateUtil;
 @Controller
 @RequestMapping("/${abc}")
 public class ${Abc}Controller extends BaseController{
@@ -78,7 +78,8 @@ public class ${Abc}Controller extends BaseController{
         if(page ==null){
              return this.getWrongResultFromCfg("err.param.page");
         }
-        HashMap params =new HashMap();
+        
+${getSearchParam}
         params.put("page",page);
         List<${Abc}> ${abc}s = ${abc}Service.listByParams4Page(params);
         return ResultUtil.getResult(${abc}s, page);
@@ -135,5 +136,17 @@ ${setParam}
         //valid
 ${validCode}
         return ${abc}Service.save(${abc});
+    }
+    
+    @RequestMapping(value = "/del.json")
+    @ResponseBody
+    public Object delete(HttpServletRequest request) {
+        String ${table.pk.name}Str = request.getParameter("${table.pk.name}");
+        if(StringUtil.isBlank(${table.pk.name}Str)){
+            return this.getWrongResultFromCfg("err.param.notnull");
+        }
+        <@javaType>${table.pk.type}</@javaType> ${table.pk.name} = <@javaType>${table.pk.type}</@javaType>.valueOf(${table.pk.name}Str);
+        ${abc}Service.delete(${table.pk.name});
+        return this.getResult(SUCC);
     }
 }

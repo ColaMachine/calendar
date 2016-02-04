@@ -146,6 +146,7 @@ public class Generator {
         String list = this.readFile2Str("src/main/resources/code/list.tpl");
         String edit = this.readFile2Str("src/main/resources/code/edit.tpl");
         String sqlTpl = this.readFile2Str("src/main/resources/code/sql.tpl");
+        String viewTpl = this.readFile2Str("src/main/resources/code/view.tpl");
         // String listHtmlTpl =
         // this.readFile2Str("src/main/resources/code/ListHtml.tpl");
         // String editHtmlTpl =
@@ -160,6 +161,7 @@ public class Generator {
         temp.putTemplate("mapperXml", mapperXmlTpl);
         temp.putTemplate("list", list);
         temp.putTemplate("edit", edit);
+        temp.putTemplate("view", viewTpl);
         // temp.putTemplate("listHtml", listHtmlTpl);
         // temp.putTemplate("editHtml", editHtmlTpl);
         // temp.putTemplate("viewHtml", viewHtmlTpl);
@@ -220,6 +222,17 @@ public class Generator {
                }else{
                    rules.add(String.format("new Digits(10,0)"));
                }
+               if(zcol.getShowValue()!=null){
+                   Map<Integer, String> map = zcol.getShowValue();  
+                   List strAry= new ArrayList();
+                   for (Map.Entry<Integer, String> entry : map.entrySet()) {  
+                       strAry.add("\""+entry.getKey() +"\"");
+                   }  
+                   
+                   rules.add(String.format("new CheckBox(new String[]{"+StringUtil.join(",", strAry.toArray())+"})"));
+                   jsrules.add("CheckBox:["+StringUtil.join(",", strAry.toArray())+"]");
+                   message.add("CheckBox:\"必须输入"+StringUtil.join(",", strAry.toArray()).replaceAll("\"", "'")+"中的值\"");
+               }
         	   jsrules.add(String.format("digits:true"));
         	   message.add(String.format("digits:\"必须输入整数\""));
            }
@@ -244,26 +257,27 @@ public class Generator {
            }
            if(type.equals("datetime")){
         	   rules.add(String.format("new DateValue(\"yyyy-MM-dd HH:mm:ss\")"));
-        	   jsrules.add(String.format("dateISO:true"));
-               message.add(String.format("dateISO:\"必须输入合法日期\""));
+        	   jsrules.add(String.format("ymd:\"yyyy-MM-dd HH:mm:ss\""));
+               message.add(String.format("ymd:\"必须输入合法日期\""));
            }
            if(type.equals("timestamp")){
         	   rules.add(String.format("new DateValue(\"yyyy-MM-dd HH:mm:ss\")"));
-        	   jsrules.add(String.format("dateISO:true"));
-               message.add(String.format("dateISO:\"必须输入合法日期\""));
+        	   jsrules.add(String.format("ymd:\"yyyy-MM-dd HH:mm:ss\""));
+               message.add(String.format("ymd:\"必须输入合法日期\""));
            }
            if(zcol.isNn()){
         	   rules.add(String.format("new NotEmpty()"));
         	   jsrules.add(String.format("required:true"));
            }
            if(StringUtil.isNotEmpty(zcol.getValid())){
-        	   String[] validAry= zcol.getValid().split("||");
+        	   String[] validAry= zcol.getValid().split(",,");
         	   for(int j=0;j<validAry.length;j++){
         		   if(validAry[j].toLowerCase().startsWith("regex")){
         			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+        			   content=content.replace("\\", "\\\\");
         			   rules.add(String.format("new Regex(%s)",content));
-        			   jsrules.add(String.format("dateISO:true"));
-                       message.add(String.format("dateISO:\"必须输入合法日期\""));
+        			   jsrules.add(String.format("regex:"+content));
+                       message.add(String.format("regex:\"必须输入制定格式字符串\""));
         		   }
         		   if(validAry[j].toLowerCase().startsWith("email")){
         			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
@@ -313,10 +327,10 @@ public class Generator {
             if(type.startsWith("date")||type.startsWith("timestamp")||type.startsWith("datetime")){
                 sb.append(tab3+"if(StringUtil.checkNumeric("+zcol.getName()+")){").append(ctrl)
                 .append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"("+changeMySqlType2JavaType(type)+".valueOf("+zcol.getName()+"));").append(ctrl)
-                .append(tab3+"}else if(StringUtil.checkDateStr("+zcol.getName()+", \"yyyy-MM-dd\")){").append(ctrl)
+                .append(tab3+"}else if(StringUtil.checkDateStr("+zcol.getName()+", \""+getYMDStr(type)+"\")){").append(ctrl)
                 .append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"(");
                 if(type.startsWith("timestamp")){
-                    sb.append("new Timestamp( DateUtil.parseToDate("+zcol.getName()+", \"yyyy-MM-dd\").getTime()");
+                    sb.append("new Timestamp( DateUtil.parseToDate("+zcol.getName()+", \""+getYMDStr(type)+"\").getTime()");
                 }
                 sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
             }else{
@@ -325,10 +339,80 @@ public class Generator {
             sb.append(tab2+"}").append(ctrl);
         }
            return sb.toString();
-  }
+    }
+    
+    /**
+     * 在controller 中提取参数
+     * @return
+     * @author dozen.zhang
+     */
+    public String getSearchParam(){
+        StringBuffer sb =new StringBuffer();
+        sb.append(tab2+"HashMap params= new HashMap();").append(ctrl);
+        for(int i=0;i<table.getCols().size();i++){
+            ZColum zcol =table.getCols().get(i); 
+            String type = zcol.getType().toLowerCase();
+            sb.append(tab2+"String "+zcol.getName()+" = request.getParameter(\""+zcol.getName()+"\");").append(ctrl)
+            .append(tab2+"if(!StringUtil.isBlank("+zcol.getName()+")){").append(ctrl);
+            if(type.startsWith("date")||type.startsWith("timestamp")||type.startsWith("datetime")){
+                sb.append(tab3+"if(StringUtil.checkNumeric("+zcol.getName()+")){").append(ctrl)
+                .append(tab4+String.format("params.put(\"%s\",%s);",zcol.getName(),zcol.getName())).append(ctrl)
+                .append(tab3+"}else if(StringUtil.checkDateStr("+zcol.getName()+", \""+getYMDStr(type)+"\")){").append(ctrl)
+                .append(tab4+String.format("params.put(\"%s\",",zcol.getName()));
+                if(type.startsWith("timestamp")){
+                    sb.append("new Timestamp( DateUtil.parseToDate("+zcol.getName()+", \""+getYMDStr(type)+"\").getTime()");
+                }
+                sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
+                
+            }else{
+                sb.append(tab4+"params.put(\""+zcol.getName()+"\","+zcol.getName()+");").append(ctrl);
+            }
+            sb.append(tab2+"}").append(ctrl);
             
-  
-  
+            
+
+            
+           
+            if(type.startsWith("date")||type.startsWith("timestamp")||type.startsWith("datetime")){
+                sb.append(tab2+"String "+zcol.getName()+"Begin = request.getParameter(\""+zcol.getName()+"Begin\");").append(ctrl)
+                .append(tab2+"if(!StringUtil.isBlank("+zcol.getName()+"Begin)){").append(ctrl);
+                sb.append(tab3+"if(StringUtil.checkNumeric("+zcol.getName()+"Begin)){").append(ctrl)
+                .append(tab4+String.format("params.put(\"%sBegin\",%sBegin);",zcol.getName(),zcol.getName())).append(ctrl)
+                .append(tab3+"}else if(StringUtil.checkDateStr("+zcol.getName()+"Begin, \""+getYMDStr(type)+"\")){").append(ctrl)
+                .append(tab4+String.format("params.put(\"%sBegin\",",zcol.getName()));
+                if(type.startsWith("timestamp")){
+                    sb.append("new Timestamp( DateUtil.parseToDate("+zcol.getName()+"Begin, \""+getYMDStr(type)+"\").getTime()");
+                }
+                sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
+                sb.append(tab2+"}").append(ctrl);
+                
+                
+                sb.append(tab2+"String "+zcol.getName()+"End = request.getParameter(\""+zcol.getName()+"End\");").append(ctrl)
+                .append(tab2+"if(!StringUtil.isBlank("+zcol.getName()+"End)){").append(ctrl);
+                sb.append(tab3+"if(StringUtil.checkNumeric("+zcol.getName()+"End)){").append(ctrl)
+                .append(tab4+String.format("params.put(\"%sEnd\",%sEnd);",zcol.getName(),zcol.getName())).append(ctrl)
+                .append(tab3+"}else if(StringUtil.checkDateStr("+zcol.getName()+"End, \""+getYMDStr(type)+"\")){").append(ctrl)
+                .append(tab4+String.format("params.put(\"%sEnd\",",zcol.getName()));
+                if(type.startsWith("timestamp")){
+                    sb.append("new Timestamp( DateUtil.parseToDate("+zcol.getName()+"End, \""+getYMDStr(type)+"\").getTime()");
+                }
+                sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
+                sb.append(tab2+"}").append(ctrl);
+            }
+            
+        }
+        
+           return sb.toString();
+    }
+    public String getYMDStr(String type){
+        String ymd ="";
+        if(type.startsWith("date")){
+            ymd="yyyy-MM-dd";
+        }else{
+            ymd="yyyy-MM-dd HH:mm:ss";
+        }
+return ymd;
+    }
     public Integer getIntFromKuoHao(String str){
         int index = str.indexOf("(");
         if(index==-1){
@@ -368,7 +452,7 @@ public class Generator {
     }
     public void genController() throws IOException, TemplateException {
         logger.info("genController");
-       
+        root.put("getSearchParam", getSearchParam());
         root.put("setParam",  getSetParam());
         root.put("validCode", getValidStr());
         writeFile("src/main/java/cola/machine/action/",table.getName() + "Controller.java", "controller");
@@ -449,8 +533,69 @@ public class Generator {
         
         
     }
-
+    
     public void genListHtml() throws IOException, TemplateException {
+        
+        StringBuffer sb =new StringBuffer();
+        List<ZColum> cols =table.getCols();
+        for(int i=0;i<cols.size();i++){
+            ZColum zcol =cols.get(i);
+            String type =zcol.getType().toLowerCase();
+            if(zcol.isPk()){
+                sb.append(tab+"<input type=\"hidden\" id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\"  placeholder=\""+zcol.getRemark()+"\">").append(ctrl);
+            }else{
+                sb.append(tab+"<label for=\""+zcol.getName()+"\">"+zcol.getRemark()+"</label>").append(ctrl);
+                if(type.startsWith("varchar")){
+                    int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
+                    String tagName="input";
+                    if(length>50){
+                        tagName="textarea";
+                    }
+                    sb.append(tab3+String.format("<input type=\"text\" name=\"%s\" id=\"%s\"  class=\"form-control\"  maxlength=\"%d\" placeholder=\""+zcol.getRemark()+"\" ></input>",
+                            zcol.getName(),zcol.getName(),length)).append(ctrl);
+                }
+                if(type.startsWith("int")){
+                    //有一种checkbox 的选项
+                    if(zcol.getShowValue()!=null){
+                        sb.append(tab3+String.format("<select  name=\"%s\" id=\"%s\" class=\"form-control\"  >"
+                                ,zcol.getName(),zcol.getName())).append(ctrl);
+                        Map<Integer, String> map =zcol.getShowValue();
+                        sb.append(tab4+"<option value=''>-请选择-</option>").append(ctrl);
+                        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+                            sb.append(tab4+"<option value=" + entry.getKey() + ">" + entry.getValue()+"</option>").append(ctrl);
+                        }
+                        sb.append(tab3+"</select>").append(ctrl);
+                    }else{
+                        Integer value =getIntFromKuoHao(type);
+                        int maxlength=10;
+                        if(value==null){
+                            maxlength=10;
+                        }else{
+                            maxlength=value;
+                        }
+                        sb.append(tab3+String.format("<input type=\"number\" name=\"%s\" id=\"%s\" class=\"form-control\" maxlength=\"%d\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\" placeholder=\""+zcol.getRemark()+"\"></input>"
+                                ,zcol.getName(),zcol.getName(),maxlength)).append(ctrl);
+                    }
+                }
+                if(type.startsWith("float") ||type.startsWith("double") ){
+                    int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
+                    int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
+                    sb.append(tab3+String.format("<input type=\"number\" name=\"%s\" id=\"%s\" class=\"form-control\" onkeyup=\"chkFloat(this,%d,%d)\" onafterpaste=\"chkFloat(this,%d,%d)\" placeholder=\""+zcol.getRemark()+"\" ></input>",
+                            zcol.getName(), zcol.getName(),integer,fraction,integer,fraction)).append(ctrl);
+                }
+                if(type.equals("date")||type.equals("datetime")||type.equals("timestamp")){
+                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\" class=\"form-control\" datatype=\"date\" format=\""+getYMDStr(type)+"\" name=\"%s\" id=\"%s\" placeholder=\""+zcol.getRemark()+"\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
+                    sb.append(tab+"<label for=\""+zcol.getName()+"Begin\">"+zcol.getRemark()+"开始"+"</label>").append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\" class=\"form-control\" datatype=\"date\" format=\""+getYMDStr(type)+"\" name=\"%sBegin\" id=\"%sBegin\" placeholder=\""+zcol.getRemark()+"开始"+"\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
+                    sb.append(tab+"<label for=\""+zcol.getName()+"End\">"+zcol.getRemark()+"结束"+"</label>").append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\" class=\"form-control\" datatype=\"date\" format=\""+getYMDStr(type)+"\" name=\"%sEnd\" id=\"%sEnd\" placeholder=\""+zcol.getRemark()+"结束"+"\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
+                }
+              
+            }
+        }
+        
+        root.put("searchhtml", sb.toString());
+  
         logger.info("genListHtml");
         writeFile("",table.getName() + "List.html", "list");
     }
@@ -496,6 +641,7 @@ public class Generator {
                         sb.append(tab3+String.format("<select  name=\"%s\" id=\"%s\" class=\"form-control\" >"
                                 ,zcol.getName(),zcol.getName())).append(ctrl);
                         Map<Integer, String> map =zcol.getShowValue();
+                        sb.append(tab4+"<option value=''>-请选择-</option>").append(ctrl);
                         for (Map.Entry<Integer, String> entry : map.entrySet()) {
                             sb.append(tab4+"<option value=" + entry.getKey() + ">" + entry.getValue()+"</option>").append(ctrl);
                         }
@@ -519,7 +665,7 @@ public class Generator {
                             zcol.getName(), zcol.getName(),integer,fraction,integer,fraction)).append(ctrl);
                 }
                 if(type.equals("date")||type.equals("datetime")||type.equals("timestamp")){
-                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker()\" class=\"form-control\" type2=\"date\" format=\"yyyy-MM-dd\" name=\"%s\" id=\"%s\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\" class=\"form-control\" datatype=\"date\" format=\""+getYMDStr(type)+"\" name=\"%s\" id=\"%s\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
                 }
                 sb.append(tab2+String.format("</div>")).append(ctrl);
                 sb.append(tab+String.format("</div>")).append(ctrl);
@@ -530,8 +676,66 @@ public class Generator {
         writeFile("",table.getName() + "Edit.html", "edit");
     }
 
-    public void genViewHtml() {
+    public void genViewHtml()  throws IOException, TemplateException{
         logger.info("genViewHtml");
+        StringBuffer sb =new StringBuffer();
+        List<ZColum> cols =table.getCols();
+        for(int i=0;i<cols.size();i++){
+            ZColum zcol =cols.get(i);
+            String type =zcol.getType().toLowerCase();
+            if(zcol.isPk()){
+                sb.append(tab+"<input type=\"hidden\" id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\">").append(ctrl);
+            }else{
+                sb.append(tab+"<div class=\"form-group\">").append(ctrl);
+                sb.append(tab2+String.format("<label for=\"%s\" class=\"col-sm-2 control-label\">%s:</label>",zcol.getName(),zcol.getRemark())).append(ctrl);
+                sb.append(tab2+String.format("<div class=\"col-sm-10\">")).append(ctrl);
+                
+                if(type.startsWith("varchar")){
+                    int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
+                    String tagName="input";
+                    if(length>50){
+                        tagName="textarea";
+                    }
+                    sb.append(tab3+String.format("<span name=\"%s\" id=\"%s\"  class=\"form-control\"  ></span>",
+                          zcol.getName(),zcol.getName(),length,tagName)).append(ctrl);
+                }
+                if(type.startsWith("int")){
+                    //有一种checkbox 的选项
+                    if(zcol.getShowValue()!=null){
+                        sb.append(tab3+String.format("<span  name=\"%s\" id=\"%s\" datatype=\"map\" data=\"{"
+                                ,zcol.getName(),zcol.getName()));
+                        Map<Integer, String> map =zcol.getShowValue();
+                        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+                            sb.append("'"+entry.getKey() + "':'" + entry.getValue()+"',");
+                        }
+                        sb.append("}\" class=\"form-control\" ></span>").append(ctrl);
+                    }else{
+                        Integer value =getIntFromKuoHao(type);
+                        int maxlength=10;
+                        if(value==null){
+                            maxlength=10;
+                        }else{
+                            maxlength=value;
+                        }
+                        sb.append(tab3+String.format("<span  name=\"%s\" id=\"%s\" class=\"form-control\"></span>"
+                                ,zcol.getName(),zcol.getName(),maxlength)).append(ctrl);
+                    }
+                }
+                if(type.startsWith("float") ||type.startsWith("double") ){
+                    int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
+                    int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
+                    sb.append(tab3+String.format("<span  name=\"%s\" id=\"%s\" class=\"form-control\"></span>",
+                            zcol.getName(), zcol.getName(),integer,fraction,integer,fraction)).append(ctrl);
+                }
+                if(type.equals("date")||type.equals("datetime")||type.equals("timestamp")){
+                    sb.append(tab3+String.format("<span class=\"form-control\" datatype=\"date\" format=\""+getYMDStr(type)+"\" name=\"%s\" id=\"%s\" ></span>",zcol.getName(),zcol.getName())).append(ctrl);
+                }
+                sb.append(tab2+String.format("</div>")).append(ctrl);
+                sb.append(tab+String.format("</div>")).append(ctrl);
+            }
+        }
+        root.put("viewhtml", sb.toString());
+        writeFile("",table.getName() + "View.html", "view");
     }
     public String  getSearchBar(){
         StringBuffer sb =new StringBuffer();
@@ -556,6 +760,7 @@ public class Generator {
             gen.genMapperXml();
             gen.genListHtml();
             gen.genEditHtml();
+            gen.genViewHtml();
             
         } catch (IOException e) {
             // TODO Auto-generated catch block

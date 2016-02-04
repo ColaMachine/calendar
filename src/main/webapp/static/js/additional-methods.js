@@ -1002,6 +1002,27 @@ $.validator.addMethod("yyyyMMdd", function(value, element) {
 			
 $.validator.addMethod("float",function( value, element, param ) {
 	var  re =new RegExp("^([1-9]{1}[0-9]{0,"+param[0]+"}|0)(\.[0-9]{1,"+param[1]+"})?$");
+	return this.optional(element) ||re.test(value);
+},"数值格式不正确");	
+
+$.validator.addMethod("CheckBox",function( value, element, param ) {
+	var flag =false;
+	for(var i=0;i<param.length;i++){
+		if(value==param[i]){
+			flag=true;
+			break;
+		}
+	}
+	 return this.optional(element) ||flag;
+},"数值不在选定值内");
+
+$.validator.addMethod("regex",function( value, element, param ) {
+	var re=new RegExp(param);
 	 return this.optional(element) ||re.test(value);
-},"数值格式不正确");			
+},"格式不正确");
+$.validator.addMethod("ymd",function( value, element, param ) {
+	param=param.replace(/[yMdHms]/g,"\\d");
 	
+	var re=new RegExp(param);
+	 return this.optional(element) ||re.test(value);
+},"格式不正确");

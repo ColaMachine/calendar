@@ -24,6 +24,7 @@
         <label for="status" class="col-sm-2 control-label">状态:</label>
         <div class="col-sm-10">
             <select  name="status" id="status" class="form-control" >
+                <option value=''>-请选择-</option>
                 <option value=1>未发送</option>
                 <option value=2>已发送</option>
             </select>
@@ -44,19 +45,19 @@
     <div class="form-group">
         <label for="sendTime" class="col-sm-2 control-label">定时发送:</label>
         <div class="col-sm-10">
-            <input type="text" onClick="WdatePicker()" class="form-control" type2="date" format="yyyy-MM-dd" name="sendTime" id="sendTime" ></input>
+            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="sendTime" id="sendTime" ></input>
         </div>
     </div>
     <div class="form-group">
         <label for="createTime" class="col-sm-2 control-label">创建时间:</label>
         <div class="col-sm-10">
-            <input type="text" onClick="WdatePicker()" class="form-control" type2="date" format="yyyy-MM-dd" name="createTime" id="createTime" ></input>
+            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="createTime" id="createTime" ></input>
         </div>
     </div>
     <div class="form-group">
         <label for="excuteTime" class="col-sm-2 control-label">执行时间:</label>
         <div class="col-sm-10">
-            <input type="text" onClick="WdatePicker()" class="form-control" type2="date" format="yyyy-MM-dd" name="excuteTime" id="excuteTime" ></input>
+            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="excuteTime" id="excuteTime" ></input>
         </div>
     </div>
 
@@ -87,22 +88,22 @@ $(document).ready(function() {
             digits:true,required:true
         },
         status:{
-            digits:true,required:true
+            CheckBox:["1","2"],digits:true,required:true
         },
         phone:{
-            maxlength:100,required:true
+            maxlength:100,required:true,regex:"^(\\d{11},)*\\d{11}$"
         },
         content:{
             maxlength:140,required:true
         },
         sendTime:{
-            dateISO:true
+            ymd:"yyyy-MM-dd HH:mm:ss"
         },
         createTime:{
-            dateISO:true,required:true
+            ymd:"yyyy-MM-dd HH:mm:ss",required:true
         },
         excuteTime:{
-            dateISO:true
+            ymd:"yyyy-MM-dd HH:mm:ss"
         },
 
         },
@@ -120,22 +121,22 @@ $(document).ready(function() {
             digits:"必须输入整数"
         },
         status:{
-            digits:"必须输入整数"
+            CheckBox:"必须输入'1','2'中的值",digits:"必须输入整数"
         },
         phone:{
-            maxlength:"phone不能多于100个字符"
+            maxlength:"phone不能多于100个字符",regex:"必须输入制定格式字符串"
         },
         content:{
             maxlength:"content不能多于140个字符"
         },
         sendTime:{
-            dateISO:"必须输入合法日期"
+            ymd:"必须输入合法日期"
         },
         createTime:{
-            dateISO:"必须输入合法日期"
+            ymd:"必须输入合法日期"
         },
         excuteTime:{
-            dateISO:"必须输入合法日期"
+            ymd:"必须输入合法日期"
         },
 
         }

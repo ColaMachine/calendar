@@ -34,7 +34,7 @@ import cola.machine.util.StringUtil;
 import cola.machine.util.ValidateUtil;
 import core.util.RequestUtil;
 import core.action.ResultDTO;
-
+import cola.machine.util.DateUtil;
 @Controller
 @RequestMapping("/smsBatch")
 public class SmsBatchController extends BaseController{
@@ -76,7 +76,109 @@ public class SmsBatchController extends BaseController{
         if(page ==null){
              return this.getWrongResultFromCfg("err.param.page");
         }
-        HashMap params =new HashMap();
+        
+        HashMap params= new HashMap();
+        String id = request.getParameter("id");
+        if(!StringUtil.isBlank(id)){
+                params.put("id",id);
+        }
+        String total = request.getParameter("total");
+        if(!StringUtil.isBlank(total)){
+                params.put("total",total);
+        }
+        String succ = request.getParameter("succ");
+        if(!StringUtil.isBlank(succ)){
+                params.put("succ",succ);
+        }
+        String fail = request.getParameter("fail");
+        if(!StringUtil.isBlank(fail)){
+                params.put("fail",fail);
+        }
+        String status = request.getParameter("status");
+        if(!StringUtil.isBlank(status)){
+                params.put("status",status);
+        }
+        String phone = request.getParameter("phone");
+        if(!StringUtil.isBlank(phone)){
+                params.put("phone",phone);
+        }
+        String content = request.getParameter("content");
+        if(!StringUtil.isBlank(content)){
+                params.put("content",content);
+        }
+        String sendTime = request.getParameter("sendTime");
+        if(!StringUtil.isBlank(sendTime)){
+            if(StringUtil.checkNumeric(sendTime)){
+                params.put("sendTime",sendTime);
+            }else if(StringUtil.checkDateStr(sendTime, "yyyy-MM-dd HH:mm:ss")){
+                params.put("sendTime",new Timestamp( DateUtil.parseToDate(sendTime, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String sendTimeBegin = request.getParameter("sendTimeBegin");
+        if(!StringUtil.isBlank(sendTimeBegin)){
+            if(StringUtil.checkNumeric(sendTimeBegin)){
+                params.put("sendTimeBegin",sendTimeBegin);
+            }else if(StringUtil.checkDateStr(sendTimeBegin, "yyyy-MM-dd HH:mm:ss")){
+                params.put("sendTimeBegin",new Timestamp( DateUtil.parseToDate(sendTimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String sendTimeEnd = request.getParameter("sendTimeEnd");
+        if(!StringUtil.isBlank(sendTimeEnd)){
+            if(StringUtil.checkNumeric(sendTimeEnd)){
+                params.put("sendTimeEnd",sendTimeEnd);
+            }else if(StringUtil.checkDateStr(sendTimeEnd, "yyyy-MM-dd HH:mm:ss")){
+                params.put("sendTimeEnd",new Timestamp( DateUtil.parseToDate(sendTimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createTime = request.getParameter("createTime");
+        if(!StringUtil.isBlank(createTime)){
+            if(StringUtil.checkNumeric(createTime)){
+                params.put("createTime",createTime);
+            }else if(StringUtil.checkDateStr(createTime, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createTime",new Timestamp( DateUtil.parseToDate(createTime, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createTimeBegin = request.getParameter("createTimeBegin");
+        if(!StringUtil.isBlank(createTimeBegin)){
+            if(StringUtil.checkNumeric(createTimeBegin)){
+                params.put("createTimeBegin",createTimeBegin);
+            }else if(StringUtil.checkDateStr(createTimeBegin, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createTimeBegin",new Timestamp( DateUtil.parseToDate(createTimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createTimeEnd = request.getParameter("createTimeEnd");
+        if(!StringUtil.isBlank(createTimeEnd)){
+            if(StringUtil.checkNumeric(createTimeEnd)){
+                params.put("createTimeEnd",createTimeEnd);
+            }else if(StringUtil.checkDateStr(createTimeEnd, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createTimeEnd",new Timestamp( DateUtil.parseToDate(createTimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String excuteTime = request.getParameter("excuteTime");
+        if(!StringUtil.isBlank(excuteTime)){
+            if(StringUtil.checkNumeric(excuteTime)){
+                params.put("excuteTime",excuteTime);
+            }else if(StringUtil.checkDateStr(excuteTime, "yyyy-MM-dd HH:mm:ss")){
+                params.put("excuteTime",new Timestamp( DateUtil.parseToDate(excuteTime, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String excuteTimeBegin = request.getParameter("excuteTimeBegin");
+        if(!StringUtil.isBlank(excuteTimeBegin)){
+            if(StringUtil.checkNumeric(excuteTimeBegin)){
+                params.put("excuteTimeBegin",excuteTimeBegin);
+            }else if(StringUtil.checkDateStr(excuteTimeBegin, "yyyy-MM-dd HH:mm:ss")){
+                params.put("excuteTimeBegin",new Timestamp( DateUtil.parseToDate(excuteTimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String excuteTimeEnd = request.getParameter("excuteTimeEnd");
+        if(!StringUtil.isBlank(excuteTimeEnd)){
+            if(StringUtil.checkNumeric(excuteTimeEnd)){
+                params.put("excuteTimeEnd",excuteTimeEnd);
+            }else if(StringUtil.checkDateStr(excuteTimeEnd, "yyyy-MM-dd HH:mm:ss")){
+                params.put("excuteTimeEnd",new Timestamp( DateUtil.parseToDate(excuteTimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+
         params.put("page",page);
         List<SmsBatch> smsBatchs = smsBatchService.listByParams4Page(params);
         return ResultUtil.getResult(smsBatchs, page);
@@ -206,24 +308,24 @@ public class SmsBatchController extends BaseController{
         if(!StringUtil.isBlank(sendTime)){
             if(StringUtil.checkNumeric(sendTime)){
                 smsBatch.setSendTime(Timestamp.valueOf(sendTime));
-            }else if(StringUtil.checkDateStr(sendTime, "yyyy-MM-dd")){
-                smsBatch.setSendTime(new Timestamp( DateUtil.parseToDate(sendTime, "yyyy-MM-dd").getTime()));
+            }else if(StringUtil.checkDateStr(sendTime, "yyyy-MM-dd HH:mm:ss")){
+                smsBatch.setSendTime(new Timestamp( DateUtil.parseToDate(sendTime, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String createTime = request.getParameter("createTime");
         if(!StringUtil.isBlank(createTime)){
             if(StringUtil.checkNumeric(createTime)){
                 smsBatch.setCreateTime(Timestamp.valueOf(createTime));
-            }else if(StringUtil.checkDateStr(createTime, "yyyy-MM-dd")){
-                smsBatch.setCreateTime(new Timestamp( DateUtil.parseToDate(createTime, "yyyy-MM-dd").getTime()));
+            }else if(StringUtil.checkDateStr(createTime, "yyyy-MM-dd HH:mm:ss")){
+                smsBatch.setCreateTime(new Timestamp( DateUtil.parseToDate(createTime, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String excuteTime = request.getParameter("excuteTime");
         if(!StringUtil.isBlank(excuteTime)){
             if(StringUtil.checkNumeric(excuteTime)){
                 smsBatch.setExcuteTime(Timestamp.valueOf(excuteTime));
-            }else if(StringUtil.checkDateStr(excuteTime, "yyyy-MM-dd")){
-                smsBatch.setExcuteTime(new Timestamp( DateUtil.parseToDate(excuteTime, "yyyy-MM-dd").getTime()));
+            }else if(StringUtil.checkDateStr(excuteTime, "yyyy-MM-dd HH:mm:ss")){
+                smsBatch.setExcuteTime(new Timestamp( DateUtil.parseToDate(excuteTime, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
 
@@ -234,8 +336,8 @@ public class SmsBatchController extends BaseController{
         vu.add("total", total, "总发送数据",  new Rule[]{new Digits(10,0),new NotEmpty()});
         vu.add("succ", succ, "成功数量",  new Rule[]{new Digits(10,0),new NotEmpty()});
         vu.add("fail", fail, "失败数量",  new Rule[]{new Digits(10,0),new NotEmpty()});
-        vu.add("status", status, "状态",  new Rule[]{new Digits(10,0),new NotEmpty()});
-        vu.add("phone", phone, "手机号码",  new Rule[]{new Length(100),new NotEmpty()});
+        vu.add("status", status, "状态",  new Rule[]{new Digits(10,0),new CheckBox(new String[]{"1","2"}),new NotEmpty()});
+        vu.add("phone", phone, "手机号码",  new Rule[]{new Length(100),new NotEmpty(),new Regex("^(\\d{11},)*\\d{11}$")});
         vu.add("content", content, "短信内容",  new Rule[]{new Length(140),new NotEmpty()});
         vu.add("sendTime", sendTime, "定时发送",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         vu.add("createTime", createTime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss"),new NotEmpty()});
@@ -246,5 +348,17 @@ public class SmsBatchController extends BaseController{
         }
 
         return smsBatchService.save(smsBatch);
+    }
+    
+    @RequestMapping(value = "/del.json")
+    @ResponseBody
+    public Object delete(HttpServletRequest request) {
+        String idStr = request.getParameter("id");
+        if(StringUtil.isBlank(idStr)){
+            return this.getWrongResultFromCfg("err.param.notnull");
+        }
+        Integer id = Integer.valueOf(idStr);
+        smsBatchService.delete(id);
+        return this.getResult(SUCC);
     }
 }

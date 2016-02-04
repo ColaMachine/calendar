@@ -77,6 +77,14 @@ where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcT
         <if test="${col.name} != null and ${col.name} != '' ">  
            and ${col.name} = ${r'#{'}${col.name}}
         </if>  
+        <#if col.type=='timestamp'>
+        <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
+             and ${col.name} &gt;= ${r'#{'}${col.name}Begin}
+        </if>   
+         <if test="${col.name}End != null and ${col.name}End != '' ">  
+             and ${col.name} &lt;= ${r'#{'}${col.name}End}
+        </if> 
+        </#if>
     </#list>
   </select>
    <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
@@ -87,6 +95,14 @@ where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcT
         <if test="${col.name} != null and ${col.name} != '' ">  
            and ${col.name} = ${r'#{'}${col.name}}
         </if>  
+        <#if col.type=='timestamp'>
+        <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
+             and ${col.name} &gt;= ${r'#{'}${col.name}Begin}
+        </if>   
+         <if test="${col.name}End != null and ${col.name}End != '' ">  
+             and ${col.name} &lt;= ${r'#{'}${col.name}End}
+        </if> 
+        </#if>
     </#list>
   </select>
    <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
