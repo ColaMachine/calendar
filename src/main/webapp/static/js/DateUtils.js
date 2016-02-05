@@ -18,7 +18,7 @@ Date.prototype.format = function(format)
     var o = {
 	    "M+" : this.getMonth()+1, // month
 	    "d+" : this.getDate(),    // day
-	    "h+" : this.getHours(),   // hour
+	    "H+" : this.getHours(),   // hour
 	    "m+" : this.getMinutes(), // minute
 	    "s+" : this.getSeconds(), // second
 	    "q+" : Math.floor((this.getMonth()+3)/3),  // quarter

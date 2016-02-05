@@ -2,41 +2,59 @@
 <div class="body_title">| 批量发送短信</div>
     <div class="body_top" >
     <form class="form-inline app-search">
-    <input type="hidden" id="id" name="id"  placeholder="id">
-    <label for="total">总发送数据</label>
-            <input type="number" name="total" id="total" class="form-control" maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="总发送数据"></input>
-    <label for="succ">成功数量</label>
-            <input type="number" name="succ" id="succ" class="form-control" maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="成功数量"></input>
-    <label for="fail">失败数量</label>
-            <input type="number" name="fail" id="fail" class="form-control" maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="失败数量"></input>
-    <label for="status">状态</label>
-            <select  name="status" id="status" class="form-control"  >
+    <input type="hidden" id="id" name="id"  class="form-control input-sm"   placeholder="id">
+        <label for="total">总发送数据</label>
+            <input type="number" id="total" name="total"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="总发送数据"></input>
+        <label for="succ">成功数量</label>
+            <input type="number" id="succ" name="succ"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="成功数量"></input>
+        <label for="fail">失败数量</label>
+            <input type="number" id="fail" name="fail"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="失败数量"></input>
+        <label for="status">状态</label>
+            <select id="status" name="status"  class="form-control input-sm"  >
                 <option value=''>-请选择-</option>
                 <option value=1>未发送</option>
                 <option value=2>已发送</option>
             </select>
-    <label for="phone">手机号码</label>
-            <input type="text" name="phone" id="phone"  class="form-control"  maxlength="100" placeholder="手机号码" ></input>
-    <label for="content">短信内容</label>
-            <input type="text" name="content" id="content"  class="form-control"  maxlength="140" placeholder="短信内容" ></input>
-    <label for="sendTime">定时发送</label>
-            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="sendTime" id="sendTime" placeholder="定时发送" ></input>
-    <label for="sendTimeBegin">定时发送开始</label>
-            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="sendTimeBegin" id="sendTimeBegin" placeholder="定时发送开始" ></input>
-    <label for="sendTimeEnd">定时发送结束</label>
-            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="sendTimeEnd" id="sendTimeEnd" placeholder="定时发送结束" ></input>
-    <label for="createTime">创建时间</label>
-            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="createTime" id="createTime" placeholder="创建时间" ></input>
-    <label for="createTimeBegin">创建时间开始</label>
-            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="createTimeBegin" id="createTimeBegin" placeholder="创建时间开始" ></input>
-    <label for="createTimeEnd">创建时间结束</label>
-            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="createTimeEnd" id="createTimeEnd" placeholder="创建时间结束" ></input>
-    <label for="excuteTime">执行时间</label>
-            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="excuteTime" id="excuteTime" placeholder="执行时间" ></input>
-    <label for="excuteTimeBegin">执行时间开始</label>
-            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="excuteTimeBegin" id="excuteTimeBegin" placeholder="执行时间开始" ></input>
-    <label for="excuteTimeEnd">执行时间结束</label>
-            <input type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="form-control" datatype="date" format="yyyy-MM-dd HH:mm:ss" name="excuteTimeEnd" id="excuteTimeEnd" placeholder="执行时间结束" ></input>
+        <label for="phone">手机号码</label>
+            <input type="text" id="phone" name="phone"  class="form-control input-sm"   maxlength="100" placeholder="手机号码" ></input>
+        <label for="content">短信内容</label>
+            <input type="text" id="content" name="content"  class="form-control input-sm"   maxlength="140" placeholder="短信内容" ></input>
+        <label for="sendTime">定时发送</label>
+        <div class="input-group">
+            <input type="text" id="sendTime" name="sendTime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="定时发送" ></input>
+            <label class="input-group-addon" for="sendTime" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="sendTime">定时发送开始</label>
+        <div class="input-group">
+            <input type="text" id="sendTimeBegin" name="sendTimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="定时发送" ></input>
+            <label class="input-group-addon" for="sendTimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="sendTime">定时发送结束</label>
+        <div class="input-group">
+            <input type="text" id="sendTimeEnd" name="sendTimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="定时发送" ></input>
+            <label class="input-group-addon" for="sendTimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="createTime">创建时间</label>
+        <div class="input-group">
+            <input type="text" id="createTime" name="createTime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <label class="input-group-addon" for="createTime" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="createTime">创建时间开始</label>
+        <div class="input-group">
+            <input type="text" id="createTimeBegin" name="createTimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <label class="input-group-addon" for="createTimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="createTime">创建时间结束</label>
+        <div class="input-group">
+            <input type="text" id="createTimeEnd" name="createTimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <label class="input-group-addon" for="createTimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="excuteTime">执行时间</label>
+        <div class="input-group">
+            <input type="text" id="excuteTime" name="excuteTime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="执行时间" ></input>
+            <label class="input-group-addon" for="excuteTime" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="excuteTime">执行时间开始</label>
+        <div class="input-group">
+            <input type="text" id="excuteTimeBegin" name="excuteTimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="执行时间" ></input>
+            <label class="input-group-addon" for="excuteTimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="excuteTime">执行时间结束</label>
+        <div class="input-group">
+            <input type="text" id="excuteTimeEnd" name="excuteTimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="执行时间" ></input>
+            <label class="input-group-addon" for="excuteTimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
 
  <!-- 
         <div class="form-group">

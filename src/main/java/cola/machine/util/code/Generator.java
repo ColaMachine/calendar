@@ -539,25 +539,27 @@ return ymd;
         StringBuffer sb =new StringBuffer();
         List<ZColum> cols =table.getCols();
         for(int i=0;i<cols.size();i++){
+           
             ZColum zcol =cols.get(i);
             String type =zcol.getType().toLowerCase();
+            String commonStr= "id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\"  class=\"form-control input-sm\" ";
             if(zcol.isPk()){
-                sb.append(tab+"<input type=\"hidden\" id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\"  placeholder=\""+zcol.getRemark()+"\">").append(ctrl);
+                sb.append(tab+"<input type=\"hidden\" "+commonStr+"  placeholder=\""+zcol.getRemark()+"\">").append(ctrl);
             }else{
-                sb.append(tab+"<label for=\""+zcol.getName()+"\">"+zcol.getRemark()+"</label>").append(ctrl);
+                sb.append(tab2+"<label for=\""+zcol.getName()+"\">"+zcol.getRemark()+"</label>").append(ctrl);
                 if(type.startsWith("varchar")){
                     int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
                     String tagName="input";
                     if(length>50){
                         tagName="textarea";
                     }
-                    sb.append(tab3+String.format("<input type=\"text\" name=\"%s\" id=\"%s\"  class=\"form-control\"  maxlength=\"%d\" placeholder=\""+zcol.getRemark()+"\" ></input>",
-                            zcol.getName(),zcol.getName(),length)).append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"text\" "+commonStr+"  maxlength=\"%d\" placeholder=\""+zcol.getRemark()+"\" ></input>",
+                            length)).append(ctrl);
                 }
                 if(type.startsWith("int")){
                     //有一种checkbox 的选项
                     if(zcol.getShowValue()!=null){
-                        sb.append(tab3+String.format("<select  name=\"%s\" id=\"%s\" class=\"form-control\"  >"
+                        sb.append(tab3+String.format("<select "+commonStr+" >"
                                 ,zcol.getName(),zcol.getName())).append(ctrl);
                         Map<Integer, String> map =zcol.getShowValue();
                         sb.append(tab4+"<option value=''>-请选择-</option>").append(ctrl);
@@ -573,22 +575,23 @@ return ymd;
                         }else{
                             maxlength=value;
                         }
-                        sb.append(tab3+String.format("<input type=\"number\" name=\"%s\" id=\"%s\" class=\"form-control\" maxlength=\"%d\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\" placeholder=\""+zcol.getRemark()+"\"></input>"
-                                ,zcol.getName(),zcol.getName(),maxlength)).append(ctrl);
+                        sb.append(tab3+String.format("<input type=\"number\" "+commonStr+" maxlength=\"%d\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\" placeholder=\""+zcol.getRemark()+"\"></input>"
+                                ,maxlength)).append(ctrl);
                     }
                 }
                 if(type.startsWith("float") ||type.startsWith("double") ){
                     int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
                     int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
-                    sb.append(tab3+String.format("<input type=\"number\" name=\"%s\" id=\"%s\" class=\"form-control\" onkeyup=\"chkFloat(this,%d,%d)\" onafterpaste=\"chkFloat(this,%d,%d)\" placeholder=\""+zcol.getRemark()+"\" ></input>",
-                            zcol.getName(), zcol.getName(),integer,fraction,integer,fraction)).append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"number\" "+commonStr+" onkeyup=\"chkFloat(this,%d,%d)\" onafterpaste=\"chkFloat(this,%d,%d)\" placeholder=\""+zcol.getRemark()+"\" ></input>",
+                           integer,fraction,integer,fraction)).append(ctrl);
                 }
                 if(type.equals("date")||type.equals("datetime")||type.equals("timestamp")){
-                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\" class=\"form-control\" datatype=\"date\" format=\""+getYMDStr(type)+"\" name=\"%s\" id=\"%s\" placeholder=\""+zcol.getRemark()+"\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
+                    sb.append(getSearchFormItem(zcol));
+                   /* sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"\" ></input>")).append(ctrl);
                     sb.append(tab+"<label for=\""+zcol.getName()+"Begin\">"+zcol.getRemark()+"开始"+"</label>").append(ctrl);
-                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\" class=\"form-control\" datatype=\"date\" format=\""+getYMDStr(type)+"\" name=\"%sBegin\" id=\"%sBegin\" placeholder=\""+zcol.getRemark()+"开始"+"\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\" datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"开始"+"\" ></input>")).append(ctrl);
                     sb.append(tab+"<label for=\""+zcol.getName()+"End\">"+zcol.getRemark()+"结束"+"</label>").append(ctrl);
-                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\" class=\"form-control\" datatype=\"date\" format=\""+getYMDStr(type)+"\" name=\"%sEnd\" id=\"%sEnd\" placeholder=\""+zcol.getRemark()+"结束"+"\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\" datatype=\"date\" format=\""+getYMDStr(type)+"\" placeholder=\""+zcol.getRemark()+"结束"+"\" ></input>")).append(ctrl);*/
                 }
               
             }
@@ -599,7 +602,38 @@ return ymd;
         logger.info("genListHtml");
         writeFile("",table.getName() + "List.html", "list");
     }
-
+    public String getSearchFormItem(ZColum zcol){
+        String type =zcol.getType().toLowerCase();
+        String commonStr= "id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\"  class=\"form-control input-sm\" ";
+        StringBuffer sb =new StringBuffer();
+        if(type.equals("date")||type.equals("datetime")||type.equals("timestamp")){
+//            sb.append(tab2+"<label for=\""+zcol.getName()+"\">"+zcol.getRemark()+""+"</label>").append(ctrl);
+            sb.append(tab2+"<div class=\"input-group\">").append(ctrl);
+            sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"\" ></input>")).append(ctrl);
+            sb.append(tab3+"<label class=\"input-group-addon\" for=\""+zcol.getName()+"\" ><i class=\"fa fa-calendar\"></i></label>");
+            sb.append(tab2+"</div>").append(ctrl);
+            
+            commonStr= "id=\""+zcol.getName()+"Begin\" name=\""+zcol.getName()+"Begin\"  class=\"form-control input-sm\" ";
+            sb.append(tab2+"<label for=\""+zcol.getName()+"\">"+zcol.getRemark()+"开始"+"</label>").append(ctrl);
+            sb.append(tab2+"<div class=\"input-group\">").append(ctrl);
+           sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"\" ></input>")).append(ctrl);
+            sb.append(tab3+"<label class=\"input-group-addon\" for=\""+zcol.getName()+"Begin\" ><i class=\"fa fa-calendar\"></i></label>");
+            sb.append(tab2+"</div>").append(ctrl);
+            
+            commonStr= "id=\""+zcol.getName()+"End\" name=\""+zcol.getName()+"End\"  class=\"form-control input-sm\" ";
+            sb.append(tab2+"<label for=\""+zcol.getName()+"\">"+zcol.getRemark()+"结束"+"</label>").append(ctrl);
+            sb.append(tab2+"<div class=\"input-group\">").append(ctrl);
+           sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"\" ></input>")).append(ctrl);
+            sb.append(tab3+"<label class=\"input-group-addon\" for=\""+zcol.getName()+"End\" ><i class=\"fa fa-calendar\"></i></label>");
+            sb.append(tab2+"</div>").append(ctrl);
+        }
+        return sb.toString();
+       /* <div class="input-group ">
+        <input type="text" class="form-control input-sm" placeholder="Username" aria-describedby="basic-addon1">
+        <span class="input-group-addon input-sm" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+      </div>*/
+       
+    }
     public void genEditHtml() throws IOException, TemplateException {
         
         logger.info("genEditHtml");
@@ -619,26 +653,30 @@ return ymd;
         for(int i=0;i<cols.size();i++){
             ZColum zcol =cols.get(i);
             String type =zcol.getType().toLowerCase();
+            String commonStr= "id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\"  class=\"form-control input-sm\" ";
             if(zcol.isPk()){
-                sb.append(tab+"<input type=\"hidden\" id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\">").append(ctrl);
+                sb.append(tab+"<input type=\"hidden\" "+commonStr+">").append(ctrl);
             }else{
                 sb.append(tab+"<div class=\"form-group\">").append(ctrl);
                 sb.append(tab2+String.format("<label for=\"%s\" class=\"col-sm-2 control-label\">%s:</label>",zcol.getName(),zcol.getRemark())).append(ctrl);
+                if(type.equals("date")||type.equals("datetime")||type.equals("timestamp")){
+                    sb.append(tab2+String.format("<div class=\"col-sm-10 z-col-table\">")).append(ctrl);
+                }else{
                 sb.append(tab2+String.format("<div class=\"col-sm-10\">")).append(ctrl);
-                
+                }
                 if(type.startsWith("varchar")){
                     int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
                     String tagName="input";
                     if(length>50){
                         tagName="textarea";
                     }
-                    sb.append(tab3+String.format("<%s %s name=\"%s\" id=\"%s\"  class=\"form-control\"  maxlength=\"%d\"></%s>",
-                            tagName,tagName.equals("text")?" type=\"text\" ":"",zcol.getName(),zcol.getName(),length,tagName)).append(ctrl);
+                    sb.append(tab3+String.format("<%s %s "+commonStr+"  maxlength=\"%d\"></%s>",
+                            tagName,tagName.equals("text")?" type=\"text\" ":"",length,tagName)).append(ctrl);
                 }
                 if(type.startsWith("int")){
                     //有一种checkbox 的选项
                     if(zcol.getShowValue()!=null){
-                        sb.append(tab3+String.format("<select  name=\"%s\" id=\"%s\" class=\"form-control\" >"
+                        sb.append(tab3+String.format("<select  "+commonStr+" >"
                                 ,zcol.getName(),zcol.getName())).append(ctrl);
                         Map<Integer, String> map =zcol.getShowValue();
                         sb.append(tab4+"<option value=''>-请选择-</option>").append(ctrl);
@@ -654,18 +692,19 @@ return ymd;
                         }else{
                             maxlength=value;
                         }
-                        sb.append(tab3+String.format("<input type=\"number\" name=\"%s\" id=\"%s\" class=\"form-control\" maxlength=\"%d\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\"></input>"
-                                ,zcol.getName(),zcol.getName(),maxlength)).append(ctrl);
+                        sb.append(tab3+String.format("<input type=\"number\" "+commonStr+" maxlength=\"%d\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\"></input>"
+                                ,maxlength)).append(ctrl);
                     }
                 }
                 if(type.startsWith("float") ||type.startsWith("double") ){
                     int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
                     int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
-                    sb.append(tab3+String.format("<input type=\"number\" name=\"%s\" id=\"%s\" class=\"form-control\" onkeyup=\"chkFloat(this,%d,%d)\" onafterpaste=\"chkFloat(this,%d,%d)\"></input>",
+                    sb.append(tab3+String.format("<input type=\"number\" "+commonStr+" onkeyup=\"chkFloat(this,%d,%d)\" onafterpaste=\"chkFloat(this,%d,%d)\"></input>",
                             zcol.getName(), zcol.getName(),integer,fraction,integer,fraction)).append(ctrl);
                 }
                 if(type.equals("date")||type.equals("datetime")||type.equals("timestamp")){
-                    sb.append(tab3+String.format("<input type=\"text\" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\" class=\"form-control\" datatype=\"date\" format=\""+getYMDStr(type)+"\" name=\"%s\" id=\"%s\" ></input>",zcol.getName(),zcol.getName())).append(ctrl);
+                    sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  ></input>",zcol.getName(),zcol.getName())).append(ctrl);
+                    sb.append(tab3+"<label class=\"input-group-addon\" for=\""+zcol.getName()+"\" ><i class=\"fa fa-calendar\"></i></label>");
                 }
                 sb.append(tab2+String.format("</div>")).append(ctrl);
                 sb.append(tab+String.format("</div>")).append(ctrl);

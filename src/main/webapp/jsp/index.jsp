@@ -31,6 +31,7 @@ var PATH="${path}";
 <script type="text/javascript" src="${path}/static/js/menu.js"></script>
 <script type="text/javascript" src="${path}/static/js/validmsg.js"></script>
 <script type="text/javascript" src="${path}/static/js/DateUtils.js"></script>
+<script type="text/javascript" src="${path}/static/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${path}/static/js/grid.js"></script>
 <script type="text/javascript" src="${path}/static/js/jquery.form.js"></script>
 <script language="javascript" type="text/javascript" src="${path}/static/js/My97DatePicker/WdatePicker.js"></script>
@@ -160,6 +161,7 @@ var PATH="${path}";
 </div>
 <div class="widget"></div>
     <div class="mask" ></div>
+   
     
 </body>
 <script type="text/javascript" src="${path}/static/js/index.js"></script>

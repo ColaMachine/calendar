@@ -390,3 +390,9 @@ color:red;
 .progress-bar.active, .progress.active .progress-bar {
     animation: 2s linear 0s normal none infinite running progress-bar-stripes;
 }
+.app-search label{
+	/* display:none; */
+}
+.z-col-table{
+display:table;	
+}

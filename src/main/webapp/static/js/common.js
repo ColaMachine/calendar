@@ -106,7 +106,8 @@ function fillJso2Form(formId,jso){
 		if(dom !=null && typeof jso[arr[i].name] !='undefined'){
 			var val="";
 			if(dom.attr("datatype")=="date"&& /^\d*$/.test(jso[ arr[i].name])){
-				val =new Date(jso[arr[i].name]).format("yyyy-MM-dd");
+				var format = dom.attr("format");
+				val =new Date(jso[arr[i].name]).format(format);
 			}else{
 				val=jso[ arr[i].name];
 			}
@@ -124,7 +125,8 @@ function fillJso2FormSpan(formId,jso){
 		if(dom !=null ){
 			var val="";
 			if(dom.attr("datatype")=="date"&& /^\d*$/.test(jso[key])){
-				val =new Date(jso[key]).format("yyyy-MM-dd");
+				var format = dom.attr("format");
+				val =new Date(jso[key]).format(format);
 			}else if(dom.attr("datatype")=="map"&& /^\d*$/.test(jso[key])){
 				
 				console.log(dom.attr("data"));
@@ -547,7 +549,39 @@ function goPage(currentPage, everyPage) {
 //	window.location.href = $("#searchForm")[0].action + "?fy=1&currentPage="
 //			+ currentPage + "&everyPage=" + everyPage;
 }
-
+function zwindow(url){
+	window.data={};
+    //截取参数
+    var position=url.indexOf("?");
+    if(position>0){
+        var paramsStr= url.substring(position+1);
+        console.log("paramsStr:"+paramsStr);
+        var arr= paramsStr.split("&");
+        
+        for(var i=0;i<arr.length;i++){
+            var keyVal=arr[i].split("=");
+            var key=keyVal[0];
+            var val=keyVal[1];
+            console.log(keyVal[0]+":"+keyVal[1]);
+            window.data[key]=val;
+        }
+}
+    //  jLoading.start();
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'html',
+            success: function(data){
+                //jLoading.close();
+                $('.modal-dialog').html(data);
+                if(typeof fun == 'function') fun();
+            },
+            error: function(){
+                //jLoading.close();
+                //jDialog.alert('加载页面失败', '系统错误')
+            }
+        });
+}
 function openMenu(id) {
 	$("#" + id).addClass("open");
 	$("#" + id).find("ul").css("display", "block");
