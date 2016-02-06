@@ -1,9 +1,9 @@
 <#assign abc="${table.name[0]?lower_case}${table.name[1..]}">
 <#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
 <div class="rgt_body">
-<div class="body_title">| ${table.remark}</div>
-    <div class="body_top" >
-    <form class="form-inline app-search">
+    <div class="body_title">| ${table.remark}</div>
+        <div class="body_top" >
+            <form class="form-inline app-search">
 ${searchhtml}
  <!-- <#list table.cols as col>
         <div class="form-group">
@@ -14,14 +14,31 @@ ${searchhtml}
         </div>
   </#list>-->
   
-  <button type="button" onclick="search()" class="btn btn-default">查询</button>
-</form>
+                <button type="button" onclick="search()" class="btn btn-default">查询</button>
+            </form>
         <div >
             <button class="btn" onclick="addInfo()">新增</button>    
         </div>
     </div>
     <div id="grid" class="grid"></div>
     <div id="grid-pager" class="pager"></div>
+    <div class="modal" id="mymodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">模态弹出窗标题</h4>
+                </div>
+                <div class="modal-body">
+                    <p>模态弹出窗主体内容</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>
 <script>
 var gridParam = {
@@ -76,10 +93,14 @@ var gridParam = {
 };
 var mygrid = $("#grid").jqGrid(this.gridParam); 
  function addInfo(){
-    goPage(PATH+'/${abc}/edit.htm');
+    //goPage(PATH+'/${abc}/edit.htm');
+    zwindow(PATH+"/${abc}/edit.htm");
+    $("#mymodal").modal("toggle");
  }
  function editInfo(id){
-     goPage(PATH+"/${abc}/edit.htm?${table.pk.name}="+id);
+     //goPage(PATH+"/${abc}/edit.htm?${table.pk.name}="+id);
+      zwindow(PATH+"/${abc}/edit.htm?id="+id);
+     $("#mymodal").modal("toggle");
  }
  function search(){
     var jso = changeForm2Jso(".app-search");
@@ -91,7 +112,7 @@ var mygrid = $("#grid").jqGrid(this.gridParam);
         $.post(PATH+"/${abc}/del.json?${table.pk.name}="+id,function(result){
             result=ajaxResultHandler(result);
             if(result.r==AJAX_SUCC){
-                zalert("删除成功，角色名："+roleName,"删除",function(){
+                zalert("删除成功，数据："+id,"删除",function(){
                 $("#grid").jqGrid("reloadGrid");
             });
             }else {

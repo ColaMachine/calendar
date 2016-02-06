@@ -63,6 +63,7 @@ $(document).ready(function() {
                      },'json');
     }
     function cancel(){
-          goPage("${abc}/list.htm");
+        $("#mymodal").modal("toggle");
+        //goPage("${abc}/list.htm");
     }
 </script>

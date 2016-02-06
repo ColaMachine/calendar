@@ -169,10 +169,11 @@ $(document).ready(function() {
                      $.post(PATH+$("#editForm").attr("action"),jso,function(data){
                      hideWait();
                      if(data.r==AJAX_SUCC){
-                    	 $("#mymodal").modal("toggle");
+                    	 
                         zalert(data.msg||"保存成功","提示",function(){
                             //goPage("smsBatch/list.htm");
                              $("#grid").jqGrid("reloadGrid");
+                             $("#mymodal").modal("toggle");
                         });
                      }else{
                         zerror(data.msg, "失败");
@@ -180,6 +181,7 @@ $(document).ready(function() {
                      },'json');
     }
     function cancel(){
-          goPage("smsBatch/list.htm");
+    	$("#mymodal").modal("toggle");
+          //goPage("smsBatch/list.htm");
     }
 </script>

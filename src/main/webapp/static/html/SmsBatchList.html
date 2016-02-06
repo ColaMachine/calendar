@@ -173,13 +173,15 @@ var gridParam = {
 };
 var mygrid = $("#grid").jqGrid(this.gridParam); 
  function addInfo(){
-    goPage(PATH+'/smsBatch/edit.htm');
+	// goPage(PATH+'/smsBatch/edit.htm');
+	zwindow(PATH+"/smsBatch/edit.htm");
+    $("#mymodal").modal("toggle");
  }
 
  function editInfo(id){
-	  $("#mymodal").modal("toggle");
      //goPage(PATH+"/smsBatch/edit.htm?id="+id);
      zwindow(PATH+"/smsBatch/edit.htm?id="+id);
+     $("#mymodal").modal("toggle");
  }
  function search(){
     var jso = changeForm2Jso(".app-search");
@@ -191,7 +193,7 @@ var mygrid = $("#grid").jqGrid(this.gridParam);
         $.post(PATH+"/smsBatch/del.json?id="+id,function(result){
             result=ajaxResultHandler(result);
             if(result.r==AJAX_SUCC){
-                zalert("删除成功，角色名："+roleName,"删除",function(){
+                zalert("删除成功，数据："+id,"删除",function(){
                 $("#grid").jqGrid("reloadGrid");
             });
             }else {
