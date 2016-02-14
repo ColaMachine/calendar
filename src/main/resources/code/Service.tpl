@@ -106,4 +106,15 @@ public class ${Abc}Service extends BaseService {
     public ${Abc} selectByPrimaryKey(<@javaType>${table.pk.type}</@javaType> id){
        return ${abc}Mapper.selectByPrimaryKey(id);
     }
+    /**多id删除
+     * @param idAry
+     * @return
+     * @author dozen.zhang
+     */
+    public ResultDTO multilDelete(Integer[] idAry) {
+        for(int i=0;i<idAry.length;i++){
+            ${abc}Mapper.deleteByPrimaryKey(idAry[i]);
+        }
+        return ResultUtil.getSuccResult();
+    }
 }

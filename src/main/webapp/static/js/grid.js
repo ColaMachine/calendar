@@ -2833,6 +2833,7 @@
 								$(this.p.pager_selector).html(pageHtml);
 								
 								if(this.p.multiselect){
+									var id = this.id;
 									$(this.p.grid_selector).find(
 											"input[name='cb_"+this.id+"']").change({
 										id : this.p.grid_selector
@@ -3050,7 +3051,7 @@
 							var arr = this.p[pName];
 							
 							//alert($(this).find(".table").find("input:checkbox:checked").length)
-							$(this).find(".table").find("input:checkbox:checked").each(function(){
+							$(this).find(".grid-content").find("input:checkbox:checked").each(function(){
 							/*	var status = $(this).is(":checked");
 								if(status)*/
 									arr.push(this.id.split("_")[2]);
@@ -3102,6 +3103,16 @@
 						this.p.selrow = null;
 						if (this.p.loadComplete != null)
 							this.p.loadComplete.call(this);
+						if(this.p.multiselect){
+							var id =this.id;
+							$(this.p.grid_selector).find(".grid-content").find(
+							"input[type='checkbox']").change( {
+								id :id
+							}, function(event) {
+								$("#"+event.data.id).find(
+										"#cb_"+event.data.id).attr("checked",false);
+							});
+						}
 					});
 				},
 				render : function() {
@@ -3298,6 +3309,18 @@
 				},
 				loadData : function(result) {
 
+				},
+				getCheckedCellData:function(rowName){
+					var ary=new Array();
+					this
+					.each(function() {
+						var ids=$(this).jqGrid("getGridParam","selarrrow");
+						var data = this.rows
+						for(var i=0,lenght=ids.length;i<length;i++){
+							ary.push(data[rowName]);
+						}
+						return ary;
+					});
 				},
 			});
 	//闭包结束   

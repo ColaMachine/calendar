@@ -1,9 +1,24 @@
 <#assign abc="${table.name[0]?lower_case}${table.name[1..]}">
 <#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
-<div class="rgt_body">
-<div class="body_title">| ${table.remark}编辑</div>
+
+ <div class="modal-content">
+    <form id="editForm" class="form-horizontal" method="post" action="/${abc}/save.json" enctype="multipart/form-data">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">${table.remark}查看</h4>
+        </div>
+        <div class="modal-body">
+            ${viewhtml}
+        </div>
+        <div class="modal-footer">
+            <button type="button" onclick="cancel()"  class="btn btn-default">取消</button>
+        </div>
+    </form>
+</div><!-- /.modal-content -->
+
+<!--<div class="body_title">| ${table.remark}编辑</div>
 <form id="editForm" class="form-horizontal" method="post" action="/${abc}/save.json" enctype="multipart/form-data">
- ${viewhtml}
+ $ { viewhtml } 
    <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
      
@@ -12,7 +27,7 @@
   </div>
 </form>
 </div>
-</div>
+</div>-->
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -34,6 +49,7 @@ $(document).ready(function() {
 });
    
     function cancel(){
-          goPage("${abc}/list.htm");
+        $("#mymodal").modal("toggle");
+        //goPage("${abc}/list.htm");
     }
 </script>

@@ -1311,7 +1311,7 @@ function zdialogue(jso){
 	var html=$("<div class=\"zwidget_wrap \">"+
 	"<div class=\"zwidget_header\"><span>"+jso.title+"</span> <a class='zclose'  onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><i class=' fa fa-close'></i></a></div>"+
 	"<div class=\"zbody \">"+
-	"<div class=\"zinfo-icon\"><i  class='fa fa-check-circle'></i></div>"+//<img src=\""+jso.src+"\"/>
+	"<div class=\"zinfo-icon\"><i  class='"+jso.icon+"'></i></div>"+//<img src=\""+jso.src+"\"/>
 	"<div class=\"zinfo\" style=\"color:"+jso.fontcolor+"\">"+jso.msg+"</div>"+
 	"</div><div class='zfooter' ><div class=\"zbutton_wrap row\">"+
 	(jso.type== "confirm"?"<button type=\"button\" class=\"col-xs-5 pull-left btn btn-primary\" >确定</button><button type=\"button\" class=\"col-xs-5 pull-right btn btn-default\" >取消</button>":
@@ -1352,15 +1352,17 @@ function zalert(msg,title,fn){
 	$(html).find(".zbutton_wrap").find("a").click(fn);
 }*/
 function zerror(msg,title,fn){
-	zdialogue({"msg":msg,type:"alert","title":title,fontcolor:"#777777",src:PATH+"/static/img/exclamation.png",okfn:fn});
+	zdialogue({"msg":msg,type:"alert","title":title,fontcolor:"#777777",src:PATH+"/static/img/exclamation.png",okfn:fn,icon:"fa fa-exclamation-circle"});
 }
 function zconfirm(msg,title,okfn,cancelfn){
-	zdialogue({"msg":msg,type:"confirm","title":title,fontcolor:"#777777",src:PATH+"/static/img/exclamation.png",okfn:okfn,cancelfn:cancelfn});
+	zdialogue({"msg":msg,type:"confirm","title":title,fontcolor:"#777777",src:PATH+"/static/img/exclamation.png",okfn:okfn,cancelfn:cancelfn,icon:"fa fa-info-circle"});
 }
 function zalert(msg,title,fn){
-	zdialogue({"msg":msg,type:"alert","title":title,fontcolor:"#777777",src:PATH+"/static/img/nike.png",okfn:fn});
+	zdialogue({"msg":msg,type:"alert","title":title,fontcolor:"#777777",src:PATH+"/static/img/nike.png",okfn:fn,icon:"fa fa-check-circle"});
 }
-
+function zwarn(msg,title,fn){
+	zdialogue({"msg":msg,type:"alert","title":title,fontcolor:"#777777",src:PATH+"/static/img/exclamation.png",okfn:fn,icon:"fa fa-exclamation-circle"});
+}
 var Tool={};
 Tool.isNull=function(it){
 	if(it==null || typeof it=='undefinded'){

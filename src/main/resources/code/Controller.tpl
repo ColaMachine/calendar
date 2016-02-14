@@ -8,10 +8,13 @@
  <#assign abc="${table.name[0]?lower_case}${table.name[1..]}">
 <#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
 package cola.machine.action;
-
+import java.io.File;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.LinkedHashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import cola.machine.service.${Abc}Service;
 import cola.machine.bean.${Abc};
@@ -148,5 +153,100 @@ ${validCode}
         <@javaType>${table.pk.type}</@javaType> ${table.pk.name} = <@javaType>${table.pk.type}</@javaType>.valueOf(${table.pk.name}Str);
         ${abc}Service.delete(${table.pk.name});
         return this.getResult(SUCC);
+    }
+     /**
+     * 多行删除
+     * @param request
+     * @return
+     * @author dozen.zhang
+     */
+    @RequestMapping(value = "/mdel.json")
+    @ResponseBody
+    public Object multiDelete(HttpServletRequest request) {
+        String idStr = request.getParameter("${table.pk.name}s");
+        if(StringUtil.isBlank(idStr)){
+            return this.getWrongResultFromCfg("err.param.notnull");
+        }
+        String idStrAry[]= idStr.split(",");
+        Integer idAry[]=new Integer[idStrAry.length];
+        for(int i=0,length=idAry.length;i<length;i++){
+            ValidateUtil vu = new ValidateUtil();
+            String validStr="";
+            String id = idStrAry[i];
+            ${idvalid}
+            try{
+                validStr=vu.validateString();
+            }catch(Exception e){
+                e.printStackTrace();
+                validStr="验证程序异常";
+                return ResultUtil.getResult(302,validStr);
+            }
+            
+            if(StringUtil.isNotEmpty(validStr)) {
+                return ResultUtil.getResult(302,validStr);
+            }
+            idAry[i]=Integer.valueOf(idStrAry[i]);
+        }
+       return  ${abc}Service.multilDelete(idAry);
+    }
+
+    /**
+     * 导出
+     * @param request
+     * @return
+     * @author dozen.zhang
+     */
+    @RequestMapping(value = "/export.json")
+    @ResponseBody   
+    public Object exportExcel(HttpServletRequest request){
+       ${getSearchParam}
+        // 查询list集合
+        List<${Abc}> list =${abc}Service.listByParams(params);
+        // 存放临时文件
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "list.xlsx");
+        String folder = request.getSession().getServletContext()
+                .getRealPath("/")
+                + "xlstmp";
+        File folder_file = new File(folder);
+        if (!folder_file.exists()) {
+            folder_file.mkdir();
+        }
+        String fileName = folder + File.separator
+                + DateUtil.formatToString(new Date(), "yyyyMMddHHmmssSSS")
+                + ".xlsx";
+        // 得到导出Excle时清单的英中文map
+        LinkedHashMap<String, String> colTitle = new LinkedHashMap<String, String>();
+        <#list table.cols as col>
+        colTitle.put("${col.name}", "${col.remark}");
+        </#list>
+        List finalList = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            ${Abc} sm = list.get(i);
+            HashMap map = new HashMap();
+          <#list table.cols as col>
+            map.put("${col.name}",  list.get(i).get${col.name[0]?upper_case}${col.name[1..]}());
+          </#list>
+            finalList.add(map);
+        }
+        try {
+            if (cola.machine.util.ExcelUtil.getExcelFile(finalList, fileName, colTitle) != null) {
+                return this.getResult(SUCC, "导出成功", fileName);
+            }
+            /*
+             * return new ResponseEntity<byte[]>(
+             * FileUtils.readFileToByteArray(new File(fileName)), headers,
+             * HttpStatus.CREATED);
+             */
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return this.getResult(0, "数据为空，导出失败");
+    
+    }
+    @RequestMapping(value = "/import.json")
+    public void importExcel(){
+        
     }
 }

@@ -452,6 +452,7 @@ return ymd;
     }
     public void genController() throws IOException, TemplateException {
         logger.info("genController");
+        getIdValid();
         root.put("getSearchParam", getSearchParam());
         root.put("setParam",  getSetParam());
         root.put("validCode", getValidStr());
@@ -498,7 +499,50 @@ return ymd;
          * writer); System.out.println(writer.toString());
          */
     }
-
+    public void getIdValid(){
+        ZColum zcol =table.getPk();
+        String type =zcol.getType().toLowerCase();
+        List rules =new ArrayList();
+        if(type.startsWith("varchar")){
+            int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
+            rules.add(String.format("new Length(%d)", length));
+        }
+        if(type.startsWith("int")){
+            Integer integer=this.getIntFromKuoHao(type);
+            if(integer!=null){
+                rules.add(String.format("new Digits("+integer+",0)"));
+            }else{
+                rules.add(String.format("new Digits(10,0)"));
+            }
+        }
+        if(StringUtil.isNotEmpty(zcol.getValid())){
+            String[] validAry= zcol.getValid().split(",,");
+            for(int j=0;j<validAry.length;j++){
+                if(validAry[j].toLowerCase().startsWith("regex")){
+                    String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+                    content=content.replace("\\", "\\\\");
+                    rules.add(String.format("new Regex(%s)",content));
+                }
+                if(validAry[j].toLowerCase().startsWith("email")){
+                    String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+                    rules.add(String.format("new ZEmail(%s)",content));
+                }
+                if(validAry[j].toLowerCase().startsWith("phone")){
+                    String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+                    rules.add(String.format("new ZPhone(%s)",content));
+                }
+                if(validAry[j].toLowerCase().startsWith("money")){
+                    String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+                    rules.add(String.format("new ZMoney(%s)",content));
+                }
+            }
+        }
+        StringBuffer sb =new StringBuffer();
+        String ruleStr=StringUtil.join(",",rules.toArray());
+        ruleStr=" new Rule[]{"+ruleStr+"}";
+        sb.append(tab2+"vu.add(\""+zcol.getName()+"\", "+zcol.getName()+", \""+zcol.getRemark()+"\", "+ruleStr+");").append(ctrl);
+        root.put("idvalid", sb);
+    }
     public void genSql() throws IOException, TemplateException {
         logger.info("genSql");
         StringBuffer sql =new StringBuffer();
@@ -614,14 +658,14 @@ return ymd;
             sb.append(tab2+"</div>").append(ctrl);
             
             commonStr= "id=\""+zcol.getName()+"Begin\" name=\""+zcol.getName()+"Begin\"  class=\"form-control input-sm\" ";
-            sb.append(tab2+"<label for=\""+zcol.getName()+"\">"+zcol.getRemark()+"开始"+"</label>").append(ctrl);
+            sb.append(tab2+"<label for=\""+zcol.getName()+"Begin\">"+zcol.getRemark()+"开始"+"</label>").append(ctrl);
             sb.append(tab2+"<div class=\"input-group\">").append(ctrl);
            sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"\" ></input>")).append(ctrl);
             sb.append(tab3+"<label class=\"input-group-addon\" for=\""+zcol.getName()+"Begin\" ><i class=\"fa fa-calendar\"></i></label>");
             sb.append(tab2+"</div>").append(ctrl);
             
             commonStr= "id=\""+zcol.getName()+"End\" name=\""+zcol.getName()+"End\"  class=\"form-control input-sm\" ";
-            sb.append(tab2+"<label for=\""+zcol.getName()+"\">"+zcol.getRemark()+"结束"+"</label>").append(ctrl);
+            sb.append(tab2+"<label for=\""+zcol.getName()+"End\">"+zcol.getRemark()+"结束"+"</label>").append(ctrl);
             sb.append(tab2+"<div class=\"input-group\">").append(ctrl);
            sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"\" ></input>")).append(ctrl);
             sb.append(tab3+"<label class=\"input-group-addon\" for=\""+zcol.getName()+"End\" ><i class=\"fa fa-calendar\"></i></label>");

@@ -168,12 +168,11 @@ $(document).ready(function() {
                      showWait();
                      $.post(PATH+$("#editForm").attr("action"),jso,function(data){
                      hideWait();
-                     if(data.r==AJAX_SUCC){
-                    	 
+                     if(data.r==0){
                         zalert(data.msg||"保存成功","提示",function(){
                             //goPage("smsBatch/list.htm");
-                             $("#grid").jqGrid("reloadGrid");
                              $("#mymodal").modal("toggle");
+                             $("#grid").jqGrid("reloadGrid");
                         });
                      }else{
                         zerror(data.msg, "失败");
@@ -181,7 +180,7 @@ $(document).ready(function() {
                      },'json');
     }
     function cancel(){
-    	$("#mymodal").modal("toggle");
-          //goPage("smsBatch/list.htm");
+        $("#mymodal").modal("toggle");
+        //goPage("smsBatch/list.htm");
     }
 </script>

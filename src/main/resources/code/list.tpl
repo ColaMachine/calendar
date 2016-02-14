@@ -17,7 +17,9 @@ ${searchhtml}
                 <button type="button" onclick="search()" class="btn btn-default">查询</button>
             </form>
         <div >
-            <button class="btn" onclick="addInfo()">新增</button>    
+            <button class="btn" onclick="addInfo()">新增</button>
+            <button class="btn" onclick="multiDelete()">删除</button>
+            <button class="btn" onclick="exportExcel()">导出</button>
         </div>
     </div>
     <div id="grid" class="grid"></div>
@@ -46,7 +48,7 @@ var gridParam = {
         curPage : 1,
         pageSize : 10
     },
-    multiselect : false,
+    multiselect : true,
     url : PATH+'/${abc}/list.json',
     grid_selector : "#grid",
     pager_selector : "#grid-pager",
@@ -92,21 +94,21 @@ var gridParam = {
              */
 };
 var mygrid = $("#grid").jqGrid(this.gridParam); 
- function addInfo(){
+function addInfo(){
     //goPage(PATH+'/${abc}/edit.htm');
     zwindow(PATH+"/${abc}/edit.htm");
     $("#mymodal").modal("toggle");
- }
- function editInfo(id){
-     //goPage(PATH+"/${abc}/edit.htm?${table.pk.name}="+id);
-      zwindow(PATH+"/${abc}/edit.htm?id="+id);
-     $("#mymodal").modal("toggle");
- }
- function search(){
+}
+function editInfo(id){
+    //goPage(PATH+"/${abc}/edit.htm?${table.pk.name}="+id);
+    zwindow(PATH+"/${abc}/edit.htm?id="+id);
+    $("#mymodal").modal("toggle");
+}
+function search(){
     var jso = changeForm2Jso(".app-search");
     mygrid.jqGrid("search",jso);
- }
- function deleteInfo(id){
+}
+function deleteInfo(id){
      //弹窗
      zconfirm("确定删除数据:"+id,"删除",function(){
         $.post(PATH+"/${abc}/del.json?${table.pk.name}="+id,function(result){
@@ -121,13 +123,51 @@ var mygrid = $("#grid").jqGrid(this.gridParam);
         });
     });
 }
- function viewInfo(id){
-     goPage(PATH+"/${abc}/view.htm?${table.pk.name}="+id);
- }
-  function search(){
-     var jso= changeForm2Jso(".app-search");
-     console.log(jso);
-     mygrid.search(jso);
- }
+function viewInfo(id){
+   //goPage(PATH+"/smsBatch/view.htm?${table.pk.name}="+id);
+     zwindow(PATH+"/${abc}/view.htm?id="+id);
+     $("#mymodal").modal("toggle");
+    //goPage(PATH+"/${abc}/view.htm?${table.pk.name}="+id);
+}
+function search(){
+    var jso= changeForm2Jso(".app-search");
+    console.log(jso);
+    mygrid.search(jso);
+}
+function exportExcel(){
+    var jso= changeForm2Jso(".app-search");
+    $.getJSON(PATH+"/${abc}/export.json",jso,function(data){
+        if(data.r==AJAX_SUCC){
+            window.location=PATH+"/"+data.data;
+        }else{
+            zerror(data.msg,"导出失败",null);
+        }
+    })
+}
+function multiDelete(){
+    //获取ids字符串
+    var ids=$("#grid").jqGrid("getGridParam","selarrrow");
+    if(ids.length==0){
+        zalert("请勾选数据","提示");
+        return;
+    }
+    var data= $("#grid").jqGrid("getGridParam","data");
+    for(var i=0;i<ids.length;i++){
+        ids[i]=data[ids[i]]["id"]; 
+    }
+    //弹窗
+    zconfirm("确定删除数据:"+ids.join(","),"删除",function(){
+        $.post(PATH+"/${abc}/mdel.json?ids="+ids.join(","),function(result){
+            result=ajaxResultHandler(result);
+            if(result.r==AJAX_SUCC){
+                zalert("删除成功，数据："+ids.join(","),"删除",function(){
+                $("#grid").jqGrid("reloadGrid");
+            });
+            }else {
+                zerror(result.msg,"提醒",function(){});
+            }
+        });
+    });
+}
 </script>
 
