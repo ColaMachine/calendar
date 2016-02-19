@@ -79,6 +79,9 @@ public class ResultUtil {
 		return getResult(succ, data, null,page);
 	}
 	
+	public static  ResultDTO getDataResult(Object data){
+        return getResult(succ, data, null,null);
+    }
 	/**
 	 * 返回错误请求，错误代码result，错误说明msg
 	 * @param result

@@ -70,20 +70,25 @@
     height: 120px; */
     color: white;
     font-weight:700; 
-    text-align: center;
+    min-height:38px;
+   /*  text-align: center; */
     margin: 0px 0px 0px 0px;
     padding: 15px 0px 0px 0px;
     top: 0px;
 }
 .menu-wrap .logo .nav-icon{
-	 position:absolute;
-	right:2px;
+	display:inline-block;
+	
+	/*  position:absolute;
+	left:12px;
 	top:15px; 
-	color:gray;/* float:right; */margin-right:8px;margin-top:5px; 
+	color:gray; 
+	 float:right; */
+	margin-left:18px;margin-top:8px; 
 }
 .menu-wrap .logo-head {
     font-weight: bold;
-    font-size: 25px;
+    /* font-size: 25px; */
 }
 
 .menu-wrap .logo-desc {

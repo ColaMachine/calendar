@@ -261,7 +261,7 @@ function search(){
 function deleteInfo(id){
      //弹窗
      zconfirm("确定删除数据:"+id,"删除",function(){
-        $.post(PATH+"/smsBatch/del.json?id="+id,function(result){
+        Post(PATH+"/smsBatch/del.json?id="+id,function(result){
             result=ajaxResultHandler(result);
             if(result.r==AJAX_SUCC){
                 zalert("删除成功，数据："+id,"删除",function(){
@@ -286,7 +286,7 @@ function search(){
 }
 function exportExcel(){
     var jso= changeForm2Jso(".app-search");
-    $.getJSON(PATH+"/smsBatch/export.json",jso,function(data){
+    GetJSON(PATH+"/smsBatch/export.json",jso,function(data){
         if(data.r==AJAX_SUCC){
             window.location=PATH+"/"+data.data;
         }else{
@@ -307,7 +307,7 @@ function multiDelete(){
     }
     //弹窗
     zconfirm("确定删除数据:"+ids.join(","),"删除",function(){
-        $.post(PATH+"/smsBatch/mdel.json?ids="+ids.join(","),function(result){
+        Post(PATH+"/smsBatch/mdel.json?ids="+ids.join(","),function(result){
             result=ajaxResultHandler(result);
             if(result.r==AJAX_SUCC){
                 zalert("删除成功，数据："+ids.join(","),"删除",function(){

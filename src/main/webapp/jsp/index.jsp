@@ -7,36 +7,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1″>
 <title>Insert title here</title>
- <link href="${path}/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />  
-<link href="${path}/static/css/font-awesome.css" rel="stylesheet" type="text/css" />
- <link href="${path}/static/css/main.css" rel="stylesheet" type="text/css" /> 
-<link href="${path}/static/css/menu.css" rel="stylesheet" type="text/css" />
-
-<link href="${path}/static/css/collapse.css" rel="stylesheet" type="text/css" />
-
-
-<link href="${path}/static/css/form.css" rel="stylesheet" type="text/css" />
-<link href="${path}/static/css/col.css" rel="stylesheet" type="text/css" />
-<link href="${path}/static/css/font.css" rel="stylesheet" type="text/css" />
-<link href="${path}/static/css/grid.css" rel="stylesheet" type="text/css" />
-<link href="${path}/static/css/head.css" rel="stylesheet" type="text/css" />
- <link href="${path}/static/css/global.css" rel="stylesheet" type="text/css" /> 
- <link href="${path}/static/css/widget.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/static/js/common.js"></script>
 <script type="text/javascript" >
-var WEBCONTEXT="${path}";
-var PATH="${path}";
+/* var WEBCONTEXT="${path}";
+var PATH="${path}"; */
+includeCSS(["/static/css/bootstrap.min.css",
+"/static/css/font-awesome.css",
+"/static/css/main.css",
+"/static/css/menu.css",
+"/static/css/collapse.css",
+"/static/css/form.css",
+"/static/css/col.css",
+"/static/css/font.css",
+ "/static/css/grid.css",
+  "/static/css/head.css",
+   "/static/css/global.css",
+    "/static/css/widget.css",
+]);
+
+
+includeJS(["/static/js/jquery.min.js",
+           
+           "/static/js/menu.js" ,
+           "/static/js/validmsg.js",
+           "/static/js/DateUtils.js",
+           "/static/js/jquery-ui.min.js",
+            "/static/js/grid.js",
+            "/static/js/jquery.form.js",
+            "/static/js/My97DatePicker/WdatePicker.js",
+            "/static/js/jquery.validate.js",
+            "/static/js/additional-methods.js",
+            "/static/js/index.js",
+            
+            "/static/js/bootstrap.min.js",
+             
+          
+          ]);
 </script>
-<script type="text/javascript" src="${path}/static/js/jquery.min.js"></script>
-<script type="text/javascript" src="${path}/static/js/common.js"></script>
-<script type="text/javascript" src="${path}/static/js/menu.js"></script>
-<script type="text/javascript" src="${path}/static/js/validmsg.js"></script>
-<script type="text/javascript" src="${path}/static/js/DateUtils.js"></script>
-<script type="text/javascript" src="${path}/static/js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="${path}/static/js/grid.js"></script>
-<script type="text/javascript" src="${path}/static/js/jquery.form.js"></script>
-<script language="javascript" type="text/javascript" src="${path}/static/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="${path}/static/js/jquery.validate.js"></script>
-<script type="text/javascript" src="${path}/static/js/additional-methods.js"></script>
 
 
 </head>
@@ -49,7 +56,7 @@ var PATH="${path}";
             
             <%-- <img src="${path}/statics/img/logo.png"></img>
  --%>           
-             <div class="logo-desc" ><span class="logo-desc-text"'>后台管理系统</span><span class="nav-icon"><i onclick="$('#page').toggleClass('collapse1')" style="" class="fa fa-reorder">&nbsp;</i></span></div>
+             <div class="logo-desc" ><span class="nav-icon"><i onclick="$('#page').toggleClass('collapse1')" style="" class="fa fa-reorder">&nbsp;</i></span><span class="logo-desc-text"'>后台管理系统</span></div>
         </div>
         <div id="menu" class="menu">
         </div>
@@ -164,27 +171,26 @@ var PATH="${path}";
    
     
 </body>
-<script type="text/javascript" src="${path}/static/js/index.js"></script>
+
 
 <script type="text/javascript" >
 var menuList=[
               {id:1,name:"日志管理",url:"",pid:0,icon:"fa fa-bank"},
               {id:2,name:"访问日志",url:"",pid:1},
-              {id:3,name:"异常日志",url:"${path}/log/listRequestLog",pid:1},
-              {id:21,name:"访问日志A",url:"${path}/log/listRequestLog",pid:2},
-              {id:22,name:"访问日志B",url:"${path}/log/listRequestLog",pid:2},
+              {id:3,name:"异常日志",url:PATH+"/log/listRequestLog",pid:1},
+              {id:21,name:"访问日志A",url:PATH+"/log/listRequestLog",pid:2},
+              {id:22,name:"访问日志B",url:PATH+"/log/listRequestLog",pid:2},
               {id:5,name:"用户管理",url:"",pid:0,icon:"fa fa-diamond"},
-              {id:6,name:"角色管理",url:"${path}/auth/role/list.htm",pid:5}, 
-              {id:7,name:"日历",url:"${path}/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
+              {id:6,name:"角色管理",url:PATH+"/auth/role/list.htm",pid:5}, 
+              {id:7,name:"日历",url:PATH+"/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
                {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},
-              {id:9,name:"手机登录页面",url:"${path}/static/phone/login.html",icon:"fa fa-spinner",pid:8},
-              {id:10,name:"上传图片",url:"${path}/static/html/imageCompress.html",icon:"fa fa-bank",pid:8},
-              {id:11,name:"列表",url:"${path}/static/html/example/table.html",icon:"fa fa-spinner",pid:8},
-              {id:12,name:"alert",url:"${path}/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
-              {id:13,name:"短信",url:"${path}/smsBatch/list.htm",icon:"fa fa-spinner",pid:0}, 
-              {id:14,name:"合作伙伴",url:"${path}/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0}, 
+              {id:9,name:"手机登录页面",url:PATH+"/login/login.htm",icon:"fa fa-spinner",pid:8},
+              {id:10,name:"上传图片",url:PATH+"/static/html/imageCompress.html",icon:"fa fa-bank",pid:8},
+              {id:11,name:"列表",url:PATH+"/static/html/example/table.html",icon:"fa fa-spinner",pid:8},
+              {id:12,name:"alert",url:PATH+"/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
+              {id:13,name:"短信",url:PATH+"/smsBatch/list.htm",icon:"fa fa-spinner",pid:0}, 
+              {id:14,name:"合作伙伴",url:PATH+"/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0}, 
               ]
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 </script>
-<script src="${path}/static/js/bootstrap.min.js" type="text/javascript"></script>
 </html>

@@ -90,4 +90,10 @@ public class StringUtil {
 		int last = content.lastIndexOf(b);
 		return content.substring(index, last);
 	}
+    public static boolean isPhone(String value) {
+        String regex = "/^\\d{11}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(value);
+        return matcher.find();
+    }
 }

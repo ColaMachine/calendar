@@ -32,7 +32,7 @@
             if(port==-1){
                 port=80;
             }
-            System.out.println("port:"+port);
+           // System.out.println("port:"+port);
             client = new Socket();  
             SocketAddress address = new InetSocketAddress(this.host, port);  
             client.connect(address, 5000);  
@@ -40,8 +40,8 @@
             is = client.getInputStream();  
             os = client.getOutputStream();  
         }  
-        private String post() throws IOException {  
-            String data = "data=[[\"d0:22:be:c8:59:c3\",\"d0:22:be:c8:59:c3\",\"15810527689\",1453441451]]";  
+        public String post(String data) throws IOException {  
+           // String data = "data=[[\"d0:22:be:c8:59:c3\",\"d0:22:be:c8:59:c3\",\"15810527689\",1453441451]]";  
             StringBuffer sb = new StringBuffer();  
             sb.append("POST "+ this.path +" HTTP/1.1" + END);  
             sb.append("Host: " + this.host + END);  
@@ -55,18 +55,19 @@
             sb.append(END);  
             sb.append(data);  
             String requestString = sb.toString();  
-            System.out.println(requestString);  
+            //System.out.println(requestString);  
             os.write(requestString.getBytes());  
             os.flush();  
             byte[] rBuf = new byte[1024];  
             int i = is.read(rBuf);  
-            System.out.println(new String(rBuf));  
+            //System.out.println(new String(rBuf));  
             return new String(rBuf);
         }  
         public static void main(String[] args) throws IOException {  
             String url = "https://swifi.cnzz.com/portallog";  
             ZSocketHttpPost post = new ZSocketHttpPost(url);  
-            post.post();  
+            String data = "data=[[\"d0:22:be:c8:59:c3\",\"d0:22:be:c8:59:c3\",\"15810527689\",1453441451]]";
+            post.post(data);  
         }  
       
     }  

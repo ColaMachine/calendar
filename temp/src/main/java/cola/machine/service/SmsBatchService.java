@@ -100,4 +100,15 @@ public class SmsBatchService extends BaseService {
     public SmsBatch selectByPrimaryKey(Integer id){
        return smsBatchMapper.selectByPrimaryKey(id);
     }
+    /**多id删除
+     * @param idAry
+     * @return
+     * @author dozen.zhang
+     */
+    public ResultDTO multilDelete(Integer[] idAry) {
+        for(int i=0;i<idAry.length;i++){
+            smsBatchMapper.deleteByPrimaryKey(idAry[i]);
+        }
+        return ResultUtil.getSuccResult();
+    }
 }

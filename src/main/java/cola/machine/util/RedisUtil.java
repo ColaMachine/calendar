@@ -77,4 +77,76 @@ public final class RedisUtil {
             jedisPool.returnResource(jedis);
         }
     }
+    
+    /** 
+     * 获取数据 
+     *  
+     * @param key 
+     * @return 
+     */  
+    public static String get(String key){  
+        String value = null;  
+          
+        JedisPool pool = null;  
+        Jedis jedis = null;  
+        try {  
+            jedis = jedisPool.getResource();  
+            value = jedis.get(key);  
+        } catch (Exception e) {  
+            //释放redis对象  
+            pool.returnBrokenResource(jedis);  
+            e.printStackTrace();  
+        } finally {  
+            //返还到连接池  
+            returnResource( jedis);  
+        }  
+          
+        return value;  
+    }  
+    
+    /** 
+     * 获取数据 
+     *  
+     * @param key 
+     * @return 
+     */  
+    public static void set(String key,String value){  
+        JedisPool pool = null;  
+        Jedis jedis = null;  
+        try {  
+            jedis = jedisPool.getResource();  
+            jedis.set(key,value);  
+        } catch (Exception e) {  
+            //释放redis对象  
+            pool.returnBrokenResource(jedis);  
+            e.printStackTrace();  
+        } finally {  
+            //返还到连接池  
+            returnResource( jedis);  
+        }  
+          
+    }  
+    
+    /** 
+     * 获取数据 
+     *  
+     * @param key 
+     * @return 
+     */  
+    public static void del(String key){  
+        JedisPool pool = null;  
+        Jedis jedis = null;  
+        try {  
+            jedis = jedisPool.getResource();  
+            jedis.del(key);  
+        } catch (Exception e) {  
+            //释放redis对象  
+            pool.returnBrokenResource(jedis);  
+            e.printStackTrace();  
+        } finally {  
+            //返还到连接池  
+            returnResource( jedis);  
+        }  
+          
+    }  
 }

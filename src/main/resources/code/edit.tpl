@@ -30,7 +30,7 @@ $(document).ready(function() {
     });
     //获取传入参数
     if(!StringUtil.isBlank(getParam("id"))){
-        $.getJSON("${abc}/view.json?id="+getParam("id"),function(data){
+        GetJSON("${abc}/view.json?id="+getParam("id"),function(data){
             if(data.r==AJAX_SUCC){
                 fillJso2Form("#editForm",data.data);
             }else{
@@ -49,7 +49,7 @@ $(document).ready(function() {
                     return;
                      var jso = changeForm2Jso("#editForm");
                      showWait();
-                     $.post(PATH+$("#editForm").attr("action"),jso,function(data){
+                     Post(PATH+$("#editForm").attr("action"),jso,function(data){
                      hideWait();
                      if(data.r==0){
                         zalert(data.msg||"保存成功","提示",function(){

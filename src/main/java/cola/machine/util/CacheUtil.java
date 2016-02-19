@@ -152,7 +152,7 @@ public class CacheUtil {
      * @return Object
      */
     public Object readServerCache(String key, Class c) {
-        String json = RedisUtil.getJedis().get(key);
+        String json = RedisUtil.get(key);
         Gson gson = new Gson();
 
         Object object = gson.fromJson(json, c);
@@ -204,7 +204,7 @@ public class CacheUtil {
      *            参数
      */
     public void clearServerCache(String key) {
-        RedisUtil.getJedis().del(key);
+        RedisUtil.del(key);
     }
 
 }

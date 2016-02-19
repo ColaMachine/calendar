@@ -1,5 +1,5 @@
 ﻿@CHARSET "UTF-8";
-@media screen and (max-width: 1201px) { 
+@media screen and (max-width: 12px) { 
 .page .menu-wrap {
 	width: 50px;
 }
@@ -152,10 +152,10 @@ Opera:
    
 }
 .collapse1 .logo-desc{
-	width:0px;
+	/* width:0px; */
 }
 .logo-desc-text{
-	 display:block;
+	 display:inline-block;
     transition:display 1s;
 }
 .collapse1 .logo-desc-text{

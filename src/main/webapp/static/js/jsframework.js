@@ -146,14 +146,14 @@ System._mapPath = function(namespace, path) {
 	if ("string" == typeof path && path.length > 3)
 		return path.toLowerCase();
 	var p = (System.path + "/" + namespace.replace(/\./g, "/") + ".js")
-			.toLowerCase();
+			.toLowerCase();//替换.号为/并末尾加上.js
 	return p
 			+ (("undefined" == typeof path || path) ? "" : "?t="
 					+ Math.random());
 };
 
 window.Using = function(namespace, path, rename) {//alert("namespace"+path);alert("path"+path)
-	if (System._exist(namespace, path)) {
+	if (System._exist(namespace, path)) {//一般不存在
 		var s = window[namespace.substr(namespace.lastIndexOf(".") + 1)];
 		if (s != System._prototypes[namespace])
 			s = System._prototypes[namespace];

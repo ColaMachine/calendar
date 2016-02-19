@@ -17,7 +17,7 @@ String.prototype.trim= function(){
     // 用空字符串替代。  
     return this.replace(/(^\s*)|(\s*$)/g, "");  
 }
-var PATH="/calendar";
+var PATH="";
 function AjaxFun(url, inputData, callback, options, callbackOnError) {
 	var contextUrl = window.location.href;
 	options = options || {};
@@ -55,6 +55,9 @@ function AjaxFun(url, inputData, callback, options, callbackOnError) {
 };
 function Get(url,callback){
 	AjaxFun(url,null,callback,{type:"get"});
+}
+function GetJSON(url,callback){
+	AjaxFun(url,null,callback,{type:"get",dataType:"json"});
 }
 function Post(url,data,callback){
 	AjaxFun(url,data,callback);

@@ -5,7 +5,7 @@ public class SysConfig {
 	
 	public static String PATH;
 
-	public static String	VALIDATECODE_IMG_FOLDER="vc";
+	public static String	VALIDATECODE_IMG_FOLDER="static/vc";
 	
 	public static final String CATALOG = "awifi2c";
 

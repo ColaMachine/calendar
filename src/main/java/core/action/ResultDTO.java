@@ -1,5 +1,6 @@
 package core.action;
 
+import cola.machine.util.ResultUtil;
 import core.page.Page;
 
 public class ResultDTO {
@@ -73,7 +74,7 @@ public class ResultDTO {
 	 * @date 2015年12月14日上午11:44:59
 	 */
 	public boolean isRight(){
-		return this.r==0;
+		return this.r==ResultUtil.succ;
 	}
 }
 

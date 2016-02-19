@@ -396,3 +396,9 @@ color:red;
 .z-col-table{
 display:table;	
 }
+.help-block {
+	position:absolute;
+	top:45px;
+	width:200px;
+	background-color:yellow;
+}

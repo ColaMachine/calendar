@@ -7,22 +7,30 @@
 		<META NAME="Author" CONTENT="">
 		<META NAME="Keywords" CONTENT="">
 		<META NAME="Description" CONTENT="">
-		<link id="css" rel="stylesheet" href="/calendar/static/css/CalendarView.css"
+	<!-- 	<link id="css" rel="stylesheet" href="/calendar/static/css/CalendarView.css"
 			type="text/css" media="all" />
 		<link id="css" rel="stylesheet" href="/calendar/static/css/WorkBench.css"
-			type="text/css" media="all" />
+			type="text/css" media="all" /> -->
 		<!-- <script src="/calendar/static/js/system/data/calendar1.js" charset="utf-8"></script><script src="/calendar/static/js/jsframework.js" charset="utf-8"></script> -->
-	       <script src="/calendar/static/js/jquery.min.js" charset="utf-8"></script>
+       
+       <script type="javascript">
+            includeCSS(["/static/css/CalendarView.css",
+"/static/css/WorkBench.css"
+]);
+includeJS(["/static/js/system/global.js",
+           "/static/js/system/action/Drag.js" ,
+            "/static/js/system/web/ui/webcontrols/calendarview1.js",
+            "/static/js/system/web/ui/webcontrols/property.js",
+          ]);
+        </script>
+       
+      <!--  <script src="/calendar/static/js/jquery.min.js" charset="utf-8"></script>
 		<script src="/calendar/static/js/common.js" charset="utf-8"></script>
 		<script src="/calendar/static/js/system/global.js" charset="utf-8"></script>
 		<script src="/calendar/static/js/system/action/Drag.js" charset="utf-8"></script>
 		<script src="/calendar/static/js/DateUtils.js" charset="utf-8"></script>
-		
 		<script src="/calendar/static/js/system/web/ui/webcontrols/calendarview1.js" charset="utf-8"></script>
-		<script src="/calendar/static/js/system/web/ui/webcontrols/property.js" charset="utf-8"></script>
-		
-
-
+		<script src="/calendar/static/js/system/web/ui/webcontrols/property.js" charset="utf-8"></script> -->
 <style type="text/css">
 table{border:0;margin:0;border-collapse:collapse;}
 table td{padding:0;}

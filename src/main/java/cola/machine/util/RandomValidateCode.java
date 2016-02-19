@@ -6,7 +6,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Random;
 
@@ -80,8 +82,10 @@ public class RandomValidateCode {
     
     /**
      * 生成随机图片
+     * @throws IOException 
+     * @throws FileNotFoundException 
      */
-    public String getRandcode() {
+    public String[] getRandcode() throws FileNotFoundException, IOException {
         //BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
         BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR);
         Graphics2D  g = (Graphics2D )image.getGraphics();//产生Image对象的Graphics对象,改对象可以在图像上进行各种绘制操作
@@ -100,13 +104,18 @@ public class RandomValidateCode {
         //System.out.println(randomString);
         g.dispose();
         String filename = UUIDUtil.getUUID();
-        try {
-        	File file =new File(SysConfig.REALPATH+SysConfig.VALIDATECODE_IMG_FOLDER+"/"+filename+".jpg");
-            ImageIO.write(image, "JPEG",new FileOutputStream( file));//将内存中的图片通过流动形式输出到客户端
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return filename+"_"+randomString;
+        File folder =new File(SysConfig.REALPATH+File.separator+SysConfig.VALIDATECODE_IMG_FOLDER);
+        	File file =new File(SysConfig.REALPATH+File.separator+SysConfig.VALIDATECODE_IMG_FOLDER+"/"+filename+".jpg");
+        	//File file =new File("g:/vc/"+filename+".jpg");
+        	 if(folder.exists()){
+                 System.out.println("多级目录已经存在不需要创建！！");
+            }else{
+              //如果要创建的多级目录不存在才需要创建。
+             //   folder.createNewFile();
+               folder.mkdirs();
+             }
+            ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
+        return new String[]{SysConfig.VALIDATECODE_IMG_FOLDER+"/"+filename+".jpg",randomString};
     }
     
     
@@ -148,6 +157,11 @@ public class RandomValidateCode {
     }
     public static void main(String args[]){
     	RandomValidateCode r=new RandomValidateCode();
-    	r.getRandcode();
+    	try {
+            r.getRandcode();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

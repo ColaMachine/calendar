@@ -34,7 +34,7 @@ $.extend($.fn, {
 
 		// Add novalidate tag if HTML5.
 		this.attr( "novalidate", "novalidate" );
-
+		console.log($.validator);
 		validator = new $.validator( options, this[ 0 ] );
 		$.data( this[ 0 ], "validator", validator );
 
@@ -1087,7 +1087,7 @@ $.extend( $.validator, {
 
 		return rules;
 	},
-
+	
 	// Converts a simple string to a {string: true} rule, e.g., "required" to {required:true}
 	normalizeRule: function( data ) {
 		if ( typeof data === "string" ) {
@@ -1099,7 +1099,7 @@ $.extend( $.validator, {
 		}
 		return data;
 	},
-
+	//methods增加方法
 	// http://jqueryvalidation.org/jQuery.validator.addMethod/
 	addMethod: function( name, method, message ) {
 		$.validator.methods[ name ] = method;

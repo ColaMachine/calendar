@@ -182,10 +182,13 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/forgetpwd.htm", method = RequestMethod.GET)
 	public String forgetPwd(HttpServletRequest request) {
 		RandomValidateCode r = new RandomValidateCode();
-		String returnStr = r.getRandcode();
-		String[] s = returnStr.split("_");
-		String imgName = s[0];
-		String code = s[1];
+		String[] returnStr=new String[2];
+		try{
+		    returnStr= r.getRandcode();
+		}catch(Exception e){
+		}
+		String imgName = returnStr[0];
+		String code = returnStr[1];
 		request.setAttribute("imgname", imgName);
 		request.getSession().setAttribute("validatecode", code);
 		// TODO 需增加回收机制 回收已经生成过的图片
@@ -195,11 +198,13 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/validatecode", method = RequestMethod.GET)
 	public @ResponseBody ResultDTO validateCode(HttpServletRequest request) {
 		RandomValidateCode r = new RandomValidateCode();
-		String returnStr = r.getRandcode();
-		//TODO 把验证码写入response流中
-		String[] s = returnStr.split("_");
-		String imgName = s[0];
-		String code = s[1];
+		String[] returnStr=new String[2];
+        try{
+            returnStr= r.getRandcode();
+        }catch(Exception e){
+        }
+        String imgName = returnStr[0];
+        String code = returnStr[1];
 		ResultDTO result =new ResultDTO();
 		request.getSession().setAttribute("validatecode", code);
 		result.setR(1);
