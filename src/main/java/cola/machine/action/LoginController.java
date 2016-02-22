@@ -31,7 +31,7 @@ public class LoginController {
        
         return "/static/html/zlogin.html";
     }
-    @RequestMapping(value = "/login.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/getPicCode.htm", method = RequestMethod.GET)
     @ResponseBody
     public Object getValidCode(HttpServletRequest request){
         String sessionid = request.getRequestedSessionId();

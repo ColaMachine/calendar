@@ -1057,7 +1057,6 @@ var AJAX_ERRORS="errors";
  * @param data 数组
  */
 function includeJS(data){
-	
 	for(var i=0;i<data.length;i++){
 		if(!isNull(data[i]) ){
 		if(!isNull(PATH) && data[i].indexOf(PATH)==-1){
