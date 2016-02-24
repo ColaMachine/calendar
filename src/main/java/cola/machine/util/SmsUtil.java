@@ -26,7 +26,7 @@ public class SmsUtil {
         String url;
         try {
             System.out.println(URLEncoder.encode(content, "UTF-8"));
-            url = PropertiesUtil.get( "domain")
+            url = PropertiesUtil.get( "sms_server_url")
                     + "system/sendCode.htm?cellNumber=" + mobile + "&content="
                     + URLEncoder.encode(content, "UTF-8");
             String result = HttpRequestUtil.sendPost(url, "");

@@ -1320,7 +1320,12 @@ function zdialogue(jso){
 		"<button class='col-xs-12 btn btn-primary' >确定</button>")+
 	"</div></div>"+
 	"</div>");
-	$(".widget").html(html);
+	if($(".widget").length>0){
+		$(".widget").html(html);
+	}else{
+		$("body").append(html);
+	}
+	
 	if (typeof(jso.okfn) != "undefined") {
 		$(html).find(".zbutton_wrap").find(".btn-primary").click(jso.okfn);
 	}

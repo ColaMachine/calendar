@@ -133,6 +133,29 @@ public final class RedisUtil {
      * @param key 
      * @return 
      */  
+    public static void set(String key,String value,int seconds){  
+        JedisPool pool = null;  
+        Jedis jedis = null;  
+        try {  
+            jedis = jedisPool.getResource();  
+            jedis.setex(key,seconds,value);  
+        } catch (Exception e) {  
+            //释放redis对象  
+            pool.returnBrokenResource(jedis);  
+            e.printStackTrace();  
+        } finally {  
+            //返还到连接池  
+            returnResource( jedis);  
+        }  
+          
+    } 
+    
+    /** 
+     * 获取数据 
+     *  
+     * @param key 
+     * @return 
+     */  
     public static void del(String key){  
         JedisPool pool = null;  
         Jedis jedis = null;  

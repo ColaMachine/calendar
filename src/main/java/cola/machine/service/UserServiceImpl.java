@@ -33,6 +33,7 @@ import cola.machine.util.MD5Utils;
 import cola.machine.util.MapUtil;
 import cola.machine.util.RegexUtil;
 import cola.machine.util.ResultUtil;
+import cola.machine.util.StringUtil;
 import cola.machine.util.UUIDUtil;
 import cola.machine.util.ValidateUtil;
 import cola.machine.util.mail.MailSenderInfo;
@@ -115,11 +116,20 @@ public class UserServiceImpl implements UserService {
 	public ResultDTO loginValid(String email, String UnencryptedPwd) {
 		// / this.userMapper.getUsersByParam(map)
 		String pwd = MD5Utils.MD5Encode(UnencryptedPwd);
-		if (StringUtils.isEmpty(email) || StringUtils.isEmpty(UnencryptedPwd)) {
+		if (StringUtil.isBlank(email) || StringUtil.isBlank(UnencryptedPwd)) {
 			return ResultUtil.getWrongResultFromCfg("err.account.empty");
-		} else {
+		}
+		
 			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("email", email);
+			if(StringUtil.isEmail(email)){
+	            //是手机号码
+			    params.put("email", email);
+	        }else if(StringUtil.isPhone(email)){
+	            params.put("telno", email);
+	        }else{
+	            return ResultUtil.getResult(ResultUtil.fail,"既不是手机号也不是邮箱");
+	        }
+			
 			params.put("pwd", pwd);
 			List list = userMapper.getUsersByParam(params);
 			if (list != null && list.size() > 0) {
@@ -128,6 +138,7 @@ public class UserServiceImpl implements UserService {
 				
 				 User user =new User();
 				  user.setEmail(MapUtils.getString(userMap, "email"));
+				  user.setTelno(MapUtils.getString(userMap, "telno"));
 				  user.setUsername(MapUtils.getString(userMap, "username"));
 				  user.setUserid(MapUtils.getString(userMap, "userid"));
 				  user.setActive(MapUtils.getBooleanValue(userMap, "active"));
@@ -139,7 +150,6 @@ public class UserServiceImpl implements UserService {
 				return ResultUtil
 						.getWrongResultFromCfg("err.accountorpwd.wrong");
 			}
-		}
 	}
 
 	/**

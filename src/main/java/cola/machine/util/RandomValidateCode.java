@@ -17,7 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
+
+import cola.machine.config.Config;
 import cola.machine.constants.SysConfig;
+import cola.machine.mng.PathManager;
 public class RandomValidateCode {
 
 
@@ -52,7 +56,7 @@ public class RandomValidateCode {
     /**
      * 生成随机图片
      */
-    public void getRandcode(HttpServletRequest request,
+    public void getImgRandcode(HttpServletRequest request,
             HttpServletResponse response) {
         HttpSession session = request.getSession();
         //BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
@@ -80,12 +84,13 @@ public class RandomValidateCode {
         }
     }
     
+    
     /**
      * 生成随机图片
      * @throws IOException 
      * @throws FileNotFoundException 
      */
-    public String[] getRandcode() throws FileNotFoundException, IOException {
+    public String[] getImgRandcode(int length,String filename) throws FileNotFoundException, IOException {
         //BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
         BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR);
         Graphics2D  g = (Graphics2D )image.getGraphics();//产生Image对象的Graphics对象,改对象可以在图像上进行各种绘制操作
@@ -98,24 +103,74 @@ public class RandomValidateCode {
         }
         //绘制随机字符
         String randomString = "";
-        for(int i=1;i<=stringNum;i++){
+        for(int i=1;i<=length;i++){
             randomString=drowString(g,randomString,i);
         }
         //System.out.println(randomString);
         g.dispose();
-        String filename = UUIDUtil.getUUID();
-        File folder =new File(SysConfig.REALPATH+File.separator+SysConfig.VALIDATECODE_IMG_FOLDER);
-        	File file =new File(SysConfig.REALPATH+File.separator+SysConfig.VALIDATECODE_IMG_FOLDER+"/"+filename+".jpg");
-        	//File file =new File("g:/vc/"+filename+".jpg");
-        	 if(folder.exists()){
+       if(StringUtils.isBlank(filename)){
+           filename = UUIDUtil.getUUID()+".jpg";
+       }
+       
+       File file=PathManager.getInstance().getVcodePath().resolve(filename+".jpg").toFile();
+ /*       File folder =new File(SysConfig.REALPATH+File.separator+SysConfig.VALIDATECODE_IMG_FOLDER);
+            File file =new File(SysConfig.REALPATH+File.separator+SysConfig.VALIDATECODE_IMG_FOLDER+"/"+filename+".jpg");
+            //File file =new File("g:/vc/"+filename+".jpg");*/
+             if(file.exists()){
+                 System.out.println("文件已经存在");
+            }else{
+              //如果要创建的多级目录不存在才需要创建。
+                file.createNewFile();
+               // file.mkdirs();
+             }
+        ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
+        return new String[]{Config.getInstance().getImage().getVcodeDir()+"/"+filename+".jpg",randomString};
+    }
+    /**
+     * 生成随机图片
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    public String[] getImgRandcodeBuffer(int length) throws FileNotFoundException, IOException {
+        //BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
+        BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR);
+        Graphics2D  g = (Graphics2D )image.getGraphics();//产生Image对象的Graphics对象,改对象可以在图像上进行各种绘制操作
+        g.fillRect(0, 0, width, height);
+        g.setFont(new Font("Times New Roman",Font.ROMAN_BASELINE,18));
+        g.setColor(getRandColor(110, 133));
+        //绘制干扰线
+        for(int i=0;i<=lineSize;i++){
+            drowLine(g);
+        }
+        //绘制随机字符
+        String randomString = "";
+        for(int i=1;i<=length;i++){
+            randomString=drowString(g,randomString,i);
+        }
+        //System.out.println(randomString);
+        g.dispose();
+       
+        String filename = UUIDUtil.getUUID()+".jpg";
+ /*       File folder =new File(SysConfig.REALPATH+File.separator+SysConfig.VALIDATECODE_IMG_FOLDER);
+            File file =new File(SysConfig.REALPATH+File.separator+SysConfig.VALIDATECODE_IMG_FOLDER+"/"+filename+".jpg");
+            //File file =new File("g:/vc/"+filename+".jpg");
+             if(folder.exists()){
                  System.out.println("多级目录已经存在不需要创建！！");
             }else{
               //如果要创建的多级目录不存在才需要创建。
              //   folder.createNewFile();
                folder.mkdirs();
-             }
-            ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
+             }*/
+        ImageIO.write(image, "JPEG",PathManager.getInstance().getVcodePath().resolve(filename).toFile());//将内存中的图片通过流动形式输出到客户端
         return new String[]{SysConfig.VALIDATECODE_IMG_FOLDER+"/"+filename+".jpg",randomString};
+    }
+    /**
+     * 生成随机图片
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    public String[] getImgRandcode() throws FileNotFoundException, IOException {
+        return this.getImgRandcode(stringNum,"");
     }
     
     
@@ -158,7 +213,7 @@ public class RandomValidateCode {
     public static void main(String args[]){
     	RandomValidateCode r=new RandomValidateCode();
     	try {
-            r.getRandcode();
+            r.getImgRandcode();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

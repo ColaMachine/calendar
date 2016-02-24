@@ -44,7 +44,11 @@ public final class PathManager {
     /**
      * 二维码目录
      */
-    private Path qrcodePath;			
+    private Path qrcodePath;	
+    /**
+     * 验证码目录
+     */
+    private Path vcodePath;    
     /**
      * 海报目录
      */
@@ -151,6 +155,9 @@ public final class PathManager {
     public Path getTmpPath() {
         return tmpPath;
     }
+    public Path getVcodePath() {
+        return vcodePath;
+    }
 
     public Path getQrcodePath() {
         return qrcodePath;
@@ -184,6 +191,9 @@ public final class PathManager {
 
         posterZipPath = imagePath.resolve(config.getInstance().getImage().getPosterZipDir());
         Files.createDirectories(posterZipPath);
+        
+        vcodePath = webRootPath.resolve(config.getInstance().getImage().getVcodeDir());
+        Files.createDirectories(vcodePath);
 
     }
 

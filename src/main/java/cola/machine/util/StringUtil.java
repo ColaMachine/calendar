@@ -47,9 +47,7 @@ public class StringUtil {
 	    format=format.replaceAll("[yMdhHms]", "\\\\d");
 	   return str.matches(format);
 	}
-	public static void main(String[] args) {
-        System.out.println(  "2015-01-023".matches("yyyy-MM-dd".replaceAll("[yMdhHms]", "\\\\d")));;
-    }
+
 	public static boolean checkUserNameValid(String username){
 		String regex = "/^[0-9A-Za-z]*[a-zA-Z]+[0-9A-Za-z]*$";
 		Pattern pattern = Pattern.compile(regex);
@@ -91,9 +89,19 @@ public class StringUtil {
 		return content.substring(index, last);
 	}
     public static boolean isPhone(String value) {
-        String regex = "/^\\d{11}$";
+        String regex = "^\\d{11}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(value);
         return matcher.find();
+    }
+    public static boolean isEmail(String value) {
+        String regex = "^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w{2,3}){1,3})$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(value);
+        return matcher.find();
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(StringUtil.isEmail("13958173965"));;
     }
 }

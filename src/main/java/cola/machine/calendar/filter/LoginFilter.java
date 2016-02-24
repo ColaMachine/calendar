@@ -140,7 +140,7 @@ public class LoginFilter implements Filter {
             if (uri.matches(s))
                 return true;
         }
-        System.out.println(" in controll");
+        System.out.println(uri+" 该链接需要登录后才能访问验证 in controll");
         return false;
     }
 

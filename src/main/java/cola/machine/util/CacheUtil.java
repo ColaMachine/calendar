@@ -3,6 +3,7 @@ package cola.machine.util;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import redis.clients.jedis.Jedis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +88,17 @@ public class CacheUtil {
             writeServerCache(key, value);
         }
     }
-
+    public void writeCache(String key, Object value,int seconds) {
+        // System.out.println("writeCache key:"+key);
+        // 先保存本地缓存
+        if (Config.getInstance().getCache().getEhcache().isEnable()){
+            writeLocalCache(key, value);
+        }
+        // 再更新服务器缓存
+        if (Config.getInstance().getCache().getRedis().isEnable()){
+            writeServerCache(key, value,seconds);
+        }
+    }
     /**
      * @param key
      *            参数
@@ -135,7 +146,24 @@ public class CacheUtil {
     public void writeServerCache(String key, Object value) {
         Gson gson = new Gson();
         String json = gson.toJson(value);
-        RedisUtil.getJedis().set(key, json);
+        RedisUtil.set(key, json);
+//        Jedis jedis = RedisUtil.getJedis();
+//        jedis.set(key, json);
+//        RedisUtil.returnResource(jedis);
+    }
+    /**
+     * @param key
+     *            参数
+     * @param value
+     *            参数
+     */
+    public void writeServerCache(String key, Object value,int seconds) {
+        Gson gson = new Gson();
+        String json = gson.toJson(value);
+        RedisUtil.set(key, json,seconds);
+//        Jedis jedis = RedisUtil.getJedis();
+//        jedis.set(key, json);
+//        RedisUtil.returnResource(jedis);
     }
 
     /*

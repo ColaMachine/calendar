@@ -40,6 +40,18 @@ public class ImageConfig {
      *二维码目录
      */
     private String qrcodeDir;            //
+    /**
+     * 二维码目录
+     */
+    private String vcodeDir;            //
+    public String getVcodeDir() {
+        return vcodeDir;
+    }
+
+    public void setVcodeDir(String vcodeDir) {
+        this.vcodeDir = vcodeDir;
+    }
+
     /** 
      *图片类型
      */

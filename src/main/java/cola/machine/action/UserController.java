@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cola.machine.bean.User;
+import cola.machine.service.SmsValidCodeService;
 import cola.machine.service.UserService;
 import cola.machine.util.RandomValidateCode;
+import cola.machine.util.ResultUtil;
 import core.action.ResultDTO;
 
 @Controller
@@ -59,7 +61,20 @@ public class UserController extends BaseController {
 	public @ResponseBody ResultDTO loginPost(HttpServletRequest request) {
 		String email = request.getParameter("email");
 		String pwd = request.getParameter("pwd");
-		ResultDTO result = this.userService.loginValid(email, pwd);
+		String picCaptcha=request.getParameter("picCaptcha");
+		String smsCaptcha=request.getParameter("smsCaptcha");
+		String sessionid =request.getParameter("sessionid");
+		SmsValidCodeService validCodeService=new  SmsValidCodeService();
+		
+		ResultDTO result = validCodeService.remoteValidSms(email,smsCaptcha);
+		if(!result.isRight()){
+            return result;
+        }
+		 result = validCodeService.remoteValidImg(sessionid,picCaptcha);
+		if(!result.isRight()){
+		    return result;
+		}
+		result = this.userService.loginValid(email, pwd);
 		if (result.isRight()) {
 			  User user = (User)result.getData();
 			  request.getSession().setAttribute("user", user);
@@ -184,7 +199,7 @@ public class UserController extends BaseController {
 		RandomValidateCode r = new RandomValidateCode();
 		String[] returnStr=new String[2];
 		try{
-		    returnStr= r.getRandcode();
+		    returnStr= r.getImgRandcode();
 		}catch(Exception e){
 		}
 		String imgName = returnStr[0];
@@ -200,7 +215,7 @@ public class UserController extends BaseController {
 		RandomValidateCode r = new RandomValidateCode();
 		String[] returnStr=new String[2];
         try{
-            returnStr= r.getRandcode();
+            returnStr= r.getImgRandcode();
         }catch(Exception e){
         }
         String imgName = returnStr[0];

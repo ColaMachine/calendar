@@ -2795,7 +2795,7 @@
 								}
 								var gridHeadhtml = "<div><table class='table'> <thead> <tr>  ";
 								if(this.p.multiselect){
-									gridHeadhtml += "<th ><input type='checkbox' class='cbox' id='cb_"+this.id+"' name='cb_"+this.id+"' > </th>";
+									gridHeadhtml += "<th style=\"width:5%;\" ><input type='checkbox' class='cbox' id='cb_"+this.id+"' name='cb_"+this.id+"' > </th>";
 								}
 								for (var i = 0; i < this.p.colNames.length; i++) {
 									
@@ -2868,7 +2868,13 @@
 					this.each(function() {
 						var $t = this;
 						this.p.searchParams = json;
-						this.p.page.curPage = 1;
+						if(this.p.page){
+							this.p.page.curpage = 1;
+						}else{
+							this.p.page={};
+							this.p.page.curpage = 1;
+							this.p.page.pagesize = 10;
+						}
 						$($t).jqGrid("ajaxRequest");
 					});
 
@@ -3135,7 +3141,7 @@
 								for (var i = 0; i < this.p.data.length; i++) {
 									html += "<tr >";
 									if(this.p.multiselect){
-										html += "<td ><input type='checkbox' class='cbox' id='jqg_"+this.id+"_"+i+"' name='jqg_"+this.id+"_"+i+"' > </td>";
+										html += "<td  style=\"width:5%;text-align:center;padding:0\" ><input type='checkbox' class='cbox' id='jqg_"+this.id+"_"+i+"' name='jqg_"+this.id+"_"+i+"' > </td>";
 									}
 									for (var j = 0; j < this.p.colModel.length; j++) {
 										var colName = this.p.colModel[j].name;

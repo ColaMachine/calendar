@@ -389,6 +389,12 @@ $(document).ready(function() {
 			if (config.params) {
 				this.params = config.params;
 			}
+			
+			if (config.systemNo) {
+				this.systemNo = config.systemNo;
+			}
+			
+			
 			//请求host
 			if (config.host) {
 				this.host = config.host;
@@ -404,18 +410,18 @@ $(document).ready(function() {
 			//验证码倒计时 
 			this.captchaCutdownTime = typeof(config.captchaCutdownTime) == 'undefined' ? this.captchaCutdownTime : config.captchaCutdownTime;
 
-			if (this.captchaType == 'pic') {
+			//if (this.captchaType == 'pic') {
 				//this.mainContain.html(this.captchaPicTpl);
 				//this.picCaptchaClick();
 				//this.getCpatchaClick();
-			} else {
+			//} else {
 				//this.mainContain.html(this.captchaTpl);
-				this.getCaptcha();
-			}
+				//this.getCaptcha();
+			//}
 			
 			this.$main = this.mainContain;
 			var $main=this.$main;
-			this. $username = $main.find('#username');
+			this. $username = $main.find('#login-email');
 			this.$smsCaptcha = $main.find('#smsCaptcha');
 			this.$picCaptcha = $main.find('#picCaptcha');
 			this.$loginBtn = $main.find('#loginBtn');
@@ -437,7 +443,7 @@ $(document).ready(function() {
 			var $username =this.$username;
 			var $error =this.$error;
 			
-			this.$smsCaptchaGet.on('click', function() {
+			/*this.$smsCaptchaGet.on('click', function() {
 				if ($(this).attr("disabled")) {
 					return;
 				}
@@ -446,7 +452,7 @@ $(document).ready(function() {
 					$error.text("请输入正确的帐号");
 					return false;
 				}
-				that.captchaCutdown($(this));
+			
 				var appid = params.appid || '';
 				var timestamp = params.timestamp || '';
 				var token = params.token || '';
@@ -457,9 +463,10 @@ $(document).ready(function() {
 					token: token
 				};
 				that.getCaptchaAjax(data);
-			});
+			});*/
 		},
 		picCaptchaClick: function() {
+			console.log("picCaptchaClick");
 			//TODO
 			var that = this;
 			var params = that.params;
@@ -468,17 +475,17 @@ $(document).ready(function() {
 			var timestamp = params.timestamp || '';
 			var token = params.token || '';
 			var data = {
-				systemNo: this.systemNo,
-				appid: appid,
-				timestamp: timestamp,
-				token: token
+				systemno: this.systemNo,
+				/*appid: appid,
+				timestamp: timestamp,*/
+				sessionid: that.$main.find("#sessionid").val()
 			};
 			that.getPicCaptchaAjax(data);
 		},
-		smsCpatchaClick: function() {//TODO
+		smsCaptchaClick: function() {//TODO
 			var that = this;
 			var params = that.params;
-			var phone = phone;
+			var phone = this.$username.val();
 			var appid = params.appid || '';
 			var timestamp = params.timestamp || '';
 			var token = params.token || '';
@@ -486,8 +493,14 @@ $(document).ready(function() {
 				phone: phone,
 				appid: appid,
 				timestamp: timestamp,
-				token: token
+				token: token,
+				systemno:this.systemNo
+				
 			};
+			if(StringUtil.isBlank(phone)){
+				zalert("请先填写手机号");
+			}
+			that.captchaCutdown(this.$smsCaptchaGet);
 			that.getSmsCaptchaAjax(data);
 		},
 		/**
@@ -499,12 +512,12 @@ $(document).ready(function() {
 			var params = this.params;
 			if(this.$picCaptchaGet){
 				this.$picCaptchaGet.on('click', function() {
-					that.picCpatchaClick();
+					that.picCaptchaClick();
 				});
 			}
 			if(this.$smsCaptchaGet){
 				this.$smsCaptchaGet.on('click', function() {
-					that.smsCpatchaClick();
+					that.smsCaptchaClick();
 				});
 			}
 			
@@ -540,19 +553,31 @@ $(document).ready(function() {
 			var that = this;
 			var type = this.captchaType;
 			var url;
-			url = this.url.smsCaptchaUrl || '';
+			url = this.url.picCaptchaUrl || '';
 			url = this.host + url;
 			$.ajax({
 				url: url,
 				data: data,
+				type:'GET',
 				dataType: 'JSONP',
 				jsonp: 'callback',
+				jsonpCallback:'getName',
+				contentType: "application/x-www-form-urlencoded; charset=utf-8",
 				header: {
 					'cache-control': 'no-cache'
 				},
 				success: function(data, textStatus, jqXHR) {
 					if (data.r == 0 && that.$picCaptcha) {
-						that.$picCaptchaGet.prop("src",that.host+"/"+data.data.img);
+						//that.$picCaptchaGet.prop("src",that.host+"/"+data.data.img);
+						that.$picCaptchaGet.find("img").prop("src",that.host+"/"+data.data.img+"?r="+Math.random());
+						//暂存token
+						var $sessionid= that.$main.find("#sessionid");
+						if($sessionid.length==0){
+							$sessionid=$("<input type='hidden' id='sessionid' name='sessionid' />");
+							that.$main.append($sessionid);
+							
+						}
+						$sessionid.val(data.data.sessionid);
 					}
 				},
 				error: function(XHR, textStatus, errorThrown) {}
@@ -572,15 +597,18 @@ $(document).ready(function() {
 				url: url,
 				data: data,
 				dataType: 'JSONP',
+				type:'GET',
 				jsonp: 'callback',
+				jsonpCallback:'getName',
+				contentType: "application/x-www-form-urlencoded; charset=utf-8",
 				header: {
 					'cache-control': 'no-cache'
 				},
 				success: function(data, textStatus, jqXHR) {
-				
 					if (data.r == 0 ) {
 						
 					}else{
+						zalert(data.msg);
 						console.log(data);
 					}
 
@@ -620,7 +648,7 @@ $(document).ready(function() {
 			var time = this.captchaCutdownTime || 60;
 			var sI = setInterval(function() {
 				time = time - 1;
-				if (time != 0) {
+				if (time > 0) {
 					self.text(time + '秒后重试');
 				} else {
 					window.clearInterval(sI);
@@ -730,6 +758,7 @@ Awifi_UI.captcha.init({
 	/**
 	 * 必选
 	 */
+	systemNo:'calendar',
 	mainContain: $("#login_form"), //容器 JQuery对象
 	/**
 	 * 以下可选
@@ -745,11 +774,12 @@ Awifi_UI.captcha.init({
 	/**
 	 * host
 	 */
-	host:'http://192.168.34.117:8080/calendar',
+	host:'http://192.168.34.117:8080/',
 	/**
 	 *  参数
 	 */
 	params: {
+		
 		appid: '1111',
 		timestamp: '1111111111111',
 		token: 'adcfgvftgf'
