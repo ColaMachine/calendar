@@ -24,7 +24,7 @@ var CalendarView = React.createClass({
  			currentEventId: "",
 	    };
 	  },
-closeCalendarEventDialog:function(){
+	  closeCalendarEventDialog:function(){
 		  
 	  },
 	  render: function() {

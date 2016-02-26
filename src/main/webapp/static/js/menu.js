@@ -99,6 +99,10 @@ var zMenu={
 					window.data[key]=val;
 				}
 		}
+			$('.main-content').load(url, {"lname" : "Cai", "fname" : "Adam"}, function(){
+				 $(".main-content").hide();
+			    $(".main-content").fadeIn('slow');}
+			  );return;
 			//	jLoading.start();
 				$.ajax({
 					type: 'GET',

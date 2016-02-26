@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import cola.machine.config.Config;
 import cola.machine.constants.SysConfig;
 import cola.machine.mng.PathManager;
+import sun.misc.BASE64Encoder;
 public class RandomValidateCode {
 
 
@@ -123,8 +125,13 @@ public class RandomValidateCode {
                 file.createNewFile();
                // file.mkdirs();
              }
-        ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
-        return new String[]{Config.getInstance().getImage().getVcodeDir()+"/"+filename+".jpg",randomString};
+             ByteArrayOutputStream  baos = new ByteArrayOutputStream();
+             ImageIO.write(image, "JPEG",baos);//将内存中的图片通过流动形式输出到客户端
+             byte[] bytes = baos.toByteArray();  
+              BASE64Encoder encoder = new sun.misc.BASE64Encoder();  
+            String  result = encoder.encodeBuffer(bytes).trim();  
+        //ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
+        return new String[]{Config.getInstance().getImage().getVcodeDir()+"/"+filename+".jpg",randomString,result};
     }
     /**
      * 生成随机图片

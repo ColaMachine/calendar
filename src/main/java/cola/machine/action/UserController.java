@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cola.machine.bean.User;
-import cola.machine.service.SmsValidCodeService;
 import cola.machine.service.UserService;
+import cola.machine.service.ValidCodeService;
 import cola.machine.util.RandomValidateCode;
-import cola.machine.util.ResultUtil;
 import core.action.ResultDTO;
 
 @Controller
@@ -61,16 +60,16 @@ public class UserController extends BaseController {
 	public @ResponseBody ResultDTO loginPost(HttpServletRequest request) {
 		String email = request.getParameter("email");
 		String pwd = request.getParameter("pwd");
-		String picCaptcha=request.getParameter("picCaptcha");
+		String imgCaptcha=request.getParameter("picCaptcha");
 		String smsCaptcha=request.getParameter("smsCaptcha");
 		String sessionid =request.getParameter("sessionid");
-		SmsValidCodeService validCodeService=new  SmsValidCodeService();
+		ValidCodeService validCodeService=new ValidCodeService();
 		
 		ResultDTO result = validCodeService.remoteValidSms(email,smsCaptcha);
 		if(!result.isRight()){
-            return result;
+         //   return result;
         }
-		 result = validCodeService.remoteValidImg(sessionid,picCaptcha);
+		 result = validCodeService.remoteValidImg(sessionid,imgCaptcha);
 		if(!result.isRight()){
 		    return result;
 		}

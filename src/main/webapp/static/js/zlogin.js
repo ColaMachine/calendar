@@ -22,7 +22,7 @@ var loginValidator = function() {
 		$('#login_form').validate(
 				{
 					errorElement : 'div',
-					errorClass : 'help-block',
+					errorClass : 'alert alert-warning',
 					focusInvalid : false,
 					rules : {
 						email : {
@@ -42,23 +42,22 @@ var loginValidator = function() {
 							required : "邮箱未填写",
 							email : "请填写真实的邮箱",
 							rangelength : "邮箱长度应在50字符以内",
-
 						},
 						pwd : {
 							required : "密码未填写",
 							rangelength : "密码应由6~20个的数字或字母组成"
 						}
 					},
-
 					highlight : function(element) {
-						$(element).closest('.form-signin').removeClass(
+						$(element).closest('.form-group').removeClass(
 								'has-info').addClass('has-error');
 					},
 
 					success : function(e) {
-						$(e).closest('.form-signin').removeClass('has-error')
+						$(e).closest('.form-group').removeClass('has-error')
 								.addClass('has-info');
 						$(e).remove();
+						
 					},
 
 					errorPlacement : function(error, element) {
@@ -116,7 +115,7 @@ var registerValidator = function() {
 		$('#register_form').validate(
 				{
 					errorElement : 'div',
-					errorClass : 'help-block',
+					errorClass : 'alert alert-warning',
 					focusInvalid : false,
 					rules : {
 						username : {
@@ -255,7 +254,9 @@ function checkCookie() {
  *
  **/
 function login() {
-	//alert($("#login_form").valid());
+	if(!$("#login_form").valid()){
+		return;
+	}
 	var jso = changeForm2Jso("#login_form");
 	//jso.password=$.md5(jso.password); 
 	//先禁用按钮
@@ -330,6 +331,24 @@ $(document).ready(function() {
 	
 });
 
+
+
+
+/**
+ *
+ *
+ * Author:
+ *	zzw <zzw1986@gmail.com>
+ *	
+ *
+ * File: td_view.js
+ * Create Date: 2013-9-23 8:29
+ *
+ *
+ */
+
+
+
 (function() {
 	var Awifi_UI = function() {
 		this.name = 'Awifi_UI';
@@ -344,8 +363,8 @@ $(document).ready(function() {
 		//包含组件的div
 		mainContain: '',
 		//模板
-		captchaTpl: '<div class="ui-row-90 awui-text-center" style="min-height: 28px"><span class=awui-red id=error></span></div><div class=awui-row-90><input class=awui-main-input id=username placeholder=请输入手机号 maxlength=11></div><div class=awui-row-90 id=captchaDiv><div class="awui-row-47 awui-left"><input class="awui-row-47 awui-main-input" placeholder=请输入验证码 id=captcha maxlength=4></div><div class="awui-row-47 awui-right"><button class="awui-back-gray awui-gray awui-half-btn awui-text-center" id=getCaptcha>获取验证码</button></div></div><div class="awui-row-90 awui-login-btngroup"><button class="awui-back-orange awui-white awui-half-btn awui-text-center" id=sure>确认</button></div>',
-		captchaPicTpl: '<div class="ui-row-90 awui-text-center" style="min-height: 28px"><span class=awui-red id=error></span></div><div class=awui-row-90><input class=awui-main-input id=username placeholder=请输入手机号 maxlength=11></div><div class=awui-row-90 id=captchaDiv><div class="awui-row-47 awui-left"><input class="awui-row-47 awui-main-input" placeholder=请输入验证码 id=captcha maxlength=4></div><div class="awui-row-47 awui-right awui-text-center"><img src=img/forget.png id=getCaptcha class="awui-captchaPic"></div></div><div class="awui-row-90 awui-login-btngroup"><button class="awui-back-orange awui-white awui-half-btn awui-text-center" id=sure>确认</button></div>',
+		captchaTpl: '<div class="ui-row-90 awui-text-center" style="min-height: 28px"><span class="awui-red" id="error"></span></div><div class=awui-row-90><input class=awui-main-input id=username placeholder="请输入手机号" maxlength=11></div><div class=awui-row-90 id=captchaDiv><div class="awui-row-47 awui-left"><input class="awui-row-47 awui-main-input" placeholder=请输入验证码 id=picCaptcha maxlength=4></div><div class="awui-row-47 awui-right"><button type="button" class="awui-back-gray awui-gray awui-half-btn awui-text-center" id=smsCaptchaGet>获取验证码</button></div></div><div class="awui-row-90 awui-login-btngroup"><button class="awui-back-orange awui-white awui-half-btn awui-text-center" id=sure>确认</button></div>',
+		captchaPicTpl: '<div class="ui-row-90 awui-text-center" style="min-height: 28px"><span class="awui-red" id="error"></span></div><div class=awui-row-90><input class=awui-main-input id=username placeholder="请输入手机号" maxlength=11></div><div class=awui-row-90 id=captchaDiv><div class="awui-row-47 awui-left"><input class="awui-row-47 awui-main-input" placeholder=请输入验证码 id=picCaptcha maxlength=4></div><div class="awui-row-47 awui-right awui-text-center"><img src=img/forget.png id=picCaptchaGet class="awui-captchaPic"></div></div><div class="awui-row-90 awui-login-btngroup"><button class="awui-back-orange awui-white awui-half-btn awui-text-center" id=sure>确认</button></div>',
 		//请求地址
 		url: {
 			smsCaptchaUrl: '',
@@ -377,7 +396,7 @@ $(document).ready(function() {
 				return false;
 			}
 			//JQuery对象
-			if (config.mainContain) {//alert($("#login_form").length)
+			if (config.mainContain.length>0) {//alert($("#login_form").length)
 				this.mainContain = config.mainContain;
 				console.log("mainContain:" + this.mainContain);
 			} else {
@@ -410,18 +429,24 @@ $(document).ready(function() {
 			//验证码倒计时 
 			this.captchaCutdownTime = typeof(config.captchaCutdownTime) == 'undefined' ? this.captchaCutdownTime : config.captchaCutdownTime;
 
-			//if (this.captchaType == 'pic') {
+			if (this.captchaType == 'pic') {
 				//this.mainContain.html(this.captchaPicTpl);
 				//this.picCaptchaClick();
 				//this.getCpatchaClick();
-			//} else {
+			} else {
 				//this.mainContain.html(this.captchaTpl);
 				//this.getCaptcha();
-			//}
+			}
 			
 			this.$main = this.mainContain;
+			if(this.mainContain.length==0){
+				console.log("mainContain not exist");
+			}
 			var $main=this.$main;
-			this. $username = $main.find('#login-email');
+			if($main.length==0){
+				console.log("$main not exist");
+			}
+			this. $username = $main.find('.username');
 			this.$smsCaptcha = $main.find('#smsCaptcha');
 			this.$picCaptcha = $main.find('#picCaptcha');
 			this.$loginBtn = $main.find('#loginBtn');
@@ -497,11 +522,15 @@ $(document).ready(function() {
 				systemno:this.systemNo
 				
 			};
-			if(StringUtil.isBlank(phone)){
-				zalert("请先填写手机号");
+			if(this.checker.isBlank(phone)){
+				this.alert("请先填写手机号");
+				return;
 			}
 			that.captchaCutdown(this.$smsCaptchaGet);
 			that.getSmsCaptchaAjax(data);
+		},
+		alert:function(str){
+			this.$error.text(str);
 		},
 		/**
 		 * 绑定事件
@@ -510,30 +539,43 @@ $(document).ready(function() {
 			var that = this;
 			var checker = this.checker;
 			var params = this.params;
-			if(this.$picCaptchaGet){
+			if(this.$picCaptchaGet.length>0){
 				this.$picCaptchaGet.on('click', function() {
 					that.picCaptchaClick();
 				});
+				//显示验证码
+				this.$picCaptchaGet.trigger("click");
+			}else{
+				console.log("$pciCaptchaGet not exist");
 			}
-			if(this.$smsCaptchaGet){
+			if(this.$smsCaptchaGet.length>0){
 				this.$smsCaptchaGet.on('click', function() {
 					that.smsCaptchaClick();
 				});
+			}else{
+				console.log("$smsCaptchaGet not exist");
 			}
 			
-			this.$loginBtn.on('click', function() {
-				var username, captcha, biaozhi;
+			/*this.$loginBtn.on('click', function() {
+				
+				var username, captcha;
 				username = that.$username.val() || '';
-				captcha = that.$captcha.val() || '';
-				biaozhi = that.params.biaozhi || '';
+				captcha = that.$smsCaptcha.val() || '';
+				
 				//6位验证码验证
-				if (checker.checkCaptcha(captcha) || checker.checkUserName(username)) {
-					$error.text("请输入正确的帐号或验证码");
+				
+				if(that.$smsCaptcha.length>0){
+					if(that.checker.checkCaptcha(captcha)){
+						
+					}
+					
+				}
+				
+				if (that.checker.checkCaptcha(captcha) || that.checker.checkUserName(username)) {
+					that.alert("请输入正确的帐号或验证码");
 					return false;
 				}
-				var appid = params.appid || '';
-				var timestamp = params.timestamp || '';
-				var token = params.token || '';
+			
 				var data = {
 					phone: username,
 					code: captcha,
@@ -542,7 +584,7 @@ $(document).ready(function() {
 					token: token
 				};
 				that.sureAjax(data);
-			});
+			});*/
 		},
 
 		/**
@@ -569,7 +611,8 @@ $(document).ready(function() {
 				success: function(data, textStatus, jqXHR) {
 					if (data.r == 0 && that.$picCaptcha) {
 						//that.$picCaptchaGet.prop("src",that.host+"/"+data.data.img);
-						that.$picCaptchaGet.find("img").prop("src",that.host+"/"+data.data.img+"?r="+Math.random());
+						//that.$picCaptchaGet.find("img").prop("src",that.host+"/"+data.data.img+"?r="+Math.random());
+						that.$picCaptchaGet.find("img").prop("src","data:image/png;base64,"+data.data.imgdata);
 						//暂存token
 						var $sessionid= that.$main.find("#sessionid");
 						if($sessionid.length==0){
@@ -608,7 +651,7 @@ $(document).ready(function() {
 					if (data.r == 0 ) {
 						
 					}else{
-						zalert(data.msg);
+						that.alert(data.msg);
 						console.log(data);
 					}
 
@@ -616,7 +659,7 @@ $(document).ready(function() {
 				error: function(XHR, textStatus, errorThrown) {}
 			});
 		},
-		sureAjax: function(data) {
+		/*sureAjax: function(data) {
 			var that = this;
 			that.awui_loading.show();
 			var url = this.url.sureUrl || '';
@@ -637,7 +680,7 @@ $(document).ready(function() {
 					that.awui_loading.hide();
 				}
 			});
-		},
+		},*/
 		/**
 		 * 倒计时 传入按钮
 		 * @param {Object} self
@@ -662,6 +705,12 @@ $(document).ready(function() {
 		 * 参数验证
 		 */
 		checker: {
+			isBlank:function(it){
+				if(it==null || typeof it=='undefinded' || it==''){
+					return true;
+				}
+				return null;
+			},
 			checkUserName: function(str) {
 				var re = /^1\d{10}$/
 				if (!re.test(str)) {
@@ -753,7 +802,7 @@ $(document).ready(function() {
 	}
 
 })();
-
+$(document).ready(function(){
 Awifi_UI.captcha.init({
 	/**
 	 * 必选
@@ -787,3 +836,4 @@ Awifi_UI.captcha.init({
 	captchaType:'pic',// 'pic'表示图片验证码
 	captchaCutdownTime: 60 //验证码倒计时时间 默认60秒
 });
+})

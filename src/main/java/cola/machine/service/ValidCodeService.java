@@ -21,12 +21,12 @@ import cola.machine.util.SmsUtil;
 import cola.machine.util.StringUtil;
 import core.action.ResultDTO;
 
-@Service("smsValidCodeService")
-public class SmsValidCodeService {
+@Service("validCodeService")
+public class ValidCodeService {
     /** 
      *日志类
      */
-    private static final Logger log = LoggerFactory.getLogger(SmsValidCodeService.class);
+    private static final Logger log = LoggerFactory.getLogger(ValidCodeService.class);
 
     /**
      * @param systemCode
@@ -59,11 +59,22 @@ public class SmsValidCodeService {
 
             // 验证码生存周期
             try {
-                String liveTime = PropertiesUtil.get("validcode.live.time");
-                if (nowTime < (Long.valueOf(mapValueAry[1]) + Integer.valueOf(liveTime))) {
+               
+                
+                if (nowTime > (Long.valueOf(mapValueAry[1])
+                        + Integer.valueOf(PropertiesUtil.get("validcode.live.time")))) {
                     // 超时
-                    return ResultUtil.getResult(100, "重复获取验证码过快");
+                    return ResultUtil.getResult(100, "验证码已过期" + (nowTime - (Long.valueOf(mapValueAry[1])
+                            + Integer.valueOf(PropertiesUtil.get("validcode.live.time")))));
                 }
+
+                if (nowTime < (Long.valueOf(mapValueAry[1])
+                        + Integer.valueOf(PropertiesUtil.get("sms.validcode.time.interval")))) {
+                    // 刷新过快
+                    return ResultUtil.getResult(100, "验证码刷新过快" );
+                }
+                
+                
             } catch (Exception e) {
                 log.error("validcode.live.time");
                 return ResultUtil.getResult(100, "验证码生存周期配置有误");
@@ -200,7 +211,7 @@ public class SmsValidCodeService {
      * @return
      * @author dozen.zhang
      */
-    public ResultDTO getPicValidCode(String systemCode, String sessionid) {
+    public ResultDTO getImgValidCode(String systemCode, String sessionid) {
         // 验证systemcode
         ResultDTO result = validSystemNo(systemCode);
         if (!result.isRight()) {
@@ -224,15 +235,13 @@ public class SmsValidCodeService {
                     if (nowTime > (Long.valueOf(mapValueAry[1])
                             + Integer.valueOf(PropertiesUtil.get("validcode.live.time")))) {
                         // 超时
-                        return ResultUtil.getResult(100, "刷新验证码过快" + (nowTime - (Long.valueOf(mapValueAry[1])
-                                + Integer.valueOf(PropertiesUtil.get("validcode.live.time")))));
+                        return ResultUtil.getResult(100, "验证码失效" );//+(nowTime - (Long.valueOf(mapValueAry[1]) + Integer.valueOf(PropertiesUtil.get("validcode.live.time"))))
                     }
 
                     if (nowTime < (Long.valueOf(mapValueAry[1])
-                            + Integer.valueOf(PropertiesUtil.get("pic.validcode.time.interval")))) {
+                            + Integer.valueOf(PropertiesUtil.get("img.validcode.time.interval")))) {
                         // 刷新过快
-                        return ResultUtil.getResult(100, "刷新验证码过快" + (nowTime - (Long.valueOf(mapValueAry[1])
-                                + Integer.valueOf(PropertiesUtil.get("validcode.live.time")))));
+                        return ResultUtil.getResult(100, "刷新验证码过快" );
                     }
                 } catch (Exception e) {
                     log.error("validcode.live.time");
@@ -267,12 +276,13 @@ public class SmsValidCodeService {
 
         finalCode = codeAry[1];
         String fileName = codeAry[0];
-
+        log.info(finalCode);
         // 返回验证码
         HashMap map = new HashMap();
         // map.put("code", finalCode);
         map.put("img", fileName);
         map.put("sessionid", sessionid);
+        map.put("imgdata", codeAry[2]);
         result = ResultUtil.getDataResult(map);
         // 如果生成验证码成功
         if (result.isRight()) {
@@ -297,7 +307,7 @@ public class SmsValidCodeService {
      * @return
      * @author dozen.zhang
      */
-    public Object picValidCode(String systemCode, String phone, String code) {
+    public Object imgValidCode(String systemCode, String phone, String code) {
 
         return this.smsValidCode(systemCode, phone, code);
     }

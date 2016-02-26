@@ -69,13 +69,16 @@
 	                        console.log("压缩完成后执行的callback");
 	                       //document.getElementById('imgData').value = data;//写到form元素待提交服务器
 	                       //document.getElementById('myImg').src = data;//压缩结果验证
-	                        if(_this.preShow){   console.log("img pre show");
+	                       alert(data);
+	                       if(_this.preShow){   console.log("img pre show");
 	                         _this.imgDom.src=data;
 	                        }
 	                        console.log("begin send img");
 	                       var json={};
 	                       // json.imageName= "myImage.png";
-	                        data=data.substring(22);
+	                        
+	                       data=data.substring(22);
+	                        
 	                       // alert(data)
 	                        json.imageData= encodeURIComponent(data) ;
 	                        console.log("begin post");
@@ -124,7 +127,9 @@
 	                };
 	                // 记住必须先绑定事件，才能设置src属性，否则img没内容可以画到canvas
 	                console.log("begin origin data load:" );
+	                
 	                img.src = imgData;
+	               
 	           
 	            },
 	            init:function(jso){

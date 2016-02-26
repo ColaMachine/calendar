@@ -89,7 +89,7 @@ public class StringUtil {
 		return content.substring(index, last);
 	}
     public static boolean isPhone(String value) {
-        String regex = "^\\d{11}$";
+        String regex = "^[1][3578][0-9]{9}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(value);
         return matcher.find();
@@ -102,6 +102,6 @@ public class StringUtil {
     }
     
     public static void main(String[] args) {
-        System.out.println(StringUtil.isEmail("13958173965"));;
+        System.out.println(StringUtil.isPhone("14958173965"));;
     }
 }

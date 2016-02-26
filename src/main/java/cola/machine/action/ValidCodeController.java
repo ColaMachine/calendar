@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 
-import cola.machine.service.SmsValidCodeService;
+import cola.machine.service.ValidCodeService;
 import core.action.ResultDTO;
 @Controller
 @RequestMapping("/code")
 public class ValidCodeController {
     @Autowired
-    private SmsValidCodeService smsValidCodeService;
+    private ValidCodeService validCodeService;
     /**
      * 第三方系统前端请求获取短信验证码
      * @param request
@@ -36,7 +36,7 @@ public class ValidCodeController {
         String systemCode = request.getParameter("systemno");
         //调用生成验证码服务 返回验证码 或者失败原因
         ResultDTO result = 
-             smsValidCodeService.getSmsValidCode(systemCode,phone);
+             validCodeService.getSmsValidCode(systemCode,phone);
        
         result.setData(null);
         
@@ -63,7 +63,7 @@ public class ValidCodeController {
         String sessionid = request.getParameter("sessionid");
         //调用生成验证码服务 返回验证码 或者失败原因
         ResultDTO result = 
-                smsValidCodeService.getPicValidCode(systemno,sessionid);
+                validCodeService.getImgValidCode(systemno,sessionid);
           // result.setData(null);
           
            if(result.isRight()){
@@ -101,7 +101,7 @@ public class ValidCodeController {
         //调用生成验证码服务 返回验证码 或者失败原因
         
         ResultDTO result = 
-             smsValidCodeService.getSmsValidCode(systemCode,phone);
+             validCodeService.getSmsValidCode(systemCode,phone);
         
         return result;
     }
@@ -113,7 +113,7 @@ public class ValidCodeController {
         String key = request.getParameter("key");
         //调用生成验证码服务 返回验证码 或者失败原因
         ResultDTO result = 
-                smsValidCodeService.getPicValidCode(systemno,key);
+                validCodeService.getImgValidCode(systemno,key);
             return result;
     }
     
@@ -124,7 +124,7 @@ public class ValidCodeController {
         String systemno = request.getParameter("systemno");
         String code = request.getParameter("code");
         //调用生成验证码服务 返回验证码 或者失败原因
-        return smsValidCodeService.smsValidCode(systemno, phone, code);
+        return validCodeService.smsValidCode(systemno, phone, code);
     }
     @RequestMapping(value = "/img/valid.json")
     @ResponseBody
@@ -133,6 +133,6 @@ public class ValidCodeController {
         String sessionid = request.getParameter("sessionid");
         String code = request.getParameter("code");
         //调用生成验证码服务 返回验证码 或者失败原因
-        return smsValidCodeService.picValidCode(systemno, sessionid, code);
+        return validCodeService.imgValidCode(systemno, sessionid, code);
     }
 }
