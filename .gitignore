@@ -16,3 +16,4 @@ src/main/webapp/WEB-INF/classes/
 .classpath
 src/main/webapp/static/vc
 /target/
+/temp/

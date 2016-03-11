@@ -1020,6 +1020,10 @@ $.validator.addMethod("regex",function( value, element, param ) {
 	var re=new RegExp(param);
 	 return this.optional(element) ||re.test(value);
 },"格式不正确");
+$.validator.addMethod("phone",function( value, element, param ) {
+	var re=new RegExp("^[1][3578][0-9]{9}$");
+	 return this.optional(element) ||re.test(value);
+},"手机格式不正确");
 $.validator.addMethod("ymd",function( value, element, param ) {
 	param=param.replace(/[yMdHms]/g,"\\d");
 	

@@ -2,16 +2,10 @@
  * 
  */
 var App={
-		init:function(){
-//			this.menuInit();
-		},
-		menuInit: function(){
+		init: function(){
 			var _this = this;
-			$('.menu ul a').click(function(event){alert(1);
+			/*$('.menu ul a').click(function(event){alert(1);
 				event.preventDefault();
-				
-				
-				
 				if(isNull($(this).attr("href"))){
 					if($(this).parent().hasClass('open')){
 						$(this).parent().removeClass('open');
@@ -27,12 +21,31 @@ var App={
 					$(this).addClass('active');
 					_this.loadPage($(this).attr("href"));
 				}
-			});
-			$('#logout').click(function(){
-				jDialog.confirm('退出系统', '确实要退出吗？', function(){
+			});alert(123);*/
+			$('#logout').click(function(evt){
+			    $('#page').confirm({
+			        winId: 'window-msg-dialog',
+			        isFixed: false,
+			        tltTxt: '提示消息',
+			        cntHTML: '这是一个普通的弹出窗口对话框',
+			       
+			    });
+			     $('#window-msg-dialog').jDrag({container:'#page', handle:'.window-title-bar'});
+			
+			   /* jDialog.confirm('退出系统', '确实要退出吗？', function(){
 					_this.logout();
 				});
+			    
+			    zconfirm("退出系统","确实要退出吗",function(){alert(1)});*/
+			    // 阻止冒泡和默认行为事件
+			    evt.preventDefault();
+			    evt.stopPropagation();
+			    
+			    
 			});
+			/*$('#logout').click(function(){
+				
+			});*/
 			$('#userprofile').click(function(){
 				_this.userprofile();
 			});

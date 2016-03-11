@@ -69,6 +69,7 @@ public class ResultUtil {
 	public static ResultDTO getFailResult(String errcode){
 		return getResult(fail, null, null,null);
 	}
+	
 	/**
 	 * 返回成功，数据data,分页page
 	 * @param data
@@ -92,7 +93,9 @@ public class ResultUtil {
 	public static  ResultDTO getResult(int result, String msg){
         return getResult(result, null, msg,null);
     }
-	
+	public static  ResultDTO getResult(int service ,int type,int result, String msg){
+		return getResult(service*100000+type*1000+result, null, msg,null);
+	}
 	/**返回错误请求，根据错误代码名code获取错误代码及说明
 	 * @param code
 	 * @return

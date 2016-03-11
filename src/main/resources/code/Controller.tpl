@@ -5,8 +5,7 @@
  * 创建日期: 2015年11月15日
  * 文件说明: 
  */
- <#assign abc="${table.name[0]?lower_case}${table.name[1..]}">
-<#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
+
 package cola.machine.action;
 import java.io.File;
 import java.sql.Timestamp;
@@ -42,6 +41,12 @@ import cola.machine.util.ValidateUtil;
 import core.util.RequestUtil;
 import core.action.ResultDTO;
 import cola.machine.util.DateUtil;
+<#if table.mapper??>
+import cola.machine.bean.${table.mapper.mapper};
+import cola.machine.service.${table.mapper.mapper}Service;
+import cola.machine.bean.${table.mapper.child};
+import cola.machine.service.${table.mapper.child}Service;
+</#if>
 @Controller
 @RequestMapping("/${abc}")
 public class ${Abc}Controller extends BaseController{
@@ -51,7 +56,14 @@ public class ${Abc}Controller extends BaseController{
     @Autowired
     private ${Abc}Service ${abc}Service;
     
+    <#if table.mapper??>
+    @Autowired
+    private <@getAbc>${table.mapper.mapper}</@getAbc>Service <@getabc>${table.mapper.mapper}</@getabc>Service;
 
+     @Autowired
+    private <@getAbc>${table.mapper.child}</@getAbc>Service <@getabc>${table.mapper.child}</@getabc>Service;
+
+    </#if>
     /**
      * 说明: 跳转到角色列表页面
      * 
@@ -110,9 +122,15 @@ ${getSearchParam}
       @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
-        String id = request.getParameter("id");
+    ${controllerViewMethod}
+
+
+    
+      /*  String id = request.getParameter("id");
         ${Abc} bean = ${abc}Service.selectByPrimaryKey(<@javaType>${table.pk.type}</@javaType>.valueOf(id));
-        return this.getResult(bean);
+        HashMap result =new HashMap();
+        result.put("bean", bean);
+        return this.getResult(bean);*/
     }
 
     
@@ -140,7 +158,13 @@ ${getSearchParam}
 ${setParam}
         //valid
 ${validCode}
+        <#if table.mapper??>
+        String childids = request.getParameter("childids");
+        return ${abc}Service.saveWithChilds(${abc},childids);
+        <#else>
         return ${abc}Service.save(${abc});
+        </#if>
+       
     }
     
     @RequestMapping(value = "/del.json")
@@ -168,7 +192,7 @@ ${validCode}
             return this.getWrongResultFromCfg("err.param.notnull");
         }
         String idStrAry[]= idStr.split(",");
-        Integer idAry[]=new Integer[idStrAry.length];
+        <@javaType>${table.pk.type}</@javaType> idAry[]=new <@javaType>${table.pk.type}</@javaType>[idStrAry.length];
         for(int i=0,length=idAry.length;i<length;i++){
             ValidateUtil vu = new ValidateUtil();
             String validStr="";
@@ -185,7 +209,7 @@ ${validCode}
             if(StringUtil.isNotEmpty(validStr)) {
                 return ResultUtil.getResult(302,validStr);
             }
-            idAry[i]=Integer.valueOf(idStrAry[i]);
+            idAry[i]=<@javaType>${table.pk.type}</@javaType>.valueOf(idStrAry[i]);
         }
        return  ${abc}Service.multilDelete(idAry);
     }

@@ -1,0 +1,433 @@
+<div class="rgt_body">
+    <div class="body_title">| 用户</div>
+        <div class="body_top" >
+            <form class="form-inline app-search">
+    <input type="hidden" id="id" name="id"  class="form-control input-sm"   placeholder="主键">
+        <label for="username">用户名</label>
+            <input type="text" id="username" name="username"  class="form-control input-sm"   maxlength="20" placeholder="用户名" ></input>
+        <label for="password">密码</label>
+            <input type="text" id="password" name="password"  class="form-control input-sm"   maxlength="50" placeholder="密码" ></input>
+        <label for="nkname">昵称</label>
+            <input type="text" id="nkname" name="nkname"  class="form-control input-sm"   maxlength="20" placeholder="昵称" ></input>
+        <label for="type">类型</label>
+            <input type="number" id="type" name="type"  class="form-control input-sm"  maxlength="4" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="类型"></input>
+        <label for="status">状态</label>
+            <select id="status" name="status"  class="form-control input-sm"  >
+                <option value=''>-请选择-</option>
+                <option value=1>正常</option>
+                <option value=2>禁用</option>
+                <option value=3>未激活</option>
+            </select>
+        <label for="email">邮箱地址</label>
+            <input type="text" id="email" name="email"  class="form-control input-sm"   maxlength="50" placeholder="邮箱地址" ></input>
+        <label for="telno">手机号码</label>
+            <input type="text" id="telno" name="telno"  class="form-control input-sm"   maxlength="11" placeholder="手机号码" ></input>
+        <label for="idcard">身份证号码</label>
+            <input type="text" id="idcard" name="idcard"  class="form-control input-sm"   maxlength="18" placeholder="身份证号码" ></input>
+        <label for="sex">身份证号码</label>
+            <input type="number" id="sex" name="sex"  class="form-control input-sm"  maxlength="1" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="身份证号码"></input>
+        <label for="birth">出生年月</label>
+        <div class="input-group">
+            <input type="text" id="birth" name="birth"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})"  datatype="date" format="yyyy-MM-dd"  placeholder="出生年月" ></input>
+            <label class="input-group-addon" for="birth" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="birthBegin">出生年月开始</label>
+        <div class="input-group">
+            <input type="text" id="birthBegin" name="birthBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})"  datatype="date" format="yyyy-MM-dd"  placeholder="出生年月" ></input>
+            <label class="input-group-addon" for="birthBegin" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="birthEnd">出生年月结束</label>
+        <div class="input-group">
+            <input type="text" id="birthEnd" name="birthEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})"  datatype="date" format="yyyy-MM-dd"  placeholder="出生年月" ></input>
+            <label class="input-group-addon" for="birthEnd" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="integral">积分</label>
+            <input type="number" id="integral" name="integral"  class="form-control input-sm"  maxlength="11" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="积分"></input>
+        <label for="address">地址</label>
+            <input type="text" id="address" name="address"  class="form-control input-sm"   maxlength="50" placeholder="地址" ></input>
+        <label for="weichat">微信</label>
+            <input type="text" id="weichat" name="weichat"  class="form-control input-sm"   maxlength="20" placeholder="微信" ></input>
+        <label for="qq">qq</label>
+            <input type="number" id="qq" name="qq"  class="form-control input-sm"  maxlength="11" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="qq"></input>
+        <label for="face">头像</label>
+            <input type="text" id="face" name="face"  class="form-control input-sm"   maxlength="100" placeholder="头像" ></input>
+        <label for="remark">备注</label>
+            <input type="text" id="remark" name="remark"  class="form-control input-sm"   maxlength="200" placeholder="备注" ></input>
+        <label for="createtime">创建时间</label>
+        <div class="input-group">
+            <input type="text" id="createtime" name="createtime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <label class="input-group-addon" for="createtime" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="createtimeBegin">创建时间开始</label>
+        <div class="input-group">
+            <input type="text" id="createtimeBegin" name="createtimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <label class="input-group-addon" for="createtimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="createtimeEnd">创建时间结束</label>
+        <div class="input-group">
+            <input type="text" id="createtimeEnd" name="createtimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <label class="input-group-addon" for="createtimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="updatetime">创建时间</label>
+        <div class="input-group">
+            <input type="text" id="updatetime" name="updatetime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <label class="input-group-addon" for="updatetime" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="updatetimeBegin">创建时间开始</label>
+        <div class="input-group">
+            <input type="text" id="updatetimeBegin" name="updatetimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <label class="input-group-addon" for="updatetimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
+        <label for="updatetimeEnd">创建时间结束</label>
+        <div class="input-group">
+            <input type="text" id="updatetimeEnd" name="updatetimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <label class="input-group-addon" for="updatetimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
+
+ <!-- 
+        <div class="form-group">
+            <label for="exampleInputName2">主键</label>
+          
+            <input type="text" class="form-control" id="id" name="id" placeholder="主键">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">用户名</label>
+          
+            <input type="text" class="form-control" id="username" name="username" placeholder="用户名">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">密码</label>
+          
+            <input type="text" class="form-control" id="password" name="password" placeholder="密码">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">昵称</label>
+          
+            <input type="text" class="form-control" id="nkname" name="nkname" placeholder="昵称">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">类型</label>
+          
+            <input type="text" class="form-control" id="type" name="type" placeholder="类型">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">状态</label>
+          
+            <input type="text" class="form-control" id="status" name="status" placeholder="状态">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">邮箱地址</label>
+          
+            <input type="text" class="form-control" id="email" name="email" placeholder="邮箱地址">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">手机号码</label>
+          
+            <input type="text" class="form-control" id="telno" name="telno" placeholder="手机号码">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">身份证号码</label>
+          
+            <input type="text" class="form-control" id="idcard" name="idcard" placeholder="身份证号码">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">身份证号码</label>
+          
+            <input type="text" class="form-control" id="sex" name="sex" placeholder="身份证号码">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">出生年月</label>
+          
+            <input type="text" class="form-control" id="birth" name="birth" placeholder="出生年月">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">积分</label>
+          
+            <input type="text" class="form-control" id="integral" name="integral" placeholder="积分">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">地址</label>
+          
+            <input type="text" class="form-control" id="address" name="address" placeholder="地址">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">微信</label>
+          
+            <input type="text" class="form-control" id="weichat" name="weichat" placeholder="微信">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">qq</label>
+          
+            <input type="text" class="form-control" id="qq" name="qq" placeholder="qq">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">头像</label>
+          
+            <input type="text" class="form-control" id="face" name="face" placeholder="头像">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">备注</label>
+          
+            <input type="text" class="form-control" id="remark" name="remark" placeholder="备注">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">创建时间</label>
+          
+            <input type="text" class="form-control" id="createtime" name="createtime" placeholder="创建时间">
+           
+        </div>
+  
+        <div class="form-group">
+            <label for="exampleInputName2">创建时间</label>
+          
+            <input type="text" class="form-control" id="updatetime" name="updatetime" placeholder="创建时间">
+           
+        </div>
+  -->
+  
+                <button type="button" onclick="search()" class="btn btn-default">查询</button>
+            </form>
+        <div >
+            <button class="btn" onclick="addInfo()">新增</button>
+            <button class="btn" onclick="multiDelete()">删除</button>
+            <button class="btn" onclick="exportExcel()">导出</button>
+        </div>
+    </div>
+    <div id="grid" class="grid"></div>
+    <div id="grid-pager" class="pager"></div>
+    <div class="modal" id="mymodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">模态弹出窗标题</h4>
+                </div>
+                <div class="modal-body">
+                    <p>模态弹出窗主体内容</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
+<script>
+var gridParam = {
+    page:{
+        curPage : 1,
+        pageSize : 10
+    },
+    multiselect : true,
+    url : PATH+'/sysUser/list.json',
+    grid_selector : "#grid",
+    pager_selector : "#grid-pager",
+    searchParams : {
+    	
+    },
+    colNames : [
+     "主键","用户名","密码","昵称","类型","状态","邮箱地址","手机号码","身份证号码","身份证号码","出生年月","积分","地址","微信","qq","头像","备注","创建时间","创建时间" , '操作' ],
+    colModel : [
+            {
+                name : 'id',
+                width : 80,
+            } ,
+            {
+                name : 'username',
+                width : 80,
+            } ,
+            {
+                name : 'password',
+                width : 80,
+            } ,
+            {
+                name : 'nkname',
+                width : 80,
+            } ,
+            {
+                name : 'type',
+                width : 80,
+            } ,
+            {
+                name : 'status',
+                width : 80,
+                formatter : function(value, grid, rows) {
+                    var map ={'3':'未激活','2':'禁用','1':'正常',};
+                    return map[value];
+                }
+            } ,
+            {
+                name : 'email',
+                width : 80,
+            } ,
+            {
+                name : 'telno',
+                width : 80,
+            } ,
+            {
+                name : 'idcard',
+                width : 80,
+            } ,
+            {
+                name : 'sex',
+                width : 80,
+            } ,
+            {
+                name : 'birth',
+                width : 80,
+            } ,
+            {
+                name : 'integral',
+                width : 80,
+            } ,
+            {
+                name : 'address',
+                width : 80,
+            } ,
+            {
+                name : 'weichat',
+                width : 80,
+            } ,
+            {
+                name : 'qq',
+                width : 80,
+            } ,
+            {
+                name : 'face',
+                width : 80,
+            } ,
+            {
+                name : 'remark',
+                width : 80,
+            } ,
+            {
+                name : 'createtime',
+                width : 80,
+                 formatter : function(value, grid, rows) {
+                    return new Date(value).format("yyyy-MM-dd");
+                }
+            } ,
+            {
+                name : 'updatetime',
+                width : 80,
+                 formatter : function(value, grid, rows) {
+                    return new Date(value).format("yyyy-MM-dd");
+                }
+            } 
+            ,
+            {
+                name : 'id',
+                width : 150,
+                formatter : function(value, grid, rows) {
+                    return getViewHtml(value)+getEditHtml(value)+getDelHtml(value);
+                }
+            } ]
+            /*
+             * ondblClickRow: function(id){
+             * 
+             * alert("双击选中"+id);
+             *  },
+             */
+         /*
+             * onSelectRow: function(id){ alert("单击选中"+id); },
+             */
+};
+var newWindow=false;
+var mygrid = $("#grid").jqGrid(this.gridParam); 
+function addInfo(){
+    showDialogue('/sysUser/edit.htm');
+}
+
+function editInfo(id){
+    showDialogue("/sysUser/edit.htm?id="+id);
+}
+function search(){
+    var jso = changeForm2Jso(".app-search");
+    mygrid.jqGrid("search",jso);
+}
+function deleteInfo(id){
+     //弹窗
+     zconfirm("确定删除数据:"+id,"删除",function(){
+        Post(PATH+"/sysUser/del.json?id="+id,function(result){
+            result=ajaxResultHandler(result);
+            if(result.r==AJAX_SUCC){
+                zalert("删除成功，数据："+id,"删除",function(){
+                $("#grid").jqGrid("reloadGrid");
+            });
+            }else {
+                zerror(result.msg,"提醒",function(){});
+            }
+        });
+    });
+}
+function viewInfo(id){
+    showDialogue("/sysUser/view.htm?id="+id);
+}
+function search(){
+    var jso= changeForm2Jso(".app-search");
+    console.log(jso);
+    mygrid.search(jso);
+}
+function exportExcel(){
+    var jso= changeForm2Jso(".app-search");
+    GetJSON(PATH+"/sysUser/export.json",jso,function(data){
+        if(data.r==AJAX_SUCC){
+            window.location=PATH+"/"+data.data;
+        }else{
+            zerror(data.msg,"导出失败",null);
+        }
+    })
+}
+function multiDelete(){
+    //获取ids字符串
+    var ids=$("#grid").jqGrid("getGridParam","selarrrow");
+    if(ids.length==0){
+        zalert("请勾选数据","提示");
+        return;
+    }
+    var data= $("#grid").jqGrid("getGridParam","data");
+    for(var i=0;i<ids.length;i++){
+        ids[i]=data[ids[i]]["id"]; 
+    }
+    //弹窗
+    zconfirm("确定删除数据:"+ids.join(","),"删除",function(){
+        Post(PATH+"/sysUser/mdel.json?ids="+ids.join(","),function(result){
+            result=ajaxResultHandler(result);
+            if(result.r==AJAX_SUCC){
+                zalert("删除成功，数据："+ids.join(","),"删除",function(){
+                $("#grid").jqGrid("reloadGrid");
+            });
+            }else {
+                zerror(result.msg,"提醒",function(){});
+            }
+        });
+    });
+}
+</script>
+

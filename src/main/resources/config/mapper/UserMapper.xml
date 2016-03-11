@@ -17,6 +17,20 @@
 <!--     <result column="createtime" property="createtime" jdbcType="TIMESTAMP" /> -->
     <result column="active" property="active" jdbcType="BIT" />    
    </resultMap>
+    <resultMap id="BaseResultMap" type="cola.machine.bean.User">
+      <id column="userid" jdbcType="VARCHAR" property="userid" />
+      <result column="loginname" jdbcType="VARCHAR" property="loginname" />
+      <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+      <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+      <result column="email" jdbcType="VARCHAR" property="email" />
+      <result column="username" jdbcType="VARCHAR" property="username" />
+      <result column="telno" jdbcType="VARCHAR" property="telno" />
+      <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+     <sql id="Base_Column_List">
+    userid ,loginname ,nickname ,pwd ,email ,username ,telno ,createtime 
+   
+  </sql>
   	<insert id="insertUser" parameterType="cola.machine.bean.User">
   		insert into user(userid,loginname,nickname,username,pwd,email,telno) values(#{userid},#{loginname},#{nickname},#{username},#{pwd},#{email},#{telno})
   	</insert>
@@ -75,4 +89,225 @@
 	<delete id="deleteUser" parameterType="java.lang.String">
 		delete from user where userid = #{userid}
 	</delete>
+	
+	  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from User
+    where userid =   #{userid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from User
+    where userid = #{userid,jdbcType=VARCHAR}
+  </delete>
+ <insert id="insert"    parameterType="cola.machine.bean.User" >
+
+    insert into User (  <include refid="Base_Column_List" />)
+    values (
+#{userid,jdbcType=VARCHAR}
+,#{loginname,jdbcType=VARCHAR}
+,#{nickname,jdbcType=VARCHAR}
+,#{pwd,jdbcType=VARCHAR}
+,#{email,jdbcType=VARCHAR}
+,#{username,jdbcType=VARCHAR}
+,#{telno,jdbcType=VARCHAR}
+,#{createtime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="cola.machine.bean.User" >
+    insert into User
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="userid != null" >  
+           userid, 
+        </if>  
+        <if test="loginname != null" >  
+           loginname, 
+        </if>  
+        <if test="nickname != null" >  
+           nickname, 
+        </if>  
+        <if test="pwd != null" >  
+           pwd, 
+        </if>  
+        <if test="email != null" >  
+           email, 
+        </if>  
+        <if test="username != null" >  
+           username, 
+        </if>  
+        <if test="telno != null" >  
+           telno, 
+        </if>  
+        <if test="createtime != null" >  
+           createtime, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="userid != null" >  
+          #{userid,jdbcType=VARCHAR},
+        </if>  
+        <if test="loginname != null" >  
+          #{loginname,jdbcType=VARCHAR},
+        </if>  
+        <if test="nickname != null" >  
+          #{nickname,jdbcType=VARCHAR},
+        </if>  
+        <if test="pwd != null" >  
+          #{pwd,jdbcType=VARCHAR},
+        </if>  
+        <if test="email != null" >  
+          #{email,jdbcType=VARCHAR},
+        </if>  
+        <if test="username != null" >  
+          #{username,jdbcType=VARCHAR},
+        </if>  
+        <if test="telno != null" >  
+          #{telno,jdbcType=VARCHAR},
+        </if>  
+        <if test="createtime != null" >  
+          #{createtime,jdbcType=TIMESTAMP},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cola.machine.bean.User" >
+    update User
+    <set >
+        <if test="userid != null" >  
+             userid=#{userid,jdbcType=VARCHAR},
+        </if>  
+        <if test="loginname != null" >  
+             loginname=#{loginname,jdbcType=VARCHAR},
+        </if>  
+        <if test="nickname != null" >  
+             nickname=#{nickname,jdbcType=VARCHAR},
+        </if>  
+        <if test="pwd != null" >  
+             pwd=#{pwd,jdbcType=VARCHAR},
+        </if>  
+        <if test="email != null" >  
+             email=#{email,jdbcType=VARCHAR},
+        </if>  
+        <if test="username != null" >  
+             username=#{username,jdbcType=VARCHAR},
+        </if>  
+        <if test="telno != null" >  
+             telno=#{telno,jdbcType=VARCHAR},
+        </if>  
+        <if test="createtime != null" >  
+             createtime=#{createtime,jdbcType=TIMESTAMP},
+        </if>  
+    </set>
+    where id = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cola.machine.bean.User" >
+    update User
+    set 
+              loginname=#{loginname,jdbcType=VARCHAR},  
+              nickname=#{nickname,jdbcType=VARCHAR},  
+              pwd=#{pwd,jdbcType=VARCHAR},  
+              email=#{email,jdbcType=VARCHAR},  
+              username=#{username,jdbcType=VARCHAR},  
+              telno=#{telno,jdbcType=VARCHAR},  
+              createtime=#{createtime,jdbcType=TIMESTAMP}  
+where id = #{userid,jdbcType=VARCHAR}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from User where 1=1
+        <if test="userid != null and userid != '' ">  
+           and userid = #{userid}
+        </if>  
+        <if test="loginname != null and loginname != '' ">  
+           and loginname = #{loginname}
+        </if>  
+        <if test="nickname != null and nickname != '' ">  
+           and nickname = #{nickname}
+        </if>  
+        <if test="pwd != null and pwd != '' ">  
+           and pwd = #{pwd}
+        </if>  
+        <if test="email != null and email != '' ">  
+           and email = #{email}
+        </if>  
+        <if test="username != null and username != '' ">  
+           and username = #{username}
+        </if>  
+        <if test="telno != null and telno != '' ">  
+           and telno = #{telno}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and createtime = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and createtime &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and createtime &lt;= #{createtimeEnd}
+        </if> 
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from User where 1=1
+        <if test="userid != null and userid != '' ">  
+           and userid = #{userid}
+        </if>  
+        <if test="loginname != null and loginname != '' ">  
+           and loginname = #{loginname}
+        </if>  
+        <if test="nickname != null and nickname != '' ">  
+           and nickname = #{nickname}
+        </if>  
+        <if test="pwd != null and pwd != '' ">  
+           and pwd = #{pwd}
+        </if>  
+        <if test="email != null and email != '' ">  
+           and email = #{email}
+        </if>  
+        <if test="username != null and username != '' ">  
+           and username = #{username}
+        </if>  
+        <if test="telno != null and telno != '' ">  
+           and telno = #{telno}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and createtime = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and createtime &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and createtime &lt;= #{createtimeEnd}
+        </if> 
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from User where 1=1
+        <if test="userid != null and userid != '' ">  
+           and userid = #{userid}
+        </if>  
+        <if test="loginname != null and loginname != '' ">  
+           and loginname = #{loginname}
+        </if>  
+        <if test="nickname != null and nickname != '' ">  
+           and nickname = #{nickname}
+        </if>  
+        <if test="pwd != null and pwd != '' ">  
+           and pwd = #{pwd}
+        </if>  
+        <if test="email != null and email != '' ">  
+           and email = #{email}
+        </if>  
+        <if test="username != null and username != '' ">  
+           and username = #{username}
+        </if>  
+        <if test="telno != null and telno != '' ">  
+           and telno = #{telno}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and createtime = #{createtime}
+        </if>  
+  </select>
 </mapper>

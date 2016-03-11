@@ -100,8 +100,49 @@ public class StringUtil {
         Matcher matcher = pattern.matcher(value);
         return matcher.find();
     }
-    
+    public static boolean splitStrContains(String longStr,String bean){
+        if(longStr.indexOf(","+bean+",")>=0 || longStr.startsWith(bean+",") || longStr.endsWith(","+bean) || longStr.equals(bean)){
+            return true;
+        }
+        return false;
+    }
     public static void main(String[] args) {
         System.out.println(StringUtil.isPhone("14958173965"));;
     }
+
+	public static String randDigitString = "0123456789";//随机产生的字符串
+	public static String randAlphaString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
+	public static String getRandomString(int len){
+		String code ="";
+		for(int i=0;i<len;i++){
+			code+=randAlphaString.charAt((int)(Math.random()*10));
+		}
+		return code;
+	}
+	public static String getRandomAlphaString(int len){
+		String code ="";
+		for(int i=0;i<len;i++){
+			code+=randAlphaString.charAt((int)(Math.random()*randAlphaString.length()));
+		}
+		return code;
+	}
+	public static String getRandomDigitString(int len){
+		String code ="";
+		for(int i=0;i<len;i++){
+			code+=randDigitString.charAt((int)(Math.random()*randDigitString.length()));
+		}
+		return code;
+	}
+	public static boolean checkAlpha(String str){
+		if (str == null) {
+			return false;
+		}
+		int sz = str.length();
+		for (int i = 0; i < sz; i++) {
+			if (Character.isAlphabetic(str.charAt(i))==false&&Character.isDigit(str.charAt(i)) == false) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

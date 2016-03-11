@@ -25,6 +25,12 @@
       http://www.springframework.org/schema/cache
       http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
 ">
+
+<!--	<bean id="bean_test" class="cn.qtone.test.HelloWorld" scope="prototype">
+		<constructor-arg index="0" ref="bean_date"></constructor-arg>
+		<constructor-arg index="1"><value>345</value></constructor-arg>
+	</bean>-->
+
 	<!-- 系统配置 -->
 	<import resource="app-context-config.xml" />
 	<!-- 数据库配置 -->

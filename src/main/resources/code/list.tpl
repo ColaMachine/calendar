@@ -93,16 +93,14 @@ var gridParam = {
              * onSelectRow: function(id){ alert("单击选中"+id); },
              */
 };
+var newWindow=false;
 var mygrid = $("#grid").jqGrid(this.gridParam); 
 function addInfo(){
-    //goPage(PATH+'/${abc}/edit.htm');
-    zwindow(PATH+"/${abc}/edit.htm");
-    $("#mymodal").modal("toggle");
+    showDialogue('/${abc}/edit.htm');
 }
+
 function editInfo(id){
-    //goPage(PATH+"/${abc}/edit.htm?${table.pk.name}="+id);
-    zwindow(PATH+"/${abc}/edit.htm?id="+id);
-    $("#mymodal").modal("toggle");
+    showDialogue("/${abc}/edit.htm?id="+id);
 }
 function search(){
     var jso = changeForm2Jso(".app-search");
@@ -124,10 +122,7 @@ function deleteInfo(id){
     });
 }
 function viewInfo(id){
-   //goPage(PATH+"/smsBatch/view.htm?${table.pk.name}="+id);
-     zwindow(PATH+"/${abc}/view.htm?id="+id);
-     $("#mymodal").modal("toggle");
-    //goPage(PATH+"/${abc}/view.htm?${table.pk.name}="+id);
+    showDialogue("/${abc}/view.htm?id="+id);
 }
 function search(){
     var jso= changeForm2Jso(".app-search");

@@ -823,7 +823,7 @@ Awifi_UI.captcha.init({
 	/**
 	 * host
 	 */
-	host:'http://192.168.34.117:8080/',
+	host:'http://127.0.0.1:8080/',
 	/**
 	 *  参数
 	 */

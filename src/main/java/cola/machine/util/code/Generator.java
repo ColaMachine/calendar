@@ -35,6 +35,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
+import cola.machine.bean.SysRole;
+import cola.machine.bean.SysUser;
+import cola.machine.config.Config;
 import cola.machine.mng.PathManager;
 import cola.machine.util.DateUtil;
 import cola.machine.util.FreeMarkerUtil;
@@ -44,9 +47,14 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.XmlWebApplicationContext;
 
 public class Generator {
-    
+    ZTable table;
+    HashMap<String ,ZTable> allTable =new HashMap<String ,ZTable>();
     String fatherPackage = "";
     private String ctrl = "\r\n";
     private String tab = "    ";
@@ -115,7 +123,11 @@ public class Generator {
 
     private Configuration cfg;
 
-    public void init() throws IOException {
+    public void init(String code ) throws IOException {
+        
+        root.put("jdbcType", new JdbcTypeDirective());
+        root.put("getabc", new abcDirective());
+        root.put("getAbc", new AbDirective());
         // 创建目录
         Path homePath = PathManager.getInstance().getHomePath();
         Files.createDirectories(homePath.resolve("temp"));
@@ -124,11 +136,20 @@ public class Generator {
         String type = "";
         String typeName = "";
 
-        table = load(homePath.resolve("src/main/resources/SmsBatch.cfg"));
+        table = load(homePath.resolve("src/main/resources/"+code+".cfg"));
+        allTable.put(table.getName(), table);
         table.init();
-        root.put("javaType", new JavaTypeDirective());
-        root.put("jdbcType", new JdbcTypeDirective());
+       
+
+        // FreeMarkerUtil.processTemplate(templatePath, templateName,
+        // templateEncoding, root, out);
+    }
+    public  void intTpl(String code) throws IOException{
+        table=(ZTable)allTable.get(code);
+        root.put("allTables", allTable);
         root.put("table", table);
+        root.put("abc", StringUtil.getabc(table.getName()));
+        root.put("Abc", StringUtil.getAbc(table.getName()));
         /*
          * Configuration config=new Configuration(); //设置要解析的模板所在的目录，并加载模板文件
          * config.setDirectoryForTemplateLoading(file); //设置包装器，并将对象包装为数据模型
@@ -167,12 +188,8 @@ public class Generator {
         // temp.putTemplate("viewHtml", viewHtmlTpl);
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateLoader(temp);
-
-        // FreeMarkerUtil.processTemplate(templatePath, templateName,
-        // templateEncoding, root, out);
     }
-
-    ZTable table;
+    
     public void writeFile(String path,String name, String templateName) throws IOException, TemplateException {
         Template template;
         template = cfg.getTemplate(templateName,"UTF-8");
@@ -215,7 +232,7 @@ public class Generator {
         	   jsrules.add(String.format("maxlength:%d", length));
         	   message.add(String.format("maxlength:\"%s不能多于%d个字符\"", zcol.getName(),length));
            }
-           if(type.startsWith("int")){
+           if(type.startsWith("int")||type.startsWith("bigint")){
                Integer integer=this.getIntFromKuoHao(type);
                if(integer!=null){
                    rules.add(String.format("new Digits("+integer+",0)"));
@@ -280,19 +297,19 @@ public class Generator {
                        message.add(String.format("regex:\"必须输入制定格式字符串\""));
         		   }
         		   if(validAry[j].toLowerCase().startsWith("email")){
-        			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
-        			   rules.add(String.format("new ZEmail(%s)",content));
+        			  // String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+        			   rules.add(String.format("new EmailRule()"));
         			   jsrules.add(String.format("email:true"));
-                       message.add(String.format("email:\"必须输入合法日期\""));
+                       //message.add(String.format("email:\"请输入正确邮箱地址\""));
         		   }
         		   if(validAry[j].toLowerCase().startsWith("phone")){
-        			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
-        			   rules.add(String.format("new ZPhone(%s)",content));
+        			   //String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+        			   rules.add(String.format("new PhoneRule()"));
         			   jsrules.add(String.format("phone:true"));
         		   }
         		   if(validAry[j].toLowerCase().startsWith("money")){
-        			   String content=StringUtil.getContentBetween(validAry[j], "(", ")");
-        			   rules.add(String.format("new ZMoney(%s)",content));
+        			  // String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+        			   rules.add(String.format("new MoneyRule()"));
         			   jsrules.add(String.format("money:true"));
         		   }
         	   }
@@ -325,12 +342,19 @@ public class Generator {
             sb.append(tab2+"String "+zcol.getName()+" = request.getParameter(\""+zcol.getName()+"\");").append(ctrl)
             .append(tab2+"if(!StringUtil.isBlank("+zcol.getName()+")){").append(ctrl);
             if(type.startsWith("date")||type.startsWith("timestamp")||type.startsWith("datetime")){
-                sb.append(tab3+"if(StringUtil.checkNumeric("+zcol.getName()+")){").append(ctrl)
-                .append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"("+changeMySqlType2JavaType(type)+".valueOf("+zcol.getName()+"));").append(ctrl)
-                .append(tab3+"}else if(StringUtil.checkDateStr("+zcol.getName()+", \""+getYMDStr(type)+"\")){").append(ctrl)
+                sb.append(tab3+"if(StringUtil.checkNumeric("+zcol.getName()+")){").append(ctrl);
+                if(type.startsWith("date")){
+                    sb.append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"(new Date("+zcol.getName()+"));").append(ctrl);
+                }else{
+                sb.append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"("+changeMySqlType2JavaType(type)+".valueOf("+zcol.getName()+"));").append(ctrl);
+                }
+                sb.append(tab3+"}else if(StringUtil.checkDateStr("+zcol.getName()+", \""+getYMDStr(type)+"\")){").append(ctrl)
                 .append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"(");
                 if(type.startsWith("timestamp")){
                     sb.append("new Timestamp( DateUtil.parseToDate("+zcol.getName()+", \""+getYMDStr(type)+"\").getTime()");
+                }
+                if(type.startsWith("date")){
+                    sb.append("DateUtil.parseToDate("+zcol.getName()+", \""+getYMDStr(type)+"\"");
                 }
                 sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
             }else{
@@ -348,7 +372,7 @@ public class Generator {
      */
     public String getSearchParam(){
         StringBuffer sb =new StringBuffer();
-        sb.append(tab2+"HashMap params= new HashMap();").append(ctrl);
+        sb.append(tab2+"HashMap<String,Object> params= new HashMap<String,Object>();").append(ctrl);
         for(int i=0;i<table.getCols().size();i++){
             ZColum zcol =table.getCols().get(i); 
             String type = zcol.getType().toLowerCase();
@@ -361,6 +385,9 @@ public class Generator {
                 .append(tab4+String.format("params.put(\"%s\",",zcol.getName()));
                 if(type.startsWith("timestamp")){
                     sb.append("new Timestamp( DateUtil.parseToDate("+zcol.getName()+", \""+getYMDStr(type)+"\").getTime()");
+                }
+                if(type.startsWith("date")){
+                    sb.append("DateUtil.parseToDate("+zcol.getName()+", \""+getYMDStr(type)+"\"");
                 }
                 sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
                 
@@ -383,6 +410,9 @@ public class Generator {
                 if(type.startsWith("timestamp")){
                     sb.append("new Timestamp( DateUtil.parseToDate("+zcol.getName()+"Begin, \""+getYMDStr(type)+"\").getTime()");
                 }
+                if(type.startsWith("date")){
+                    sb.append("DateUtil.parseToDate("+zcol.getName()+"Begin, \""+getYMDStr(type)+"\"");
+                }
                 sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
                 sb.append(tab2+"}").append(ctrl);
                 
@@ -395,6 +425,9 @@ public class Generator {
                 .append(tab4+String.format("params.put(\"%sEnd\",",zcol.getName()));
                 if(type.startsWith("timestamp")){
                     sb.append("new Timestamp( DateUtil.parseToDate("+zcol.getName()+"End, \""+getYMDStr(type)+"\").getTime()");
+                }
+                if(type.startsWith("date")){
+                    sb.append("DateUtil.parseToDate("+zcol.getName()+"End, \""+getYMDStr(type)+"\"");
                 }
                 sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
                 sb.append(tab2+"}").append(ctrl);
@@ -421,7 +454,8 @@ return ymd;
         else{
             int end =str.indexOf(")");
             if(end>index){
-                return Integer.valueOf(str.substring(index,end-index));
+                String val = str.substring(index+1,end);
+                return Integer.valueOf(val);
             }else{
                 return null;
             }
@@ -456,11 +490,41 @@ return ymd;
         root.put("getSearchParam", getSearchParam());
         root.put("setParam",  getSetParam());
         root.put("validCode", getValidStr());
+        root.put("controllerViewMethod", getCtrlViewM());
+       
         writeFile("src/main/java/cola/machine/action/",table.getName() + "Controller.java", "controller");
     }
-
+   
+    private String getCtrlViewM() {
+        StringBuffer sb =new StringBuffer();
+        sb.append("String id = request.getParameter(\"id\");").append(ctrl);
+        sb.append("HashMap<String,Object> result =new HashMap<String,Object>();").append(ctrl);
+        sb.append("if(!StringUtil.isBlank(id)){").append(ctrl);
+            sb.append(tab+""+StringUtil.getAbc(table.getName())+" bean = "+StringUtil.getabc(table.getName())+"Service.selectByPrimaryKey(Long.valueOf(id));").append(ctrl);
+            sb.append(tab+"result.put(\"bean\", bean);").append(ctrl);
+            if(table.getMapper()!=null){
+            sb.append(tab+"HashMap<String,String> params =new HashMap<String,String>();").append(ctrl);
+            sb.append(tab+"params.put(\""+table.getMapper().getChild()+"\",id);").append(ctrl);
+        sb.append(tab+"List<"+StringUtil.getAbc(table.getMapper().getMapper())+"> childMaps ="+StringUtil.getabc(table.getMapper().getMapper())+"Service.listByParams(new HashMap<String,String>());").append(ctrl);
+        sb.append(tab+"result.put(\"childMaps\", childMaps);").append(ctrl);
+            }
+        sb.append("}").append(ctrl);
+        if(table.getMapper()!=null){
+            sb.append("List<"+StringUtil.getAbc(table.getMapper().getChild())+"> childs ="+StringUtil.getabc(table.getMapper().getChild())+"Service.listByParams(new HashMap<String,String>());").append(ctrl);
+            sb.append("result.put(\"childs\", childs);").append(ctrl);
+        }
+        sb.append("return this.getResult(result);").append(ctrl);
+        return sb.toString();
+    }
     public void genService() throws IOException, TemplateException {
         logger.info("genService");
+        if(table.getMapper()!=null){
+            
+            ZTable childTable = allTable.get(table.getMapper().getMapper());
+            ;
+            String s= this.changeMySqlType2JavaType(childTable.getPk().getType())+".valueOf(stNow)";
+            root.put("serviceSaveWithChilds", s);
+            }
         writeFile("src/main/java/cola/machine/service/",table.getName() + "Service.java", "service");
     }
 
@@ -525,15 +589,15 @@ return ymd;
                 }
                 if(validAry[j].toLowerCase().startsWith("email")){
                     String content=StringUtil.getContentBetween(validAry[j], "(", ")");
-                    rules.add(String.format("new ZEmail(%s)",content));
+                    rules.add(String.format("new EmailRule(%s)",content));
                 }
                 if(validAry[j].toLowerCase().startsWith("phone")){
                     String content=StringUtil.getContentBetween(validAry[j], "(", ")");
-                    rules.add(String.format("new ZPhone(%s)",content));
+                    rules.add(String.format("new PhoneRule(%s)",content));
                 }
                 if(validAry[j].toLowerCase().startsWith("money")){
                     String content=StringUtil.getContentBetween(validAry[j], "(", ")");
-                    rules.add(String.format("new ZMoney(%s)",content));
+                    rules.add(String.format("new MoneyRule(%s)",content));
                 }
             }
         }
@@ -546,7 +610,7 @@ return ymd;
     public void genSql() throws IOException, TemplateException {
         logger.info("genSql");
         StringBuffer sql =new StringBuffer();
-        sql.append("CREATE TABLE `").append(table.getName()).append("` (").append(ctrl);
+        sql.append("CREATE TABLE `").append(table.getTableName()).append("` (").append(ctrl);
         for(int i=0;i<table.getCols().size();i++){
             ZColum column = table.getCols().get(i);
             sql.append(tab+"`"+column.getName()+"` "+column.getType());
@@ -599,8 +663,11 @@ return ymd;
                     }
                     sb.append(tab3+String.format("<input type=\"text\" "+commonStr+"  maxlength=\"%d\" placeholder=\""+zcol.getRemark()+"\" ></input>",
                             length)).append(ctrl);
-                }
-                if(type.startsWith("int")){
+                    
+                    
+                    
+                }else
+                if(type.startsWith("int")||type.startsWith("bigint")){
                     //有一种checkbox 的选项
                     if(zcol.getShowValue()!=null){
                         sb.append(tab3+String.format("<select "+commonStr+" >"
@@ -622,13 +689,13 @@ return ymd;
                         sb.append(tab3+String.format("<input type=\"number\" "+commonStr+" maxlength=\"%d\" onkeyup=\"chkInt(this,8)\" onafterpaste=\"chkInt(this,8)\" placeholder=\""+zcol.getRemark()+"\"></input>"
                                 ,maxlength)).append(ctrl);
                     }
-                }
+                }else
                 if(type.startsWith("float") ||type.startsWith("double") ){
                     int integer=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(",")));
                     int fraction=Integer.valueOf(type.substring(type.indexOf(",")+1, type.indexOf(")")));
                     sb.append(tab3+String.format("<input type=\"number\" "+commonStr+" onkeyup=\"chkFloat(this,%d,%d)\" onafterpaste=\"chkFloat(this,%d,%d)\" placeholder=\""+zcol.getRemark()+"\" ></input>",
                            integer,fraction,integer,fraction)).append(ctrl);
-                }
+                }else
                 if(type.equals("date")||type.equals("datetime")||type.equals("timestamp")){
                     sb.append(getSearchFormItem(zcol));
                    /* sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"\" ></input>")).append(ctrl);
@@ -717,7 +784,7 @@ return ymd;
                     sb.append(tab3+String.format("<%s %s "+commonStr+"  maxlength=\"%d\"></%s>",
                             tagName,tagName.equals("text")?" type=\"text\" ":"",length,tagName)).append(ctrl);
                 }
-                if(type.startsWith("int")){
+                if(type.startsWith("int")|| type.startsWith("bigint")){
                     //有一种checkbox 的选项
                     if(zcol.getShowValue()!=null){
                         sb.append(tab3+String.format("<select  "+commonStr+" >"
@@ -830,20 +897,26 @@ return ymd;
         return sb.toString();
         
     }
-
-    public static void main(String[] args) {
+    public static void generate(String[] codes){
         Generator gen = new Generator();
+        
         try {
-            gen.init();
-            gen.genBean();
-            gen.genMapper();
-            gen.genService();
-            gen.genController();
-            gen.genSql();
-            gen.genMapperXml();
-            gen.genListHtml();
-            gen.genEditHtml();
-            gen.genViewHtml();
+            for(int i=0;i<codes.length;i++){
+                gen.init(codes[i]);
+            }
+            for(int i=0;i<codes.length;i++){
+                gen.intTpl(codes[i]);
+                gen.genBean();
+                gen.genMapper();
+                gen.genService();
+                gen.genController();
+                gen.genSql();
+                gen.genMapperXml();
+                gen.genListHtml();
+                gen.genEditHtml();
+                gen.genViewHtml();
+            }
+            
             
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -856,7 +929,11 @@ return ymd;
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+    public static void main(String[] args) {
 
+        Generator.generate(new String[]{"SysResource","SysRole","SysUser","SysUserRole","SysRoleResource","SysUserResource"});
+       
     }
 
   

@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1″>
 <title>Insert title here</title>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="/static/js/common.js"></script>
 <script type="text/javascript" >
 /* var WEBCONTEXT="${path}";
@@ -23,12 +24,13 @@ includeCSS(["/static/css/bootstrap.min.css",
   "/static/css/head.css",
    "/static/css/global.css",
     "/static/css/widget.css",
+    "/static/css/window.css",
+    "/static/css/zTreeStyle.css"
+  
 ]);
 
 
-includeJS(["/static/js/jquery.min.js",
-           
-           "/static/js/menu.js" ,
+includeJS(["/static/js/menu.js" ,
            "/static/js/validmsg.js",
            "/static/js/DateUtils.js",
            "/static/js/jquery-ui.min.js",
@@ -38,10 +40,12 @@ includeJS(["/static/js/jquery.min.js",
             "/static/js/jquery.validate.js",
             "/static/js/additional-methods.js",
             "/static/js/index.js",
-            
+            "/static/js/window.js",
             "/static/js/bootstrap.min.js",
-             
-          
+            "/static/js/drag.js",
+            "/static/js/dialog.js",
+            "/static/js/jquery.ztree.core-3.5.js",
+            "/static/js/jquery.ztree.excheck-3.5.js",
           ]);
 </script>
 
@@ -92,7 +96,7 @@ includeJS(["/static/js/jquery.min.js",
 							class="avatar w-32"><img src="img/a0.jpg"
 								alt="..."> <i class="on b-white bottom"></i></span></a>
 								<ul id="menu1" class="pull-right dropdown-menu" aria-labelledby="drop4">
-          <li><a href="/calendar/logout.htm">登出</a></li>
+          <li><a href="javascript:void(0)" id="logout">登出</a></li>
           <li role="separator" class="divider"></li>
      <li><a href="#">修改资料</a></li>
         </ul>
@@ -102,6 +106,7 @@ includeJS(["/static/js/jquery.min.js",
 			</li>-->
 		
 			</ul>
+			<div id="dialog-zone"></div>
 			<!-- <div class="collapse navbar-toggleable-sm"   id="collapse">
                     <form
                         class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m ng-pristine ng-valid ng-scope"
@@ -190,6 +195,12 @@ var menuList=[
               {id:12,name:"alert",url:PATH+"/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
               {id:13,name:"短信",url:PATH+"/smsBatch/list.htm",icon:"fa fa-spinner",pid:0}, 
               {id:14,name:"合作伙伴",url:PATH+"/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0}, 
+              {id:15,name:"用户",url:PATH+"/sysUser/list.htm",icon:"fa fa-spinner",pid:0}, 
+              {id:16,name:"角色",url:PATH+"/sysRole/list.htm",icon:"fa fa-spinner",pid:0},
+              {id:17,name:"资源",url:PATH+"/sysResource/list.htm",icon:"fa fa-spinner",pid:0},
+              {id:18,name:"用户角色",url:PATH+"/sysUserRole/list.htm",icon:"fa fa-spinner",pid:0},
+              {id:19,name:"角色资源",url:PATH+"/sysRoleResource/list.htm",icon:"fa fa-spinner",pid:0},
+              {id:20,name:"用户资源",url:PATH+"/sysUserResource/list.htm",icon:"fa fa-spinner",pid:0},
               ]
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 </script>

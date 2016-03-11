@@ -1,5 +1,14 @@
 package cola.machine.action;
 
+import java.io.File;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -7,6 +16,10 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,278 +29,712 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cola.machine.bean.User;
 import cola.machine.service.UserService;
 import cola.machine.service.ValidCodeService;
+import cola.machine.util.DateUtil;
 import cola.machine.util.RandomValidateCode;
+import cola.machine.util.ResultUtil;
+import cola.machine.util.StringUtil;
+import cola.machine.util.ValidateUtil;
+import cola.machine.util.rules.DateValue;
+import cola.machine.util.rules.EmailRule;
+import cola.machine.util.rules.Length;
+import cola.machine.util.rules.NotEmpty;
+import cola.machine.util.rules.Rule;
+import cola.machine.web.listener.MySessionContext;
 import core.action.ResultDTO;
+import core.page.Page;
+import core.util.RequestUtil;
 
 @Controller
 // @RequestMapping("/")
 public class UserController extends BaseController {
-	private final Logger log = LoggerFactory.getLogger(UserController.class);
-	@Autowired
-	private UserService userService;
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
+    @Autowired
+    private UserService userService;
 
-	/*
-	 * @InitBinder // 此处的参数也可以是ServletRequestDataBinder类型 public void
-	 * initBinder(ServletRequestDataBinder binder) throws Exception { DateFormat
-	 * df = new SimpleDateFormat("yyyy-MM-dd"); CustomDateEditor dateEditor =
-	 * new CustomDateEditor(df, true); binder.registerCustfomEditor(Date.class,
-	 * dateEditor); }
-	 */
-	@RequestMapping(value = "/login.htm", method = RequestMethod.GET)
-	public String loginGet(HttpServletRequest request) {
-		// String s =request.getParameter("s");
-		// s.substring(12);
-		// logger.debug("s");
-		// System.out.println(123);
-		return "/static/html/login.html";
-	}
-	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+    /*
+     * @InitBinder // 此处的参数也可以是ServletRequestDataBinder类型 public void
+     * initBinder(ServletRequestDataBinder binder) throws Exception { DateFormat
+     * df = new SimpleDateFormat("yyyy-MM-dd"); CustomDateEditor dateEditor =
+     * new CustomDateEditor(df, true); binder.registerCustfomEditor(Date.class,
+     * dateEditor); }
+     */
+    @RequestMapping(value = "/login.htm", method = RequestMethod.GET)
+    public String loginGet(HttpServletRequest request) {
+        // String s =request.getParameter("s");
+        // s.substring(12);
+        // logger.debug("s");
+        // System.out.println(123);
+        return "/static/html/login.html";
+    }
+
+    @RequestMapping(value = "/user/list.json", method = RequestMethod.GET)
+    public @ResponseBody ResultDTO listAllUsers() {
+        List userList = new ArrayList();
+        Iterator iter = MySessionContext.getMyMap().keySet().iterator();
+        while (iter.hasNext()) {
+            Object key = iter.next();
+            Object val = MySessionContext.getMyMap().get(key);
+            if (val != null) {
+                HttpSession session = (HttpSession) val;
+                Object userObj = session.getAttribute("user");
+                session.invalidate();
+                if (userObj != null) {
+                    System.out.println(((User) userObj).getEmail());
+                    userList.add(((User) userObj).getEmail());
+                }
+            }
+        }
+        return ResultUtil.getDataResult(userList);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index3(HttpServletRequest request) {
-	    request.setAttribute("path", "/calendar");
+        request.setAttribute("path", "/calendar");
         return "/jsp/index.jsp";
     }
-	
-	/**
-	 * 说明:登录提交
-	 * 
-	 * @param request
-	 * @return
-	 * @author dozen.zhang
-	 * @date 2015年5月14日上午11:33:39
-	 */
-	@RequestMapping(value = "/loginPost.json", method = RequestMethod.POST)
-	public @ResponseBody ResultDTO loginPost(HttpServletRequest request) {
-		String email = request.getParameter("email");
-		String pwd = request.getParameter("pwd");
-		String imgCaptcha=request.getParameter("picCaptcha");
-		String smsCaptcha=request.getParameter("smsCaptcha");
-		String sessionid =request.getParameter("sessionid");
-		ValidCodeService validCodeService=new ValidCodeService();
-		
-		ResultDTO result = validCodeService.remoteValidSms(email,smsCaptcha);
-		if(!result.isRight()){
-         //   return result;
+
+    /**
+     * 说明:登录提交
+     * 
+     * @param request
+     * @return
+     * @author dozen.zhang
+     * @date 2015年5月14日上午11:33:39
+     */
+    @RequestMapping(value = "/loginPost.json", method = RequestMethod.POST)
+    public @ResponseBody ResultDTO loginPost(HttpServletRequest request) {
+        String email = request.getParameter("email");
+        String pwd = request.getParameter("pwd");
+        String imgCaptcha = request.getParameter("picCaptcha");
+        String smsCaptcha = request.getParameter("smsCaptcha");
+        String sessionid = request.getParameter("sessionid");
+        ValidCodeService validCodeService = new ValidCodeService();
+
+        ResultDTO result = validCodeService.remoteValidSms(email, smsCaptcha);
+        if (!result.isRight()) {
+            // return result;
         }
-		 result = validCodeService.remoteValidImg(sessionid,imgCaptcha);
-		if(!result.isRight()){
-		    return result;
-		}
-		result = this.userService.loginValid(email, pwd);
-		if (result.isRight()) {
-			  User user = (User)result.getData();
-			  request.getSession().setAttribute("user", user);
-			  result.setData(null);
-		}
-		return result;
-	}
+        result = validCodeService.remoteValidImg(sessionid, imgCaptcha);
+        if (!result.isRight()) {
+            return result;
+        }
+        result = this.userService.loginValid(email, pwd);
+        if (result.isRight()) {
+            User user = (User) result.getData();
+            request.getSession().setAttribute("user", user);
+            result.setData(null);
+        }
+        return result;
+    }
 
-	/**
-	 * 说明:转到注册页面
-	 * 
-	 * @param request
-	 * @return
-	 * @author dozen.zhang
-	 * @date 2015年5月14日上午11:33:55
-	 */
-	@RequestMapping(value = "/register.htm", method = RequestMethod.GET)
-	public String registerGet(HttpServletRequest request) {
-		return "user/register.html";
-	}
+    /**
+     * 说明:转到注册页面
+     * 
+     * @param request
+     * @return
+     * @author dozen.zhang
+     * @date 2015年5月14日上午11:33:55
+     */
+    @RequestMapping(value = "/register.htm", method = RequestMethod.GET)
+    public String registerGet(HttpServletRequest request) {
+        return "user/register.html";
+    }
 
-	/**
-	 * 说明:注册提交
-	 * 
-	 * @param user  
-	 * @param request
-	 * @return
-	 * @author dozen.zhang
-	 * @date 2015年5月14日上午11:34:13
-	 */
-	@RequestMapping(value = "/registerPost.json", method = RequestMethod.POST)
-	public @ResponseBody ResultDTO registerPost(User user,
-			HttpServletRequest request) {
-		// 新注册的用户激活状态为false
-		// 判断邮箱是否邮箱
-		// 判断用户名是否有效
-		// 判断注册邮箱是否重复
+    /**
+     * 说明:注册提交
+     * 
+     * @param user
+     * @param request
+     * @return
+     * @author dozen.zhang
+     * @date 2015年5月14日上午11:34:13
+     */
+    @RequestMapping(value = "/registerPost.json", method = RequestMethod.POST)
+    public @ResponseBody ResultDTO registerPost(User user, HttpServletRequest request) {
+        // 新注册的用户激活状态为false
+        // 判断邮箱是否邮箱
+        // 判断用户名是否有效
+        // 判断注册邮箱是否重复
 
-		// 两次密码输入是否相同
-		// 密码是否有效
-		// 验证码是否有效
+        // 两次密码输入是否相同
+        // 密码是否有效
+        // 验证码是否有效
 
-		ResultDTO result = this.userService.saveRegisterUser(user);// .loginValid(loginName,
-																	// pwd);
-		if (result.isRight()) {
-			HttpSession session = request.getSession();
-			user.setPwd("");
-			user.setActive(false);
-			session.putValue("user", user);
-		}
-		return result;
+        ResultDTO result = this.userService.saveRegisterUser(user);// .loginValid(loginName,
+                                                                   // pwd);
+        if (result.isRight()) {
+            HttpSession session = request.getSession();
+            user.setPwd("");
+            user.setActive(false);
+            session.putValue("user", user);
+        }
+        return result;
 
-	}
+    }
 
-	/**
-	 * 说明:等待激活页面
-	 * 
-	 * @param request
-	 * @return
-	 * @author dozen.zhang
-	 * @date 2015年5月14日上午11:34:35
-	 */
-	@RequestMapping(value = "/waitActive.htm", method = RequestMethod.GET)
-	public String waitActive(HttpServletRequest request) {
-		return "/active/waitActive.html";
-	}
+    /**
+     * 说明:等待激活页面
+     * 
+     * @param request
+     * @return
+     * @author dozen.zhang
+     * @date 2015年5月14日上午11:34:35
+     */
+    @RequestMapping(value = "/waitActive.htm", method = RequestMethod.GET)
+    public String waitActive(HttpServletRequest request) {
+        return "/active/waitActive.html";
+    }
 
-	/**
-	 * 说明:激活邮件回跳页面
-	 * 
-	 * @param request
-	 * @return
-	 * @author dozen.zhang
-	 * @date 2015年5月14日上午11:35:09
-	 */
-	@RequestMapping(value = "/active.htm", method = RequestMethod.GET)
-	public String active(HttpServletRequest request) {
-		String activeid = request.getParameter("activeid");
-		ResultDTO result;
-		if (StringUtils.isNotBlank(activeid)) {
-			result = this.userService.updateUserActive(activeid);
-		} else {
-			request.setAttribute("msg", "激活url无效");
-			return "/error.jsp";
-		}
-		if (result.isRight()) {
-			// 把用户信息传入到session 中并让他登录到首页
-			User user = (User) result.getData();
-			request.getSession().setAttribute("user", user);
-		} else {
-			// 提示激活url无效
-			request.setAttribute("msg", result.getMsg());
-			return "/error.jsp";
-		}
-		return "/active/active.jsp";
-	}
+    /**
+     * 说明:激活邮件回跳页面
+     * 
+     * @param request
+     * @return
+     * @author dozen.zhang
+     * @date 2015年5月14日上午11:35:09
+     */
+    @RequestMapping(value = "/active.htm", method = RequestMethod.GET)
+    public String active(HttpServletRequest request) {
+        String activeid = request.getParameter("activeid");
+        ResultDTO result;
+        if (StringUtils.isNotBlank(activeid)) {
+            result = this.userService.updateUserActive(activeid);
+        } else {
+            request.setAttribute("msg", "激活url无效");
+            return "/error.jsp";
+        }
+        if (result.isRight()) {
+            // 把用户信息传入到session 中并让他登录到首页
+            User user = (User) result.getData();
+            request.getSession().setAttribute("user", user);
+        } else {
+            // 提示激活url无效
+            request.setAttribute("msg", result.getMsg());
+            return "/error.jsp";
+        }
+        return "/active/active.jsp";
+    }
 
-	@RequestMapping(value = "/index.htm", method = RequestMethod.GET)
-	public String index(HttpServletRequest request) {
-		// System.out.println(request.getParameter("path"));
-		// System.out.println(request.getSession().getAttribute("path"));
-		// System.out.println(request.getServletContext().getAttribute("path"));
+    @RequestMapping(value = "/index.htm", method = RequestMethod.GET)
+    public String index(HttpServletRequest request) {
+        // System.out.println(request.getParameter("path"));
+        // System.out.println(request.getSession().getAttribute("path"));
+        // System.out.println(request.getServletContext().getAttribute("path"));
 
-		// logger.debug("s");
-		// LogUtil.debug("nihao");
-		// System.out.println(123);
-		request.setAttribute("path", "/calendar");
-		return "/jsp/index.jsp";
-	}
+        // logger.debug("s");
+        // LogUtil.debug("nihao");
+        // System.out.println(123);
+        request.setAttribute("path", "/calendar");
+        return "/jsp/index.jsp";
+    }
 
-	@RequestMapping(value = "/index2", method = RequestMethod.GET)
-	public String index2(HttpServletRequest request) {
-		// System.out.println(request.getParameter("path"));
-		// System.out.println(request.getSession().getAttribute("path"));
-		// System.out.println(request.getServletContext().getAttribute("path"));
-		request.setAttribute("path", "/calendar");
-		return "/index.jsp";
-	}
+    @RequestMapping(value = "/index2", method = RequestMethod.GET)
+    public String index2(HttpServletRequest request) {
+        // System.out.println(request.getParameter("path"));
+        // System.out.println(request.getSession().getAttribute("path"));
+        // System.out.println(request.getServletContext().getAttribute("path"));
+        request.setAttribute("path", "/calendar");
+        return "/index.jsp";
+    }
 
-	@RequestMapping(value = "/forgetpwd.htm", method = RequestMethod.GET)
-	public String forgetPwd(HttpServletRequest request) {
-		RandomValidateCode r = new RandomValidateCode();
-		String[] returnStr=new String[2];
-		try{
-		    returnStr= r.getImgRandcode();
-		}catch(Exception e){
-		}
-		String imgName = returnStr[0];
-		String code = returnStr[1];
-		request.setAttribute("imgname", imgName);
-		request.getSession().setAttribute("validatecode", code);
-		// TODO 需增加回收机制 回收已经生成过的图片
-		return "/login/forgetpwd.jsp";
-	}
-
-	@RequestMapping(value = "/validatecode", method = RequestMethod.GET)
-	public @ResponseBody ResultDTO validateCode(HttpServletRequest request) {
-		RandomValidateCode r = new RandomValidateCode();
-		String[] returnStr=new String[2];
-        try{
-            returnStr= r.getImgRandcode();
-        }catch(Exception e){
+    @RequestMapping(value = "/forgetpwd.htm", method = RequestMethod.GET)
+    public String forgetPwd(HttpServletRequest request) {
+        RandomValidateCode r = new RandomValidateCode();
+        String[] returnStr = new String[2];
+        try {
+            returnStr = r.getImgRandcode();
+        } catch (Exception e) {
         }
         String imgName = returnStr[0];
         String code = returnStr[1];
-		ResultDTO result =new ResultDTO();
-		request.getSession().setAttribute("validatecode", code);
-		result.setR(1);
-		result.setData(imgName);
-	
-		return result;
-	}
+        request.setAttribute("imgname", imgName);
+        request.getSession().setAttribute("validatecode", code);
+        // TODO 需增加回收机制 回收已经生成过的图片
+        return "/login/forgetpwd.jsp";
+    }
 
-	@RequestMapping(value = "/forgetpwd/save.json", method = RequestMethod.POST)
-	public @ResponseBody ResultDTO sendPwdRstEmail(HttpServletRequest request) {
-		// 生成图片
-		// 得到验证码
-		String validatecode = (String) request.getSession().getAttribute(
-				"validatecode");
-		// 验证验证码
-		String code = request.getParameter("code");
-		if (!validatecode.equals(code)) {
-			return this.getWrongResultFromCfg("validatecode.wrong");
-		}
-		String email = request.getParameter("email");
-		return userService.saveSenPwdrstEmail(email);
-		// 发送邮件
-		// return "/login/pwdreset.jsp";
-	}
+    @RequestMapping(value = "/validatecode", method = RequestMethod.GET)
+    public @ResponseBody ResultDTO validateCode(HttpServletRequest request) {
+        RandomValidateCode r = new RandomValidateCode();
+        String[] returnStr = new String[2];
+        try {
+            returnStr = r.getImgRandcode();
+        } catch (Exception e) {
+        }
+        String imgName = returnStr[0];
+        String code = returnStr[1];
+        ResultDTO result = new ResultDTO();
+        request.getSession().setAttribute("validatecode", code);
+        result.setR(1);
+        result.setData(imgName);
 
-	/**
-	 * 说明:从密码重置链接中跳转到系统的密码重置页面
-	 * 
-	 * @param id
-	 * @param request
-	 * @return
-	 * @author dozen.zhang
-	 * @date 2015年5月20日下午4:24:22
-	 */
-	@RequestMapping(value = "/pwdrst/edit.htm", method = RequestMethod.POST)
-	public String editPwdrst(@PathVariable String id, HttpServletRequest request) {
-		request.setAttribute("id", id);
-		return "/login/pwdreset.jsp";
-	}
+        return result;
+    }
 
-	@RequestMapping(value = "/pwdrst/save.htm", method = RequestMethod.POST)
-	public String savePwdrst(HttpServletRequest request) {
-		String pwd = request.getParameter("pwd");
-		String code = request.getParameter("code");
-		ResultDTO result = userService.savePwdrst(pwd, code);
-		// 发送邮件
-		return "/login/pwdreset.jsp";
-	}
+    @RequestMapping(value = "/forgetpwd/save.json", method = RequestMethod.POST)
+    public @ResponseBody ResultDTO sendPwdRstEmail(HttpServletRequest request) {
+        // 生成图片
+        // 得到验证码
+        String validatecode = (String) request.getSession().getAttribute("validatecode");
+        // 验证验证码
+        String code = request.getParameter("code");
+        if (!validatecode.equals(code)) {
+            return this.getWrongResultFromCfg("validatecode.wrong");
+        }
+        String email = request.getParameter("email");
+        return userService.saveSenPwdrstEmail(email);
+        // 发送邮件
+        // return "/login/pwdreset.jsp";
+    }
 
-	@RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
-	public String logout(HttpServletRequest request) {
-		request.getSession().removeAttribute("user");
-		return "/static/html/login.html";
-	}
+    /**
+     * 说明:从密码重置链接中跳转到系统的密码重置页面
+     * 
+     * @param id
+     * @param request
+     * @return
+     * @author dozen.zhang
+     * @date 2015年5月20日下午4:24:22
+     */
+    @RequestMapping(value = "/pwdrst/edit.htm", method = RequestMethod.POST)
+    public String editPwdrst(@PathVariable String id, HttpServletRequest request) {
+        request.setAttribute("id", id);
+        return "/login/pwdreset.jsp";
+    }
 
-	@RequestMapping(value = "/user/edit.htm", method = RequestMethod.GET)
-	public String editUser(@PathVariable String userid,
-			HttpServletRequest request) {
-		User user = this.userService.getUserByUserid(userid);
-		request.setAttribute("user", user);
-		return "/user/editUser";
-	}
+    @RequestMapping(value = "/pwdrst/save.htm", method = RequestMethod.POST)
+    public String savePwdrst(HttpServletRequest request) {
+        String pwd = request.getParameter("pwd");
+        String code = request.getParameter("code");
+        ResultDTO result = userService.savePwdrst(pwd, code);
+        // 发送邮件
+        return "/login/pwdreset.jsp";
+    }
 
-	@RequestMapping(value = "/user/view.htm", method = RequestMethod.GET)
-	public String viewUser(@PathVariable String userid,
-			HttpServletRequest request) {
-		User user = this.userService.getUserByUserid(userid);
-		request.setAttribute("user", user);
-		return "/user/viewUser";
-	}
+    @RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("user");
+        return "/static/html/login.html";
+    }
 
+    @RequestMapping(value = "/user/edit.htm", method = RequestMethod.GET)
+    public String editUser(@PathVariable String userid, HttpServletRequest request) {
+        User user = this.userService.getUserByUserid(userid);
+        request.setAttribute("user", user);
+        return "/user/editUser";
+    }
+
+    @RequestMapping(value = "/user/view.htm", method = RequestMethod.GET)
+    public String viewUser(@PathVariable String userid, HttpServletRequest request) {
+        User user = this.userService.getUserByUserid(userid);
+        request.setAttribute("user", user);
+        return "/user/viewUser";
+    }
+    
+    
+    /**
+     * 说明: 跳转到角色列表页面
+     * 
+     * @return
+     * @return String
+     * @author dozen.zhang
+     * @date 2015年11月15日下午12:30:45
+     */
+    @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
+    public String list() {
+        return "/static/html/UserList.html";
+    }
+
+ 
+    /**
+     * 说明:ajax请求角色信息
+     * 
+     * @param curPage
+     * @param pageSize
+     * @return
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午12:31:55
+     */
+    @RequestMapping(value = "/list.json")
+    @ResponseBody
+    public Object list(HttpServletRequest request) {
+        Page page = RequestUtil.getPage(request);
+        if(page ==null){
+             return this.getWrongResultFromCfg("err.param.page");
+        }
+        
+        HashMap params= new HashMap();
+        String userid = request.getParameter("userid");
+        if(!StringUtil.isBlank(userid)){
+                params.put("userid",userid);
+        }
+        String loginname = request.getParameter("loginname");
+        if(!StringUtil.isBlank(loginname)){
+                params.put("loginname",loginname);
+        }
+        String nickname = request.getParameter("nickname");
+        if(!StringUtil.isBlank(nickname)){
+                params.put("nickname",nickname);
+        }
+        String pwd = request.getParameter("pwd");
+        if(!StringUtil.isBlank(pwd)){
+                params.put("pwd",pwd);
+        }
+        String email = request.getParameter("email");
+        if(!StringUtil.isBlank(email)){
+                params.put("email",email);
+        }
+        String username = request.getParameter("username");
+        if(!StringUtil.isBlank(username)){
+                params.put("username",username);
+        }
+        String telno = request.getParameter("telno");
+        if(!StringUtil.isBlank(telno)){
+                params.put("telno",telno);
+        }
+        String createtime = request.getParameter("createtime");
+        if(!StringUtil.isBlank(createtime)){
+            if(StringUtil.checkNumeric(createtime)){
+                params.put("createtime",createtime);
+            }else if(StringUtil.checkDateStr(createtime, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtime, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createtimeBegin = request.getParameter("createtimeBegin");
+        if(!StringUtil.isBlank(createtimeBegin)){
+            if(StringUtil.checkNumeric(createtimeBegin)){
+                params.put("createtimeBegin",createtimeBegin);
+            }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createtimeEnd = request.getParameter("createtimeEnd");
+        if(!StringUtil.isBlank(createtimeEnd)){
+            if(StringUtil.checkNumeric(createtimeEnd)){
+                params.put("createtimeEnd",createtimeEnd);
+            }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+
+        params.put("page",page);
+        List<User> users = userService.listByParams4Page(params);
+        return ResultUtil.getResult(users, page);
+    }
+    
+    
+    
+    /**
+     * @param id 参数
+     * @param request 发请求
+     * @return Object
+     */
+    @RequestMapping(value = "/edit.htm")
+    public Object edit( HttpServletRequest request) {
+        // 查找所有的角色
+        return "/static/html/UserEdit.html";
+    }
+    @RequestMapping(value = "/view.htm")
+    public Object viewPage( HttpServletRequest request) {
+        return "/static/html/UserView.html";
+    }
+   
+      @RequestMapping(value = "/view.json")
+    @ResponseBody
+    public Object view(HttpServletRequest request) {
+        String id = request.getParameter("id");
+        User bean = userService.selectByPrimaryKey(String.valueOf(id));
+        return this.getResult(bean);
+    }
+
+    
+    /**
+     * 说明:保存角色信息
+     * 
+     * @param request
+     * @return
+     * @throws Exception
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午1:33:00
+     */
+    // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
+    @RequestMapping(value = "/save.json")
+    @ResponseBody
+    public Object save(HttpServletRequest request) throws Exception {
+        User user =new  User();
+        /*
+        String userid = request.getParameter("userid");
+        if(!StringUtil.isBlank(userid)){
+            user.setUserid(String.valueOf(userid)) ;
+        }
+        
+        String loginname = request.getParameter("loginname");
+        if(!StringUtil.isBlank(loginname)){
+            user.setLoginname(String.valueOf(loginname)) ;
+        }
+        
+        String nickname = request.getParameter("nickname");
+        if(!StringUtil.isBlank(nickname)){
+            user.setNickname(String.valueOf(nickname)) ;
+        }
+        
+        String pwd = request.getParameter("pwd");
+        if(!StringUtil.isBlank(pwd)){
+            user.setPwd(String.valueOf(pwd)) ;
+        }
+        
+        String email = request.getParameter("email");
+        if(!StringUtil.isBlank(email)){
+            user.setEmail(String.valueOf(email)) ;
+        }
+        
+        String username = request.getParameter("username");
+        if(!StringUtil.isBlank(username)){
+            user.setUsername(String.valueOf(username)) ;
+        }
+        
+        String telno = request.getParameter("telno");
+        if(!StringUtil.isBlank(telno)){
+            user.setTelno(String.valueOf(telno)) ;
+        }
+        
+        String createtime = request.getParameter("createtime");
+        if(!StringUtil.isBlank(createtime)){
+            user.setCreatetime(Timestamp.valueOf(createtime)) ;
+        }
+        */
+        String userid = request.getParameter("userid");
+        if(!StringUtil.isBlank(userid)){
+                user.setUserid(String.valueOf(userid));
+        }
+        String loginname = request.getParameter("loginname");
+        if(!StringUtil.isBlank(loginname)){
+                user.setLoginname(String.valueOf(loginname));
+        }
+        String nickname = request.getParameter("nickname");
+        if(!StringUtil.isBlank(nickname)){
+                user.setNickname(String.valueOf(nickname));
+        }
+        String pwd = request.getParameter("pwd");
+        if(!StringUtil.isBlank(pwd)){
+                user.setPwd(String.valueOf(pwd));
+        }
+        String email = request.getParameter("email");
+        if(!StringUtil.isBlank(email)){
+                user.setEmail(String.valueOf(email));
+        }
+        String username = request.getParameter("username");
+        if(!StringUtil.isBlank(username)){
+                user.setUsername(String.valueOf(username));
+        }
+        String telno = request.getParameter("telno");
+        if(!StringUtil.isBlank(telno)){
+                user.setTelno(String.valueOf(telno));
+        }
+        String createtime = request.getParameter("createtime");
+        if(!StringUtil.isBlank(createtime)){
+            if(StringUtil.checkNumeric(createtime)){
+                user.setCreatetime(Timestamp.valueOf(createtime));
+            }else if(StringUtil.checkDateStr(createtime, "yyyy-MM-dd HH:mm:ss")){
+                user.setCreatetime(new Timestamp( DateUtil.parseToDate(createtime, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+
+        //valid
+        ValidateUtil vu = new ValidateUtil();
+        String validStr="";
+        vu.add("userid", userid, "userid",  new Rule[]{new Length(40)});
+        vu.add("loginname", loginname, "登录名",  new Rule[]{new Length(40)});
+        vu.add("nickname", nickname, "昵称",  new Rule[]{new Length(40),new NotEmpty()});
+        vu.add("pwd", pwd, "密码",  new Rule[]{new Length(40),new NotEmpty()});
+        vu.add("email", email, "邮箱地址",  new Rule[]{new Length(40),new NotEmpty(),new EmailRule()});
+        vu.add("username", username, "姓名",  new Rule[]{new Length(45)});
+        vu.add("telno", telno, "手机号码",  new Rule[]{new Length(11),new NotEmpty()});
+        vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
+        validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+
+        return userService.save(user);
+    }
+    
+    @RequestMapping(value = "/del.json")
+    @ResponseBody
+    public Object delete(HttpServletRequest request) {
+        String useridStr = request.getParameter("userid");
+        if(StringUtil.isBlank(useridStr)){
+            return this.getWrongResultFromCfg("err.param.notnull");
+        }
+        String userid = String.valueOf(useridStr);
+        userService.delete(userid);
+        return this.getResult(SUCC);
+    }
+     /**
+     * 多行删除
+     * @param request
+     * @return
+     * @author dozen.zhang
+     */
+    @RequestMapping(value = "/mdel.json")
+    @ResponseBody
+    public Object multiDelete(HttpServletRequest request) {
+        String idStr = request.getParameter("userids");
+        if(StringUtil.isBlank(idStr)){
+            return this.getWrongResultFromCfg("err.param.notnull");
+        }
+        String idStrAry[]= idStr.split(",");
+        String idAry[]=new String[idStrAry.length];
+        for(int i=0,length=idAry.length;i<length;i++){
+            ValidateUtil vu = new ValidateUtil();
+            String validStr="";
+            String id = idStrAry[i];
+                    vu.add("userid", id, "userid",  new Rule[]{new Length(40)});
+
+            try{
+                validStr=vu.validateString();
+            }catch(Exception e){
+                e.printStackTrace();
+                validStr="验证程序异常";
+                return ResultUtil.getResult(302,validStr);
+            }
+            
+            if(StringUtil.isNotEmpty(validStr)) {
+                return ResultUtil.getResult(302,validStr);
+            }
+            idAry[i]=String.valueOf(idStrAry[i]);
+        }
+       return  userService.multilDelete(idAry);
+    }
+
+    /**
+     * 导出
+     * @param request
+     * @return
+     * @author dozen.zhang
+     */
+    @RequestMapping(value = "/export.json")
+    @ResponseBody   
+    public Object exportExcel(HttpServletRequest request){
+               HashMap params= new HashMap();
+        String userid = request.getParameter("userid");
+        if(!StringUtil.isBlank(userid)){
+                params.put("userid",userid);
+        }
+        String loginname = request.getParameter("loginname");
+        if(!StringUtil.isBlank(loginname)){
+                params.put("loginname",loginname);
+        }
+        String nickname = request.getParameter("nickname");
+        if(!StringUtil.isBlank(nickname)){
+                params.put("nickname",nickname);
+        }
+        String pwd = request.getParameter("pwd");
+        if(!StringUtil.isBlank(pwd)){
+                params.put("pwd",pwd);
+        }
+        String email = request.getParameter("email");
+        if(!StringUtil.isBlank(email)){
+                params.put("email",email);
+        }
+        String username = request.getParameter("username");
+        if(!StringUtil.isBlank(username)){
+                params.put("username",username);
+        }
+        String telno = request.getParameter("telno");
+        if(!StringUtil.isBlank(telno)){
+                params.put("telno",telno);
+        }
+        String createtime = request.getParameter("createtime");
+        if(!StringUtil.isBlank(createtime)){
+            if(StringUtil.checkNumeric(createtime)){
+                params.put("createtime",createtime);
+            }else if(StringUtil.checkDateStr(createtime, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtime, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createtimeBegin = request.getParameter("createtimeBegin");
+        if(!StringUtil.isBlank(createtimeBegin)){
+            if(StringUtil.checkNumeric(createtimeBegin)){
+                params.put("createtimeBegin",createtimeBegin);
+            }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createtimeEnd = request.getParameter("createtimeEnd");
+        if(!StringUtil.isBlank(createtimeEnd)){
+            if(StringUtil.checkNumeric(createtimeEnd)){
+                params.put("createtimeEnd",createtimeEnd);
+            }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+
+        // 查询list集合
+        List<User> list =userService.listByParams(params);
+        // 存放临时文件
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "list.xlsx");
+        String folder = request.getSession().getServletContext()
+                .getRealPath("/")
+                + "xlstmp";
+        File folder_file = new File(folder);
+        if (!folder_file.exists()) {
+            folder_file.mkdir();
+        }
+        String fileName = folder + File.separator
+                + DateUtil.formatToString(new Date(), "yyyyMMddHHmmssSSS")
+                + ".xlsx";
+        // 得到导出Excle时清单的英中文map
+        LinkedHashMap<String, String> colTitle = new LinkedHashMap<String, String>();
+        colTitle.put("userid", "userid");
+        colTitle.put("loginname", "登录名");
+        colTitle.put("nickname", "昵称");
+        colTitle.put("pwd", "密码");
+        colTitle.put("email", "邮箱地址");
+        colTitle.put("username", "姓名");
+        colTitle.put("telno", "手机号码");
+        colTitle.put("createtime", "创建时间");
+        List finalList = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            User sm = list.get(i);
+            HashMap map = new HashMap();
+            map.put("userid",  list.get(i).getUserid());
+            map.put("loginname",  list.get(i).getLoginname());
+            map.put("nickname",  list.get(i).getNickname());
+            map.put("pwd",  list.get(i).getPwd());
+            map.put("email",  list.get(i).getEmail());
+            map.put("username",  list.get(i).getUsername());
+            map.put("telno",  list.get(i).getTelno());
+            map.put("createtime",  list.get(i).getCreatetime());
+            finalList.add(map);
+        }
+        try {
+            if (cola.machine.util.ExcelUtil.getExcelFile(finalList, fileName, colTitle) != null) {
+                return this.getResult(SUCC, "导出成功", fileName);
+            }
+            /*
+             * return new ResponseEntity<byte[]>(
+             * FileUtils.readFileToByteArray(new File(fileName)), headers,
+             * HttpStatus.CREATED);
+             */
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return this.getResult(0, "数据为空，导出失败");
+    
+    }
+    @RequestMapping(value = "/import.json")
+    public void importExcel(){
+        
+    }
+    
+    public static void main(String[] args) {
+        ApplicationContext ac = new FileSystemXmlApplicationContext("C:\\Users\\dozen.zhang\\Documents\\calendar\\src\\main\\resources\\config\\xml\\applicationContext.xml");
+        Object object = ac.getBean("validCodeService");
+        System.out.println(object);
+    }
 }

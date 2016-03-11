@@ -35,10 +35,10 @@ $(document).ready(function() {
     if(!StringUtil.isBlank(getParam("id"))){
         GetJSON("${abc}/view.json?id="+getParam("id"),function(data){
             if(data.r==AJAX_SUCC){
-                fillJso2FormSpan("#editForm",data.data);
+                fillJso2FormSpan("#editForm",data.data.bean);
             }else{
                 zerror("获取信息失败"+data.msg,"错误",function(){
-                    goPage("${abc}/list.htm");
+                    cancel();
                 });
             }
             
@@ -49,7 +49,10 @@ $(document).ready(function() {
 });
    
     function cancel(){
-        $("#mymodal").modal("toggle");
-        //goPage("${abc}/list.htm");
+        if(newWindow){
+             $("#mymodal").modal("toggle");
+        }else{
+           goPage("${abc}/list.htm");
+        }
     }
 </script>

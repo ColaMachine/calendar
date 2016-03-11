@@ -177,15 +177,11 @@ menu li a span{
 	
 }
 
-.menu-wrap .menu>.nav>li a {
-	font-weight: 500;
-	opacity: 0.75;
-	/*   font-size:12px; */
-}
+
 
 .menu-wrap .menu>.nav>li>a {
 	font-weight: 500;
-	opacity: 0.75;
+	opacity: 0.55;
 }
 .menu-wrap .nav li a{
 	padding:0px 0px

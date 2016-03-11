@@ -6,6 +6,9 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cola.machine.config.Config;
+import cola.machine.config.ValidCodeConfig;
+import cola.machine.util.encrypt.StringEncryptUtil;
 import org.codehaus.jackson.map.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +22,13 @@ import core.action.ResultDTO;
 @Controller
 @RequestMapping("/code")
 public class ValidCodeController {
+
     @Autowired
     private ValidCodeService validCodeService;
+    public void setValidCodeService(ValidCodeService validCodeService) {
+        this.validCodeService = validCodeService;
+    }
+
     /**
      * 第三方系统前端请求获取短信验证码
      * @param request
@@ -30,18 +38,19 @@ public class ValidCodeController {
     @RequestMapping(value = "/sms/get.json")
     @ResponseBody
     public JSONPObject smsGet(HttpServletRequest request ,HttpServletResponse response){
+        ValidCodeConfig config = Config.getInstance().getValidCode();
         String timeStamp = request.getParameter("timeStamp");
         String appId =request.getParameter("appid");
         String phone =request.getParameter("phone");
         String systemCode = request.getParameter("systemno");
         //调用生成验证码服务 返回验证码 或者失败原因
-        ResultDTO result = 
-             validCodeService.getSmsValidCode(systemCode,phone);
-       
+        ResultDTO result =
+                validCodeService.getSmsValidCode(systemCode,phone);
+
         result.setData(null);
-        
-        
-        String callbackParam = request.getParameter("callback");
+
+
+
        /* try {
             response.setHeader("Content-Type", "application/javascript;charset=UTF-8");
             String jsonp= new String(callbackParam+"("+JSON.toJSONString(result)+")))))");
@@ -51,40 +60,41 @@ public class ValidCodeController {
             e.printStackTrace();
         }*/
         //将result转成JSON串输出
-       // return result;
+        // return result;
+        String callbackParam = request.getParameter("callback");
         JSONPObject object =new JSONPObject(callbackParam,result);
-        return object; 
+        return object;
     }
-    
+
     @RequestMapping(value = "/img/get.json")
     @ResponseBody
-    public void imgGet(HttpServletRequest request,HttpServletResponse response)throws Exception{
+    public JSONPObject imgGet(HttpServletRequest request,HttpServletResponse response)throws Exception{
         String systemno =request.getParameter("systemno");
         String sessionid = request.getParameter("sessionid");
+        String sid =request.getSession().getId();
+        //System.out.println("sid"+sid);
         //调用生成验证码服务 返回验证码 或者失败原因
-        ResultDTO result = 
-                validCodeService.getImgValidCode(systemno,sessionid);
-          // result.setData(null);
-          
-           if(result.isRight()){
-               Object data=result.getData();
-               HashMap map =(HashMap)data;
-               map.put("code", "");
-               map.remove("code");
-               result.setData(map);
-           }
-           String callbackParam = request.getParameter("callback");
-           try {
-               response.setHeader("Content-Type", "application/javascript;charset=UTF-8");
-               response.getOutputStream().write(new String(callbackParam+"("+JSON.toJSONString(result)+")").getBytes("UTF-8"));
-           } catch (IOException e) {
-               // TODO Auto-generated catch block
-               e.printStackTrace();
-           }
-           
+        ResultDTO result =
+                validCodeService.getImgValidCode(systemno,sid);
+        // result.setData(null);
+
+        if(result.isRight()){
+            Object data=result.getData();
+            HashMap map =(HashMap)data;
+            map.put("code", "");
+            map.remove("code");
+            result.setData(map);
+        }
+        String callbackParam = request.getParameter("callback");
+
+        JSONPObject object =new JSONPObject(callbackParam,result);
+        return object;
+
+
+
     }
-    
-    
+
+
     /**
      * 第三方系统前端请求获取短信验证码
      * @param request
@@ -99,40 +109,83 @@ public class ValidCodeController {
         String phone =request.getParameter("phone");
         String systemCode = request.getParameter("systemCode");
         //调用生成验证码服务 返回验证码 或者失败原因
-        
-        ResultDTO result = 
-             validCodeService.getSmsValidCode(systemCode,phone);
-        
+
+        ResultDTO result =
+                validCodeService.getSmsValidCode(systemCode,phone);
+
         return result;
+
+
+
     }
-    
+
     @RequestMapping(value = "/img/b/get.json")
     @ResponseBody
     public Object imgBehindGet(HttpServletRequest request){
+        String token =request.getParameter("token");
+        String timestamp = request.getParameter("timestamp");
         String systemno =request.getParameter("systemno");
-        String key = request.getParameter("key");
+        String sessionid = request.getParameter("sessionid");
+
+        String sid =request.getSession().getId();
+        //System.out.println("sid"+sid);
         //调用生成验证码服务 返回验证码 或者失败原因
-        ResultDTO result = 
-                validCodeService.getImgValidCode(systemno,key);
-            return result;
+        ResultDTO result =
+                validCodeService.getImgValidCode(systemno,sid);
+         return result;
     }
-    
+
     @RequestMapping(value = "/sms/valid.json")
     @ResponseBody
-    public Object smsValidCode(HttpServletRequest request){
+    public JSONPObject smsValidCode(HttpServletRequest request){
         String phone = request.getParameter("phone");
         String systemno = request.getParameter("systemno");
         String code = request.getParameter("code");
         //调用生成验证码服务 返回验证码 或者失败原因
-        return validCodeService.smsValidCode(systemno, phone, code);
+        ResultDTO result = validCodeService.smsValidCode(systemno, phone, code);
+        String callbackParam = request.getParameter("callback");
+        JSONPObject object =new JSONPObject(callbackParam,result);
+        return object;
     }
     @RequestMapping(value = "/img/valid.json")
     @ResponseBody
-    public Object imgValidCode(HttpServletRequest request){
+    public JSONPObject imgValidCode(HttpServletRequest request){
         String systemno = request.getParameter("systemno");
         String sessionid = request.getParameter("sessionid");
         String code = request.getParameter("code");
         //调用生成验证码服务 返回验证码 或者失败原因
-        return validCodeService.imgValidCode(systemno, sessionid, code);
+        ResultDTO result = validCodeService.imgValidCode(systemno, sessionid, code);
+        String callbackParam = request.getParameter("callback");
+        JSONPObject object =new JSONPObject(callbackParam,result);
+        return object;
     }
+
+    @RequestMapping(value = "/sms/b/valid.json")
+    @ResponseBody
+    public ResultDTO smsBehindValidCode(HttpServletRequest request){
+        String phone = request.getParameter("phone");
+        String systemno = request.getParameter("systemno");
+        String code = request.getParameter("code");
+        //调用生成验证码服务 返回验证码 或者失败原因
+        ResultDTO result = validCodeService.smsValidCode(systemno, phone, code);
+
+        return result;
+    }
+    @RequestMapping(value = "/img/b/valid.json")
+    @ResponseBody
+    public ResultDTO imgBehindValidCode(HttpServletRequest request){
+        String systemno = request.getParameter("systemno");
+        String sessionid = request.getParameter("sessionid");
+        String code = request.getParameter("code");
+        //调用生成验证码服务 返回验证码 或者失败原因
+        ResultDTO result = validCodeService.imgValidCode(systemno, sessionid, code);
+        return result;
+    }
+    public static void main(String[] args) {
+      //  ApplicationContext ac = new FileSystemXmlApplicationContext("C:\\zzw\\workspace\\awifiui\\src\\main\\resources\\config\\xml\\applicationContext.xml");
+       // Object object = ac.getBean("validCodeService");
+        //System.out.println(object);//DefaultBeanDefinitionDocumentReader
+        //ComponentScanBeanDefinitionParser
+    }
+
 }

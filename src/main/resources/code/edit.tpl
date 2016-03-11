@@ -9,6 +9,14 @@
         </div>
         <div class="modal-body">
             ${edithtml}
+            <#if table.mapper??>
+            <div class="form-group">
+        <label for="createtime" class="col-sm-2 control-label">角色:</label>
+        <div class="col-sm-10 z-col-table">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+       </div>
+       </#if>
         </div>
         <div class="modal-footer">
             <button type="button" onclick="save()" class="btn btn-primary">保存</button>
@@ -32,7 +40,20 @@ $(document).ready(function() {
     if(!StringUtil.isBlank(getParam("id"))){
         GetJSON("${abc}/view.json?id="+getParam("id"),function(data){
             if(data.r==AJAX_SUCC){
-                fillJso2Form("#editForm",data.data);
+                if(data.data.bean){
+                    fillJso2Form("#editForm",data.data.bean);
+                }
+                <#if table.mapper??>
+                if(data.data.childs){
+                    var treeObj=$.fn.zTree.init($("#treeDemo"), setting, data.data.childs);
+                    if(data.data.childMaps!=null){
+                        for(var i=0;i<data.data.childMaps.length;i++){
+                            var node = treeObj.getNodeByParam("id",data.data.childMaps[i].${table.mapper.childid});
+                            treeObj.checkNode(node,true,true);
+                        }
+                    }
+                }
+                </#if>
             }else{
                 zerror("获取信息失败"+data.msg,"错误",function(){
                     goPage("${abc}/list.htm");
@@ -44,18 +65,47 @@ $(document).ready(function() {
     }
     
 });
+ <#if table.mapper??>
+var setting = {
+           check: {
+               enable: true
+           },
+           data: {
+               simpleData: {
+                   enable: true
+               }
+           }
+       };
+</#if>
     function save(){
            if (!$("#editForm").valid())
                     return;
                      var jso = changeForm2Jso("#editForm");
+                    <#if table.mapper??>
+                      var childids=[];
+                     var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+                     var checkedNodes= treeObj.getCheckedNodes(true);
+                     for(var i=0;i<checkedNodes.length;i++){
+                         var obj=checkedNodes[i];
+                         if(!checkedNodes[i].isParent){
+                             
+                             childids.push(checkedNodes[i].id);
+                         }
+                     }
+                     if(childids.length==0){
+                         //$("#childs").parent().parent().find(".error").text("请选择相应权限");
+                          //flag=false;
+                     }
+                     jso.childids= childids.join(",");//alert(jso.childids);return;
+                     </#if>
                      showWait();
                      Post(PATH+$("#editForm").attr("action"),jso,function(data){
                      hideWait();
                      if(data.r==0){
                         zalert(data.msg||"保存成功","提示",function(){
                             //goPage("${abc}/list.htm");
-                             $("#mymodal").modal("toggle");
-                             $("#grid").jqGrid("reloadGrid");
+                            cancel();
+                            $("#grid").jqGrid("reloadGrid");
                         });
                      }else{
                         zerror(data.msg, "失败");
@@ -63,7 +113,10 @@ $(document).ready(function() {
                      },'json');
     }
     function cancel(){
-        $("#mymodal").modal("toggle");
-        //goPage("${abc}/list.htm");
+        if(newWindow){
+            $("#mymodal").modal("toggle");
+        }else{
+            goPage("${abc}/list.htm");
+        }
     }
 </script>

@@ -22,6 +22,21 @@ import com.google.gson.JsonSerializer;
 
 public class ZTable {
 private String name;
+private String tableName;
+private ZMapper mapper;
+public ZMapper getMapper() {
+    return mapper;
+}
+public void setMapper(ZMapper mapper) {
+    this.mapper = mapper;
+}
+public String getTableName() {
+    return tableName;
+}
+public void setTableName(String tableName) {
+    this.tableName = tableName;
+}
+
 private String remark;
 public String getRemark() {
     return remark;

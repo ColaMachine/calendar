@@ -24,6 +24,16 @@ import com.google.gson.JsonParser;
  *
  */
 public class Config {
+    private ValidCodeConfig validCode;
+    public ValidCodeConfig getValidCode() {
+        return validCode;
+    }
+
+    public void setValidCode(ValidCodeConfig validCode) {
+        this.validCode = validCode;
+    }
+
+
     /**
      * 短信每次发送量
      */

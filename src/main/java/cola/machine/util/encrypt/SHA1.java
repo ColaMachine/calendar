@@ -198,8 +198,8 @@ public class SHA1 {
 	        String data = "abc";
 	        String data2= "jsapi_ticket=kgt8ON7yVITDhtdwci0qecxIYYsD2jPTf9FbI1SBbQVlsJ6CsIXSOi43YWX_94bDRHypOHyLKZQudhTet1rT6A&noncestr=8441613705269&timestamp=1441954291&url=http://192.168.34.117:8080/kaqm/share/qq";
 	        	
-	        System.out.println(data); 
-	        String digest = new SHA1().getDigestOfString(data.getBytes()); 
+	        System.out.println(data2);
+	        String digest = new SHA1().getDigestOfString(data2.getBytes());
 	        //61EBFF1D9E143497FEDC0E16DC7874EEF1C84A87
 	        System.out.println(digest); 
 	    } 

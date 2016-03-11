@@ -69,11 +69,7 @@ var zMenu={
 					_this.loadPage($(this).attr("href"));
 				}
 			});
-			$('#logout').click(function(){
-				jDialog.confirm('退出系统', '确实要退出吗？', function(){
-					_this.logout();
-				});
-			});
+			
 			$('#userprofile').click(function(){
 				_this.userprofile();
 			});
@@ -99,10 +95,10 @@ var zMenu={
 					window.data[key]=val;
 				}
 		}
-			$('.main-content').load(url, {"lname" : "Cai", "fname" : "Adam"}, function(){
+			/*$('.main-content').load(url, {"lname" : "Cai", "fname" : "Adam"}, function(){
 				 $(".main-content").hide();
 			    $(".main-content").fadeIn('slow');}
-			  );return;
+			  );return;*/
 			//	jLoading.start();
 				$.ajax({
 					type: 'GET',
