@@ -1030,3 +1030,7 @@ $.validator.addMethod("ymd",function( value, element, param ) {
 	var re=new RegExp(param);
 	 return this.optional(element) ||re.test(value);
 },"格式不正确");
+$.validator.addMethod("alpha",function( value, element, param ) {
+	var re= /^[A-Za-z]+$/;
+	 return this.optional(element) ||re.test(value);
+},"格式不正确");

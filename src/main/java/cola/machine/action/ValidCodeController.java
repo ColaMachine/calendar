@@ -72,7 +72,7 @@ public class ValidCodeController {
         String systemno =request.getParameter("systemno");
         String sessionid = request.getParameter("sessionid");
         String sid =request.getSession().getId();
-        //System.out.println("sid"+sid);
+       System.out.println("sid"+sid);
         //调用生成验证码服务 返回验证码 或者失败原因
         ResultDTO result =
                 validCodeService.getImgValidCode(systemno,sid);

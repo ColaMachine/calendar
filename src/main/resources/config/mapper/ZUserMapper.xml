@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cola.machine.dao.ZUserMapper">
+  <resultMap id="BaseResultMap" type="cola.machine.bean.ZUser">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="email" jdbcType="VARCHAR" property="email" />
+      <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+      <result column="nick" jdbcType="VARCHAR" property="nick" />
+      <result column="status" jdbcType="INTEGER" property="status" />
+      <result column="phone" jdbcType="VARCHAR" property="phone" />
+      <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id ,email ,pwd ,nick ,status ,phone ,createTime 
+   
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZUser
+    where id =   #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ZUser
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="cola.machine.bean.ZUser" >
+
+    insert into ZUser (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=INTEGER}
+,#{email,jdbcType=VARCHAR}
+,#{pwd,jdbcType=VARCHAR}
+,#{nick,jdbcType=VARCHAR}
+,#{status,jdbcType=INTEGER}
+,#{phone,jdbcType=VARCHAR}
+,#{createTime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="cola.machine.bean.ZUser" >
+    insert into ZUser
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           id, 
+        </if>  
+        <if test="email != null" >  
+           email, 
+        </if>  
+        <if test="pwd != null" >  
+           pwd, 
+        </if>  
+        <if test="nick != null" >  
+           nick, 
+        </if>  
+        <if test="status != null" >  
+           status, 
+        </if>  
+        <if test="phone != null" >  
+           phone, 
+        </if>  
+        <if test="createTime != null" >  
+           createTime, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=INTEGER},
+        </if>  
+        <if test="email != null" >  
+          #{email,jdbcType=VARCHAR},
+        </if>  
+        <if test="pwd != null" >  
+          #{pwd,jdbcType=VARCHAR},
+        </if>  
+        <if test="nick != null" >  
+          #{nick,jdbcType=VARCHAR},
+        </if>  
+        <if test="status != null" >  
+          #{status,jdbcType=INTEGER},
+        </if>  
+        <if test="phone != null" >  
+          #{phone,jdbcType=VARCHAR},
+        </if>  
+        <if test="createTime != null" >  
+          #{createTime,jdbcType=TIMESTAMP},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cola.machine.bean.ZUser" >
+    update ZUser
+    <set >
+        <if test="id != null" >  
+             id=#{id,jdbcType=INTEGER},
+        </if>  
+        <if test="email != null" >  
+             email=#{email,jdbcType=VARCHAR},
+        </if>  
+        <if test="pwd != null" >  
+             pwd=#{pwd,jdbcType=VARCHAR},
+        </if>  
+        <if test="nick != null" >  
+             nick=#{nick,jdbcType=VARCHAR},
+        </if>  
+        <if test="status != null" >  
+             status=#{status,jdbcType=INTEGER},
+        </if>  
+        <if test="phone != null" >  
+             phone=#{phone,jdbcType=VARCHAR},
+        </if>  
+        <if test="createTime != null" >  
+             createTime=#{createTime,jdbcType=TIMESTAMP},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cola.machine.bean.ZUser" >
+    update ZUser
+    set 
+              email=#{email,jdbcType=VARCHAR},  
+              pwd=#{pwd,jdbcType=VARCHAR},  
+              nick=#{nick,jdbcType=VARCHAR},  
+              status=#{status,jdbcType=INTEGER},  
+              phone=#{phone,jdbcType=VARCHAR},  
+              createTime=#{createTime,jdbcType=TIMESTAMP}  
+where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZUser where 1=1
+        <if test="id != null and id != '' ">  
+           and id = #{id}
+        </if>  
+        <if test="email != null and email != '' ">  
+           and email = #{email}
+        </if>  
+        <if test="pwd != null and pwd != '' ">  
+           and pwd = #{pwd}
+        </if>  
+        <if test="nick != null and nick != '' ">  
+           and nick = #{nick}
+        </if>  
+        <if test="status != null and status != '' ">  
+           and status = #{status}
+        </if>  
+        <if test="phone != null and phone != '' ">  
+           and phone = #{phone}
+        </if>  
+        <if test="createTime != null and createTime != '' ">  
+           and createTime = #{createTime}
+        </if>  
+        <if test="createTimeBegin != null and createTimeBegin != '' ">  
+             and createTime &gt;= #{createTimeBegin}
+        </if>   
+         <if test="createTimeEnd != null and createTimeEnd != '' ">  
+             and createTime &lt;= #{createTimeEnd}
+        </if> 
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZUser where 1=1
+        <if test="id != null and id != '' ">  
+           and id = #{id}
+        </if>  
+        <if test="email != null and email != '' ">  
+           and email = #{email}
+        </if>  
+        <if test="pwd != null and pwd != '' ">  
+           and pwd = #{pwd}
+        </if>  
+        <if test="nick != null and nick != '' ">  
+           and nick = #{nick}
+        </if>  
+        <if test="status != null and status != '' ">  
+           and status = #{status}
+        </if>  
+        <if test="phone != null and phone != '' ">  
+           and phone = #{phone}
+        </if>  
+        <if test="createTime != null and createTime != '' ">  
+           and createTime = #{createTime}
+        </if>  
+        <if test="createTimeBegin != null and createTimeBegin != '' ">  
+             and createTime &gt;= #{createTimeBegin}
+        </if>   
+         <if test="createTimeEnd != null and createTimeEnd != '' ">  
+             and createTime &lt;= #{createTimeEnd}
+        </if> 
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from ZUser where 1=1
+        <if test="id != null and id != '' ">  
+           and id = #{id}
+        </if>  
+        <if test="email != null and email != '' ">  
+           and email = #{email}
+        </if>  
+        <if test="pwd != null and pwd != '' ">  
+           and pwd = #{pwd}
+        </if>  
+        <if test="nick != null and nick != '' ">  
+           and nick = #{nick}
+        </if>  
+        <if test="status != null and status != '' ">  
+           and status = #{status}
+        </if>  
+        <if test="phone != null and phone != '' ">  
+           and phone = #{phone}
+        </if>  
+        <if test="createTime != null and createTime != '' ">  
+           and createTime = #{createTime}
+        </if>  
+  </select>
+
+</mapper>

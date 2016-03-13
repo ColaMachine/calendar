@@ -28,7 +28,7 @@ var App={
 			        isFixed: false,
 			        tltTxt: '提示消息',
 			        cntHTML: '这是一个普通的弹出窗口对话框',
-			       
+			        confirmCallback:	function(){window.location=PATH+"/logout.htm"}
 			    });
 			     $('#window-msg-dialog').jDrag({container:'#page', handle:'.window-title-bar'});
 			

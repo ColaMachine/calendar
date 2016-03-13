@@ -2,6 +2,7 @@ package cola.machine.config;
 
 import java.lang.reflect.Type;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -165,9 +166,8 @@ public class RedisConfig {
          * @return JsonElement 抛出异常
          */
         public JsonElement serialize(RedisConfig src, Type typeOfT, JsonSerializationContext context) {
-            // JsonObject result =new JsonObject();
-            // result = context.serialize(src);
-            return context.serialize(src);
+           Gson gson =new Gson();
+            return gson.toJsonTree(src);
         }
 
     }

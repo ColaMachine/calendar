@@ -6,14 +6,22 @@ package cola.machine.config;
  */
 public class CacheConfig {
 
+    public void setRedis(RedisConfig redis) {
+        this.redis = redis;
+    }
+
+    public void setEhcache(EhcacheConfig ehcache) {
+        this.ehcache = ehcache;
+    }
+
     /**
      * redis config
      */
-    private RedisConfig redis = new RedisConfig();
+    private RedisConfig redis =new RedisConfig();
     /**
      * ehcache config 
      */
-    private EhcacheConfig ehcache = new EhcacheConfig();
+    private EhcacheConfig ehcache=new EhcacheConfig() ;
 
     public RedisConfig getRedis() {
         return redis;

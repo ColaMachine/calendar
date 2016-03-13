@@ -75,7 +75,20 @@ where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcT
         <if test="${col.name} != null and ${col.name} != '' ">  
            and `${col.name}` = ${r'#{'}${col.name}}
         </if>  
-
+         <#if col.type?length gt 5>
+        <#if col.type[0..6]=='VARCHAR'>
+        <if test="${col.name}Like != null and ${col.name}Like != '' ">  
+             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+        </if>   
+        </#if>
+        </#if>
+         <#if col.type?length gt 3>
+        <#if col.type[0..3]=='CHAR'>
+        <if test="${col.name}Like != null and ${col.name}Like != '' ">  
+             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+        </if>   
+        </#if>
+        </#if>
           <#if col.type=='timestamp'>
         <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
              and `${col.name}` &gt;= ${r'#{'}${col.name}Begin}
@@ -84,7 +97,6 @@ where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcT
              and `${col.name}` &lt;= ${r'#{'}${col.name}End}
         </if> 
         </#if>
-        
         <#if col.type=='timestamp'>
         <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
              and `${col.name}` &gt;= ${r'#{'}${col.name}Begin}
@@ -103,6 +115,20 @@ where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcT
         <if test="${col.name} != null and ${col.name} != '' ">  
            and `${col.name}` = ${r'#{'}${col.name}}
         </if>  
+           <#if col.type?length gt 5>
+        <#if col.type[0..6]=='VARCHAR'>
+        <if test="${col.name}Like != null and ${col.name}Like != '' ">  
+             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+        </if>   
+        </#if>
+        </#if>
+         <#if col.type?length gt 3>
+        <#if col.type[0..3]=='CHAR'>
+        <if test="${col.name}Like != null and ${col.name}Like != '' ">  
+             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+        </if>   
+        </#if>
+        </#if>
         <#if col.type=='timestamp'>
         <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
              and `${col.name}` &gt;= ${r'#{'}${col.name}Begin}
@@ -121,6 +147,28 @@ where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcT
         <if test="${col.name} != null and ${col.name} != '' ">  
            and `${col.name}` = ${r'#{'}${col.name}}
         </if>  
+           <#if col.type?length gt 5>
+        <#if col.type[0..6]=='VARCHAR'>
+        <if test="${col.name}Like != null and ${col.name}Like != '' ">  
+             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+        </if>   
+        </#if>
+        </#if>
+         <#if col.type?length gt 3>
+        <#if col.type[0..3]=='CHAR'>
+        <if test="${col.name}Like != null and ${col.name}Like != '' ">  
+             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+        </if>   
+        </#if>
+        </#if>
+         <#if col.type=='timestamp'>
+        <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
+             and `${col.name}` &gt;= ${r'#{'}${col.name}Begin}
+        </if>   
+         <if test="${col.name}End != null and ${col.name}End != '' ">  
+             and `${col.name}` &lt;= ${r'#{'}${col.name}End}
+        </if> 
+        </#if>
     </#list>
   </select>
 

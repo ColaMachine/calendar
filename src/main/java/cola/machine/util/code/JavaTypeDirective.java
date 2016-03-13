@@ -71,7 +71,8 @@ public class JavaTypeDirective implements TemplateDirectiveModel {
 			}
 			String type =String.valueOf(transformedCbuf).trim();
 			String typeName=null;
-			 if(type.startsWith("varchar")){
+			typeName=	GenCodeHelper.changeMySqlType2JavaType(type);
+			/* if(type.startsWith("varchar")){
 		            typeName= "String";
 		        }else if(type.startsWith("int")){
 		            typeName= "Integer";
@@ -87,10 +88,12 @@ public class JavaTypeDirective implements TemplateDirectiveModel {
 		            typeName= "Timestamp";
 		        }else if(type.startsWith("text")){
                     typeName= "String";
+                }else if(type.startsWith("text")){
+                    typeName= "String";
                 }else{
 		            throw new IOException(
 		                    "This directive content doesn't  allow this value"+type+".");
-		        }
+		        }*/
 			out.write(typeName);
 		}
 

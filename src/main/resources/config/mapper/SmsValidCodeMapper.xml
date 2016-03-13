@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cola.machine.dao.SmsValidCodeMapper">
+  <resultMap id="BaseResultMap" type="cola.machine.bean.SmsValidCode">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="phone" jdbcType="CHAR" property="phone" />
+      <result column="systemNo" jdbcType="VARCHAR" property="systemNo" />
+      <result column="sendTime" jdbcType="TIMESTAMP" property="sendTime" />
+      <result column="status" jdbcType="TINYINT" property="status" />
+      <result column="reason" jdbcType="VARCHAR" property="reason" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    `id` ,`phone` ,`systemNo` ,`sendTime` ,`status` ,`reason` 
+   
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sms_valid_code
+    where id =   #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sms_valid_code
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="cola.machine.bean.SmsValidCode" >
+
+    insert into sms_valid_code (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=INTEGER}
+,#{phone,jdbcType=CHAR}
+,#{systemNo,jdbcType=VARCHAR}
+,#{sendTime,jdbcType=TIMESTAMP}
+,#{status,jdbcType=TINYINT}
+,#{reason,jdbcType=VARCHAR}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="cola.machine.bean.SmsValidCode" >
+    insert into sms_valid_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="phone != null" >  
+           `phone`, 
+        </if>  
+        <if test="systemNo != null" >  
+           `systemNo`, 
+        </if>  
+        <if test="sendTime != null" >  
+           `sendTime`, 
+        </if>  
+        <if test="status != null" >  
+           `status`, 
+        </if>  
+        <if test="reason != null" >  
+           `reason`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=INTEGER},
+        </if>  
+        <if test="phone != null" >  
+          #{phone,jdbcType=CHAR},
+        </if>  
+        <if test="systemNo != null" >  
+          #{systemNo,jdbcType=VARCHAR},
+        </if>  
+        <if test="sendTime != null" >  
+          #{sendTime,jdbcType=TIMESTAMP},
+        </if>  
+        <if test="status != null" >  
+          #{status,jdbcType=TINYINT},
+        </if>  
+        <if test="reason != null" >  
+          #{reason,jdbcType=VARCHAR},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cola.machine.bean.SmsValidCode" >
+    update sms_valid_code
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=INTEGER},
+        </if>  
+        <if test="phone != null" >  
+             `phone`=#{phone,jdbcType=CHAR},
+        </if>  
+        <if test="systemNo != null" >  
+             `systemNo`=#{systemNo,jdbcType=VARCHAR},
+        </if>  
+        <if test="sendTime != null" >  
+             `sendTime`=#{sendTime,jdbcType=TIMESTAMP},
+        </if>  
+        <if test="status != null" >  
+             `status`=#{status,jdbcType=TINYINT},
+        </if>  
+        <if test="reason != null" >  
+             `reason`=#{reason,jdbcType=VARCHAR},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cola.machine.bean.SmsValidCode" >
+    update sms_valid_code
+    set 
+              `phone`=#{phone,jdbcType=CHAR},  
+              `systemNo`=#{systemNo,jdbcType=VARCHAR},  
+              `sendTime`=#{sendTime,jdbcType=TIMESTAMP},  
+              `status`=#{status,jdbcType=TINYINT},  
+              `reason`=#{reason,jdbcType=VARCHAR}  
+where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sms_valid_code where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+
+        
+        <if test="phone != null and phone != '' ">  
+           and `phone` = #{phone}
+        </if>  
+
+        
+        <if test="systemNo != null and systemNo != '' ">  
+           and `systemNo` = #{systemNo}
+        </if>  
+
+        
+        <if test="sendTime != null and sendTime != '' ">  
+           and `sendTime` = #{sendTime}
+        </if>  
+
+        <if test="sendTimeBegin != null and sendTimeBegin != '' ">  
+             and `sendTime` &gt;= #{sendTimeBegin}
+        </if>   
+         <if test="sendTimeEnd != null and sendTimeEnd != '' ">  
+             and `sendTime` &lt;= #{sendTimeEnd}
+        </if> 
+        
+        <if test="sendTimeBegin != null and sendTimeBegin != '' ">  
+             and `sendTime` &gt;= #{sendTimeBegin}
+        </if>   
+         <if test="sendTimeEnd != null and sendTimeEnd != '' ">  
+             and `sendTime` &lt;= #{sendTimeEnd}
+        </if> 
+        <if test="status != null and status != '' ">  
+           and `status` = #{status}
+        </if>  
+
+        
+        <if test="reason != null and reason != '' ">  
+           and `reason` = #{reason}
+        </if>  
+
+        
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sms_valid_code where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="phone != null and phone != '' ">  
+           and `phone` = #{phone}
+        </if>  
+        <if test="systemNo != null and systemNo != '' ">  
+           and `systemNo` = #{systemNo}
+        </if>  
+        <if test="sendTime != null and sendTime != '' ">  
+           and `sendTime` = #{sendTime}
+        </if>  
+        <if test="sendTimeBegin != null and sendTimeBegin != '' ">  
+             and `sendTime` &gt;= #{sendTimeBegin}
+        </if>   
+         <if test="sendTimeEnd != null and sendTimeEnd != '' ">  
+             and `sendTime` &lt;= #{sendTimeEnd}
+        </if> 
+        <if test="status != null and status != '' ">  
+           and `status` = #{status}
+        </if>  
+        <if test="reason != null and reason != '' ">  
+           and `reason` = #{reason}
+        </if>  
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from sms_valid_code where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="phone != null and phone != '' ">  
+           and `phone` = #{phone}
+        </if>  
+        <if test="systemNo != null and systemNo != '' ">  
+           and `systemNo` = #{systemNo}
+        </if>  
+        <if test="sendTime != null and sendTime != '' ">  
+           and `sendTime` = #{sendTime}
+        </if>  
+        <if test="status != null and status != '' ">  
+           and `status` = #{status}
+        </if>  
+        <if test="reason != null and reason != '' ">  
+           and `reason` = #{reason}
+        </if>  
+  </select>
+
+</mapper>

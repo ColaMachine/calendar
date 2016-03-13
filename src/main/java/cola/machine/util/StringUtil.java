@@ -133,7 +133,7 @@ public class StringUtil {
 		}
 		return code;
 	}
-	public static boolean checkAlpha(String str){
+	public static boolean checkAlphaNumeric(String str){
 		if (str == null) {
 			return false;
 		}
@@ -145,4 +145,25 @@ public class StringUtil {
 		}
 		return true;
 	}
+	   public static boolean checkAlpha(String str){
+	        if (str == null) {
+	            return false;
+	        }
+	        int sz = str.length();
+	        for (int i = 0; i < sz; i++) {
+	            if (Character.isAlphabetic(str.charAt(i))==false) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
+	public static String getYMDStr(String type){
+        String ymd ="";
+        if(type.startsWith("date")){
+            ymd="yyyy-MM-dd";
+        }else{
+            ymd="yyyy-MM-dd HH:mm:ss";
+        }
+return ymd;
+    }
 }

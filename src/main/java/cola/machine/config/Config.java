@@ -54,6 +54,23 @@ public class Config {
      * 缓存配置
      */
     private CacheConfig cache = new CacheConfig();
+    public void setPvSmsSendAmount(int pvSmsSendAmount) {
+        this.pvSmsSendAmount = pvSmsSendAmount;
+    }
+
+    public void setSystem(SystemConfig system) {
+        this.system = system;
+    }
+
+    public void setCache(CacheConfig cache) {
+        this.cache = cache;
+    }
+
+    public void setImage(ImageConfig image) {
+        this.image = image;
+    }
+
+
     /**
      * 图片服务配置
      */
@@ -118,7 +135,8 @@ public class Config {
         LOGGER.info("read config file{}", fromFile);
         try (Reader reader = Files.newBufferedReader(fromFile, Charset.forName("UTF-8"))) {
             Gson gson = createGson();
-            JsonElement baseConfig = gson.toJsonTree(new Config());
+            Config configOri =new Config();
+            JsonElement baseConfig = gson.toJsonTree(configOri);
             JsonParser parser = new JsonParser();
             JsonElement config = parser.parse(reader);
             if (!config.isJsonObject()) {
@@ -139,7 +157,10 @@ public class Config {
      */
     public static void merge(JsonObject target, JsonObject from) {
         for (Map.Entry<String, JsonElement> entry : from.entrySet()) {
+           // System.out.println(entry.getKey());
             if (entry.getValue().isJsonObject()) {
+                boolean bool = target.has(entry.getKey());
+                JsonElement ele=target.get(entry.getKey());
                 if (target.has(entry.getKey()) && target.get(entry.getKey()).isJsonObject()) {
                     merge(target.get(entry.getKey()).getAsJsonObject(), entry.getValue().getAsJsonObject());
                 } else {
@@ -159,9 +180,12 @@ public class Config {
      * @return Object
      */
     public static Gson createGson() {
-        return new GsonBuilder().create();
-        /*
-         * registerTypeAdapter(RedisConfig.class, new RedisConfig.Handler()).
-         */
+        return new GsonBuilder().
+       
+         /* registerTypeAdapter(RedisConfig.class, new RedisConfig.Handler()).*/create();
+         
+    }
+    public static void main(String args[]){
+        Config.getInstance();
     }
 }

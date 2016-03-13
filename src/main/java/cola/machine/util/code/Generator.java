@@ -62,6 +62,9 @@ public class Generator {
     private String tab3 = tab2+tab;
     private String tab4 = tab2+tab2;
     private Path homePath;
+
+    private Configuration cfg;
+
     private static Logger logger = LoggerFactory.getLogger(Generator.class);
 
     private Map root = new HashMap();
@@ -121,10 +124,8 @@ public class Generator {
 
   
 
-    private Configuration cfg;
-
     public void init(String code ) throws IOException {
-        
+        root.put("javaType", new JavaTypeDirective());
         root.put("jdbcType", new JdbcTypeDirective());
         root.put("getabc", new abcDirective());
         root.put("getAbc", new AbDirective());
@@ -148,8 +149,10 @@ public class Generator {
         table=(ZTable)allTable.get(code);
         root.put("allTables", allTable);
         root.put("table", table);
-        root.put("abc", StringUtil.getabc(table.getName()));
+       root.put("abc", StringUtil.getabc(table.getName()));
         root.put("Abc", StringUtil.getAbc(table.getName()));
+        /* 
+        root.put("javaType", new JavaTypeDirective());*/
         /*
          * Configuration config=new Configuration(); //设置要解析的模板所在的目录，并加载模板文件
          * config.setDirectoryForTemplateLoading(file); //设置包装器，并将对象包装为数据模型
@@ -226,7 +229,7 @@ public class Generator {
            List rules =new ArrayList();
            List jsrules =new ArrayList();
            List message=new ArrayList();
-           if(type.startsWith("varchar")){
+           if(type.startsWith("varchar")||type.startsWith("char")){
         	   int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
         	   rules.add(String.format("new Length(%d)", length));
         	   jsrules.add(String.format("maxlength:%d", length));
@@ -282,6 +285,7 @@ public class Generator {
         	   jsrules.add(String.format("ymd:\"yyyy-MM-dd HH:mm:ss\""));
                message.add(String.format("ymd:\"必须输入合法日期\""));
            }
+           
            if(zcol.isNn()){
         	   rules.add(String.format("new NotEmpty()"));
         	   jsrules.add(String.format("required:true"));
@@ -294,7 +298,7 @@ public class Generator {
         			   content=content.replace("\\", "\\\\");
         			   rules.add(String.format("new Regex(%s)",content));
         			   jsrules.add(String.format("regex:"+content));
-                       message.add(String.format("regex:\"必须输入制定格式字符串\""));
+                       message.add(String.format("regex:\"必须输入指定格式字符串\""));
         		   }
         		   if(validAry[j].toLowerCase().startsWith("email")){
         			  // String content=StringUtil.getContentBetween(validAry[j], "(", ")");
@@ -312,6 +316,20 @@ public class Generator {
         			   rules.add(String.format("new MoneyRule()"));
         			   jsrules.add(String.format("money:true"));
         		   }
+                   if(validAry[j].toLowerCase().startsWith("alpha_numeric")){
+                       rules.add(String.format("new AlphaNumbericUnderlineRule()"));
+                       jsrules.add(String.format("alphanumeric:true"));
+                   }
+                   if(validAry[j].toLowerCase().startsWith("alphanumeric")){
+                       rules.add(String.format("new AlphaNumericRule()"));
+                       jsrules.add(String.format("alphanumeric:true"));
+                       message.add(String.format("regex:\"只能输入字母和数字\""));
+                   }
+                   if(validAry[j].toLowerCase().startsWith("alpha")){
+                       rules.add(String.format("new AlphaRule()"));
+                       jsrules.add(String.format("alpha:true"));
+                       message.add(String.format("alpha:\"只能输入字母\""));
+                   }
         	   }
            }
            String ruleStr=StringUtil.join(",",rules.toArray());
@@ -346,7 +364,7 @@ public class Generator {
                 if(type.startsWith("date")){
                     sb.append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"(new Date("+zcol.getName()+"));").append(ctrl);
                 }else{
-                sb.append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"("+changeMySqlType2JavaType(type)+".valueOf("+zcol.getName()+"));").append(ctrl);
+                sb.append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"("+GenCodeHelper.changeMySqlType2JavaType(type)+".valueOf("+zcol.getName()+"));").append(ctrl);
                 }
                 sb.append(tab3+"}else if(StringUtil.checkDateStr("+zcol.getName()+", \""+getYMDStr(type)+"\")){").append(ctrl)
                 .append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"(");
@@ -358,7 +376,7 @@ public class Generator {
                 }
                 sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
             }else{
-                sb.append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"("+changeMySqlType2JavaType(type)+".valueOf("+zcol.getName()+"));").append(ctrl);
+                sb.append(tab4+StringUtil.getabc(table.getName())+".set"+StringUtil.getAbc(zcol.getName())+"("+GenCodeHelper.changeMySqlType2JavaType(type)+".valueOf("+zcol.getName()+"));").append(ctrl);
             }
             sb.append(tab2+"}").append(ctrl);
         }
@@ -395,11 +413,6 @@ public class Generator {
                 sb.append(tab4+"params.put(\""+zcol.getName()+"\","+zcol.getName()+");").append(ctrl);
             }
             sb.append(tab2+"}").append(ctrl);
-            
-            
-
-            
-           
             if(type.startsWith("date")||type.startsWith("timestamp")||type.startsWith("datetime")){
                 sb.append(tab2+"String "+zcol.getName()+"Begin = request.getParameter(\""+zcol.getName()+"Begin\");").append(ctrl)
                 .append(tab2+"if(!StringUtil.isBlank("+zcol.getName()+"Begin)){").append(ctrl);
@@ -415,8 +428,6 @@ public class Generator {
                 }
                 sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
                 sb.append(tab2+"}").append(ctrl);
-                
-                
                 sb.append(tab2+"String "+zcol.getName()+"End = request.getParameter(\""+zcol.getName()+"End\");").append(ctrl)
                 .append(tab2+"if(!StringUtil.isBlank("+zcol.getName()+"End)){").append(ctrl);
                 sb.append(tab3+"if(StringUtil.checkNumeric("+zcol.getName()+"End)){").append(ctrl)
@@ -432,9 +443,7 @@ public class Generator {
                 sb.append("));").append(ctrl).append(tab3+"}").append(ctrl);
                 sb.append(tab2+"}").append(ctrl);
             }
-            
         }
-        
            return sb.toString();
     }
     public String getYMDStr(String type){
@@ -462,7 +471,7 @@ return ymd;
             
         }
     }
-    public String changeMySqlType2JavaType(String type) {
+   /* public String changeMySqlType2JavaType(String type) {
         String typeName = null;
         type = type.toLowerCase();
         if (type.startsWith("varchar")) {
@@ -483,15 +492,16 @@ return ymd;
             typeName = "String";
         }
         return typeName;
-    }
+    }*/
     public void genController() throws IOException, TemplateException {
         logger.info("genController");
-        getIdValid();
+/*        getIdValid();
         root.put("getSearchParam", getSearchParam());
         root.put("setParam",  getSetParam());
         root.put("validCode", getValidStr());
-        root.put("controllerViewMethod", getCtrlViewM());
-       
+        root.put("controllerViewMethod", getCtrlViewM());*/
+        ControllerFactory factory= new ControllerFactory(allTable, root);
+        factory.genCode(table.getName());
         writeFile("src/main/java/cola/machine/action/",table.getName() + "Controller.java", "controller");
     }
    
@@ -500,7 +510,7 @@ return ymd;
         sb.append("String id = request.getParameter(\"id\");").append(ctrl);
         sb.append("HashMap<String,Object> result =new HashMap<String,Object>();").append(ctrl);
         sb.append("if(!StringUtil.isBlank(id)){").append(ctrl);
-            sb.append(tab+""+StringUtil.getAbc(table.getName())+" bean = "+StringUtil.getabc(table.getName())+"Service.selectByPrimaryKey(Long.valueOf(id));").append(ctrl);
+            sb.append(tab+""+StringUtil.getAbc(table.getName())+" bean = "+StringUtil.getabc(table.getName())+"Service.selectByPrimaryKey("+GenCodeHelper.changeMySqlType2JavaType(table.getPk().getType())+".valueOf(id));").append(ctrl);
             sb.append(tab+"result.put(\"bean\", bean);").append(ctrl);
             if(table.getMapper()!=null){
             sb.append(tab+"HashMap<String,String> params =new HashMap<String,String>();").append(ctrl);
@@ -522,7 +532,7 @@ return ymd;
             
             ZTable childTable = allTable.get(table.getMapper().getMapper());
             ;
-            String s= this.changeMySqlType2JavaType(childTable.getPk().getType())+".valueOf(stNow)";
+            String s= GenCodeHelper.changeMySqlType2JavaType(childTable.getPk().getType())+".valueOf(stNow)";
             root.put("serviceSaveWithChilds", s);
             }
         writeFile("src/main/java/cola/machine/service/",table.getName() + "Service.java", "service");
@@ -545,7 +555,7 @@ return ymd;
         for (ZColum col : table.getCols()) {
             type = col.getType().toLowerCase();
             sb.append("/**" + col.getRemark() + "**/").append(ctrl);
-            typeName = this.changeMySqlType2JavaType(type);
+            typeName = GenCodeHelper.changeMySqlType2JavaType(type);
             sb.append("    private " + typeName + " " + col.getName() + ";").append(ctrl);
             sb.append("    public " + typeName + " get" + StringUtil.getAbc(col.getName()) + "(){").append(ctrl)
                     .append("        return " + col.getName() + ";").append(ctrl).append("    }")
@@ -594,6 +604,18 @@ return ymd;
                 if(validAry[j].toLowerCase().startsWith("phone")){
                     String content=StringUtil.getContentBetween(validAry[j], "(", ")");
                     rules.add(String.format("new PhoneRule(%s)",content));
+                }
+                if(validAry[j].toLowerCase().startsWith("alpha_numeric")){
+                    String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+                    rules.add(String.format("new AlphaNumbericUnderlineRule(%s)",content));
+                }
+                if(validAry[j].toLowerCase().startsWith("alphanumeric")){
+                    String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+                    rules.add(String.format("new AlphaNumericRule(%s)",content));
+                }
+                if(validAry[j].toLowerCase().startsWith("alpha")){
+                    String content=StringUtil.getContentBetween(validAry[j], "(", ")");
+                    rules.add(String.format("new AlphaRule(%s)",content));
                 }
                 if(validAry[j].toLowerCase().startsWith("money")){
                     String content=StringUtil.getContentBetween(validAry[j], "(", ")");
@@ -651,23 +673,22 @@ return ymd;
             ZColum zcol =cols.get(i);
             String type =zcol.getType().toLowerCase();
             String commonStr= "id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\"  class=\"form-control input-sm\" ";
-            if(zcol.isPk()){
-                sb.append(tab+"<input type=\"hidden\" "+commonStr+"  placeholder=\""+zcol.getRemark()+"\">").append(ctrl);
-            }else{
+            if(zcol!=null){
                 sb.append(tab2+"<label for=\""+zcol.getName()+"\">"+zcol.getRemark()+"</label>").append(ctrl);
                 if(type.startsWith("varchar")){
                     int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
                     String tagName="input";
-                    if(length>50){
+                 /*   if(length>50){
                         tagName="textarea";
-                    }
-                    sb.append(tab3+String.format("<input type=\"text\" "+commonStr+"  maxlength=\"%d\" placeholder=\""+zcol.getRemark()+"\" ></input>",
+                    }*/
+             /*       sb.append(tab3+String.format("<input type=\"text\" "+commonStr+"  maxlength=\"%d\" placeholder=\""+zcol.getRemark()+"\" ></input>",
+                            length)).append(ctrl);*/
+                    sb.append(tab3+String.format("<input type=\"text\" "+ "id=\""+zcol.getName()+"Like\" name=\""+zcol.getName()+"Like\"  class=\"form-control input-sm\" "+"  maxlength=\"%d\" placeholder=\""+zcol.getRemark()+"\" ></input>",
                             length)).append(ctrl);
                     
                     
-                    
                 }else
-                if(type.startsWith("int")||type.startsWith("bigint")){
+                if(type.startsWith("int")||type.startsWith("bigint")||type.startsWith("tinyint")){
                     //有一种checkbox 的选项
                     if(zcol.getShowValue()!=null){
                         sb.append(tab3+String.format("<select "+commonStr+" >"
@@ -711,7 +732,7 @@ return ymd;
         root.put("searchhtml", sb.toString());
   
         logger.info("genListHtml");
-        writeFile("",table.getName() + "List.html", "list");
+        writeFile("src/main/webapp/static/html",table.getName() + "List.html", "list");
     }
     public String getSearchFormItem(ZColum zcol){
         String type =zcol.getType().toLowerCase();
@@ -727,14 +748,14 @@ return ymd;
             commonStr= "id=\""+zcol.getName()+"Begin\" name=\""+zcol.getName()+"Begin\"  class=\"form-control input-sm\" ";
             sb.append(tab2+"<label for=\""+zcol.getName()+"Begin\">"+zcol.getRemark()+"开始"+"</label>").append(ctrl);
             sb.append(tab2+"<div class=\"input-group\">").append(ctrl);
-           sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"\" ></input>")).append(ctrl);
+           sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"开始\" ></input>")).append(ctrl);
             sb.append(tab3+"<label class=\"input-group-addon\" for=\""+zcol.getName()+"Begin\" ><i class=\"fa fa-calendar\"></i></label>");
             sb.append(tab2+"</div>").append(ctrl);
             
             commonStr= "id=\""+zcol.getName()+"End\" name=\""+zcol.getName()+"End\"  class=\"form-control input-sm\" ";
             sb.append(tab2+"<label for=\""+zcol.getName()+"End\">"+zcol.getRemark()+"结束"+"</label>").append(ctrl);
             sb.append(tab2+"<div class=\"input-group\">").append(ctrl);
-           sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"\" ></input>")).append(ctrl);
+           sb.append(tab3+String.format("<input type=\"text\" "+commonStr+" onClick=\"WdatePicker({dateFmt:'"+getYMDStr(type)+"'})\"  datatype=\"date\" format=\""+getYMDStr(type)+"\"  placeholder=\""+zcol.getRemark()+"结束\" ></input>")).append(ctrl);
             sb.append(tab3+"<label class=\"input-group-addon\" for=\""+zcol.getName()+"End\" ><i class=\"fa fa-calendar\"></i></label>");
             sb.append(tab2+"</div>").append(ctrl);
         }
@@ -775,16 +796,16 @@ return ymd;
                 }else{
                 sb.append(tab2+String.format("<div class=\"col-sm-10\">")).append(ctrl);
                 }
-                if(type.startsWith("varchar")){
+                if(type.startsWith("varchar")||type.startsWith("char")){
                     int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
                     String tagName="input";
                     if(length>50){
                         tagName="textarea";
                     }
                     sb.append(tab3+String.format("<%s %s "+commonStr+"  maxlength=\"%d\"></%s>",
-                            tagName,tagName.equals("text")?" type=\"text\" ":"",length,tagName)).append(ctrl);
+                            tagName,tagName.equals("input")?" type=\"text\" ":"",length,tagName)).append(ctrl);
                 }
-                if(type.startsWith("int")|| type.startsWith("bigint")){
+                if(type.startsWith("int")|| type.startsWith("bigint")|| type.startsWith("tinyint")){
                     //有一种checkbox 的选项
                     if(zcol.getShowValue()!=null){
                         sb.append(tab3+String.format("<select  "+commonStr+" >"
@@ -823,7 +844,7 @@ return ymd;
         }
         
         root.put("edithtml", sb.toString());
-        writeFile("",table.getName() + "Edit.html", "edit");
+        writeFile("src/main/webapp/static/html",table.getName() + "Edit.html", "edit");
     }
 
     public void genViewHtml()  throws IOException, TemplateException{
@@ -885,7 +906,7 @@ return ymd;
             }
         }
         root.put("viewhtml", sb.toString());
-        writeFile("",table.getName() + "View.html", "view");
+        writeFile("src/main/webapp/static/html",table.getName() + "View.html", "view");
     }
     public String  getSearchBar(){
         StringBuffer sb =new StringBuffer();
@@ -932,7 +953,10 @@ return ymd;
     }
     public static void main(String[] args) {
 
-        Generator.generate(new String[]{"SysResource","SysRole","SysUser","SysUserRole","SysRoleResource","SysUserResource"});
+        Generator.generate(new String[]{"SmsRecord"
+         /*       "SysResource","SysRole","SysUser","SysUserRole",
+                "SysRoleResource","SysUserResource"*/
+                });
        
     }
 

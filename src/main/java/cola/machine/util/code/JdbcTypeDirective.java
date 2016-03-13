@@ -87,6 +87,10 @@ public class JdbcTypeDirective implements TemplateDirectiveModel {
 		            typeName= "TIMESTAMP";
 		        }else if(type.startsWith("text")){
                     typeName= "LONGVARCHAR";
+                }else if(type.startsWith("char")){
+                    typeName= "CHAR";
+                }else if(type.startsWith("tinyint")){
+                    typeName= "TINYINT";
                 }else{
 		            throw new IOException(
 		                    "This directive content doesn't  allow this value"+type+".");
