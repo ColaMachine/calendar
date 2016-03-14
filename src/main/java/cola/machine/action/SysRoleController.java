@@ -95,27 +95,39 @@ public class SysRoleController extends BaseController{
         HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                params.put("id",id);
+            params.put("id",id);
         }
         String name = request.getParameter("name");
         if(!StringUtil.isBlank(name)){
-                params.put("name",name);
+            params.put("name",name);
+        }
+        String nameLike = request.getParameter("nameLike");
+        if(!StringUtil.isBlank(nameLike)){
+            params.put("nameLike",nameLike);
         }
         String code = request.getParameter("code");
         if(!StringUtil.isBlank(code)){
-                params.put("code",code);
+            params.put("code",code);
+        }
+        String codeLike = request.getParameter("codeLike");
+        if(!StringUtil.isBlank(codeLike)){
+            params.put("codeLike",codeLike);
         }
         String order = request.getParameter("order");
         if(!StringUtil.isBlank(order)){
-                params.put("order",order);
+            params.put("order",order);
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
-                params.put("status",status);
+            params.put("status",status);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
-                params.put("remark",remark);
+            params.put("remark",remark);
+        }
+        String remarkLike = request.getParameter("remarkLike");
+        if(!StringUtil.isBlank(remarkLike)){
+            params.put("remarkLike",remarkLike);
         }
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
@@ -130,7 +142,7 @@ public class SysRoleController extends BaseController{
             if(StringUtil.checkNumeric(createtimeBegin)){
                 params.put("createtimeBegin",createtimeBegin);
             }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String createtimeEnd = request.getParameter("createtimeEnd");
@@ -138,7 +150,7 @@ public class SysRoleController extends BaseController{
             if(StringUtil.checkNumeric(createtimeEnd)){
                 params.put("createtimeEnd",createtimeEnd);
             }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
 
@@ -167,19 +179,19 @@ public class SysRoleController extends BaseController{
       @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
-    String id = request.getParameter("id");
-HashMap<String,Object> result =new HashMap<String,Object>();
-if(!StringUtil.isBlank(id)){
-    SysRole bean = sysRoleService.selectByPrimaryKey(Long.valueOf(id));
-    result.put("bean", bean);
-    HashMap<String,String> params =new HashMap<String,String>();
-    params.put("SysResource",id);
-    List<SysRoleResource> childMaps =sysRoleResourceService.listByParams(new HashMap<String,String>());
-    result.put("childMaps", childMaps);
-}
-List<SysResource> childs =sysResourceService.listByParams(new HashMap<String,String>());
-result.put("childs", childs);
-return this.getResult(result);
+            String id = request.getParameter("id");
+        HashMap<String,Object> result =new HashMap<String,Object>();
+        if(!StringUtil.isBlank(id)){
+            SysRole bean = sysRoleService.selectByPrimaryKey(Long.valueOf(id));
+            result.put("bean", bean);
+            HashMap<String,String> params =new HashMap<String,String>();
+            params.put("SysResource",id);
+            List<SysRoleResource> childMaps =sysRoleResourceService.listByParams(new HashMap<String,String>());
+            result.put("childMaps", childMaps);
+        }
+        List<SysResource> childs =sysResourceService.listByParams(new HashMap<String,String>());
+        result.put("childs", childs);
+        return this.getResult(result);
 
 
 
@@ -245,27 +257,27 @@ return this.getResult(result);
         */
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                sysRole.setId(Long.valueOf(id));
+            sysRole.setId(Long.valueOf(id));
         }
         String name = request.getParameter("name");
         if(!StringUtil.isBlank(name)){
-                sysRole.setName(String.valueOf(name));
+            sysRole.setName(name);
         }
         String code = request.getParameter("code");
         if(!StringUtil.isBlank(code)){
-                sysRole.setCode(String.valueOf(code));
+            sysRole.setCode(code);
         }
         String order = request.getParameter("order");
         if(!StringUtil.isBlank(order)){
-                sysRole.setOrder(Integer.valueOf(order));
+            sysRole.setOrder(Integer.valueOf(order));
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
-                sysRole.setStatus(Integer.valueOf(status));
+            sysRole.setStatus(Integer.valueOf(status));
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
-                sysRole.setRemark(String.valueOf(remark));
+            sysRole.setRemark(remark);
         }
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
@@ -356,27 +368,39 @@ return this.getResult(result);
                HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                params.put("id",id);
+            params.put("id",id);
         }
         String name = request.getParameter("name");
         if(!StringUtil.isBlank(name)){
-                params.put("name",name);
+            params.put("name",name);
+        }
+        String nameLike = request.getParameter("nameLike");
+        if(!StringUtil.isBlank(nameLike)){
+            params.put("nameLike",nameLike);
         }
         String code = request.getParameter("code");
         if(!StringUtil.isBlank(code)){
-                params.put("code",code);
+            params.put("code",code);
+        }
+        String codeLike = request.getParameter("codeLike");
+        if(!StringUtil.isBlank(codeLike)){
+            params.put("codeLike",codeLike);
         }
         String order = request.getParameter("order");
         if(!StringUtil.isBlank(order)){
-                params.put("order",order);
+            params.put("order",order);
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
-                params.put("status",status);
+            params.put("status",status);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
-                params.put("remark",remark);
+            params.put("remark",remark);
+        }
+        String remarkLike = request.getParameter("remarkLike");
+        if(!StringUtil.isBlank(remarkLike)){
+            params.put("remarkLike",remarkLike);
         }
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
@@ -391,7 +415,7 @@ return this.getResult(result);
             if(StringUtil.checkNumeric(createtimeBegin)){
                 params.put("createtimeBegin",createtimeBegin);
             }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String createtimeEnd = request.getParameter("createtimeEnd");
@@ -399,7 +423,7 @@ return this.getResult(result);
             if(StringUtil.checkNumeric(createtimeEnd)){
                 params.put("createtimeEnd",createtimeEnd);
             }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
 

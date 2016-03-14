@@ -221,11 +221,10 @@ public class OUserController extends BaseController {
         // System.out.println(request.getParameter("path"));
         // System.out.println(request.getSession().getAttribute("path"));
         // System.out.println(request.getServletContext().getAttribute("path"));
-
+        request.setAttribute("path", SysConfig.PATH);
         // logger.debug("s");
         // LogUtil.debug("nihao");
         // System.out.println(123);
-        request.setAttribute("path", "/calendar");
         return "/jsp/index.jsp";
     }
 

@@ -83,18 +83,12 @@ where id = #{id,jdbcType=BIGINT}
         <if test="id != null and id != '' ">  
            and `id` = #{id}
         </if>  
-
-        
         <if test="roleid != null and roleid != '' ">  
            and `roleid` = #{roleid}
         </if>  
-
-        
         <if test="rid != null and rid != '' ">  
            and `rid` = #{rid}
         </if>  
-
-        
   </select>
    <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
     select 

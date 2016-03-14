@@ -2,11 +2,12 @@
     <div class="body_title">| 角色</div>
         <div class="body_top" >
             <form class="form-inline app-search">
-    <input type="hidden" id="id" name="id"  class="form-control input-sm"   placeholder="主键">
+        <label for="id">主键</label>
+            <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="主键"></input>
         <label for="name">角色名</label>
-            <input type="text" id="name" name="name"  class="form-control input-sm"   maxlength="20" placeholder="角色名" ></input>
+            <input type="text" id="nameLike" name="nameLike"  class="form-control input-sm"   maxlength="20" placeholder="角色名" ></input>
         <label for="code">角色代码</label>
-            <input type="text" id="code" name="code"  class="form-control input-sm"   maxlength="20" placeholder="角色代码" ></input>
+            <input type="text" id="codeLike" name="codeLike"  class="form-control input-sm"   maxlength="20" placeholder="角色代码" ></input>
         <label for="order">排序</label>
             <input type="number" id="order" name="order"  class="form-control input-sm"  maxlength="11" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="排序"></input>
         <label for="status">状态</label>
@@ -16,18 +17,18 @@
                 <option value=2>禁用</option>
             </select>
         <label for="remark">备注</label>
-            <input type="text" id="remark" name="remark"  class="form-control input-sm"   maxlength="255" placeholder="备注" ></input>
+            <input type="text" id="remarkLike" name="remarkLike"  class="form-control input-sm"   maxlength="255" placeholder="备注" ></input>
         <label for="createtime">创建时间</label>
         <div class="input-group">
             <input type="text" id="createtime" name="createtime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
             <label class="input-group-addon" for="createtime" ><i class="fa fa-calendar"></i></label>        </div>
         <label for="createtimeBegin">创建时间开始</label>
         <div class="input-group">
-            <input type="text" id="createtimeBegin" name="createtimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <input type="text" id="createtimeBegin" name="createtimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间开始" ></input>
             <label class="input-group-addon" for="createtimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
         <label for="createtimeEnd">创建时间结束</label>
         <div class="input-group">
-            <input type="text" id="createtimeEnd" name="createtimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <input type="text" id="createtimeEnd" name="createtimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间结束" ></input>
             <label class="input-group-addon" for="createtimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
 
  <!-- 
@@ -145,7 +146,7 @@ var gridParam = {
                 name : 'status',
                 width : 80,
                 formatter : function(value, grid, rows) {
-                    var map ={'2':'禁用','1':'正常',};
+                    var map ={'1':'正常','2':'禁用',};
                     return map[value];
                 }
             } ,

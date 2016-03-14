@@ -85,15 +85,15 @@ public class SysRoleResourceController extends BaseController{
         HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                params.put("id",id);
+            params.put("id",id);
         }
         String roleid = request.getParameter("roleid");
         if(!StringUtil.isBlank(roleid)){
-                params.put("roleid",roleid);
+            params.put("roleid",roleid);
         }
         String rid = request.getParameter("rid");
         if(!StringUtil.isBlank(rid)){
-                params.put("rid",rid);
+            params.put("rid",rid);
         }
 
         params.put("page",page);
@@ -121,13 +121,13 @@ public class SysRoleResourceController extends BaseController{
       @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
-    String id = request.getParameter("id");
-HashMap<String,Object> result =new HashMap<String,Object>();
-if(!StringUtil.isBlank(id)){
-    SysRoleResource bean = sysRoleResourceService.selectByPrimaryKey(Long.valueOf(id));
-    result.put("bean", bean);
-}
-return this.getResult(result);
+            String id = request.getParameter("id");
+        HashMap<String,Object> result =new HashMap<String,Object>();
+        if(!StringUtil.isBlank(id)){
+            SysRoleResource bean = sysRoleResourceService.selectByPrimaryKey(Long.valueOf(id));
+            result.put("bean", bean);
+        }
+        return this.getResult(result);
 
 
 
@@ -173,15 +173,15 @@ return this.getResult(result);
         */
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                sysRoleResource.setId(Long.valueOf(id));
+            sysRoleResource.setId(Long.valueOf(id));
         }
         String roleid = request.getParameter("roleid");
         if(!StringUtil.isBlank(roleid)){
-                sysRoleResource.setRoleid(Long.valueOf(roleid));
+            sysRoleResource.setRoleid(Long.valueOf(roleid));
         }
         String rid = request.getParameter("rid");
         if(!StringUtil.isBlank(rid)){
-                sysRoleResource.setRid(Long.valueOf(rid));
+            sysRoleResource.setRid(Long.valueOf(rid));
         }
 
         //valid
@@ -259,15 +259,15 @@ return this.getResult(result);
                HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                params.put("id",id);
+            params.put("id",id);
         }
         String roleid = request.getParameter("roleid");
         if(!StringUtil.isBlank(roleid)){
-                params.put("roleid",roleid);
+            params.put("roleid",roleid);
         }
         String rid = request.getParameter("rid");
         if(!StringUtil.isBlank(rid)){
-                params.put("rid",rid);
+            params.put("rid",rid);
         }
 
         // 查询list集合

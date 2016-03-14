@@ -275,99 +275,93 @@ where id = #{id,jdbcType=BIGINT}
         <if test="id != null and id != '' ">  
            and `id` = #{id}
         </if>  
-
-        
         <if test="username != null and username != '' ">  
            and `username` = #{username}
         </if>  
-
-        
+        <if test="usernameLike != null and usernameLike != '' ">  
+             and `username` like "%"#{usernameLike}"%"
+        </if>   
         <if test="password != null and password != '' ">  
            and `password` = #{password}
         </if>  
-
-        
+        <if test="passwordLike != null and passwordLike != '' ">  
+             and `password` like "%"#{passwordLike}"%"
+        </if>   
         <if test="nkname != null and nkname != '' ">  
            and `nkname` = #{nkname}
         </if>  
-
-        
+        <if test="nknameLike != null and nknameLike != '' ">  
+             and `nkname` like "%"#{nknameLike}"%"
+        </if>   
         <if test="type != null and type != '' ">  
            and `type` = #{type}
         </if>  
-
-        
         <if test="status != null and status != '' ">  
            and `status` = #{status}
         </if>  
-
-        
         <if test="email != null and email != '' ">  
            and `email` = #{email}
         </if>  
-
-        
+        <if test="emailLike != null and emailLike != '' ">  
+             and `email` like "%"#{emailLike}"%"
+        </if>   
         <if test="telno != null and telno != '' ">  
            and `telno` = #{telno}
         </if>  
-
-        
+        <if test="telnoLike != null and telnoLike != '' ">  
+             and `telno` like "%"#{telnoLike}"%"
+        </if>   
         <if test="idcard != null and idcard != '' ">  
            and `idcard` = #{idcard}
         </if>  
-
-        
+        <if test="idcardLike != null and idcardLike != '' ">  
+             and `idcard` like "%"#{idcardLike}"%"
+        </if>   
         <if test="sex != null and sex != '' ">  
            and `sex` = #{sex}
         </if>  
-
-        
         <if test="birth != null and birth != '' ">  
            and `birth` = #{birth}
         </if>  
-
-        
         <if test="integral != null and integral != '' ">  
            and `integral` = #{integral}
         </if>  
-
-        
         <if test="address != null and address != '' ">  
            and `address` = #{address}
         </if>  
-
-        
+        <if test="addressLike != null and addressLike != '' ">  
+             and `address` like "%"#{addressLike}"%"
+        </if>   
         <if test="weichat != null and weichat != '' ">  
            and `weichat` = #{weichat}
         </if>  
-
-        
+        <if test="weichatLike != null and weichatLike != '' ">  
+             and `weichat` like "%"#{weichatLike}"%"
+        </if>   
         <if test="qq != null and qq != '' ">  
            and `qq` = #{qq}
         </if>  
-
-        
         <if test="face != null and face != '' ">  
            and `face` = #{face}
         </if>  
-
-        
+        <if test="faceLike != null and faceLike != '' ">  
+             and `face` like "%"#{faceLike}"%"
+        </if>   
         <if test="remark != null and remark != '' ">  
            and `remark` = #{remark}
         </if>  
-
-        
+        <if test="remarkLike != null and remarkLike != '' ">  
+             and `remark` like "%"#{remarkLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  
-
         <if test="createtimeBegin != null and createtimeBegin != '' ">  
              and `createtime` &gt;= #{createtimeBegin}
         </if>   
          <if test="createtimeEnd != null and createtimeEnd != '' ">  
              and `createtime` &lt;= #{createtimeEnd}
         </if> 
-        
         <if test="createtimeBegin != null and createtimeBegin != '' ">  
              and `createtime` &gt;= #{createtimeBegin}
         </if>   
@@ -377,14 +371,12 @@ where id = #{id,jdbcType=BIGINT}
         <if test="updatetime != null and updatetime != '' ">  
            and `updatetime` = #{updatetime}
         </if>  
-
         <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
              and `updatetime` &gt;= #{updatetimeBegin}
         </if>   
          <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
              and `updatetime` &lt;= #{updatetimeEnd}
         </if> 
-        
         <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
              and `updatetime` &gt;= #{updatetimeBegin}
         </if>   
@@ -402,12 +394,21 @@ where id = #{id,jdbcType=BIGINT}
         <if test="username != null and username != '' ">  
            and `username` = #{username}
         </if>  
+        <if test="usernameLike != null and usernameLike != '' ">  
+             and `username` like "%"#{usernameLike}"%"
+        </if>   
         <if test="password != null and password != '' ">  
            and `password` = #{password}
         </if>  
+        <if test="passwordLike != null and passwordLike != '' ">  
+             and `password` like "%"#{passwordLike}"%"
+        </if>   
         <if test="nkname != null and nkname != '' ">  
            and `nkname` = #{nkname}
         </if>  
+        <if test="nknameLike != null and nknameLike != '' ">  
+             and `nkname` like "%"#{nknameLike}"%"
+        </if>   
         <if test="type != null and type != '' ">  
            and `type` = #{type}
         </if>  
@@ -417,12 +418,21 @@ where id = #{id,jdbcType=BIGINT}
         <if test="email != null and email != '' ">  
            and `email` = #{email}
         </if>  
+        <if test="emailLike != null and emailLike != '' ">  
+             and `email` like "%"#{emailLike}"%"
+        </if>   
         <if test="telno != null and telno != '' ">  
            and `telno` = #{telno}
         </if>  
+        <if test="telnoLike != null and telnoLike != '' ">  
+             and `telno` like "%"#{telnoLike}"%"
+        </if>   
         <if test="idcard != null and idcard != '' ">  
            and `idcard` = #{idcard}
         </if>  
+        <if test="idcardLike != null and idcardLike != '' ">  
+             and `idcard` like "%"#{idcardLike}"%"
+        </if>   
         <if test="sex != null and sex != '' ">  
            and `sex` = #{sex}
         </if>  
@@ -435,18 +445,30 @@ where id = #{id,jdbcType=BIGINT}
         <if test="address != null and address != '' ">  
            and `address` = #{address}
         </if>  
+        <if test="addressLike != null and addressLike != '' ">  
+             and `address` like "%"#{addressLike}"%"
+        </if>   
         <if test="weichat != null and weichat != '' ">  
            and `weichat` = #{weichat}
         </if>  
+        <if test="weichatLike != null and weichatLike != '' ">  
+             and `weichat` like "%"#{weichatLike}"%"
+        </if>   
         <if test="qq != null and qq != '' ">  
            and `qq` = #{qq}
         </if>  
         <if test="face != null and face != '' ">  
            and `face` = #{face}
         </if>  
+        <if test="faceLike != null and faceLike != '' ">  
+             and `face` like "%"#{faceLike}"%"
+        </if>   
         <if test="remark != null and remark != '' ">  
            and `remark` = #{remark}
         </if>  
+        <if test="remarkLike != null and remarkLike != '' ">  
+             and `remark` like "%"#{remarkLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  
@@ -476,12 +498,21 @@ where id = #{id,jdbcType=BIGINT}
         <if test="username != null and username != '' ">  
            and `username` = #{username}
         </if>  
+        <if test="usernameLike != null and usernameLike != '' ">  
+             and `username` like "%"#{usernameLike}"%"
+        </if>   
         <if test="password != null and password != '' ">  
            and `password` = #{password}
         </if>  
+        <if test="passwordLike != null and passwordLike != '' ">  
+             and `password` like "%"#{passwordLike}"%"
+        </if>   
         <if test="nkname != null and nkname != '' ">  
            and `nkname` = #{nkname}
         </if>  
+        <if test="nknameLike != null and nknameLike != '' ">  
+             and `nkname` like "%"#{nknameLike}"%"
+        </if>   
         <if test="type != null and type != '' ">  
            and `type` = #{type}
         </if>  
@@ -491,12 +522,21 @@ where id = #{id,jdbcType=BIGINT}
         <if test="email != null and email != '' ">  
            and `email` = #{email}
         </if>  
+        <if test="emailLike != null and emailLike != '' ">  
+             and `email` like "%"#{emailLike}"%"
+        </if>   
         <if test="telno != null and telno != '' ">  
            and `telno` = #{telno}
         </if>  
+        <if test="telnoLike != null and telnoLike != '' ">  
+             and `telno` like "%"#{telnoLike}"%"
+        </if>   
         <if test="idcard != null and idcard != '' ">  
            and `idcard` = #{idcard}
         </if>  
+        <if test="idcardLike != null and idcardLike != '' ">  
+             and `idcard` like "%"#{idcardLike}"%"
+        </if>   
         <if test="sex != null and sex != '' ">  
            and `sex` = #{sex}
         </if>  
@@ -509,24 +549,48 @@ where id = #{id,jdbcType=BIGINT}
         <if test="address != null and address != '' ">  
            and `address` = #{address}
         </if>  
+        <if test="addressLike != null and addressLike != '' ">  
+             and `address` like "%"#{addressLike}"%"
+        </if>   
         <if test="weichat != null and weichat != '' ">  
            and `weichat` = #{weichat}
         </if>  
+        <if test="weichatLike != null and weichatLike != '' ">  
+             and `weichat` like "%"#{weichatLike}"%"
+        </if>   
         <if test="qq != null and qq != '' ">  
            and `qq` = #{qq}
         </if>  
         <if test="face != null and face != '' ">  
            and `face` = #{face}
         </if>  
+        <if test="faceLike != null and faceLike != '' ">  
+             and `face` like "%"#{faceLike}"%"
+        </if>   
         <if test="remark != null and remark != '' ">  
            and `remark` = #{remark}
         </if>  
+        <if test="remarkLike != null and remarkLike != '' ">  
+             and `remark` like "%"#{remarkLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and `createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and `createtime` &lt;= #{createtimeEnd}
+        </if> 
         <if test="updatetime != null and updatetime != '' ">  
            and `updatetime` = #{updatetime}
         </if>  
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and `updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and `updatetime` &lt;= #{updatetimeEnd}
+        </if> 
   </select>
 
 </mapper>

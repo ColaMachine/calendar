@@ -82,7 +82,7 @@ public class SysUserService extends BaseService {
         return ResultUtil.getSuccResult();
     }
      /*
-     * 说明:
+     * 说明:和关联关系一起保存
      * @param SysUser
      * @return
      * @return Object

@@ -75,17 +75,17 @@ where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcT
         <if test="${col.name} != null and ${col.name} != '' ">  
            and `${col.name}` = ${r'#{'}${col.name}}
         </if>  
-         <#if col.type?length gt 5>
-        <#if col.type[0..6]=='VARCHAR'>
+         <#if col.type?length gt 6>
+        <#if col.type[0..6]?lower_case=='varchar'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
          <#if col.type?length gt 3>
-        <#if col.type[0..3]=='CHAR'>
+        <#if col.type[0..3]?lower_case=='char'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
@@ -115,17 +115,17 @@ where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcT
         <if test="${col.name} != null and ${col.name} != '' ">  
            and `${col.name}` = ${r'#{'}${col.name}}
         </if>  
-           <#if col.type?length gt 5>
-        <#if col.type[0..6]=='VARCHAR'>
+           <#if col.type?length gt 6>
+        <#if col.type[0..6]?lower_case=='varchar'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
          <#if col.type?length gt 3>
-        <#if col.type[0..3]=='CHAR'>
+        <#if col.type[0..3]?lower_case=='char'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
@@ -147,17 +147,17 @@ where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcT
         <if test="${col.name} != null and ${col.name} != '' ">  
            and `${col.name}` = ${r'#{'}${col.name}}
         </if>  
-           <#if col.type?length gt 5>
-        <#if col.type[0..6]=='VARCHAR'>
+           <#if col.type?length gt 6>
+        <#if col.type[0..6]?lower_case=='varchar'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
          <#if col.type?length gt 3>
-        <#if col.type[0..3]=='CHAR'>
+        <#if col.type[0..3]?lower_case=='char'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like '%${r'#{'}${col.name}Like}%'
+             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>

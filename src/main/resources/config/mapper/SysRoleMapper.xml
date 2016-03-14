@@ -131,44 +131,39 @@ where id = #{id,jdbcType=BIGINT}
         <if test="id != null and id != '' ">  
            and `id` = #{id}
         </if>  
-
-        
         <if test="name != null and name != '' ">  
            and `name` = #{name}
         </if>  
-
-        
+        <if test="nameLike != null and nameLike != '' ">  
+             and `name` like "%"#{nameLike}"%"
+        </if>   
         <if test="code != null and code != '' ">  
            and `code` = #{code}
         </if>  
-
-        
+        <if test="codeLike != null and codeLike != '' ">  
+             and `code` like "%"#{codeLike}"%"
+        </if>   
         <if test="order != null and order != '' ">  
            and `order` = #{order}
         </if>  
-
-        
         <if test="status != null and status != '' ">  
            and `status` = #{status}
         </if>  
-
-        
         <if test="remark != null and remark != '' ">  
            and `remark` = #{remark}
         </if>  
-
-        
+        <if test="remarkLike != null and remarkLike != '' ">  
+             and `remark` like "%"#{remarkLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  
-
         <if test="createtimeBegin != null and createtimeBegin != '' ">  
              and `createtime` &gt;= #{createtimeBegin}
         </if>   
          <if test="createtimeEnd != null and createtimeEnd != '' ">  
              and `createtime` &lt;= #{createtimeEnd}
         </if> 
-        
         <if test="createtimeBegin != null and createtimeBegin != '' ">  
              and `createtime` &gt;= #{createtimeBegin}
         </if>   
@@ -186,9 +181,15 @@ where id = #{id,jdbcType=BIGINT}
         <if test="name != null and name != '' ">  
            and `name` = #{name}
         </if>  
+        <if test="nameLike != null and nameLike != '' ">  
+             and `name` like "%"#{nameLike}"%"
+        </if>   
         <if test="code != null and code != '' ">  
            and `code` = #{code}
         </if>  
+        <if test="codeLike != null and codeLike != '' ">  
+             and `code` like "%"#{codeLike}"%"
+        </if>   
         <if test="order != null and order != '' ">  
            and `order` = #{order}
         </if>  
@@ -198,6 +199,9 @@ where id = #{id,jdbcType=BIGINT}
         <if test="remark != null and remark != '' ">  
            and `remark` = #{remark}
         </if>  
+        <if test="remarkLike != null and remarkLike != '' ">  
+             and `remark` like "%"#{remarkLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  
@@ -218,9 +222,15 @@ where id = #{id,jdbcType=BIGINT}
         <if test="name != null and name != '' ">  
            and `name` = #{name}
         </if>  
+        <if test="nameLike != null and nameLike != '' ">  
+             and `name` like "%"#{nameLike}"%"
+        </if>   
         <if test="code != null and code != '' ">  
            and `code` = #{code}
         </if>  
+        <if test="codeLike != null and codeLike != '' ">  
+             and `code` like "%"#{codeLike}"%"
+        </if>   
         <if test="order != null and order != '' ">  
            and `order` = #{order}
         </if>  
@@ -230,9 +240,18 @@ where id = #{id,jdbcType=BIGINT}
         <if test="remark != null and remark != '' ">  
            and `remark` = #{remark}
         </if>  
+        <if test="remarkLike != null and remarkLike != '' ">  
+             and `remark` like "%"#{remarkLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and `createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and `createtime` &lt;= #{createtimeEnd}
+        </if> 
   </select>
 
 </mapper>

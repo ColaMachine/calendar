@@ -7,11 +7,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1″>
 <title>Insert title here</title>
-<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-<script type="text/javascript" src="/static/js/common.js"></script>
+<script type="text/javascript" src="${path}/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="${path}/static/js/common.js"></script>
 <script type="text/javascript" >
-/* var WEBCONTEXT="${path}";
-var PATH="${path}"; */
+var WEBCONTEXT="${path}";
+var PATH="${path}"; 
 includeCSS(["/static/css/bootstrap.min.css",
 "/static/css/font-awesome.css",
 "/static/css/main.css",

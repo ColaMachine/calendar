@@ -2,7 +2,8 @@
     <div class="body_title">| 用户角色关系</div>
         <div class="body_top" >
             <form class="form-inline app-search">
-    <input type="hidden" id="id" name="id"  class="form-control input-sm"   placeholder="主键">
+        <label for="id">主键</label>
+            <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="15" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="主键"></input>
         <label for="uid">用户id</label>
             <input type="number" id="uid" name="uid"  class="form-control input-sm"  maxlength="15" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="用户id"></input>
         <label for="roleid">角色id</label>

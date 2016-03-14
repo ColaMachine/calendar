@@ -85,15 +85,15 @@ public class SysUserRoleController extends BaseController{
         HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                params.put("id",id);
+            params.put("id",id);
         }
         String uid = request.getParameter("uid");
         if(!StringUtil.isBlank(uid)){
-                params.put("uid",uid);
+            params.put("uid",uid);
         }
         String roleid = request.getParameter("roleid");
         if(!StringUtil.isBlank(roleid)){
-                params.put("roleid",roleid);
+            params.put("roleid",roleid);
         }
 
         params.put("page",page);
@@ -121,13 +121,13 @@ public class SysUserRoleController extends BaseController{
       @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
-    String id = request.getParameter("id");
-HashMap<String,Object> result =new HashMap<String,Object>();
-if(!StringUtil.isBlank(id)){
-    SysUserRole bean = sysUserRoleService.selectByPrimaryKey(Long.valueOf(id));
-    result.put("bean", bean);
-}
-return this.getResult(result);
+            String id = request.getParameter("id");
+        HashMap<String,Object> result =new HashMap<String,Object>();
+        if(!StringUtil.isBlank(id)){
+            SysUserRole bean = sysUserRoleService.selectByPrimaryKey(Long.valueOf(id));
+            result.put("bean", bean);
+        }
+        return this.getResult(result);
 
 
 
@@ -173,15 +173,15 @@ return this.getResult(result);
         */
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                sysUserRole.setId(Long.valueOf(id));
+            sysUserRole.setId(Long.valueOf(id));
         }
         String uid = request.getParameter("uid");
         if(!StringUtil.isBlank(uid)){
-                sysUserRole.setUid(Long.valueOf(uid));
+            sysUserRole.setUid(Long.valueOf(uid));
         }
         String roleid = request.getParameter("roleid");
         if(!StringUtil.isBlank(roleid)){
-                sysUserRole.setRoleid(Long.valueOf(roleid));
+            sysUserRole.setRoleid(Long.valueOf(roleid));
         }
 
         //valid
@@ -259,15 +259,15 @@ return this.getResult(result);
                HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                params.put("id",id);
+            params.put("id",id);
         }
         String uid = request.getParameter("uid");
         if(!StringUtil.isBlank(uid)){
-                params.put("uid",uid);
+            params.put("uid",uid);
         }
         String roleid = request.getParameter("roleid");
         if(!StringUtil.isBlank(roleid)){
-                params.put("roleid",roleid);
+            params.put("roleid",roleid);
         }
 
         // 查询list集合

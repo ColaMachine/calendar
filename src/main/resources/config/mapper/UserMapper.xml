@@ -79,9 +79,7 @@
 	</delete>
 	
 	
-	
-	
-	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+	 <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user
@@ -101,7 +99,7 @@
 ,#{pwd,jdbcType=VARCHAR}
 ,#{email,jdbcType=VARCHAR}
 ,#{username,jdbcType=VARCHAR}
-,#{telno,jdbcType=VARCHAR}
+,#{telno,jdbcType=CHAR}
 ,#{createtime,jdbcType=TIMESTAMP}
 ,#{status,jdbcType=TINYINT}
     )
@@ -157,7 +155,7 @@
           #{username,jdbcType=VARCHAR},
         </if>  
         <if test="telno != null" >  
-          #{telno,jdbcType=VARCHAR},
+          #{telno,jdbcType=CHAR},
         </if>  
         <if test="createtime != null" >  
           #{createtime,jdbcType=TIMESTAMP},
@@ -189,7 +187,7 @@
              `username`=#{username,jdbcType=VARCHAR},
         </if>  
         <if test="telno != null" >  
-             `telno`=#{telno,jdbcType=VARCHAR},
+             `telno`=#{telno,jdbcType=CHAR},
         </if>  
         <if test="createtime != null" >  
              `createtime`=#{createtime,jdbcType=TIMESTAMP},
@@ -208,7 +206,7 @@
               `pwd`=#{pwd,jdbcType=VARCHAR},  
               `email`=#{email,jdbcType=VARCHAR},  
               `username`=#{username,jdbcType=VARCHAR},  
-              `telno`=#{telno,jdbcType=VARCHAR},  
+              `telno`=#{telno,jdbcType=CHAR},  
               `createtime`=#{createtime,jdbcType=TIMESTAMP},  
               `status`=#{status,jdbcType=TINYINT}  
 where id = #{userid,jdbcType=VARCHAR}
@@ -220,39 +218,45 @@ where id = #{userid,jdbcType=VARCHAR}
         <if test="userid != null and userid != '' ">  
            and `userid` = #{userid}
         </if>  
+        <if test="useridLike != null and useridLike != '' ">  
+             and `userid` like "%"#{useridLike}"%"
+        </if>   
         <if test="loginname != null and loginname != '' ">  
            and `loginname` = #{loginname}
         </if>  
         <if test="loginnameLike != null and loginnameLike != '' ">  
-             and `loginname` like '%#{loginnameLike}%'
+             and `loginname` like "%"#{loginnameLike}"%"
         </if>   
         <if test="nickname != null and nickname != '' ">  
            and `nickname` = #{nickname}
         </if>  
         <if test="nicknameLike != null and nicknameLike != '' ">  
-             and `nickname` like '%#{nicknameLike}%'
+             and `nickname` like "%"#{nicknameLike}"%"
         </if>   
         <if test="pwd != null and pwd != '' ">  
            and `pwd` = #{pwd}
         </if>  
         <if test="pwdLike != null and pwdLike != '' ">  
-             and `pwd` like '%#{pwdLike}%'
+             and `pwd` like "%"#{pwdLike}"%"
         </if>   
         <if test="email != null and email != '' ">  
            and `email` = #{email}
         </if>  
         <if test="emailLike != null and emailLike != '' ">  
-             and `email` like '%#{emailLike}%'
+             and `email` like "%"#{emailLike}"%"
         </if>   
         <if test="username != null and username != '' ">  
            and `username` = #{username}
         </if>  
         <if test="usernameLike != null and usernameLike != '' ">  
-             and `username` like '%#{usernameLike}%'
+             and `username` like "%"#{usernameLike}"%"
         </if>   
         <if test="telno != null and telno != '' ">  
            and `telno` = #{telno}
         </if>  
+        <if test="telnoLike != null and telnoLike != '' ">  
+             and `telno` like "%"#{telnoLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  
@@ -279,39 +283,45 @@ where id = #{userid,jdbcType=VARCHAR}
         <if test="userid != null and userid != '' ">  
            and `userid` = #{userid}
         </if>  
+        <if test="useridLike != null and useridLike != '' ">  
+             and `userid` like "%"#{useridLike}"%"
+        </if>   
         <if test="loginname != null and loginname != '' ">  
            and `loginname` = #{loginname}
         </if>  
         <if test="loginnameLike != null and loginnameLike != '' ">  
-             and `loginname` like '%#{loginnameLike}%'
+             and `loginname` like "%"#{loginnameLike}"%"
         </if>   
         <if test="nickname != null and nickname != '' ">  
            and `nickname` = #{nickname}
         </if>  
         <if test="nicknameLike != null and nicknameLike != '' ">  
-             and `nickname` like '%#{nicknameLike}%'
+             and `nickname` like "%"#{nicknameLike}"%"
         </if>   
         <if test="pwd != null and pwd != '' ">  
            and `pwd` = #{pwd}
         </if>  
         <if test="pwdLike != null and pwdLike != '' ">  
-             and `pwd` like '%#{pwdLike}%'
+             and `pwd` like "%"#{pwdLike}"%"
         </if>   
         <if test="email != null and email != '' ">  
            and `email` = #{email}
         </if>  
         <if test="emailLike != null and emailLike != '' ">  
-             and `email` like '%#{emailLike}%'
+             and `email` like "%"#{emailLike}"%"
         </if>   
         <if test="username != null and username != '' ">  
            and `username` = #{username}
         </if>  
         <if test="usernameLike != null and usernameLike != '' ">  
-             and `username` like '%#{usernameLike}%'
+             and `username` like "%"#{usernameLike}"%"
         </if>   
         <if test="telno != null and telno != '' ">  
            and `telno` = #{telno}
         </if>  
+        <if test="telnoLike != null and telnoLike != '' ">  
+             and `telno` like "%"#{telnoLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  
@@ -332,39 +342,45 @@ where id = #{userid,jdbcType=VARCHAR}
         <if test="userid != null and userid != '' ">  
            and `userid` = #{userid}
         </if>  
+        <if test="useridLike != null and useridLike != '' ">  
+             and `userid` like "%"#{useridLike}"%"
+        </if>   
         <if test="loginname != null and loginname != '' ">  
            and `loginname` = #{loginname}
         </if>  
         <if test="loginnameLike != null and loginnameLike != '' ">  
-             and `loginname` like '%#{loginnameLike}%'
+             and `loginname` like "%"#{loginnameLike}"%"
         </if>   
         <if test="nickname != null and nickname != '' ">  
            and `nickname` = #{nickname}
         </if>  
         <if test="nicknameLike != null and nicknameLike != '' ">  
-             and `nickname` like '%#{nicknameLike}%'
+             and `nickname` like "%"#{nicknameLike}"%"
         </if>   
         <if test="pwd != null and pwd != '' ">  
            and `pwd` = #{pwd}
         </if>  
         <if test="pwdLike != null and pwdLike != '' ">  
-             and `pwd` like '%#{pwdLike}%'
+             and `pwd` like "%"#{pwdLike}"%"
         </if>   
         <if test="email != null and email != '' ">  
            and `email` = #{email}
         </if>  
         <if test="emailLike != null and emailLike != '' ">  
-             and `email` like '%#{emailLike}%'
+             and `email` like "%"#{emailLike}"%"
         </if>   
         <if test="username != null and username != '' ">  
            and `username` = #{username}
         </if>  
         <if test="usernameLike != null and usernameLike != '' ">  
-             and `username` like '%#{usernameLike}%'
+             and `username` like "%"#{usernameLike}"%"
         </if>   
         <if test="telno != null and telno != '' ">  
            and `telno` = #{telno}
         </if>  
+        <if test="telnoLike != null and telnoLike != '' ">  
+             and `telno` like "%"#{telnoLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  

@@ -258,6 +258,8 @@ public class ControllerFactory extends DefaultGenCodeFactory {
                 lineBack(sb,"}else if(StringUtil.checkDateStr(" + zcol.getName() + ", \"" + StringUtil.getYMDStr(type) + "\")){");
                 lineForw(sb, String.format("%s.set%s(%s);",StringUtil.getabc(table.getName()),StringUtil.getAbc(zcol.getName()), GenCodeHelper.changeStrVar2BeanType(type, zcol.getName())));
                  lineBack(sb,"}");
+            }else if(type.startsWith("long")||type.startsWith("bigint")||type.startsWith("tinyint")){
+                lineForw(sb, String.format("%s.set%s(%s);",StringUtil.getabc(table.getName()),StringUtil.getAbc(zcol.getName()),  GenCodeHelper.changeMySqlType2JavaType(type)+".valueOf("+zcol.getName()+")"));
             }else{
                 lineForw(sb, String.format("%s.set%s(%s);",StringUtil.getabc(table.getName()),StringUtil.getAbc(zcol.getName()), GenCodeHelper.changeStrVar2BeanType(type, zcol.getName())));
             }

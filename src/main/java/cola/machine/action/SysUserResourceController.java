@@ -85,15 +85,15 @@ public class SysUserResourceController extends BaseController{
         HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                params.put("id",id);
+            params.put("id",id);
         }
         String uid = request.getParameter("uid");
         if(!StringUtil.isBlank(uid)){
-                params.put("uid",uid);
+            params.put("uid",uid);
         }
         String rid = request.getParameter("rid");
         if(!StringUtil.isBlank(rid)){
-                params.put("rid",rid);
+            params.put("rid",rid);
         }
 
         params.put("page",page);
@@ -121,13 +121,13 @@ public class SysUserResourceController extends BaseController{
       @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
-    String id = request.getParameter("id");
-HashMap<String,Object> result =new HashMap<String,Object>();
-if(!StringUtil.isBlank(id)){
-    SysUserResource bean = sysUserResourceService.selectByPrimaryKey(Long.valueOf(id));
-    result.put("bean", bean);
-}
-return this.getResult(result);
+            String id = request.getParameter("id");
+        HashMap<String,Object> result =new HashMap<String,Object>();
+        if(!StringUtil.isBlank(id)){
+            SysUserResource bean = sysUserResourceService.selectByPrimaryKey(Long.valueOf(id));
+            result.put("bean", bean);
+        }
+        return this.getResult(result);
 
 
 
@@ -173,15 +173,15 @@ return this.getResult(result);
         */
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                sysUserResource.setId(Long.valueOf(id));
+            sysUserResource.setId(Long.valueOf(id));
         }
         String uid = request.getParameter("uid");
         if(!StringUtil.isBlank(uid)){
-                sysUserResource.setUid(Long.valueOf(uid));
+            sysUserResource.setUid(Long.valueOf(uid));
         }
         String rid = request.getParameter("rid");
         if(!StringUtil.isBlank(rid)){
-                sysUserResource.setRid(Long.valueOf(rid));
+            sysUserResource.setRid(Long.valueOf(rid));
         }
 
         //valid
@@ -259,15 +259,15 @@ return this.getResult(result);
                HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                params.put("id",id);
+            params.put("id",id);
         }
         String uid = request.getParameter("uid");
         if(!StringUtil.isBlank(uid)){
-                params.put("uid",uid);
+            params.put("uid",uid);
         }
         String rid = request.getParameter("rid");
         if(!StringUtil.isBlank(rid)){
-                params.put("rid",rid);
+            params.put("rid",rid);
         }
 
         // 查询list集合

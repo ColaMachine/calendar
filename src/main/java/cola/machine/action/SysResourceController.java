@@ -85,39 +85,59 @@ public class SysResourceController extends BaseController{
         HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                params.put("id",id);
+            params.put("id",id);
         }
         String pid = request.getParameter("pid");
         if(!StringUtil.isBlank(pid)){
-                params.put("pid",pid);
+            params.put("pid",pid);
         }
         String name = request.getParameter("name");
         if(!StringUtil.isBlank(name)){
-                params.put("name",name);
+            params.put("name",name);
+        }
+        String nameLike = request.getParameter("nameLike");
+        if(!StringUtil.isBlank(nameLike)){
+            params.put("nameLike",nameLike);
         }
         String code = request.getParameter("code");
         if(!StringUtil.isBlank(code)){
-                params.put("code",code);
+            params.put("code",code);
+        }
+        String codeLike = request.getParameter("codeLike");
+        if(!StringUtil.isBlank(codeLike)){
+            params.put("codeLike",codeLike);
         }
         String type = request.getParameter("type");
         if(!StringUtil.isBlank(type)){
-                params.put("type",type);
+            params.put("type",type);
+        }
+        String typeLike = request.getParameter("typeLike");
+        if(!StringUtil.isBlank(typeLike)){
+            params.put("typeLike",typeLike);
         }
         String url = request.getParameter("url");
         if(!StringUtil.isBlank(url)){
-                params.put("url",url);
+            params.put("url",url);
+        }
+        String urlLike = request.getParameter("urlLike");
+        if(!StringUtil.isBlank(urlLike)){
+            params.put("urlLike",urlLike);
         }
         String order = request.getParameter("order");
         if(!StringUtil.isBlank(order)){
-                params.put("order",order);
+            params.put("order",order);
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
-                params.put("status",status);
+            params.put("status",status);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
-                params.put("remark",remark);
+            params.put("remark",remark);
+        }
+        String remarkLike = request.getParameter("remarkLike");
+        if(!StringUtil.isBlank(remarkLike)){
+            params.put("remarkLike",remarkLike);
         }
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
@@ -132,7 +152,7 @@ public class SysResourceController extends BaseController{
             if(StringUtil.checkNumeric(createtimeBegin)){
                 params.put("createtimeBegin",createtimeBegin);
             }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String createtimeEnd = request.getParameter("createtimeEnd");
@@ -140,7 +160,7 @@ public class SysResourceController extends BaseController{
             if(StringUtil.checkNumeric(createtimeEnd)){
                 params.put("createtimeEnd",createtimeEnd);
             }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
 
@@ -169,13 +189,13 @@ public class SysResourceController extends BaseController{
       @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
-    String id = request.getParameter("id");
-HashMap<String,Object> result =new HashMap<String,Object>();
-if(!StringUtil.isBlank(id)){
-    SysResource bean = sysResourceService.selectByPrimaryKey(Long.valueOf(id));
-    result.put("bean", bean);
-}
-return this.getResult(result);
+            String id = request.getParameter("id");
+        HashMap<String,Object> result =new HashMap<String,Object>();
+        if(!StringUtil.isBlank(id)){
+            SysResource bean = sysResourceService.selectByPrimaryKey(Long.valueOf(id));
+            result.put("bean", bean);
+        }
+        return this.getResult(result);
 
 
 
@@ -256,39 +276,39 @@ return this.getResult(result);
         */
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                sysResource.setId(Long.valueOf(id));
+            sysResource.setId(Long.valueOf(id));
         }
         String pid = request.getParameter("pid");
         if(!StringUtil.isBlank(pid)){
-                sysResource.setPid(Long.valueOf(pid));
+            sysResource.setPid(Long.valueOf(pid));
         }
         String name = request.getParameter("name");
         if(!StringUtil.isBlank(name)){
-                sysResource.setName(String.valueOf(name));
+            sysResource.setName(name);
         }
         String code = request.getParameter("code");
         if(!StringUtil.isBlank(code)){
-                sysResource.setCode(String.valueOf(code));
+            sysResource.setCode(code);
         }
         String type = request.getParameter("type");
         if(!StringUtil.isBlank(type)){
-                sysResource.setType(String.valueOf(type));
+            sysResource.setType(type);
         }
         String url = request.getParameter("url");
         if(!StringUtil.isBlank(url)){
-                sysResource.setUrl(String.valueOf(url));
+            sysResource.setUrl(url);
         }
         String order = request.getParameter("order");
         if(!StringUtil.isBlank(order)){
-                sysResource.setOrder(Integer.valueOf(order));
+            sysResource.setOrder(Integer.valueOf(order));
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
-                sysResource.setStatus(Integer.valueOf(status));
+            sysResource.setStatus(Integer.valueOf(status));
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
-                sysResource.setRemark(String.valueOf(remark));
+            sysResource.setRemark(remark);
         }
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
@@ -381,39 +401,59 @@ return this.getResult(result);
                HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-                params.put("id",id);
+            params.put("id",id);
         }
         String pid = request.getParameter("pid");
         if(!StringUtil.isBlank(pid)){
-                params.put("pid",pid);
+            params.put("pid",pid);
         }
         String name = request.getParameter("name");
         if(!StringUtil.isBlank(name)){
-                params.put("name",name);
+            params.put("name",name);
+        }
+        String nameLike = request.getParameter("nameLike");
+        if(!StringUtil.isBlank(nameLike)){
+            params.put("nameLike",nameLike);
         }
         String code = request.getParameter("code");
         if(!StringUtil.isBlank(code)){
-                params.put("code",code);
+            params.put("code",code);
+        }
+        String codeLike = request.getParameter("codeLike");
+        if(!StringUtil.isBlank(codeLike)){
+            params.put("codeLike",codeLike);
         }
         String type = request.getParameter("type");
         if(!StringUtil.isBlank(type)){
-                params.put("type",type);
+            params.put("type",type);
+        }
+        String typeLike = request.getParameter("typeLike");
+        if(!StringUtil.isBlank(typeLike)){
+            params.put("typeLike",typeLike);
         }
         String url = request.getParameter("url");
         if(!StringUtil.isBlank(url)){
-                params.put("url",url);
+            params.put("url",url);
+        }
+        String urlLike = request.getParameter("urlLike");
+        if(!StringUtil.isBlank(urlLike)){
+            params.put("urlLike",urlLike);
         }
         String order = request.getParameter("order");
         if(!StringUtil.isBlank(order)){
-                params.put("order",order);
+            params.put("order",order);
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
-                params.put("status",status);
+            params.put("status",status);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
-                params.put("remark",remark);
+            params.put("remark",remark);
+        }
+        String remarkLike = request.getParameter("remarkLike");
+        if(!StringUtil.isBlank(remarkLike)){
+            params.put("remarkLike",remarkLike);
         }
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
@@ -428,7 +468,7 @@ return this.getResult(result);
             if(StringUtil.checkNumeric(createtimeBegin)){
                 params.put("createtimeBegin",createtimeBegin);
             }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String createtimeEnd = request.getParameter("createtimeEnd");
@@ -436,7 +476,7 @@ return this.getResult(result);
             if(StringUtil.checkNumeric(createtimeEnd)){
                 params.put("createtimeEnd",createtimeEnd);
             }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
 
