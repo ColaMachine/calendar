@@ -1,0 +1,45 @@
+redis配置
+config.cfg 
+"addr" : "192.168.10.145",
+"port" = 6379,
+
+数据库配置
+jdbc.properties
+
+验证码业务配置config.cfg
+"validCode":{
+    //系统url
+    "serverUrl":"http://192.168.10.145:8081",
+    //短信验证码长度
+    "smsLength":4,
+    //图片验证码长度
+    "imgLength":4,
+    //短信彦验证码类型1数字 2数字+字母
+    "smsCharType":1,
+    //图片彦验证码类型1数字 2数字+字母
+    "imgCharType":1,
+    //短信验证码有效期
+    "smsLiveTime":600000,
+    //图片验证码有效期
+    "imgLiveTime":600000,
+    //短信验证码请求间隔最短时间
+    "smsRefreshTime":60000,
+    //图片验证码请求间隔最短时间
+    "imgRefreshTime":1000,
+    "systems":{
+        "calendar":{
+        //在rangetime里最多请求次数
+            "maxRequestTime":4,
+            //在rangetime里控制最多请求次数
+            "rangeTime":3600000,
+            
+            "smsRefreshTime":60000,
+            "imgRefreshTime":1000,
+            systemno:"calendar",
+            "smsLength":4,
+            "imgLength":4,
+            "smsCharType":2,
+            "imgCharType":2,
+            "smsLiveTime":600000,
+            "imgLiveTime":600000
+        },

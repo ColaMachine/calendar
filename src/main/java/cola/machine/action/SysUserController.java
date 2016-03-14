@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import cola.machine.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,12 @@ import org.springframework.http.MediaType;
 
 import cola.machine.service.SysUserService;
 import cola.machine.bean.SysUser;
-import cola.machine.util.ResultUtil;
-import cola.machine.util.ValidateUtil;
 import cola.machine.util.rules.*;
 import core.page.Page;
 
-import cola.machine.util.StringUtil;
 import cola.machine.util.ValidateUtil;
 import core.util.RequestUtil;
 import core.action.ResultDTO;
-import cola.machine.util.DateUtil;
 import cola.machine.bean.SysUserRole;
 import cola.machine.service.SysUserRoleService;
 import cola.machine.bean.SysRole;
@@ -70,16 +67,18 @@ public class SysUserController extends BaseController{
      */
     @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
     public String list() {
-        return "/static/html/SysUserList.html";
+    for(int i=0;i<200;i++){
+        System.out.println(i);
+        logger.debug("hello"+i);
+       // RedisUtil.set(""+i,""+i);
+    }
+    return "/static/html/SysUserList.html";
     }
 
  
     /**
      * 说明:ajax请求角色信息
      * 
-     * @param curPage
-     * @param pageSize
-     * @return
      * @return Object
      * @author dozen.zhang
      * @date 2015年11月15日下午12:31:55

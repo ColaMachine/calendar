@@ -35,6 +35,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
         root.put("controllerViewMethod", getCtrlViewM(allTable.get(name)));
     }
     public  String getIdValid(ZTable table ){
+        this.tabNo=2;
         ZColum zcol =table.getPk();
         String type =zcol.getType().toLowerCase();
         List rules =new ArrayList();
@@ -80,6 +81,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
        return sb.toString();
     }
     private String getCtrlViewM(ZTable table) {
+        this.tabNo=2;
         StringBuffer sb =new StringBuffer();
         line(sb,"String id = request.getParameter(\"id\");");
         line(sb,"HashMap<String,Object> result =new HashMap<String,Object>();");
@@ -104,6 +106,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
         StringBuffer sb=new StringBuffer();
         StringBuffer jssb=new StringBuffer();
         StringBuffer jsmsg=new StringBuffer();
+        this.tabNo=2;
         line(sb,"ValidateUtil vu = new ValidateUtil();");
      
           line(sb,"String validStr=\"\";");
@@ -120,7 +123,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
                jsrules.add(String.format("maxlength:%d", length));
                message.add(String.format("maxlength:\"%s不能多于%d个字符\"", zcol.getName(),length));
            }
-           if(type.startsWith("int")||type.startsWith("bigint")){
+           if(type.startsWith("int")||type.startsWith("bigint")||type.startsWith("tinyint")){
                Integer integer=GenCodeHelper.getIntFromKuoHao(type);
                if(integer!=null){
                    rules.add(String.format("new Digits("+integer+",0)"));
@@ -237,6 +240,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
         
     }
     public String getSetParam(ZTable table){
+        this.tabNo=2;
         StringBuffer sb =new StringBuffer();
         for(int i=0;i<table.getCols().size();i++){
             ZColum zcol =table.getCols().get(i); 
@@ -269,6 +273,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
      * @author dozen.zhang
      */
     public String getSearchParam(ZTable table) {
+        this.tabNo=2;
         StringBuffer sb = new StringBuffer();
         line(sb,"HashMap<String,Object> params= new HashMap<String,Object>();");
         for (int i = 0; i < table.getCols().size(); i++) {

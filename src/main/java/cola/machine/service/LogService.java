@@ -116,6 +116,6 @@ public class LogService {
 	 * @date 2015年11月11日上午10:02:21
 	 */
 	public List<AppExceptionLog> listExceptionLog(AppExceptionLogExample example) {
-		return appExceptionLogMapper.selectByExample4Page(example);
+		return appExceptionLogMapper.selectByExample(example);
 	}
 }

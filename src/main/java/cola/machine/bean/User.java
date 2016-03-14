@@ -43,16 +43,17 @@ public class User {
 	/** 
 	 *是否激活
 	 */
-	private boolean active;
-	public boolean isActive() {
-		return active;
-	}
+	private byte status;
+	
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+	public byte getStatus() {
+        return status;
+    }
+    public void setStatus(byte status) {
+        this.status = status;
+    }
 
-	/*
+    /*
 	private String firstname;
 
 	private String lastname;

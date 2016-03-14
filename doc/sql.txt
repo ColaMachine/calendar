@@ -1,3 +1,90 @@
+
+CREATE TABLE `t_fwlog_history_2016` (
+  `id` varchar(100) NOT NULL COMMENT 'ID',
+  `startDate` datetime DEFAULT NULL COMMENT '访问时间',
+  `strDate` varchar(100) DEFAULT NULL COMMENT '访问时间(毫秒)',
+  `tomcat` varchar(50) DEFAULT NULL COMMENT 'Tomcat',
+  `userCode` varchar(300) DEFAULT NULL COMMENT '登陆账号',
+  `userName` varchar(200) DEFAULT NULL COMMENT '姓名',
+  `sessionId` varchar(300) DEFAULT NULL COMMENT 'sessionId',
+  `ip` varchar(200) DEFAULT NULL COMMENT 'IP',
+  `fwUrl` varchar(3000) DEFAULT NULL COMMENT '访问菜单',
+  `menuName` varchar(100) DEFAULT NULL COMMENT '菜单名称',
+  `isqx` varchar(2) DEFAULT NULL COMMENT '是否有权限访问',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='访问日志';
+
+CREATE TABLE `user` (
+  `userid` varchar(40) NOT NULL,
+  `loginname` varchar(40) NOT NULL,
+  `nickname` varchar(40) DEFAULT NULL,
+  `pwd` varchar(40) NOT NULL,
+  `email` varchar(40) NOT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `telno` varchar(11) DEFAULT NULL,
+  `createtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `loginname_UNIQUE` (`loginname`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
+  UNIQUE KEY `telno_UNIQUE` (`telno`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `app_exception_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ClassName` varchar(255) DEFAULT NULL,
+  `sid` int(11) DEFAULT NULL,
+  `msg` text,
+  `lineNumber` int(11) DEFAULT NULL,
+  `time` timestamp NULL DEFAULT NULL,
+  `params` varchar(512) DEFAULT NULL,
+  `requesturl` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `pwdrst` (
+  `idpwdrst` varchar(32) NOT NULL,
+  `userid` varchar(45) NOT NULL,
+  `createtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `used` tinyint(1) NOT NULL,
+  `resettime` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`idpwdrst`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `SmsRecord` (
+    `id` int NULL AUTO_INCREMENT COMMENT 'id',
+    `phone` CHAR(11) NOT NULL COMMENT '手机号码',
+    `systemNo` VARCHAR(13) NOT NULL COMMENT '系统名称',
+    `sendTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '发送时间',
+    `content` VARCHAR(200) NOT NULL COMMENT '内容',
+    `status` tinyint  NULL DEFAULT 1 COMMENT '发送状态',
+    `reason` VARCHAR(200) NULL COMMENT '失败原因',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短信验证码发送历史';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 CREATE TABLE `access_token` (
   `id` bigint(20) DEFAULT NULL,
   `access_token` varchar(255) NOT NULL,
@@ -37,32 +124,11 @@ CREATE TABLE `app_c3p0_test_table` (
   `a` char(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `app_exception_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ClassName` varchar(255) DEFAULT NULL,
-  `sid` int(11) DEFAULT NULL,
-  `msg` text,
-  `lineNumber` int(11) DEFAULT NULL,
-  `time` timestamp NULL DEFAULT NULL,
-  `params` varchar(512) DEFAULT NULL,
-  `requesturl` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
-
 CREATE TABLE `client` (
   `id` bigint(20) DEFAULT NULL,
   `client_id` varchar(255) NOT NULL,
   `client_secret` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `pwdrst` (
-  `idpwdrst` varchar(32) NOT NULL,
-  `userid` varchar(45) NOT NULL,
-  `createtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `used` tinyint(1) NOT NULL,
-  `resettime` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`idpwdrst`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `t_auditlog_history_2014` (
   `id` varchar(40) NOT NULL COMMENT 'ID',
@@ -111,51 +177,6 @@ CREATE TABLE `t_dic_data` (
   `typekey` varchar(20) DEFAULT NULL COMMENT '类型',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公共字典';
-
-CREATE TABLE `t_fwlog_history_2014` (
-  `id` varchar(100) NOT NULL COMMENT 'ID',
-  `startDate` datetime DEFAULT NULL COMMENT '访问时间',
-  `strDate` varchar(100) DEFAULT NULL COMMENT '访问时间(毫秒)',
-  `tomcat` varchar(50) DEFAULT NULL COMMENT 'Tomcat',
-  `userCode` varchar(300) DEFAULT NULL COMMENT '登陆账号',
-  `userName` varchar(200) DEFAULT NULL COMMENT '姓名',
-  `sessionId` varchar(300) DEFAULT NULL COMMENT 'sessionId',
-  `ip` varchar(200) DEFAULT NULL COMMENT 'IP',
-  `fwUrl` varchar(3000) DEFAULT NULL COMMENT '访问菜单',
-  `menuName` varchar(100) DEFAULT NULL COMMENT '菜单名称',
-  `isqx` varchar(2) DEFAULT NULL COMMENT '是否有权限访问',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='访问日志';
-
-CREATE TABLE `t_fwlog_history_2015` (
-  `id` varchar(100) NOT NULL COMMENT 'ID',
-  `startDate` datetime DEFAULT NULL COMMENT '访问时间',
-  `strDate` varchar(100) DEFAULT NULL COMMENT '访问时间(毫秒)',
-  `tomcat` varchar(50) DEFAULT NULL COMMENT 'Tomcat',
-  `userCode` varchar(300) DEFAULT NULL COMMENT '登陆账号',
-  `userName` varchar(200) DEFAULT NULL COMMENT '姓名',
-  `sessionId` varchar(300) DEFAULT NULL COMMENT 'sessionId',
-  `ip` varchar(200) DEFAULT NULL COMMENT 'IP',
-  `fwUrl` varchar(3000) DEFAULT NULL COMMENT '访问菜单',
-  `menuName` varchar(100) DEFAULT NULL COMMENT '菜单名称',
-  `isqx` varchar(2) DEFAULT NULL COMMENT '是否有权限访问',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='访问日志';
-
-CREATE TABLE `t_fwlog_history_2016` (
-  `id` varchar(100) NOT NULL COMMENT 'ID',
-  `startDate` datetime DEFAULT NULL COMMENT '访问时间',
-  `strDate` varchar(100) DEFAULT NULL COMMENT '访问时间(毫秒)',
-  `tomcat` varchar(50) DEFAULT NULL COMMENT 'Tomcat',
-  `userCode` varchar(300) DEFAULT NULL COMMENT '登陆账号',
-  `userName` varchar(200) DEFAULT NULL COMMENT '姓名',
-  `sessionId` varchar(300) DEFAULT NULL COMMENT 'sessionId',
-  `ip` varchar(200) DEFAULT NULL COMMENT 'IP',
-  `fwUrl` varchar(3000) DEFAULT NULL COMMENT '访问菜单',
-  `menuName` varchar(100) DEFAULT NULL COMMENT '菜单名称',
-  `isqx` varchar(2) DEFAULT NULL COMMENT '是否有权限访问',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='访问日志';
 
 CREATE TABLE `t_menu` (
   `id` varchar(40) NOT NULL,
@@ -273,22 +294,6 @@ CREATE TABLE `t_user_role` (
   CONSTRAINT `fk_t_user_role_roleId_t_role_id` FOREIGN KEY (`roleId`) REFERENCES `t_role` (`id`),
   CONSTRAINT `fk_t_user_role_userId_t_user_id` FOREIGN KEY (`userId`) REFERENCES `t_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色中间表';
-
-CREATE TABLE `user` (
-  `userid` varchar(40) NOT NULL,
-  `loginname` varchar(40) NOT NULL,
-  `nickname` varchar(40) DEFAULT NULL,
-  `pwd` varchar(40) NOT NULL,
-  `email` varchar(40) NOT NULL,
-  `username` varchar(45) DEFAULT NULL,
-  `telno` varchar(11) DEFAULT NULL,
-  `createtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `active` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`userid`),
-  UNIQUE KEY `loginname_UNIQUE` (`loginname`),
-  UNIQUE KEY `email_UNIQUE` (`email`),
-  UNIQUE KEY `telno_UNIQUE` (`telno`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `weixin_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',

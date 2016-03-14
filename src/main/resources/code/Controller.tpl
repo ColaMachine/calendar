@@ -196,7 +196,7 @@ ${validCode}
         for(int i=0,length=idAry.length;i<length;i++){
             ValidateUtil vu = new ValidateUtil();
             String validStr="";
-            String id = idStrAry[i];
+            String <@getabc>${table.pk.name}</@getabc> = idStrAry[i];
             ${idvalid}
             try{
                 validStr=vu.validateString();

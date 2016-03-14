@@ -186,6 +186,7 @@ var menuList=[
               {id:21,name:"访问日志A",url:PATH+"/log/listRequestLog",pid:2},
               {id:22,name:"访问日志B",url:PATH+"/log/listRequestLog",pid:2},
               {id:5,name:"用户管理",url:"",pid:0,icon:"fa fa-diamond"},
+              {id:51,name:"用户管理",url:PATH+"/user/list.htm",icon:"fa fa-spinner",pid:5},
               {id:6,name:"角色管理",url:PATH+"/auth/role/list.htm",pid:5}, 
               {id:7,name:"日历",url:PATH+"/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
                {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},

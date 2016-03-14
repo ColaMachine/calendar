@@ -23,6 +23,13 @@ import com.google.gson.JsonParser;
  *
  */
 public class ValidCodeConfig {
+    private String serverUrl;
+    public String getServerUrl() {
+        return serverUrl;
+    }
+    public void setServerUrl(String serverUrl) {
+        this.serverUrl = serverUrl;
+    }
     private int smsLength;
     private int imgLength;
     public int getSmsLength() {

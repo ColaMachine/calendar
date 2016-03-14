@@ -27,7 +27,7 @@ var App={
 			        winId: 'window-msg-dialog',
 			        isFixed: false,
 			        tltTxt: '提示消息',
-			        cntHTML: '这是一个普通的弹出窗口对话框',
+			        cntHTML: '确认退出吗',
 			        confirmCallback:	function(){window.location=PATH+"/logout.htm"}
 			    });
 			     $('#window-msg-dialog').jDrag({container:'#page', handle:'.window-title-bar'});

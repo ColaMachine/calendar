@@ -953,7 +953,7 @@ return ymd;
     }
     public static void main(String[] args) {
 
-        Generator.generate(new String[]{"SmsRecord"
+        Generator.generate(new String[]{"User"
          /*       "SysResource","SysRole","SysUser","SysUserRole",
                 "SysRoleResource","SysUserResource"*/
                 });

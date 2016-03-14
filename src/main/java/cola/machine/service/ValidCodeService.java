@@ -3,7 +3,7 @@ package cola.machine.service;
 import java.util.*;
 
 import cola.machine.bean.SmsHistory;
-import cola.machine.bean.SmsValidCode;
+import cola.machine.bean.SmsRecord;
 import cola.machine.common.msgbox.ErrorMsg;
 import cola.machine.config.Config;
 import cola.machine.config.SystemValidCodeConfig;
@@ -18,6 +18,8 @@ import com.alibaba.fastjson.JSON;
 
 import core.action.ResultDTO;
 
+import javax.annotation.Resource;
+
 @Service("validCodeService")
 public class ValidCodeService {
 
@@ -25,7 +27,8 @@ public class ValidCodeService {
      * 日志类
      */
     private static final Logger log = LoggerFactory.getLogger(ValidCodeService.class);
-
+    @Resource
+    private  SmsRecordService smsRecordService;
     /**
      * @param systemCode 系统名称
      * @param phone 手机号码
@@ -101,12 +104,17 @@ public class ValidCodeService {
             map.put("code", finalCode);
             SmsUtil smsUtil = new SmsUtil();
             String rc = smsUtil.sendSms(finalCode, phone, (short) 1);
-            SmsValidCode validCode =new SmsValidCode();
-            validCode.setPhone(phone);
+            SmsRecord record =new SmsRecord();
+            record.setPhone(phone);
+            record.setContent(finalCode);
+            record.setStatus("fail".equals(rc)?(byte)1:(byte)2);
+            record.setSystemNo(systemCode);
+            smsRecordService.save(record);
             if ("fail".equals(rc)) {
                 return ResultUtil.getResult(methodCode, ErrorMsg.THIRD_PART_ERROR, 307, "短信发送失败");
             }
             result = ResultUtil.getDataResult(map);
+
             if (result.isRight()) {
                 // 塞入缓存系统
                 history.getTimes().offer(nowTime);
@@ -246,8 +254,7 @@ public class ValidCodeService {
      * 获取图片验证码
      *
      * @param systemCode
-     * @param phone
-     * @param code
+     * @param sessionid
      * @return
      * @author dozen.zhang
      */
@@ -389,7 +396,7 @@ public class ValidCodeService {
             return ResultUtil.getResult(ResultUtil.fail, "系统代号配置不能为空");
         }
         String params = String.format("systemno=%s&sessionid=%s&code=%s", systemNo, sessionid, code);
-        String jsonStr = HttpRequestUtil.sendGet("http://127.0.0.1:8080/code/img/b/valid.json", params);
+        String jsonStr = HttpRequestUtil.sendGet(Config.getInstance().getValidCode().getServerUrl()+"/code/img/b/valid.json", params);
         ResultDTO result = JSON.parseObject(jsonStr, ResultDTO.class);
         return result;
         // TODO Auto-generated method stub
@@ -415,7 +422,7 @@ public class ValidCodeService {
             return ResultUtil.getResult(ResultUtil.fail, "系统代号配置不能为空");
         }
         String params = String.format("systemno=%s&phone=%s&code=%s", systemNo, phone, code);
-        String jsonStr = HttpRequestUtil.sendGet("http://127.0.0.1:8080/code/sms/b/valid.json", params);
+        String jsonStr = HttpRequestUtil.sendGet(Config.getInstance().getValidCode().getServerUrl()+"/code/sms/b/valid.json", params);
         ResultDTO result = JSON.parseObject(jsonStr, ResultDTO.class);
         return result;
         // TODO Auto-generated method stub

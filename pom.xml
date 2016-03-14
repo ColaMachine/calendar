@@ -72,13 +72,13 @@
 
 
 	<dependencies>
-		<!-- <dependency> <groupId>org.apache.struts</groupId> <artifactId>struts2-core</artifactId> 
-			<version>${org.apache.struts.version}</version> </dependency> <dependency> 
-			<groupId>org.apache.struts</groupId> <artifactId>struts2-json-plugin</artifactId> 
-			<version>${org.apache.struts.version}</version> </dependency> <dependency> 
-			<groupId>org.apache.struts</groupId> <artifactId>struts2-spring-plugin</artifactId> 
-			<version>${org.apache.struts.version}</version> </dependency> <dependency> 
-			<groupId>org.apache.struts.xwork</groupId> <artifactId>xwork-core</artifactId> 
+		<!-- <dependency> <groupId>org.apache.struts</groupId> <artifactId>struts2-core</artifactId>
+			<version>${org.apache.struts.version}</version> </dependency> <dependency>
+			<groupId>org.apache.struts</groupId> <artifactId>struts2-json-plugin</artifactId>
+			<version>${org.apache.struts.version}</version> </dependency> <dependency>
+			<groupId>org.apache.struts</groupId> <artifactId>struts2-spring-plugin</artifactId>
+			<version>${org.apache.struts.version}</version> </dependency> <dependency>
+			<groupId>org.apache.struts.xwork</groupId> <artifactId>xwork-core</artifactId>
 			<version>${org.apache.struts.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
@@ -112,7 +112,7 @@
 			<version>${org.springframework.version}</version>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-expression</artifactId> 
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-expression</artifactId>
 			<version>${org.springframework.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -125,18 +125,18 @@
 			<version>${org.springframework.version}</version>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-jdbc</artifactId> 
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-jdbc</artifactId>
 			<version>${org.springframework.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-oxm</artifactId>
 			<version>${org.springframework.version}</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
@@ -152,11 +152,11 @@
 			<artifactId>spring-aop</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-asm</artifactId>
-			<version>3.1.4.RELEASE</version>
-		</dependency>
+			<version>${org.springframework.version}</version>
+		</dependency>-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
@@ -188,9 +188,9 @@
 			<version>1.2.0</version>
 		</dependency>
 		<!-- Tomcat Servlet API -->
-		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>javax.servlet-api</artifactId> 
-			<version>3.1.0</version> </dependency> <dependency> <groupId>javax.mail</groupId> 
-			<artifactId>activation</artifactId> <version>1.1</version> <scope>system</scope> 
+		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version> </dependency> <dependency> <groupId>javax.mail</groupId>
+			<artifactId>activation</artifactId> <version>1.1</version> <scope>system</scope>
 			<systemPath>G:\Tomcat6.01\lib\activation-1.1.jar</systemPath> </dependency> -->
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -231,7 +231,7 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.9</version>
 		</dependency>
-		<!-- <dependency> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
+		<!-- <dependency> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId>
 			<version>1.1.3</version> </dependency> -->
 		<!-- slf4j + logback -->
 		<dependency>
@@ -239,8 +239,8 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		<!-- <dependency> <groupId>ch.qos.logback</groupId> <artifactId>logback-core</artifactId> 
-			<version>1.1.2</version> </dependency> <dependency> <groupId>ch.qos.logback</groupId> 
+		<!-- <dependency> <groupId>ch.qos.logback</groupId> <artifactId>logback-core</artifactId>
+			<version>1.1.2</version> </dependency> <dependency> <groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId> <version>1.1.2</version> </dependency> -->
 		<!-- XML 解析 -->
 		<dependency>
@@ -313,7 +313,7 @@
 			<artifactId>validation-api</artifactId>
 			<version>1.1.0.Final</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>1.2.1.RELEASE</version>
@@ -333,7 +333,7 @@
 			<version>1.2.1.RELEASE</version>
 			<type>jar</type>
 			<scope>compile</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
@@ -392,13 +392,13 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.7</version>
 		</dependency>
-		<!-- <dependency> <groupId>com.awifi</groupId> <artifactId>awifi-core</artifactId> 
+		<!-- <dependency> <groupId>com.awifi</groupId> <artifactId>awifi-core</artifactId>
 			<version>1.0.6</version> </dependency> -->
-		<!-- <dependency> <groupId>com.zm.module</groupId> <artifactId>logengine</artifactId> 
-			<version>1.0.0</version> <scope>system</scope> <systemPath>/home/colamachine/git/logengine/target/logengine.jar</systemPath> 
+		<!-- <dependency> <groupId>com.zm.module</groupId> <artifactId>logengine</artifactId>
+			<version>1.0.0</version> <scope>system</scope> <systemPath>/home/colamachine/git/logengine/target/logengine.jar</systemPath>
 			</dependency> -->
-		<!-- <dependency> <groupId>com.awifi</groupId> <artifactId>awifi-core</artifactId> 
-			<scope>system</scope> <systemPath>/home/colamachine/git/awifi-core/target/awifi-core.jar</systemPath> 
+		<!-- <dependency> <groupId>com.awifi</groupId> <artifactId>awifi-core</artifactId>
+			<scope>system</scope> <systemPath>/home/colamachine/git/awifi-core/target/awifi-core.jar</systemPath>
 			<version>1.0.6</version> </dependency> -->
 	</dependencies>
 	<build>
@@ -425,52 +425,26 @@
 					<server>tomcat7</server>
 				</configuration>
 			</plugin>
-			 <plugin>  
-                <groupId>org.apache.maven.plugins</groupId>  
-                <artifactId>maven-eclipse-plugin</artifactId>  
-                <version>2.9</version>  
-                <configuration>  
-                    <additionalProjectnatures>  
-                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>  
-                        <projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>  
-                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>  
-                    </additionalProjectnatures>  
-                    <additionalBuildcommands>  
-                        <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>  
-                        <buildcommand>org.eclipse.m2e.core.maven2Builder</buildcommand>  
-                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>  
-                    </additionalBuildcommands>  
-                </configuration>  
-            </plugin>  
-			<plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
-				<version>2.2</version> <executions> <execution> <id>copy-dependencies</id> 
-				<phase>package</phase> <goals> <goal>copy-dependencies</goal> </goals> <configuration> 
-				<outputDirectory>${project.build.directory}/../src/main/webapp/WEB-INF/lib</outputDirectory> 
-				<overWriteReleases>false</overWriteReleases> <overWriteSnapshots>false</overWriteSnapshots> 
-				<overWriteIfNewer>true</overWriteIfNewer> </configuration> </execution> </executions> 
-				</plugin> 
-		
-		 <plugin>  
-        <groupId>org.mortbay.jetty</groupId>  
-        <artifactId>maven-jetty-plugin</artifactId>  
-        <version>6.1.26</version>  
-        <configuration>  
-            <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>  
-            <scanIntervalSeconds>6</scanIntervalSeconds>  
-            <contextPath>/prospect</contextPath>  
-            <connectors>  
-            
-                <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">  
-                    <port>8080</port>  
-                    <headerBufferSize>80000</headerBufferSize>  
-                </connector>  
-            </connectors>  
-            <stopKey>stop</stopKey>  
-            <stopPort>8089</stopPort>  
-        </configuration>  
-    </plugin>  
+			 <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+                        <projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+                        <buildcommand>org.eclipse.m2e.core.maven2Builder</buildcommand>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                </configuration>
+            </plugin>
+			
 		</plugins>
-		
+
 		<resources>
 			<resource>
 				<directory>src/main/java</directory>

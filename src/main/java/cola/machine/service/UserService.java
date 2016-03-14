@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -46,7 +47,8 @@ import cola.machine.util.mail.SimpleMailSender;
 @Service("userService")
 public class UserService {
 
-	Logger log = LoggerFactory.getLogger(UserService.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(UserService.class);
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired
@@ -141,7 +143,7 @@ public class UserService {
 				  user.setTelno(MapUtils.getString(userMap, "telno"));
 				  user.setUsername(MapUtils.getString(userMap, "username"));
 				  user.setUserid(MapUtils.getString(userMap, "userid"));
-				  user.setActive(MapUtils.getBooleanValue(userMap, "active"));
+				  user.setStatus(MapUtils.getByteValue(userMap, "active"));
 				  
 				ResultDTO result = ResultUtil.getSuccResult();
 				result.setData(user);
@@ -156,7 +158,7 @@ public class UserService {
 	 * 注册
 	 */
 	public ResultDTO saveRegisterUser(User user) {
-		user.setActive(false);
+		user.setStatus((byte)1);
 		// / this.userMapper.getUsersByParam(map)
 		// 校验数据
 		user.setUserid(UUIDUtil.getUUID());
@@ -306,7 +308,7 @@ public class UserService {
 		active.setActivedtime(new Timestamp((new Date()).getTime()));
 		this.activeMapper.updateActive(active);
 		User user = this.userMapper.selectUserByUserId(active.getUserid());
-		user.setActive(true);
+		user.setStatus((byte)2);
 		this.userMapper.updateUser(user);
 		
 		return ResultUtil.getSuccResult();
@@ -349,8 +351,34 @@ public class UserService {
 		return ResultUtil.getSuccResult( "pwd.reset.code.succ");
 	}
 	
-	
-	/***gc**/
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     /**
      * 说明:list by page and params
@@ -366,8 +394,8 @@ public class UserService {
      public List<User> listByParams(HashMap params) {
         return userMapper.listByParams(params);
     }
+
     /*
-    *//**
      * 说明:
      * @param User
      * @return
@@ -377,11 +405,11 @@ public class UserService {
      */
     public ResultDTO save(User user) {
         // 进行字段验证
-       ValidateUtil<User> vu = new ValidateUtil<User>();
+      /* ValidateUtil<User> vu = new ValidateUtil<User>();
         ResultDTO result = vu.valid(user);
         if (result.getR() != 1) {
             return result;
-        }
+        }*/
          //逻辑业务判断判断
        
        //判断是更新还是插入
@@ -393,7 +421,6 @@ public class UserService {
         }
         return ResultUtil.getSuccResult();
     }
- 
     /**
     * 说明:根据主键删除数据
     * description:delete by key
@@ -427,5 +454,6 @@ public class UserService {
         }
         return ResultUtil.getSuccResult();
     }
+
 
 }
