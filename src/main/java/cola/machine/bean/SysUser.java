@@ -8,7 +8,6 @@
 package cola.machine.bean;
 import java.sql.Timestamp;
 import java.util.Date;
-
 public class SysUser {
     /**主键**/
     private Long id;
@@ -118,7 +117,7 @@ public class SysUser {
         return createtime;
     }    public void setCreatetime(Timestamp createtime){
         this.createtime=createtime;
-    }/**创建时间**/
+    }/**更新时间**/
     private Timestamp updatetime;
     public Timestamp getUpdatetime(){
         return updatetime;

@@ -10,7 +10,16 @@ import java.lang.reflect.Modifier;
  */
 public class SystemConfig {
      private static final int i=1;
-    
+    private String temp="";
+
+    public String getTemp() {
+        return temp;
+    }
+
+    public void setTemp(String temp) {
+        this.temp = temp;
+    }
+
     public static void main(String args[]){
         Field[] fields=Config.class.getDeclaredFields();
         for(Field field:fields){

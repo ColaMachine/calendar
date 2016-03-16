@@ -63,17 +63,17 @@
         <div class="input-group">
             <input type="text" id="createtimeEnd" name="createtimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间结束" ></input>
             <label class="input-group-addon" for="createtimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
-        <label for="updatetime">创建时间</label>
+        <label for="updatetime">更新时间</label>
         <div class="input-group">
-            <input type="text" id="updatetime" name="updatetime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+            <input type="text" id="updatetime" name="updatetime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间" ></input>
             <label class="input-group-addon" for="updatetime" ><i class="fa fa-calendar"></i></label>        </div>
-        <label for="updatetimeBegin">创建时间开始</label>
+        <label for="updatetimeBegin">更新时间开始</label>
         <div class="input-group">
-            <input type="text" id="updatetimeBegin" name="updatetimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间开始" ></input>
+            <input type="text" id="updatetimeBegin" name="updatetimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间开始" ></input>
             <label class="input-group-addon" for="updatetimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
-        <label for="updatetimeEnd">创建时间结束</label>
+        <label for="updatetimeEnd">更新时间结束</label>
         <div class="input-group">
-            <input type="text" id="updatetimeEnd" name="updatetimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间结束" ></input>
+            <input type="text" id="updatetimeEnd" name="updatetimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间结束" ></input>
             <label class="input-group-addon" for="updatetimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
 
  <!-- 
@@ -204,9 +204,9 @@
         </div>
   
         <div class="form-group">
-            <label for="exampleInputName2">创建时间</label>
+            <label for="exampleInputName2">更新时间</label>
           
-            <input type="text" class="form-control" id="updatetime" name="updatetime" placeholder="创建时间">
+            <input type="text" class="form-control" id="updatetime" name="updatetime" placeholder="更新时间">
            
         </div>
   -->
@@ -253,7 +253,7 @@ var gridParam = {
         name : ''
     },
     colNames : [
-     "主键","用户名","密码","昵称","类型","状态","邮箱地址","手机号码","身份证号码","身份证号码","出生年月","积分","地址","微信","qq","头像","备注","创建时间","创建时间" , '操作' ],
+     "主键","用户名","密码","昵称","类型","状态","邮箱地址","手机号码","身份证号码","身份证号码","出生年月","积分","地址","微信","qq","头像","备注","创建时间","更新时间" , '操作' ],
     colModel : [
             {
                 name : 'id',
@@ -398,6 +398,7 @@ function search(){
 function exportExcel(){
     var jso= changeForm2Jso(".app-search");
     GetJSON(PATH+"/sysUser/export.json",jso,function(data){
+        alert(AJAX_SUCC);
         if(data.r==AJAX_SUCC){
             window.location=PATH+"/"+data.data;
         }else{

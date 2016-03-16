@@ -13,7 +13,7 @@ public interface SysResourceMapper {
     int insert(SysResource record);
 
    
-    int insertSelective(SysResource  record);
+    int insertSelective(SysResource record);
 
     
     SysResource  selectByPrimaryKey(Long id);

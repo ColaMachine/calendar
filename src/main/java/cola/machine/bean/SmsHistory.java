@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class SmsHistory {
     String phone;
-
+    private String code;
     public Long getLast() {
         return last;
     }
@@ -19,6 +19,15 @@ public class SmsHistory {
     }
 
     Long last;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public String getPhone() {
         return phone;
     }

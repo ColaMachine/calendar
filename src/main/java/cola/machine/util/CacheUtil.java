@@ -182,7 +182,7 @@ public class CacheUtil {
     public Object readServerCache(String key, Class c) {
         String json = RedisUtil.get(key);
         Gson gson = new Gson();
-
+        System.out.println(json);
         Object object = gson.fromJson(json, c);
         return object;
     }

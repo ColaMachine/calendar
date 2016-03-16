@@ -13,7 +13,7 @@ public interface SysUserRoleMapper {
     int insert(SysUserRole record);
 
    
-    int insertSelective(SysUserRole  record);
+    int insertSelective(SysUserRole record);
 
     
     SysUserRole  selectByPrimaryKey(Long id);

@@ -142,7 +142,7 @@ public class SysRoleController extends BaseController{
             if(StringUtil.checkNumeric(createtimeBegin)){
                 params.put("createtimeBegin",createtimeBegin);
             }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String createtimeEnd = request.getParameter("createtimeEnd");
@@ -150,7 +150,7 @@ public class SysRoleController extends BaseController{
             if(StringUtil.checkNumeric(createtimeEnd)){
                 params.put("createtimeEnd",createtimeEnd);
             }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
 
@@ -415,7 +415,7 @@ public class SysRoleController extends BaseController{
             if(StringUtil.checkNumeric(createtimeBegin)){
                 params.put("createtimeBegin",createtimeBegin);
             }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String createtimeEnd = request.getParameter("createtimeEnd");
@@ -423,7 +423,7 @@ public class SysRoleController extends BaseController{
             if(StringUtil.checkNumeric(createtimeEnd)){
                 params.put("createtimeEnd",createtimeEnd);
             }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
 

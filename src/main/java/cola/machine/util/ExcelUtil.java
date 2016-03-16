@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import cola.machine.mng.PathManager;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -294,7 +295,7 @@ public class ExcelUtil {
                 }
             }
             // 输出Excel文件
-            FileOutputStream fos = new FileOutputStream(filePath);
+            FileOutputStream fos = new FileOutputStream(PathManager.getInstance().getTmpPath().resolve(filePath).toFile());
             wb.write(fos);
             fos.close();
             wb.close();

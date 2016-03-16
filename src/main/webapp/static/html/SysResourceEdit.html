@@ -1,65 +1,70 @@
 
- <div class="modal-content">
+<div class="modal-content">
     <form id="editForm" class="form-horizontal" method="post" action="/sysResource/save.json" enctype="multipart/form-data">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
             <h4 class="modal-title">资源配置编辑</h4>
         </div>
         <div class="modal-body">
-                <input type="hidden" id="id" name="id"  class="form-control input-sm" >
-    <input type="hidden" id="pid" name="pid"  class="form-control input-sm" >
-    <div class="form-group">
-        <label for="name" class="col-sm-2 control-label">资源名称:</label>
-        <div class="col-sm-10">
-            <input  type="text"  id="name" name="name"  class="form-control input-sm"   maxlength="20"></input>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="code" class="col-sm-2 control-label">资源代码:</label>
-        <div class="col-sm-10">
-            <input  type="text"  id="code" name="code"  class="form-control input-sm"   maxlength="20"></input>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="type" class="col-sm-2 control-label">资源分类:</label>
-        <div class="col-sm-10">
-            <input  type="text"  id="type" name="type"  class="form-control input-sm"   maxlength="20"></input>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="url" class="col-sm-2 control-label">资源对应URL:</label>
-        <div class="col-sm-10">
-            <textarea  id="url" name="url"  class="form-control input-sm"   maxlength="255"></textarea>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="order" class="col-sm-2 control-label">排序id:</label>
-        <div class="col-sm-10">
-            <input type="number" id="order" name="order"  class="form-control input-sm"  maxlength="11" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="status" class="col-sm-2 control-label">状态:</label>
-        <div class="col-sm-10">
-            <select  id="status" name="status"  class="form-control input-sm"  >
-                <option value=''>-请选择-</option>
-                <option value=1>启用</option>
-                <option value=2>禁用</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="remark" class="col-sm-2 control-label">备注:</label>
-        <div class="col-sm-10">
-            <input  type="text"  id="remark" name="remark"  class="form-control input-sm"   maxlength="20"></input>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="createtime" class="col-sm-2 control-label">创建时间:</label>
-        <div class="col-sm-10 z-col-table">
-            <input type="text" id="createtime" name="createtime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  ></input>
-            <label class="input-group-addon" for="createtime" ><i class="fa fa-calendar"></i></label>        </div>
-    </div>
+            <input type="hidden" id="id" name="id"  class="form-control input-sm" >
+            <div class="form-group">
+                <label for="pid" class="col-sm-2 control-label">父主键:</label>
+                <div class="col-sm-10">
+                    <input type="number" id="pid" name="pid"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">资源名称:</label>
+                <div class="col-sm-10">
+                    <input  type="text"  id="name" name="name"  class="form-control input-sm"   maxlength="20"></input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="code" class="col-sm-2 control-label">资源代码:</label>
+                <div class="col-sm-10">
+                    <input  type="text"  id="code" name="code"  class="form-control input-sm"   maxlength="20"></input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="type" class="col-sm-2 control-label">资源分类:</label>
+                <div class="col-sm-10">
+                    <input  type="text"  id="type" name="type"  class="form-control input-sm"   maxlength="20"></input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="url" class="col-sm-2 control-label">资源对应URL:</label>
+                <div class="col-sm-10">
+                    <textarea  id="url" name="url"  class="form-control input-sm"   maxlength="255"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="order" class="col-sm-2 control-label">排序id:</label>
+                <div class="col-sm-10">
+                    <input type="number" id="order" name="order"  class="form-control input-sm"  maxlength="11" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="status" class="col-sm-2 control-label">状态:</label>
+                <div class="col-sm-10">
+                    <select  id="status" name="status"  class="form-control input-sm"  >
+                        <option value=''>-请选择-</option>
+                        <option value=1>启用</option>
+                        <option value=2>禁用</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="remark" class="col-sm-2 control-label">备注:</label>
+                <div class="col-sm-10">
+                    <input  type="text"  id="remark" name="remark"  class="form-control input-sm"   maxlength="20"></input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="createtime" class="col-sm-2 control-label">创建时间:</label>
+                <div class="col-sm-10 z-col-table">
+                    <input type="text" id="createtime" name="createtime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  ></input>
+                    <label class="input-group-addon" for="createtime" ><i class="fa fa-calendar"></i></label>        </div>
+            </div>
 
         </div>
         <div class="modal-footer">
@@ -68,7 +73,7 @@
         </div>
     </form>
 </div><!-- /.modal-content -->
-        
+
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -78,7 +83,7 @@ $(document).ready(function() {
             digits:true
         },
         pid:{
-            digits:true
+            digits:true,required:true
         },
         name:{
             maxlength:20,required:true

@@ -300,7 +300,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
                 lineForw(sb, "if(StringUtil.checkNumeric(" + zcol.getName() + "Begin)){");
                 lineForw(sb, String.format("params.put(\"%sBegin\",%sBegin);", zcol.getName(), zcol.getName()));
                 lineBack(sb,"}else if(StringUtil.checkDateStr(" + zcol.getName() + "Begin, \"" + StringUtil.getYMDStr(type) + "\")){");
-                lineForw(sb,String.format("params.put(\"%s\",%s);", zcol.getName(),  GenCodeHelper.changeStrVar2BeanType(type, zcol.getName()+"Begin")));
+                lineForw(sb,String.format("params.put(\"%sBegin\",%s);", zcol.getName(),  GenCodeHelper.changeStrVar2BeanType(type, zcol.getName()+"Begin")));
                 lineBack(sb,"}");
                 lineBack(sb,"}");
                 
@@ -310,7 +310,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
                 lineForw(sb, "if(StringUtil.checkNumeric(" + zcol.getName() + "End)){");
                 lineForw(sb, String.format("params.put(\"%sEnd\",%sEnd);", zcol.getName(), zcol.getName()));
                 lineBack(sb,"}else if(StringUtil.checkDateStr(" + zcol.getName() + "End, \"" + StringUtil.getYMDStr(type) + "\")){");
-                lineForw(sb,String.format("params.put(\"%s\",%s);", zcol.getName(),  GenCodeHelper.changeStrVar2BeanType(type, zcol.getName()+"End")));
+                lineForw(sb,String.format("params.put(\"%sEnd\",%s);", zcol.getName(),  GenCodeHelper.changeStrVar2BeanType(type, zcol.getName()+"End")));
                 lineBack(sb,"}");
                 lineBack(sb,"}");
             }else if(type.startsWith("char") || type.startsWith("varchar")){

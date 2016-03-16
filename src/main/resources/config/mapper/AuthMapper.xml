@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cola.machine.dao.SysUserMapper">
+
+    <select id="selectResourceByUserId" parameterType="java.lang.Long" resultMap="map">
+        select * from sys_resource sr where sr.id in (select rid from sys_role_resource where roleid in ( select roleid from sys_user_role where uid =#{userid}))
+        union (select * from sys_resource sr1 where sr1.id  in (select rid from sys_user_resource where uid =#{userid}))
+    </select>
+
+
+</mapper>

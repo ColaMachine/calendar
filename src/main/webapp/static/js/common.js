@@ -53,11 +53,11 @@ function AjaxFun(url, inputData, callback, options, callbackOnError) {
 	delete options['inputData'];
 	$.ajax(options);
 };
-function Get(url,callback){
-	AjaxFun(url,null,callback,{type:"get"});
+function Get(url,data,callback){
+	AjaxFun(url,data,callback,{type:"get"});
 }
-function GetJSON(url,callback){
-	AjaxFun(url,null,callback,{type:"get",dataType:"json"});
+function GetJSON(url,data,callback){
+	AjaxFun(url,data,callback,{type:"get",dataType:"json"});
 }
 function Post(url,data,callback){
 	AjaxFun(url,data,callback);

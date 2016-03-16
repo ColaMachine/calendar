@@ -182,6 +182,12 @@ public class ValidCodeController {
         return result;
     }
     public static void main(String[] args) {
+        //\222\200\177\000\000\001
+         byte[] byteData=new byte[]{0x36,};
+
+        System.out.println(123);
+
+         System.out.println(new String(byteData));
       //  ApplicationContext ac = new FileSystemXmlApplicationContext("C:\\zzw\\workspace\\awifiui\\src\\main\\resources\\config\\xml\\applicationContext.xml");
        // Object object = ac.getBean("validCodeService");
         //System.out.println(object);//DefaultBeanDefinitionDocumentReader

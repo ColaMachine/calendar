@@ -18,6 +18,8 @@ import java.util.LinkedHashMap;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import cola.machine.config.Config;
+import cola.machine.mng.PathManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,7 +172,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(birthBegin)){
                 params.put("birthBegin",birthBegin);
             }else if(StringUtil.checkDateStr(birthBegin, "yyyy-MM-dd")){
-                params.put("birth",DateUtil.parseToDate(birthBegin, "yyyy-MM-dd"));
+                params.put("birthBegin",DateUtil.parseToDate(birthBegin, "yyyy-MM-dd"));
             }
         }
         String birthEnd = request.getParameter("birthEnd");
@@ -178,7 +180,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(birthEnd)){
                 params.put("birthEnd",birthEnd);
             }else if(StringUtil.checkDateStr(birthEnd, "yyyy-MM-dd")){
-                params.put("birth",DateUtil.parseToDate(birthEnd, "yyyy-MM-dd"));
+                params.put("birthEnd",DateUtil.parseToDate(birthEnd, "yyyy-MM-dd"));
             }
         }
         String integral = request.getParameter("integral");
@@ -234,7 +236,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(createtimeBegin)){
                 params.put("createtimeBegin",createtimeBegin);
             }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String createtimeEnd = request.getParameter("createtimeEnd");
@@ -242,7 +244,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(createtimeEnd)){
                 params.put("createtimeEnd",createtimeEnd);
             }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String updatetime = request.getParameter("updatetime");
@@ -258,7 +260,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(updatetimeBegin)){
                 params.put("updatetimeBegin",updatetimeBegin);
             }else if(StringUtil.checkDateStr(updatetimeBegin, "yyyy-MM-dd HH:mm:ss")){
-                params.put("updatetime",new Timestamp( DateUtil.parseToDate(updatetimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("updatetimeBegin",new Timestamp( DateUtil.parseToDate(updatetimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String updatetimeEnd = request.getParameter("updatetimeEnd");
@@ -266,7 +268,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(updatetimeEnd)){
                 params.put("updatetimeEnd",updatetimeEnd);
             }else if(StringUtil.checkDateStr(updatetimeEnd, "yyyy-MM-dd HH:mm:ss")){
-                params.put("updatetime",new Timestamp( DateUtil.parseToDate(updatetimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("updatetimeEnd",new Timestamp( DateUtil.parseToDate(updatetimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
 
@@ -541,7 +543,7 @@ public class SysUserController extends BaseController{
         vu.add("face", face, "头像",  new Rule[]{new Length(100)});
         vu.add("remark", remark, "备注",  new Rule[]{new Length(200)});
         vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
-        vu.add("updatetime", updatetime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
+        vu.add("updatetime", updatetime, "更新时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         validStr = vu.validateString();
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
@@ -687,7 +689,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(birthBegin)){
                 params.put("birthBegin",birthBegin);
             }else if(StringUtil.checkDateStr(birthBegin, "yyyy-MM-dd")){
-                params.put("birth",DateUtil.parseToDate(birthBegin, "yyyy-MM-dd"));
+                params.put("birthBegin",DateUtil.parseToDate(birthBegin, "yyyy-MM-dd"));
             }
         }
         String birthEnd = request.getParameter("birthEnd");
@@ -695,7 +697,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(birthEnd)){
                 params.put("birthEnd",birthEnd);
             }else if(StringUtil.checkDateStr(birthEnd, "yyyy-MM-dd")){
-                params.put("birth",DateUtil.parseToDate(birthEnd, "yyyy-MM-dd"));
+                params.put("birthEnd",DateUtil.parseToDate(birthEnd, "yyyy-MM-dd"));
             }
         }
         String integral = request.getParameter("integral");
@@ -751,7 +753,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(createtimeBegin)){
                 params.put("createtimeBegin",createtimeBegin);
             }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String createtimeEnd = request.getParameter("createtimeEnd");
@@ -759,7 +761,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(createtimeEnd)){
                 params.put("createtimeEnd",createtimeEnd);
             }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
-                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String updatetime = request.getParameter("updatetime");
@@ -775,7 +777,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(updatetimeBegin)){
                 params.put("updatetimeBegin",updatetimeBegin);
             }else if(StringUtil.checkDateStr(updatetimeBegin, "yyyy-MM-dd HH:mm:ss")){
-                params.put("updatetime",new Timestamp( DateUtil.parseToDate(updatetimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("updatetimeBegin",new Timestamp( DateUtil.parseToDate(updatetimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String updatetimeEnd = request.getParameter("updatetimeEnd");
@@ -783,7 +785,7 @@ public class SysUserController extends BaseController{
             if(StringUtil.checkNumeric(updatetimeEnd)){
                 params.put("updatetimeEnd",updatetimeEnd);
             }else if(StringUtil.checkDateStr(updatetimeEnd, "yyyy-MM-dd HH:mm:ss")){
-                params.put("updatetime",new Timestamp( DateUtil.parseToDate(updatetimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+                params.put("updatetimeEnd",new Timestamp( DateUtil.parseToDate(updatetimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
 
@@ -800,8 +802,8 @@ public class SysUserController extends BaseController{
         if (!folder_file.exists()) {
             folder_file.mkdir();
         }
-        String fileName = folder + File.separator
-                + DateUtil.formatToString(new Date(), "yyyyMMddHHmmssSSS")
+
+        String fileName = DateUtil.formatToString(new Date(), "yyyyMMddHHmmssSSS")
                 + ".xlsx";
         // 得到导出Excle时清单的英中文map
         LinkedHashMap<String, String> colTitle = new LinkedHashMap<String, String>();
@@ -823,7 +825,7 @@ public class SysUserController extends BaseController{
         colTitle.put("face", "头像");
         colTitle.put("remark", "备注");
         colTitle.put("createtime", "创建时间");
-        colTitle.put("updatetime", "创建时间");
+        colTitle.put("updatetime", "更新时间");
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             SysUser sm = list.get(i);
@@ -851,7 +853,7 @@ public class SysUserController extends BaseController{
         }
         try {
             if (cola.machine.util.ExcelUtil.getExcelFile(finalList, fileName, colTitle) != null) {
-                return this.getResult(SUCC, "导出成功", fileName);
+                return this.getResult(SUCC,"tmp/"+ fileName,"导出成功" );
             }
             /*
              * return new ResponseEntity<byte[]>(
