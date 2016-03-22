@@ -302,7 +302,7 @@ public class SysUserRoleController extends BaseController{
         }
         try {
             if (cola.machine.util.ExcelUtil.getExcelFile(finalList, fileName, colTitle) != null) {
-                return this.getResult(SUCC, "导出成功", fileName);
+                return this.getResult(SUCC,fileName,"导出成功");
             }
             /*
              * return new ResponseEntity<byte[]>(

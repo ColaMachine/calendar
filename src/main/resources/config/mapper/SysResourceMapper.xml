@@ -3,7 +3,7 @@
 <mapper namespace="cola.machine.dao.SysResourceMapper">
   <resultMap id="BaseResultMap" type="cola.machine.bean.SysResource">
       <id column="id" jdbcType="BIGINT" property="id" />
-      <id column="pid" jdbcType="BIGINT" property="pid" />
+      <result column="pid" jdbcType="BIGINT" property="pid" />
       <result column="name" jdbcType="VARCHAR" property="name" />
       <result column="code" jdbcType="VARCHAR" property="code" />
       <result column="type" jdbcType="VARCHAR" property="type" />
@@ -149,6 +149,7 @@
   <update id="updateByPrimaryKey" parameterType="cola.machine.bean.SysResource" >
     update sys_resource
     set 
+              `pid`=#{pid,jdbcType=BIGINT},  
               `name`=#{name,jdbcType=VARCHAR},  
               `code`=#{code,jdbcType=VARCHAR},  
               `type`=#{type,jdbcType=VARCHAR},  

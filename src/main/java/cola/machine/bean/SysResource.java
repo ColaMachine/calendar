@@ -15,7 +15,7 @@ public class SysResource {
         return id;
     }    public void setId(Long id){
         this.id=id;
-    }/**主键**/
+    }/**父主键**/
     private Long pid;
     public Long getPid(){
         return pid;

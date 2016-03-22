@@ -4,8 +4,8 @@
             <form class="form-inline app-search">
         <label for="id">主键</label>
             <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="主键"></input>
-        <label for="pid">主键</label>
-            <input type="number" id="pid" name="pid"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="主键"></input>
+        <label for="pid">父主键</label>
+            <input type="number" id="pid" name="pid"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="父主键"></input>
         <label for="name">资源名称</label>
             <input type="text" id="nameLike" name="nameLike"  class="form-control input-sm"   maxlength="20" placeholder="资源名称" ></input>
         <label for="code">资源代码</label>
@@ -46,9 +46,9 @@
         </div>
   
         <div class="form-group">
-            <label for="exampleInputName2">主键</label>
+            <label for="exampleInputName2">父主键</label>
           
-            <input type="text" class="form-control" id="pid" name="pid" placeholder="主键">
+            <input type="text" class="form-control" id="pid" name="pid" placeholder="父主键">
            
         </div>
   
@@ -151,7 +151,7 @@ var gridParam = {
         name : ''
     },
     colNames : [
-     "主键","主键","资源名称","资源代码","资源分类","资源对应URL","排序id","状态","备注","创建时间" , '操作' ],
+     "主键","父主键","资源名称","资源代码","资源分类","资源对应URL","排序id","状态","备注","创建时间" , '操作' ],
     colModel : [
             {
                 name : 'id',

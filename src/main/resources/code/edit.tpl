@@ -11,7 +11,7 @@
             ${edithtml}
             <#if table.mapper??>
             <div class="form-group">
-        <label for="createtime" class="col-sm-2 control-label">角色:</label>
+        <label for="createtime" class="col-sm-2 control-label">${child.remark}:</label>
         <div class="col-sm-10 z-col-table">
             <ul id="treeDemo" class="ztree"></ul>
         </div>
@@ -37,8 +37,8 @@ $(document).ready(function() {
         }
     });
     //获取传入参数
-    if(!StringUtil.isBlank(getParam("id"))){
-        GetJSON("${abc}/view.json?id="+getParam("id"),function(data){
+ 
+        GetJSON("${abc}/view.json?id="+getParam("id"),null,function(data){
             if(data.r==AJAX_SUCC){
                 if(data.data.bean){
                     fillJso2Form("#editForm",data.data.bean);
@@ -62,7 +62,6 @@ $(document).ready(function() {
             
         });
         
-    }
     
 });
  <#if table.mapper??>

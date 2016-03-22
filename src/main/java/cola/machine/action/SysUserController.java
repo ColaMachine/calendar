@@ -18,8 +18,6 @@ import java.util.LinkedHashMap;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import cola.machine.config.Config;
-import cola.machine.mng.PathManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -534,7 +532,7 @@ public class SysUserController extends BaseController{
         vu.add("email", email, "邮箱地址",  new Rule[]{new Length(50),new EmailRule()});
         vu.add("telno", telno, "手机号码",  new Rule[]{new Length(11),new PhoneRule()});
         vu.add("idcard", idcard, "身份证号码",  new Rule[]{new Length(18)});
-        vu.add("sex", sex, "身份证号码",  new Rule[]{new Digits(1,0)});
+        vu.add("sex", sex, "性别",  new Rule[]{new Digits(1,0)});
         vu.add("birth", birth, "出生年月",  new Rule[]{new DateValue("yyyy-MM-dd")});
         vu.add("integral", integral, "积分",  new Rule[]{new Digits(11,0)});
         vu.add("address", address, "地址",  new Rule[]{new Length(50)});
@@ -802,8 +800,8 @@ public class SysUserController extends BaseController{
         if (!folder_file.exists()) {
             folder_file.mkdir();
         }
-
-        String fileName = DateUtil.formatToString(new Date(), "yyyyMMddHHmmssSSS")
+        String fileName = folder + File.separator
+                + DateUtil.formatToString(new Date(), "yyyyMMddHHmmssSSS")
                 + ".xlsx";
         // 得到导出Excle时清单的英中文map
         LinkedHashMap<String, String> colTitle = new LinkedHashMap<String, String>();
@@ -816,7 +814,7 @@ public class SysUserController extends BaseController{
         colTitle.put("email", "邮箱地址");
         colTitle.put("telno", "手机号码");
         colTitle.put("idcard", "身份证号码");
-        colTitle.put("sex", "身份证号码");
+        colTitle.put("sex", "性别");
         colTitle.put("birth", "出生年月");
         colTitle.put("integral", "积分");
         colTitle.put("address", "地址");
@@ -853,7 +851,7 @@ public class SysUserController extends BaseController{
         }
         try {
             if (cola.machine.util.ExcelUtil.getExcelFile(finalList, fileName, colTitle) != null) {
-                return this.getResult(SUCC,"tmp/"+ fileName,"导出成功" );
+                return this.getResult(SUCC,fileName,"导出成功");
             }
             /*
              * return new ResponseEntity<byte[]>(

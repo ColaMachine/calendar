@@ -1176,3 +1176,15 @@ function showDialogue(url){
         $("#mymodal").modal("toggle");
     }
 }
+
+
+var setting = {
+           check: {
+               enable: true
+           },
+           data: {
+               simpleData: {
+                   enable: true
+               }
+           }
+       };

@@ -13,7 +13,7 @@ public interface SysUserMapper {
     int insert(SysUser record);
 
    
-    int insertSelective(SysUser record);
+    int insertSelective(SysUser  record);
 
     
     SysUser  selectByPrimaryKey(Long id);

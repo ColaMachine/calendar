@@ -323,7 +323,7 @@ public class SysResourceController extends BaseController{
         ValidateUtil vu = new ValidateUtil();
         String validStr="";
         vu.add("id", id, "主键",  new Rule[]{new Digits(10,0)});
-        vu.add("pid", pid, "主键",  new Rule[]{new Digits(10,0)});
+        vu.add("pid", pid, "父主键",  new Rule[]{new Digits(10,0),new NotEmpty()});
         vu.add("name", name, "资源名称",  new Rule[]{new Length(20),new NotEmpty()});
         vu.add("code", code, "资源代码",  new Rule[]{new Length(20),new NotEmpty()});
         vu.add("type", type, "资源分类",  new Rule[]{new Length(20),new NotEmpty()});
@@ -499,7 +499,7 @@ public class SysResourceController extends BaseController{
         // 得到导出Excle时清单的英中文map
         LinkedHashMap<String, String> colTitle = new LinkedHashMap<String, String>();
         colTitle.put("id", "主键");
-        colTitle.put("pid", "主键");
+        colTitle.put("pid", "父主键");
         colTitle.put("name", "资源名称");
         colTitle.put("code", "资源代码");
         colTitle.put("type", "资源分类");
@@ -526,7 +526,7 @@ public class SysResourceController extends BaseController{
         }
         try {
             if (cola.machine.util.ExcelUtil.getExcelFile(finalList, fileName, colTitle) != null) {
-                return this.getResult(SUCC, "导出成功", fileName);
+                return this.getResult(SUCC,fileName,"导出成功");
             }
             /*
              * return new ResponseEntity<byte[]>(

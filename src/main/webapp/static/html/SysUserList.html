@@ -25,8 +25,8 @@
             <input type="text" id="telnoLike" name="telnoLike"  class="form-control input-sm"   maxlength="11" placeholder="手机号码" ></input>
         <label for="idcard">身份证号码</label>
             <input type="text" id="idcardLike" name="idcardLike"  class="form-control input-sm"   maxlength="18" placeholder="身份证号码" ></input>
-        <label for="sex">身份证号码</label>
-            <input type="number" id="sex" name="sex"  class="form-control input-sm"  maxlength="1" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="身份证号码"></input>
+        <label for="sex">性别</label>
+            <input type="number" id="sex" name="sex"  class="form-control input-sm"  maxlength="1" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="性别"></input>
         <label for="birth">出生年月</label>
         <div class="input-group">
             <input type="text" id="birth" name="birth"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})"  datatype="date" format="yyyy-MM-dd"  placeholder="出生年月" ></input>
@@ -141,9 +141,9 @@
         </div>
   
         <div class="form-group">
-            <label for="exampleInputName2">身份证号码</label>
+            <label for="exampleInputName2">性别</label>
           
-            <input type="text" class="form-control" id="sex" name="sex" placeholder="身份证号码">
+            <input type="text" class="form-control" id="sex" name="sex" placeholder="性别">
            
         </div>
   
@@ -253,7 +253,7 @@ var gridParam = {
         name : ''
     },
     colNames : [
-     "主键","用户名","密码","昵称","类型","状态","邮箱地址","手机号码","身份证号码","身份证号码","出生年月","积分","地址","微信","qq","头像","备注","创建时间","更新时间" , '操作' ],
+     "主键","用户名","密码","昵称","类型","状态","邮箱地址","手机号码","身份证号码","性别","出生年月","积分","地址","微信","qq","头像","备注","创建时间","更新时间" , '操作' ],
     colModel : [
             {
                 name : 'id',
@@ -398,7 +398,6 @@ function search(){
 function exportExcel(){
     var jso= changeForm2Jso(".app-search");
     GetJSON(PATH+"/sysUser/export.json",jso,function(data){
-        alert(AJAX_SUCC);
         if(data.r==AJAX_SUCC){
             window.location=PATH+"/"+data.data;
         }else{

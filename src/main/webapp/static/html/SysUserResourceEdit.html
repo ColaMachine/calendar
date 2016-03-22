@@ -59,7 +59,7 @@ $(document).ready(function() {
     });
     //获取传入参数
     if(!StringUtil.isBlank(getParam("id"))){
-        GetJSON("sysUserResource/view.json?id="+getParam("id"),function(data){
+        GetJSON("sysUserResource/view.json?id="+getParam("id"),null,function(data){
             if(data.r==AJAX_SUCC){
                 if(data.data.bean){
                     fillJso2Form("#editForm",data.data.bean);
