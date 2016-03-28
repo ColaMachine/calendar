@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cola.machine.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -159,7 +160,11 @@ public class LoginFilter implements Filter {
         sessionKey = filterConfig.getInitParameter("checkSessionKey");
 
         String notCheckURLListStr = filterConfig.getInitParameter("notCheckURLList");
-        notCheckURLListStr = notCheckURLListStr.replaceAll("[\\r\\n\\s\\t]", "");
+        if(!StringUtil.isBlank(notCheckURLListStr)){
+            notCheckURLListStr = notCheckURLListStr.replaceAll("[\\r\\n\\s\\t]", "");
+        }
+
+
         if (notCheckURLListStr != null) {
             StringTokenizer st = new StringTokenizer(notCheckURLListStr, ";");
             notCheckURLList.clear();

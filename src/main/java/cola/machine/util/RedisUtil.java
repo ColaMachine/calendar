@@ -88,14 +88,14 @@ public final class RedisUtil {
     public static String get(String key){  
         String value = null;  
           
-        JedisPool pool = null;  
-        Jedis jedis = null;  
+      ;
+        Jedis jedis = null;
         try {  
             jedis = jedisPool.getResource();  
             value = jedis.get(key);  
         } catch (Exception e) {  
             //释放redis对象  
-            pool.returnBrokenResource(jedis);  
+            jedisPool.returnBrokenResource(jedis);
             e.printStackTrace();  
         } finally {  
             //返还到连接池  
@@ -112,14 +112,14 @@ public final class RedisUtil {
      * @return 
      */  
     public static void set(String key,String value){  
-        JedisPool pool = null;  
+
         Jedis jedis = null;  
         try {  
             jedis = jedisPool.getResource();  
             jedis.set(key,value);  
         } catch (Exception e) {  
             //释放redis对象  
-            pool.returnBrokenResource(jedis);  
+            jedisPool.returnBrokenResource(jedis);
             e.printStackTrace();  
         } finally {  
             //返还到连接池  
@@ -142,7 +142,7 @@ public final class RedisUtil {
             jedis.setex(key,seconds,value);  
         } catch (Exception e) {  
             //释放redis对象  
-            pool.returnBrokenResource(jedis);  
+            jedisPool.returnBrokenResource(jedis);
             e.printStackTrace();  
         } finally {  
             //返还到连接池  
@@ -158,14 +158,14 @@ public final class RedisUtil {
      * @return 
      */  
     public static void del(String key){  
-        JedisPool pool = null;  
+
         Jedis jedis = null;  
         try {  
             jedis = jedisPool.getResource();  
             jedis.del(key);  
         } catch (Exception e) {  
             //释放redis对象  
-            pool.returnBrokenResource(jedis);  
+            jedisPool.returnBrokenResource(jedis);
             e.printStackTrace();  
         } finally {  
             //返还到连接池  
