@@ -1034,3 +1034,7 @@ $.validator.addMethod("alpha",function( value, element, param ) {
 	var re= /^[A-Za-z]+$/;
 	 return this.optional(element) ||re.test(value);
 },"格式不正确");
+$.validator.addMethod("idcard",function( value, element, param ) {
+	var re= /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/; 
+	 return this.optional(element) ||re.test(value);
+},"身份证格式不正确");

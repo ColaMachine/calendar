@@ -100,6 +100,12 @@ public class StringUtil {
         Matcher matcher = pattern.matcher(value);
         return matcher.find();
     }
+    public static boolean isID(String value) {
+        String regex = "^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$|^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(value);
+        return matcher.find();
+    }
     public static boolean splitStrContains(String longStr,String bean){
         if(longStr.indexOf(","+bean+",")>=0 || longStr.startsWith(bean+",") || longStr.endsWith(","+bean) || longStr.equals(bean)){
             return true;
@@ -107,18 +113,29 @@ public class StringUtil {
         return false;
     }
     public static void main(String[] args) {
-        System.out.println(StringUtil.isPhone("14958173965"));;
+        System.out.println(StringUtil.isID("330104198601292711"));;
     }
 
+	/**  随机数字池**/
 	public static String randDigitString = "0123456789";//随机产生的字符串
-	public static String randAlphaString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
+	
+	/**随机字母池  **/
+	public static String randAlphaString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
 	public static String getRandomString(int len){
 		String code ="";
 		for(int i=0;i<len;i++){
-			code+=randAlphaString.charAt((int)(Math.random()*10));
+			code+=(randDigitString+randAlphaString).charAt((int)(Math.random()*10));
 		}
 		return code;
 	}
+	/**
+	 * 说明:得到随机字母字符串
+	 * @param len
+	 * @return
+	 * @return String
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:07:32
+	 */
 	public static String getRandomAlphaString(int len){
 		String code ="";
 		for(int i=0;i<len;i++){
@@ -126,6 +143,13 @@ public class StringUtil {
 		}
 		return code;
 	}
+	/**
+	 * 说明:获得随机数字字符串
+	 * @param len
+	 * @return String
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:07:00
+	 */
 	public static String getRandomDigitString(int len){
 		String code ="";
 		for(int i=0;i<len;i++){
@@ -133,6 +157,14 @@ public class StringUtil {
 		}
 		return code;
 	}
+	/**
+	 * 说明:检查是否只有字母和数字
+	 * @param str
+	 * @return
+	 * @return boolean
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:40
+	 */
 	public static boolean checkAlphaNumeric(String str){
 		if (str == null) {
 			return false;
@@ -145,7 +177,15 @@ public class StringUtil {
 		}
 		return true;
 	}
-	   public static boolean checkAlpha(String str){
+	
+	   /**
+	 * 说明:检查是否是只有字母
+	 * @param str
+	 * @return boolean
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:01
+	 */
+	public static boolean checkAlpha(String str){
 	        if (str == null) {
 	            return false;
 	        }
@@ -157,6 +197,13 @@ public class StringUtil {
 	        }
 	        return true;
 	    }
+	/**
+	 * 说明:检验年月日格式
+	 * @param type
+	 * @return String
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:19
+	 */
 	public static String getYMDStr(String type){
         String ymd ="";
         if(type.startsWith("date")){

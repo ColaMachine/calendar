@@ -8,6 +8,7 @@
 package cola.machine.bean;
 import java.sql.Timestamp;
 import java.util.Date;
+
 public class SysUser {
     /**主键**/
     private Long id;
@@ -63,7 +64,7 @@ public class SysUser {
         return idcard;
     }    public void setIdcard(String idcard){
         this.idcard=idcard;
-    }/**身份证号码**/
+    }/**性别**/
     private Integer sex;
     public Integer getSex(){
         return sex;

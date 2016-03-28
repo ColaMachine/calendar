@@ -218,6 +218,11 @@ public class ControllerFactory extends DefaultGenCodeFactory {
                        jsrules.add(String.format("alpha:true"));
                        message.add(String.format("alpha:\"只能输入字母\""));
                    }
+                   if(validAry[j].toLowerCase().startsWith("idcard")){
+                       rules.add(String.format("new IDCardRule()"));
+                       jsrules.add(String.format("IDCard:true"));
+                       message.add(String.format("IDCard:\"身份证格式不正确\""));
+                   }
                }
            }
            String ruleStr=StringUtil.join(",",rules.toArray());

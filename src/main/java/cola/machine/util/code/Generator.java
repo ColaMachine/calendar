@@ -149,6 +149,11 @@ public class Generator {
         table=(ZTable)allTable.get(code);
         root.put("allTables", allTable);
         root.put("table", table);
+        if(null!=table.getMapper()){
+            root.put("child", allTable.get(table.getMapper().getChild()));
+            root.put("mapper", allTable.get(table.getMapper().getMapper()));
+            root.put("parent", table);
+        }
        root.put("abc", StringUtil.getabc(table.getName()));
         root.put("Abc", StringUtil.getAbc(table.getName()));
         /* 

@@ -49,7 +49,7 @@
     </div>
 
             <div class="form-group">
-        <label for="createtime" class="col-sm-2 control-label">角色:</label>
+        <label for="createtime" class="col-sm-2 control-label">资源配置:</label>
         <div class="col-sm-10 z-col-table">
             <ul id="treeDemo" class="ztree"></ul>
         </div>
@@ -63,7 +63,36 @@
 </div><!-- /.modal-content -->
         
 <script type="text/javascript">
-
+var SysRoleEditModule={
+		render:function(){
+			
+		},
+		html:function(){
+			return "";
+		},
+		init:function(){
+			//if has id get the data and perform
+			//if has child relation  get the child list
+			      //if has id get the relation ships
+			//int the validation
+			this.render();
+			this.addEventListener();
+			this.loadData();
+			
+			
+		},
+		addEventListener:function(){
+			
+		},
+		save:function(){
+			
+		},
+		cancel:function(){
+			
+			
+		}
+		
+}
 $(document).ready(function() {
     $("#editForm").validate({
         rules: {
@@ -116,8 +145,8 @@ $(document).ready(function() {
         }
     });
     //获取传入参数
-    if(!StringUtil.isBlank(getParam("id"))){
-        GetJSON("sysRole/view.json?id="+getParam("id"),function(data){
+
+        GetJSON("sysRole/view.json?id="+getParam("id"),null,function(data){
             if(data.r==AJAX_SUCC){
                 if(data.data.bean){
                     fillJso2Form("#editForm",data.data.bean);
@@ -139,19 +168,8 @@ $(document).ready(function() {
             
         });
         
-    }
     
 });
-var setting = {
-           check: {
-               enable: true
-           },
-           data: {
-               simpleData: {
-                   enable: true
-               }
-           }
-       };
     function save(){
            if (!$("#editForm").valid())
                     return;
