@@ -63,36 +63,7 @@
 </div><!-- /.modal-content -->
         
 <script type="text/javascript">
-var SysRoleEditModule={
-		render:function(){
-			
-		},
-		html:function(){
-			return "";
-		},
-		init:function(){
-			//if has id get the data and perform
-			//if has child relation  get the child list
-			      //if has id get the relation ships
-			//int the validation
-			this.render();
-			this.addEventListener();
-			this.loadData();
-			
-			
-		},
-		addEventListener:function(){
-			
-		},
-		save:function(){
-			
-		},
-		cancel:function(){
-			
-			
-		}
-		
-}
+
 $(document).ready(function() {
     $("#editForm").validate({
         rules: {
@@ -145,8 +116,8 @@ $(document).ready(function() {
         }
     });
     //获取传入参数
-
-        GetJSON("sysRole/view.json?id="+getParam("id"),null,function(data){
+ 
+        Ajax.getJSON("sysRole/view.json?id="+getParam("id"),null,function(data){
             if(data.r==AJAX_SUCC){
                 if(data.data.bean){
                     fillJso2Form("#editForm",data.data.bean);
@@ -170,6 +141,16 @@ $(document).ready(function() {
         
     
 });
+var setting = {
+           check: {
+               enable: true
+           },
+           data: {
+               simpleData: {
+                   enable: true
+               }
+           }
+       };
     function save(){
            if (!$("#editForm").valid())
                     return;
@@ -190,7 +171,7 @@ $(document).ready(function() {
                      }
                      jso.childids= childids.join(",");//alert(jso.childids);return;
                      showWait();
-                     Post(PATH+$("#editForm").attr("action"),jso,function(data){
+                     Ajax.post(PATH+$("#editForm").attr("action"),jso,function(data){
                      hideWait();
                      if(data.r==0){
                         zalert(data.msg||"保存成功","提示",function(){

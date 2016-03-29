@@ -18,42 +18,54 @@ String.prototype.trim= function(){
     return this.replace(/(^\s*)|(\s*$)/g, "");  
 }
 var PATH="";
-function AjaxFun(url, inputData, callback, options, callbackOnError) {
-	var contextUrl = window.location.href;
-	options = options || {};
-	options.url =  url;
-	options.type = options.type||"POST";
-	options.data = inputData;
-	//options.data = encodeURIComponent(JSON.stringify(inputData));
-	if (typeof options.async == 'undifined')
-		options.async = false;
-	var param = options.inputData;
-	options.success = function(outputData) {//alert("success")
-		if(outputData.r=="504"){
-			window.location=PATH+"/login";
-		}
-		if (typeof callback == 'function') {
-			callback(outputData);
-		}
-	};
-	options.error = function(jqXHR, textStatus, errorThrown) {//alert("error")
-		// $("body").unmask();
-		var responseText = jqXHR.responseText || "";
-		if ((jqXHR.status == 500 || jqXHR.status == 1000)
-				&& responseText.indexOf("dwr.engine.http.1000") >= 0) {
-			top.location.replace(acwsContext + '/acwsui/pages/logout.htm');// /j_acegi_logout
-			return;
-		}
-		if (typeof callbackOnError == 'function') {
-			callbackOnError(errorThrown);
-		} else {alert(typeof callbackOnError);
-			alert('参数不是function');
-		}
-	};
-	delete options['inputData'];
-	$.ajax(options);
+
+var Ajax={
+ get:function(url,data,callback){
+    this.AjaxFun(url,data,callback,{type:"get"});
+ },
+ getJSON:function(url,data,callback){
+    this.AjaxFun(url,data,callback,{type:"get",dataType:"json"});
+ },
+ post:function(url,data,callback){
+    this.AjaxFun(url,data,callback,{type:"post"});
+ },
+ AjaxFun:function (url, inputData, callback, options, callbackOnError) {
+         	var contextUrl = window.location.href;
+         	options = options || {};
+         	options.url =  url;
+         	options.type = options.type||"POST";
+         	options.data = inputData;
+         	//options.data = encodeURIComponent(JSON.stringify(inputData));
+         	if (typeof options.async == 'undifined')
+         		options.async = false;
+         	var param = options.inputData;
+         	options.success = function(outputData) {//alert("success")
+         		if(outputData.r=="504"){
+         			window.location=PATH+"/login";
+         		}
+         		if (typeof callback == 'function') {
+         			callback(outputData);
+         		}
+         	};
+         	options.error = function(jqXHR, textStatus, errorThrown) {//alert("error")
+         		// $("body").unmask();
+         		var responseText = jqXHR.responseText || "";
+         		if ((jqXHR.status == 500 || jqXHR.status == 1000)
+         				&& responseText.indexOf("dwr.engine.http.1000") >= 0) {
+         			top.location.replace(acwsContext + '/acwsui/pages/logout.htm');// /j_acegi_logout
+         			return;
+         		}
+         		if (typeof callbackOnError == 'function') {
+         			callbackOnError(errorThrown);
+         		} else {alert(typeof callbackOnError);
+         			alert('参数不是function');
+         		}
+         	};
+         	delete options['inputData'];
+         	$.ajax(options);
+         }
 };
-function Get(url,data,callback){
+/*function Get(url,data,callback){
 	AjaxFun(url,data,callback,{type:"get"});
 }
 function GetJSON(url,data,callback){
@@ -61,7 +73,7 @@ function GetJSON(url,data,callback){
 }
 function Post(url,data,callback){
 	AjaxFun(url,data,callback);
-}
+}*/
 /**
  * 
  */
@@ -1188,3 +1200,10 @@ var setting = {
                }
            }
        };
+
+var Dialog={
+    alert:function(){
+
+    }
+
+}

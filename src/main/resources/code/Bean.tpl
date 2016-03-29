@@ -7,6 +7,7 @@
  */
 package cola.machine.bean;
 import java.sql.Timestamp;
+import java.util.Date;
 <#assign abc="${table.name[0]?lower_case}${table.name[1..]}">
 <#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
 

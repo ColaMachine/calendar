@@ -25,7 +25,8 @@ includeCSS(["/static/css/bootstrap.min.css",
    "/static/css/global.css",
     "/static/css/widget.css",
     "/static/css/window.css",
-    "/static/css/zTreeStyle.css"
+    "/static/css/zTreeStyle.css",
+     "/static/css/layer.css"
   
 ]);
 
@@ -46,6 +47,7 @@ includeJS(["/static/js/menu.js" ,
             "/static/js/dialog.js",
             "/static/js/jquery.ztree.core-3.5.js",
             "/static/js/jquery.ztree.excheck-3.5.js",
+              "/static/js/layer.js",
           ]);
 </script>
 

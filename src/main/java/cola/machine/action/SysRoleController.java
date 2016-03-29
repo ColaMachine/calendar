@@ -88,9 +88,7 @@ public class SysRoleController extends BaseController{
     @ResponseBody
     public Object list(HttpServletRequest request) {
         Page page = RequestUtil.getPage(request);
-        if(page ==null){
-             return this.getWrongResultFromCfg("err.param.page");
-        }
+
         
         HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
@@ -153,7 +151,10 @@ public class SysRoleController extends BaseController{
                 params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
-
+        if(page ==null){
+            List<SysRole> sysRoles = sysRoleService.listByParams(params);
+            return ResultUtil.getResult(sysRoles, page);
+        }
         params.put("page",page);
         List<SysRole> sysRoles = sysRoleService.listByParams4Page(params);
         return ResultUtil.getResult(sysRoles, page);

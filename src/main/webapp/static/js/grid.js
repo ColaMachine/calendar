@@ -3287,7 +3287,7 @@
 									if(i>=page.totalPage)
 										break;
 								}*/
-								console.log(page);
+								//console.log(page);
 								pageHtml += "<li><a href=\"javascript:void(0)\" class=\"page_bg next\" aria-label=\"Next\">下一页</a></li><span>共"+page.totalPage+"页，"+page.totalCount+"条信息</span></ul></nav>";
 
 								$(this.p.pager_selector).html(pageHtml);

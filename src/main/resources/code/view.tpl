@@ -33,7 +33,7 @@
 $(document).ready(function() {
     //获取传入参数
     if(!StringUtil.isBlank(getParam("id"))){
-        GetJSON("${abc}/view.json?id="+getParam("id"),function(data){
+        Ajax.getJSON("${abc}/view.json?id="+getParam("id"),function(data){
             if(data.r==AJAX_SUCC){
                 fillJso2FormSpan("#editForm",data.data.bean);
             }else{

@@ -38,7 +38,7 @@ $(document).ready(function() {
     });
     //获取传入参数
  
-        GetJSON("${abc}/view.json?id="+getParam("id"),null,function(data){
+        Ajax.getJSON("${abc}/view.json?id="+getParam("id"),null,function(data){
             if(data.r==AJAX_SUCC){
                 if(data.data.bean){
                     fillJso2Form("#editForm",data.data.bean);
@@ -98,7 +98,7 @@ var setting = {
                      jso.childids= childids.join(",");//alert(jso.childids);return;
                      </#if>
                      showWait();
-                     Post(PATH+$("#editForm").attr("action"),jso,function(data){
+                     Ajax.post(PATH+$("#editForm").attr("action"),jso,function(data){
                      hideWait();
                      if(data.r==0){
                         zalert(data.msg||"保存成功","提示",function(){

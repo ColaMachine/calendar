@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cola.machine.util.StringUtil;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -56,6 +57,9 @@ public class RequestUtil {
 	public static Page getPage(HttpServletRequest request){
 	    String curPage = request.getParameter("curPage");
 	    String pageSize = request.getParameter("pageSize");
+		if(StringUtil.isBlank(curPage)||StringUtil.isBlank(pageSize) ){
+			return null;
+		}
 	    Page page =new Page();
 	    page.setCurPage(Integer.valueOf(curPage));
 	    page.setPageSize(Integer.valueOf(pageSize));

@@ -102,7 +102,23 @@ ${getSearchParam}
         return ResultUtil.getResult(${abc}s, page);
     }
     
-    
+    /**
+         * 说明:ajax请求角色信息 无分页版本
+         *
+         * @param curPage
+         * @param pageSize
+         * @return
+         * @return Object
+         * @author dozen.zhang
+         * @date 2015年11月15日下午12:31:55
+         */
+        @RequestMapping(value = "/listAll.json")
+        @ResponseBody
+        public Object listAll(HttpServletRequest request) {
+            ${getSearchParam}
+            List<${Abc}> ${abc}s = ${abc}Service.listByParams(params);
+            return ResultUtil.getResult(${abc}s);
+        }
     
     /**
      * @param id 参数

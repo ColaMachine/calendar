@@ -14,6 +14,10 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import cola.machine.bean.SysRole;
+import cola.machine.bean.SysUser;
+import cola.machine.dao.SysRoleMapper;
+import cola.machine.dao.SysUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,10 @@ public class SysUserRoleService extends BaseService {
             .getLogger(SysUserRoleService.class);
     @Resource
     private SysUserRoleMapper sysUserRoleMapper;
+    @Resource
+    private SysUserMapper sysUserMapper;
+    @Resource
+    private SysRoleMapper sysRoleMapper;
     /**
      * 说明:list by page and params
      * @param page
@@ -107,6 +115,68 @@ public class SysUserRoleService extends BaseService {
         for(int i=0;i<idAry.length;i++){
             sysUserRoleMapper.deleteByPrimaryKey(idAry[i]);
         }
+        return ResultUtil.getSuccResult();
+    }
+
+    /**
+     * 多项关联保存
+     * @param uids
+     * @param rids
+     * @return
+     */
+    public ResultDTO msave(String uids,String rids) {
+        String[] uidAry= uids.split(",");
+        String[] ridAry= rids.split(",");
+        Long[] uidAryReal =new Long[uidAry.length];
+        Long[] ridAryReal =new Long[ridAry.length];
+        for(int i=0;i<uidAry.length;i++){
+            if(!StringUtil.checkNumeric(uidAry[i])){
+                return ResultUtil.getResult(101,"参数错误");
+            }
+            uidAryReal[i]=Long.valueOf(uidAry[i]);
+        }
+        for(int i=0;i<ridAry.length;i++){
+            if(!StringUtil.checkNumeric(uidAry[i])){
+                return ResultUtil.getResult(101,"参数错误");
+            }
+            ridAryReal[i]=Long.valueOf(ridAry[i]);
+        }
+        //验证父亲id 正确性 是否存在
+        for(int i=0;i<uidAryReal.length;i++){
+            //
+           SysUser sysUser = sysUserMapper.selectByPrimaryKey(uidAryReal[i]);
+            if(sysUser==null ){
+                return ResultUtil.getResult(101,"数据不存在");
+            }
+            //查询的数据不存在
+        }
+        for(int i=0;i<ridAryReal.length;i++){
+            SysRole sysRole = sysRoleMapper.selectByPrimaryKey(ridAryReal[i]);
+            //查询的数据不存在
+            if(sysRole==null ){
+                return ResultUtil.getResult(101,"数据不存在");
+            }
+        }
+        //验证子id 正确性 是否存在
+        for(int i=0;i<uidAryReal.length;i++){
+            for(int j=0;j<ridAryReal.length;j++){
+                SysUserRole sysUserRole =new SysUserRole();
+                Long rid =ridAryReal[i];
+                Long uid =uidAryReal[i];
+                //查找是否已经有关联数据了
+                HashMap map =new HashMap();
+                map.put("uid",uid);
+                map.put("rid",rid);
+                int count = sysUserRoleMapper.countByParams(map);
+                if(count>0)continue;
+                sysUserRole.setRoleid(rid);
+                sysUserRole.setUid(uid);
+                sysUserRoleMapper.insert(sysUserRole);
+            }
+        }
+        //删除多余的数据
+        sysUserRoleMapper.deleteByPrimaryKey();
+        //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
         return ResultUtil.getSuccResult();
     }
 }

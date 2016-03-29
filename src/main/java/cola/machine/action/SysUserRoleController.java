@@ -100,9 +100,42 @@ public class SysUserRoleController extends BaseController{
         List<SysUserRole> sysUserRoles = sysUserRoleService.listByParams4Page(params);
         return ResultUtil.getResult(sysUserRoles, page);
     }
-    
-    
-    
+
+    /**
+     * 说明:ajax请求角色信息
+     *
+     * @param curPage
+     * @param pageSize
+     * @return
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午12:31:55
+     */
+    @RequestMapping(value = "/listAll.json")
+    @ResponseBody
+    public Object listAll(HttpServletRequest request) {
+
+
+        HashMap<String,Object> params= new HashMap<String,Object>();
+        String id = request.getParameter("id");
+        if(!StringUtil.isBlank(id)){
+            params.put("id",id);
+        }
+        String uid = request.getParameter("uid");
+        if(!StringUtil.isBlank(uid)){
+            params.put("uid",uid);
+        }
+        String roleid = request.getParameter("roleid");
+        if(!StringUtil.isBlank(roleid)){
+            params.put("roleid",roleid);
+        }
+
+
+        List<SysUserRole> sysUserRoles = sysUserRoleService.listByParams(params);
+        return ResultUtil.getResult(sysUserRoles);
+    }
+
+
     /**
      * @param id 参数
      * @param request 发请求
@@ -198,7 +231,18 @@ public class SysUserRoleController extends BaseController{
         return sysUserRoleService.save(sysUserRole);
        
     }
-    
+    @RequestMapping(value = "/msave.json")
+    @ResponseBody
+    public Object msave(HttpServletRequest request) throws Exception {
+        SysUserRole sysUserRole =new  SysUserRole();
+        String fids= request.getParameter("fids");
+        String cids=request.getParameter("cids");
+
+
+
+        return sysUserRoleService.msave(fids,cids);
+
+    }
     @RequestMapping(value = "/del.json")
     @ResponseBody
     public Object delete(HttpServletRequest request) {
