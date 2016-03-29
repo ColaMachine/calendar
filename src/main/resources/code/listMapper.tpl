@@ -3,13 +3,13 @@
         <div class="body_top" >
             <form class="form-inline app-search">
 ${searchhtml}
-                <button type="button" onclick="search()" class="btn btn-default">查询</button>
+                <button type="button" class="btn btn-default searchBtn">查询</button>
             </form>
         <div >
-            <button class="btn add" >新增</button>
-            <button class="btn delete" >删除</button>
-            <button class="btn export" >导出</button>
-             <button class="btn save" >保存</button>
+            <button class="btn addBtn" >新增</button>
+            <button class="btn deleteBtn" >删除</button>
+            <button class="btn exportBtn" >导出</button>
+             <button class="btn saveBtn" >保存</button>
         </div>
     </div>
     <div id="grid" class="grid"></div>
@@ -37,10 +37,15 @@ var ${abc}List={
     newWindow:false,
     mygrid:null,
     init:function(){
-     mygrid = $("#SysUserRoleList").find(".grid").jqGrid(this.gridParam);
+        mygrid = $("#SysUserRoleList").find(".grid").jqGrid(this.gridParam);
     },
     addEventListener:function(){
-
+        var root = $("#SysUserRoleList");
+        $(root).find(".addBtn").click(this.addInfo);
+        $(root).find(".editBtn").click(this.editInfo);
+        $(root).find(".deleteBtn").click(this.deleteInfo);
+         $(root).find(".saveBtn").click(this.saveInfo);
+           $(root).find(".searchBtn").click(this.searchInfo);
     }
     gridParam:{
                   page:{
@@ -92,9 +97,9 @@ var ${abc}List={
     editInfo:function (id){
         showDialogue("/${abc}/edit.htm?id="+id);
     },
-    search:function (){
+    searchInfo:function (){
         var jso = changeForm2Jso(".app-search");
-        mygrid.jqGrid("search",jso);
+        this.mygrid.jqGrid("search",jso);
     },
     deleteInfo:function (id){
          //弹窗
@@ -117,9 +122,9 @@ var ${abc}List={
     search:function (){
         var jso= changeForm2Jso(".app-search");
         console.log(jso);
-        mygrid.search(jso);
+        this.mygrid.search(jso);
     },
-    exportExcel:function (){
+    exportInfo:function (){
         var jso= changeForm2Jso(".app-search");
         Ajax.getJSON(PATH+"/${abc}/export.json",jso,function(data){
             if(data.r==AJAX_SUCC){
@@ -131,12 +136,12 @@ var ${abc}List={
     },
     multiDelete:function (){
         //获取ids字符串
-        var ids=$("#grid").jqGrid("getGridParam","selarrrow");
+        var ids=this.mygrid.jqGrid("getGridParam","selarrrow");
         if(ids.length==0){
             zalert("请勾选数据","提示");
             return;
         }
-        var data= $("#grid").jqGrid("getGridParam","data");
+        var data= this.mygrid.jqGrid("getGridParam","data");
         for(var i=0;i<ids.length;i++){
             ids[i]=data[ids[i]]["id"];
         }
@@ -146,7 +151,7 @@ var ${abc}List={
                 result=ajaxResultHandler(result);
                 if(result.r==AJAX_SUCC){
                     zalert("删除成功，数据："+ids.join(","),"删除",function(){
-                    $("#grid").jqGrid("reloadGrid");
+                    this.mygrid.jqGrid("reloadGrid");
                 });
                 }else {
                     zerror(result.msg,"提醒",function(){});
