@@ -1,5 +1,3 @@
-<#assign abc="${table.name[0]?lower_case}${table.name[1..]}">
-<#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
 <div class="rgt_body">
     <div class="body_title">| ${table.remark}</div>
         <div class="body_top" >

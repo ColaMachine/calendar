@@ -53,6 +53,9 @@ public class ExcelUtil {
             int firsRowNum = sheet.getFirstRowNum();
             int lastRowNum = sheet.getLastRowNum();
             Row headerRow = sheet.getRow(firsRowNum);
+            if(headerRow==null){
+                throw new IOException("excel头部数据缺失 请按模板使用");
+            }
             List<String> header = getHeader(headerRow);
             for (int i = firsRowNum + 1; i <= lastRowNum; i++) {
                 Row row = sheet.getRow(i);

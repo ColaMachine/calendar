@@ -76,6 +76,10 @@ public interface SysUserRoleMapper {
     int countByBean(SysUserRole record);*/
     
     int countByParams(HashMap map);
-      
-      
+
+    /**
+     * 删除多余数据
+     * @param map
+     */
+    void deleteExtra(HashMap map);
 }

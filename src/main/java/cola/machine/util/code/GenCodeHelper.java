@@ -10,13 +10,21 @@ package cola.machine.util.code;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import cola.machine.util.StringUtil;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 public class GenCodeHelper {
-public static String changeStrVar2BeanType(String type,String name){
+
+    /**
+     * 代码字符串  new Timestamp(DateUtil.parseToDate(startTime,"yyyy-MM-dd").getTime())
+     * @param type
+     * @param name
+     * @return
+     */
+    public static String changeStrVar2BeanType(String type,String name){
     StringBuffer sb = new StringBuffer();
     if (type.startsWith("timestamp")) {
         sb.append("new Timestamp( DateUtil.parseToDate(" +name+ ", \"" + StringUtil.getYMDStr(type) + "\").getTime())");
@@ -31,6 +39,15 @@ public static String changeStrVar2BeanType(String type,String name){
     }
     return sb.toString();
 }
+
+    public static ZColum getColFromCols(List<ZColum> cols ,String colName){
+        for(ZColum col:cols ){
+            if(col.getName().equals(colName)){
+                return col;
+            }
+        }
+        return null;
+    }
 public static Integer getIntFromKuoHao(String str){
     int index = str.indexOf("(");
     if(index==-1){
@@ -47,7 +64,13 @@ public static Integer getIntFromKuoHao(String str){
         
     }
 }
-public static String changeMySqlType2JavaType(String type) {
+
+    /**
+     * mysql 的字段类型转换成java的类型
+     * @param type
+     * @return
+     */
+    public static String changeMySqlType2JavaType(String type) {
     String typeName = null;
     type = type.toLowerCase();
     if (type.startsWith("varchar")) {

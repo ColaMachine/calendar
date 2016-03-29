@@ -20,6 +20,19 @@
     delete from ${table.tableName}
     where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}
   </delete>
+  <#if table.mapper??>
+  <#if table.mapper.mapper==Abc>
+   <delete id="deleteExtra" parameterType="map">
+          delete from sys_user_role
+          where uid in
+          <foreach collection="${table.mapper.parentid}s" item="item" index="index"
+                   open="(" separator="," close=")"> ${r'#{'}item}</foreach>
+          and rid not in
+          <foreach collection="${table.mapper.child}s" item="item" index="index"
+                   open="(" separator="," close=")"> ${r'#{'}item}</foreach>
+      </delete>
+      </#if>
+      </#if>
  <insert id="insert" <#if table.pk.ai==true>useGeneratedKeys="true" keyProperty="id"</#if>   parameterType="cola.machine.bean.${Abc}" >
 
     insert into ${table.tableName} (  <include refid="Base_Column_List" />)

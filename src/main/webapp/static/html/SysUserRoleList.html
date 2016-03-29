@@ -1,5 +1,5 @@
 <div class="rgt_body ">
-    <div class="body_title">| 用户角色关系</div>
+    <div id="SysUserRoleList" class="body_title">| 用户角色关系</div>
         <div class="body_top " >
             <form class="form-inline app-search">
         <label for="id">主键</label>
@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="col-sm-6">
-    <div id="grid" class="grid"></div>
+    <div id="SysUserRolerid" class="grid"></div>
     <div id="grid-pager" class="pager"></div>
 </div>
     <div class="col-sm-6">
@@ -29,229 +29,148 @@
 
 
 <script>
-var gridParam = {
-    page:{
-        curPage : 1,
-        pageSize : 10
-    },
-    multiselect : true,
-    url : PATH+'/sysUser/list.json',
-    grid_selector : "#grid",
-    pager_selector : "#grid-pager",
-    searchParams : {
-        name : ''
-    },
-     colNames : [
-     "主键","用户名","密码","昵称","类型","状态","邮箱地址","手机号码","身份证号码","性别","出生年月","积分","地址","微信","qq","头像","备注","创建时间","更新时间" , '操作' ],
-    colModel : [
-            {
-                name : 'id',
-                width : 80,
-            } ,
-            {
-                name : 'username',
-                width : 80,
-            } ,
-            {
-                name : 'password',
-                width : 80,
-            } ,
-            {
-                name : 'nkname',
-                width : 80,
-            } ,
-            {
-                name : 'type',
-                width : 80,
-            } ,
-            {
-                name : 'status',
-                width : 80,
-                formatter : function(value, grid, rows) {
-                    var map ={'3':'未激活','2':'禁用','1':'正常',};
-                    return map[value];
-                }
-            } ,
-            {
-                name : 'email',
-                width : 80,
-            } ,
-            {
-                name : 'telno',
-                width : 80,
-            } ,
-            {
-                name : 'idcard',
-                width : 80,
-            } ,
-            {
-                name : 'sex',
-                width : 80,
-            } ,
-            {
-                name : 'birth',
-                width : 80,
-            } ,
-            {
-                name : 'integral',
-                width : 80,
-            } ,
-            {
-                name : 'address',
-                width : 80,
-            } ,
-            {
-                name : 'weichat',
-                width : 80,
-            } ,
-            {
-                name : 'qq',
-                width : 80,
-            } ,
-            {
-                name : 'face',
-                width : 80,
-            } ,
-            {
-                name : 'remark',
-                width : 80,
-            } ,
-            {
-                name : 'createtime',
-                width : 80,
-                 formatter : function(value, grid, rows) {
-                    return new Date(value).format("yyyy-MM-dd");
-                }
-            } ,
-            {
-                name : 'updatetime',
-                width : 80,
-                 formatter : function(value, grid, rows) {
-                    return new Date(value).format("yyyy-MM-dd");
-                }
-            }
-            ,
-            {
-                name : 'id',
-                width : 150,
-                formatter : function(value, grid, rows) {
-                    return getViewHtml(value)+getEditHtml(value)+getDelHtml(value);
-                }
-            } ],
-            /*
-             * ondblClickRow: function(id){
-             * 
-             * alert("双击选中"+id);
-             *  },
-             */
 
-              onSelectRow: function(id){ //alert("单击选中"+id);
-
-   var celldata = $("#grid").jqGrid('getRowData',id)["uid"];
-    Ajax.getJSON(PATH+"/sysUserRole/listAll.json",{"uid":celldata},function(result){
-         if(result.data){
-                        for(var i=0;i<result.data.length;i++){
-                            var node = treeObj.getNodeByParam("id",result.data[i].roleid);
-                            treeObj.checkNode(node,true,true);
-                        }
+var SysUserRoleList={
+gridParam:
+    {
+        page:{
+            curPage : 1,
+            pageSize : 10
+        },
+        multiselect : true,
+        url : PATH+'/sysUser/list.json',
+        grid_selector : "#grid",
+        pager_selector : "#grid-pager",
+        searchParams : {
+            name : ''
+        },
+         colNames : [
+         "主键","用户名","密码","昵称","类型","状态","邮箱地址","手机号码","身份证号码","性别","出生年月","积分","地址","微信","qq","头像","备注","创建时间","更新时间" , '操作' ],
+        colModel : [
+                {
+                    name : 'id',
+                    width : 80,
+                } ,
+                {
+                    name : 'username',
+                    width : 80,
+                } ,
+                {
+                    name : 'password',
+                    width : 80,
+                } ,
+                {
+                    name : 'nkname',
+                    width : 80,
+                } ,
+                {
+                    name : 'type',
+                    width : 80,
+                } ,
+                {
+                    name : 'status',
+                    width : 80,
+                    formatter : function(value, grid, rows) {
+                        var map ={'3':'未激活','2':'禁用','1':'正常',};
+                        return map[value];
                     }
-    })
-              },
+                } ,
+                {
+                    name : 'email',
+                    width : 80,
+                } ,
+                {
+                    name : 'telno',
+                    width : 80,
+                } ,
+                {
+                    name : 'idcard',
+                    width : 80,
+                } ,
+                {
+                    name : 'sex',
+                    width : 80,
+                } ,
+                {
+                    name : 'birth',
+                    width : 80,
+                } ,
+                {
+                    name : 'integral',
+                    width : 80,
+                } ,
+                {
+                    name : 'address',
+                    width : 80,
+                } ,
+                {
+                    name : 'weichat',
+                    width : 80,
+                } ,
+                {
+                    name : 'qq',
+                    width : 80,
+                } ,
+                {
+                    name : 'face',
+                    width : 80,
+                } ,
+                {
+                    name : 'remark',
+                    width : 80,
+                } ,
+                {
+                    name : 'createtime',
+                    width : 80,
+                     formatter : function(value, grid, rows) {
+                        return new Date(value).format("yyyy-MM-dd");
+                    }
+                } ,
+                {
+                    name : 'updatetime',
+                    width : 80,
+                     formatter : function(value, grid, rows) {
+                        return new Date(value).format("yyyy-MM-dd");
+                    }
+                }
+                ,
+                {
+                    name : 'id',
+                    width : 150,
+                    formatter : function(value, grid, rows) {
+                        return getViewHtml(value)+getEditHtml(value)+getDelHtml(value);
+                    }
+                } ],
+                /*
+                 * ondblClickRow: function(id){
+                 *
+                 * alert("双击选中"+id);
+                 *  },
+                 */
 
-};
-var newWindow=false;
-var mygrid = $("#grid").jqGrid(this.gridParam); 
-function addInfo(){
-    showDialogue('/sysUserRole/edit.htm');
-}
-function relateInfo(){
-    //首先查出父节点勾选信息
-    var selarrrow = $("#grid").jqGrid("getGridParam","selarrrow");
-    console.log(selarrrow);
-    //再查出子节点勾选信息
-     var childids=[];
-  var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-                     var checkedNodes= treeObj.getCheckedNodes(true);
-                     for(var i=0;i<checkedNodes.length;i++){
-                         var obj=checkedNodes[i];
-                         if(!checkedNodes[i].isParent){
+                onSelectRow: function(id){ //alert("单击选中"+id);
+                    var celldata = $("#grid").jqGrid('getRowData',id)["id"];
+                    //清空原来的选项
+                    treeObj.checkAllNodes(false);
+                    Ajax.getJSON(PATH+"/sysUserRole/listAll.json",{"uid":celldata},function(result){
+                        if(result.data){
+                            for(var i=0;i<result.data.length;i++){
+                                var node = treeObj.getNodeByParam("id",result.data[i].roleid);
+                                treeObj.checkNode(node,true,true);
+                            }
+                        }
+                    });
+                },
+    },
+    newWindow:false,
+    mygrid:null,
+    treeObj:null,
+    addEventListener:function(){
 
-                             childids.push(checkedNodes[i].id);
-                         }
-                     }
-  console.log(treeObj);
-    //进行保存
-    Ajax.post(PATH+"/sysUserRole/msave.json",{"fid":selarrrow.join(","),"cid":childids.join(",")},function(result){
-        Dialog.alert("成功");
-    })
-}
-function editInfo(id){
-    showDialogue("/sysUserRole/edit.htm?id="+id);
-}
-function search(){
-    var jso = changeForm2Jso(".app-search");
-    mygrid.jqGrid("search",jso);
-}
-function deleteInfo(id){
-     //弹窗
-     zconfirm("确定删除数据:"+id,"删除",function(){
-        Ajax.post(PATH+"/sysUserRole/del.json?id="+id,function(result){
-            result=ajaxResultHandler(result);
-            if(result.r==AJAX_SUCC){
-                zalert("删除成功，数据："+id,"删除",function(){
-                $("#grid").jqGrid("reloadGrid");
-            });
-            }else {
-                zerror(result.msg,"提醒",function(){});
-            }
-        });
-    });
-}
-function viewInfo(id){
-    showDialogue("/sysUserRole/view.htm?id="+id);
-}
-function search(){
-    var jso= changeForm2Jso(".app-search");
-    console.log(jso);
-    mygrid.search(jso);
-}
-function exportExcel(){
-    var jso= changeForm2Jso(".app-search");
-    Ajax.getJSON(PATH+"/sysUserRole/export.json",jso,function(data){
-        if(data.r==AJAX_SUCC){
-            window.location=PATH+"/"+data.data;
-        }else{
-            zerror(data.msg,"导出失败",null);
-        }
-    })
-}
-function multiDelete(){
-    //获取ids字符串
-    var ids=$("#grid").jqGrid("getGridParam","selarrrow");
-    if(ids.length==0){
-        zalert("请勾选数据","提示");
-        return;
-    }
-    var data= $("#grid").jqGrid("getGridParam","data");
-    for(var i=0;i<ids.length;i++){
-        ids[i]=data[ids[i]]["id"]; 
-    }
-    //弹窗
-    zconfirm("确定删除数据:"+ids.join(","),"删除",function(){
-        Ajax.post(PATH+"/sysUserRole/mdel.json?ids="+ids.join(","),function(result){
-            result=ajaxResultHandler(result);
-            if(result.r==AJAX_SUCC){
-                zalert("删除成功，数据："+ids.join(","),"删除",function(){
-                $("#grid").jqGrid("reloadGrid");
-            });
-            }else {
-                zerror(result.msg,"提醒",function(){});
-            }
-        });
-    });
-}
-var treeObj;
- Ajax.getJSON("sysRole/list.json",null,function(result){
+    },
+    init:function(){
+        mygrid=$("#grid").jqGrid(this.gridParam);
+        Ajax.getJSON("sysRole/list.json",null,function(result){
             if(result.r==AJAX_SUCC){
                 if(result.data){
                      treeObj=$.fn.zTree.init($("#treeDemo"), setting, result.data);
@@ -263,6 +182,108 @@ var treeObj;
             }
 
         });
+    },
+    addInfo:function (){
+        showDialogue('/sysUserRole/edit.htm');
+    },
+     relateInfo:function(){
+        //首先查出父节点勾选信息
+        var selarrrow = $("#grid").jqGrid("getGridParam","selarrrow");
+        console.log(selarrrow);
+        //再查出子节点勾选信息
+         var childids=[];
+      treeObj= $.fn.zTree.getZTreeObj("treeDemo");
+                         var checkedNodes= treeObj.getCheckedNodes(true);
+                         for(var i=0;i<checkedNodes.length;i++){
+                             var obj=checkedNodes[i];
+                             if(!checkedNodes[i].isParent){
+                                 childids.push(checkedNodes[i].id);
+                             }
+                         }
+        console.log(selarrrow.join(","));
+        var parentIdArray=new Array();
+        for(var i=0;i<selarrrow.length;i++){
+            parentIdArray.push( $("#grid").jqGrid("getRowData",selarrrow[i])["id"]);
+        }
+
+        console.log(childids.join(","));
+         console.log(parentIdArray.join(","));
+        //进行保存
+
+        Ajax.post(PATH+"/sysUserRole/msave.json",{"fids":parentIdArray.join(","),"cids":childids.join(",")},function(result){
+            if(result.r==AJAX_SUCC){
+                dialog.alert("关联成功");
+            }else{
+                dialog.alert(result.msg);
+            }
+        })
+    },
+    editInfo:function(id){
+        showDialogue("/sysUserRole/edit.htm?id="+id);
+    },
+    search:function (){
+        var jso = changeForm2Jso(".app-search");
+        mygrid.jqGrid("search",jso);
+    },
+    deleteInfo:function (id){
+         //弹窗
+         zconfirm("确定删除数据:"+id,"删除",function(){
+            Ajax.post(PATH+"/sysUserRole/del.json?id="+id,function(result){
+                result=ajaxResultHandler(result);
+                if(result.r==AJAX_SUCC){
+                    zalert("删除成功，数据："+id,"删除",function(){
+                    $("#grid").jqGrid("reloadGrid");
+                });
+                }else {
+                    zerror(result.msg,"提醒",function(){});
+                }
+            });
+        });
+    },
+    viewInfo:function(id){
+        showDialogue("/sysUserRole/view.htm?id="+id);
+    },
+    search:function (){
+        var jso= changeForm2Jso(".app-search");
+        console.log(jso);
+        mygrid.search(jso);
+    },
+    exportExcel:function(){
+        var jso= changeForm2Jso(".app-search");
+        Ajax.getJSON(PATH+"/sysUserRole/export.json",jso,function(data){
+            if(data.r==AJAX_SUCC){
+                window.location=PATH+"/"+data.data;
+            }else{
+                zerror(data.msg,"导出失败",null);
+            }
+        })
+    },
+    multiDelete:function(){
+        //获取ids字符串
+        var ids=$("#grid").jqGrid("getGridParam","selarrrow");
+        if(ids.length==0){
+            zalert("请勾选数据","提示");
+            return;
+        }
+        var data= $("#grid").jqGrid("getGridParam","data");
+        for(var i=0;i<ids.length;i++){
+            ids[i]=data[ids[i]]["id"];
+        }
+        //弹窗
+        zconfirm("确定删除数据:"+ids.join(","),"删除",function(){
+            Ajax.post(PATH+"/sysUserRole/mdel.json?ids="+ids.join(","),function(result){
+                result=ajaxResultHandler(result);
+                if(result.r==AJAX_SUCC){
+                    zalert("删除成功，数据："+ids.join(","),"删除",function(){
+                    $("#grid").jqGrid("reloadGrid");
+                });
+                }else {
+                    zerror(result.msg,"提醒",function(){});
+                }
+            });
+        });
+    },
+};
 
 </script>
 

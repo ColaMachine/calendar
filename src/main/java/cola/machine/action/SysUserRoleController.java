@@ -237,11 +237,7 @@ public class SysUserRoleController extends BaseController{
         SysUserRole sysUserRole =new  SysUserRole();
         String fids= request.getParameter("fids");
         String cids=request.getParameter("cids");
-
-
-
         return sysUserRoleService.msave(fids,cids);
-
     }
     @RequestMapping(value = "/del.json")
     @ResponseBody

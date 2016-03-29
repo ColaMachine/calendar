@@ -182,7 +182,18 @@ ${validCode}
         </#if>
        
     }
-    
+   <#if table.mapper??>
+   <#if table.mapper.mapper==Abc>
+    @RequestMapping(value = "/msave.json")
+    @ResponseBody
+    public Object msave(HttpServletRequest request) throws Exception {
+        String ${table.mapper.parentid}s= request.getParameter("${table.mapper.parentid}s");
+        String ${table.mapper.childid}s= request.getParameter("${table.mapper.childid}s");
+        return sysUserRoleService.msave( ${table.mapper.parentid}s, ${table.mapper.childid}s);
+    }
+    </#if>
+    </#if>
+
     @RequestMapping(value = "/del.json")
     @ResponseBody
     public Object delete(HttpServletRequest request) {

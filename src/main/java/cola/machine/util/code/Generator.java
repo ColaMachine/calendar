@@ -532,11 +532,11 @@ return ymd;
         return sb.toString();
     }
     public void genService() throws IOException, TemplateException {
+        ServiceFactory factory= new ServiceFactory(allTable, root);
+        factory.getService(table.getName());
         logger.info("genService");
         if(table.getMapper()!=null){
-            
             ZTable childTable = allTable.get(table.getMapper().getMapper());
-            ;
             String s= GenCodeHelper.changeMySqlType2JavaType(childTable.getPk().getType())+".valueOf(stNow)";
             root.put("serviceSaveWithChilds", s);
             }

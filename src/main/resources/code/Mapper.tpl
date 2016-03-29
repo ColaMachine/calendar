@@ -79,5 +79,9 @@ public interface ${Abc}Mapper {
     
     int countByParams(HashMap map);
       
-      
+     <#if table.mapper??>
+     <#if table.mapper.mapper==Abc>
+    int deleteExtra(HashMap map);
+     </#if>
+     </#if>
 }

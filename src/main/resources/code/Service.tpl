@@ -40,10 +40,17 @@ public class ${Abc}Service extends BaseService {
             .getLogger(${Abc}Service.class);
     @Resource
     private ${Abc}Mapper ${abc}Mapper;
-      <#if table.mapper??>
-       @Resource
+        <#if table.mapper??>
+           <#if table.mapper.mapper==Abc>
+    @Resource
+    private ${table.mapper.parent}Mapper ${table.mapper.parent?uncap_first};
+    @Resource
+    private ${table.mapper.child}Mapper ${table.mapper.child?uncap_first};
+           <#else>
+    @Resource
     private <@getAbc>${table.mapper.mapper}</@getAbc>Mapper <@getabc>${table.mapper.mapper}</@getabc>Mapper;
-      </#if>
+           </#if>
+       </#if>
     /**
      * 说明:list by page and params
      * @param page
@@ -197,4 +204,76 @@ public class ${Abc}Service extends BaseService {
         }
         return ResultUtil.getSuccResult();
     }
+      <#if table.mapper??>
+         <#if table.mapper.mapper==Abc>
+     /**
+         * 多项关联保存
+         * @param uids
+         * @param rids
+         * @return
+         */
+        public ResultDTO msave(String ${table.mapper.parentid}s,String ${table.mapper.childid}s) {
+          if(StringUtil.isBlank(String ${table.mapper.parentid}s)){
+                    return ResultUtil.getResult(101,"参数错误");
+            }
+            String[] ${table.mapper.parentid}Ary= ${table.mapper.parentid}s.split(",");
+            String[] ${table.mapper.childid}Ary=${table.mapper.childid}s.split(",");
+             ${parentType}[] ${table.mapper.parentid}AryReal =new  ${parentType}[${table.mapper.parentid}Ary.length];
+            ${childType}[] ${table.mapper.childid}AryReal =new  ${childType}[${table.mapper.childid}Ary.length];
+            for(int i=0;i<${table.mapper.parentid}Ary.length;i++){
+                if(!StringUtil.checkNumeric(${table.mapper.parentid}Ary[i])){
+                    return ResultUtil.getResult(101,"参数错误");
+                }
+                ${table.mapper.parentid}AryReal[i]=Long.valueOf(${table.mapper.parentid}Ary[i]);
+            }
+            for(int i=0;i<${table.mapper.parentid}Ary.length;i++){
+                if(!StringUtil.checkNumeric(${table.mapper.childid}Ary[i])){
+                    return ResultUtil.getResult(101,"参数错误");
+                }
+                ${table.mapper.childid}AryReal[i]=Long.valueOf((${table.mapper.childid}Ary[i]);
+            }
+            //验证父亲id 正确性 是否存在
+            for(int i=0;i< ${table.mapper.parentid}AryReal.length;i++){
+                //
+                ${table.mapper.parent?cap_first} ${table.mapper.parent?uncap_first} = ${table.mapper.parent?uncap_first}Mapper.selectByPrimaryKey(${table.mapper.parentid}ryReal[i]);
+                if(${table.mapper.parent?uncap_first}==null ){
+                    return ResultUtil.getResult(101,"数据不存在");
+                }
+                //查询的数据不存在
+            }
+            for(int i=0;i<ridAryReal.length;i++){
+                 ${table.mapper.child?cap_first} ${table.mapper.child?uncap_first} = ${table.mapper.child?uncap_first}Mapper.selectByPrimaryKey(${table.mapper.childid}ryReal[i]);
+                //查询的数据不存在
+                if(${table.mapper.child?uncap_first}==null ){
+                    return ResultUtil.getResult(101,"数据不存在");
+                }
+            }
+             HashMap params =new HashMap();
+            //验证子id 正确性 是否存在
+            for(int i=0;i<${table.mapper.parentid}AryReal.length;i++){
+                for(int j=0;j<${table.mapper.childid}AryReal.length;j++){
+                   ${table?cap_first} ${table?uncap_first} =new  ${table?cap_first}();
+                    ${parentType} ${table.mapper.parentid} =${table.mapper.parentid}AryReal[i];
+                    ${childType} ${table.mapper.childid} =${table.mapper.childid}AryReal[j];
+                    //查找是否已经有关联数据了
+
+                    map.put("${table.mapper.childid}",${table.mapper.childid});
+                    map.put("${table.mapper.parentid}",${table.mapper.parentid});
+                    int count = sysUserRoleMapper.countByParams(params);
+                    if(count>0)continue;
+                    ${table.name?uncap_first}.set${table.mapper.childid?cap_first}(${table.mapper.childid});
+                    ${table.name?uncap_first}.set${table.mapper.parentid?cap_first}(${table.mapper.parentid});
+                    ${table.name?uncap_first}Mapper.insert(${table.name?uncap_first});
+                }
+            }
+            //删除多余的数据
+            HashMap params =new HashMap();
+            params.put("${table.mapper.childid}s",${table.mapper.childid}AryReals);
+            params.put("${table.mapper.parentid}s",${table.mapper.parentid}AryReals);
+            ${table.name?uncap_first}Mapper.deleteExtra(params);
+            //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
+            return ResultUtil.getSuccResult();
+        }
+          </#if>
+              </#if>
 }

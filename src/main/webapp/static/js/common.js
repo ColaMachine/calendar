@@ -1201,9 +1201,9 @@ var setting = {
            }
        };
 
-var Dialog={
-    alert:function(){
-
+var dialog={
+    alert:function(msg){
+        layer.alert(msg);
     }
 
 }

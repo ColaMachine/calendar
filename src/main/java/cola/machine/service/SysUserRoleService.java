@@ -125,6 +125,9 @@ public class SysUserRoleService extends BaseService {
      * @return
      */
     public ResultDTO msave(String uids,String rids) {
+        if(StringUtil.isBlank(uids)){
+            return ResultUtil.getResult(101,"参数错误");
+        }
         String[] uidAry= uids.split(",");
         String[] ridAry= rids.split(",");
         Long[] uidAryReal =new Long[uidAry.length];
@@ -136,7 +139,7 @@ public class SysUserRoleService extends BaseService {
             uidAryReal[i]=Long.valueOf(uidAry[i]);
         }
         for(int i=0;i<ridAry.length;i++){
-            if(!StringUtil.checkNumeric(uidAry[i])){
+            if(!StringUtil.checkNumeric(ridAry[i])){
                 return ResultUtil.getResult(101,"参数错误");
             }
             ridAryReal[i]=Long.valueOf(ridAry[i]);
@@ -161,12 +164,12 @@ public class SysUserRoleService extends BaseService {
         for(int i=0;i<uidAryReal.length;i++){
             for(int j=0;j<ridAryReal.length;j++){
                 SysUserRole sysUserRole =new SysUserRole();
-                Long rid =ridAryReal[i];
+                Long rid =ridAryReal[j];
                 Long uid =uidAryReal[i];
                 //查找是否已经有关联数据了
                 HashMap map =new HashMap();
                 map.put("uid",uid);
-                map.put("rid",rid);
+                map.put("roleid",rid);
                 int count = sysUserRoleMapper.countByParams(map);
                 if(count>0)continue;
                 sysUserRole.setRoleid(rid);
@@ -175,7 +178,10 @@ public class SysUserRoleService extends BaseService {
             }
         }
         //删除多余的数据
-        sysUserRoleMapper.deleteByPrimaryKey();
+        HashMap params =new HashMap();
+        params.put("uids",uidAryReal);
+        params.put("rids",ridAryReal);
+        sysUserRoleMapper.deleteExtra(params);
         //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
         return ResultUtil.getSuccResult();
     }
