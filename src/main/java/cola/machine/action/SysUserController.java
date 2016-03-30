@@ -59,7 +59,6 @@ public class SysUserController extends BaseController{
 
      @Autowired
     private SysRoleService sysRoleService;
-
     /**
      * 说明: 跳转到角色列表页面
      * 
@@ -275,7 +274,200 @@ public class SysUserController extends BaseController{
         return ResultUtil.getResult(sysUsers, page);
     }
     
-    
+    /**
+         * 说明:ajax请求角色信息 无分页版本
+         *
+         * @param curPage
+         * @param pageSize
+         * @return
+         * @return Object
+         * @author dozen.zhang
+         * @date 2015年11月15日下午12:31:55
+         */
+        @RequestMapping(value = "/listAll.json")
+        @ResponseBody
+        public Object listAll(HttpServletRequest request) {
+                    HashMap<String,Object> params= new HashMap<String,Object>();
+        String id = request.getParameter("id");
+        if(!StringUtil.isBlank(id)){
+            params.put("id",id);
+        }
+        String username = request.getParameter("username");
+        if(!StringUtil.isBlank(username)){
+            params.put("username",username);
+        }
+        String usernameLike = request.getParameter("usernameLike");
+        if(!StringUtil.isBlank(usernameLike)){
+            params.put("usernameLike",usernameLike);
+        }
+        String password = request.getParameter("password");
+        if(!StringUtil.isBlank(password)){
+            params.put("password",password);
+        }
+        String passwordLike = request.getParameter("passwordLike");
+        if(!StringUtil.isBlank(passwordLike)){
+            params.put("passwordLike",passwordLike);
+        }
+        String nkname = request.getParameter("nkname");
+        if(!StringUtil.isBlank(nkname)){
+            params.put("nkname",nkname);
+        }
+        String nknameLike = request.getParameter("nknameLike");
+        if(!StringUtil.isBlank(nknameLike)){
+            params.put("nknameLike",nknameLike);
+        }
+        String type = request.getParameter("type");
+        if(!StringUtil.isBlank(type)){
+            params.put("type",type);
+        }
+        String status = request.getParameter("status");
+        if(!StringUtil.isBlank(status)){
+            params.put("status",status);
+        }
+        String email = request.getParameter("email");
+        if(!StringUtil.isBlank(email)){
+            params.put("email",email);
+        }
+        String emailLike = request.getParameter("emailLike");
+        if(!StringUtil.isBlank(emailLike)){
+            params.put("emailLike",emailLike);
+        }
+        String telno = request.getParameter("telno");
+        if(!StringUtil.isBlank(telno)){
+            params.put("telno",telno);
+        }
+        String telnoLike = request.getParameter("telnoLike");
+        if(!StringUtil.isBlank(telnoLike)){
+            params.put("telnoLike",telnoLike);
+        }
+        String idcard = request.getParameter("idcard");
+        if(!StringUtil.isBlank(idcard)){
+            params.put("idcard",idcard);
+        }
+        String idcardLike = request.getParameter("idcardLike");
+        if(!StringUtil.isBlank(idcardLike)){
+            params.put("idcardLike",idcardLike);
+        }
+        String sex = request.getParameter("sex");
+        if(!StringUtil.isBlank(sex)){
+            params.put("sex",sex);
+        }
+        String birth = request.getParameter("birth");
+        if(!StringUtil.isBlank(birth)){
+            if(StringUtil.checkNumeric(birth)){
+                params.put("birth",birth);
+            }else if(StringUtil.checkDateStr(birth, "yyyy-MM-dd")){
+                params.put("birth",DateUtil.parseToDate(birth, "yyyy-MM-dd"));
+            }
+        }
+        String birthBegin = request.getParameter("birthBegin");
+        if(!StringUtil.isBlank(birthBegin)){
+            if(StringUtil.checkNumeric(birthBegin)){
+                params.put("birthBegin",birthBegin);
+            }else if(StringUtil.checkDateStr(birthBegin, "yyyy-MM-dd")){
+                params.put("birthBegin",DateUtil.parseToDate(birthBegin, "yyyy-MM-dd"));
+            }
+        }
+        String birthEnd = request.getParameter("birthEnd");
+        if(!StringUtil.isBlank(birthEnd)){
+            if(StringUtil.checkNumeric(birthEnd)){
+                params.put("birthEnd",birthEnd);
+            }else if(StringUtil.checkDateStr(birthEnd, "yyyy-MM-dd")){
+                params.put("birthEnd",DateUtil.parseToDate(birthEnd, "yyyy-MM-dd"));
+            }
+        }
+        String integral = request.getParameter("integral");
+        if(!StringUtil.isBlank(integral)){
+            params.put("integral",integral);
+        }
+        String address = request.getParameter("address");
+        if(!StringUtil.isBlank(address)){
+            params.put("address",address);
+        }
+        String addressLike = request.getParameter("addressLike");
+        if(!StringUtil.isBlank(addressLike)){
+            params.put("addressLike",addressLike);
+        }
+        String weichat = request.getParameter("weichat");
+        if(!StringUtil.isBlank(weichat)){
+            params.put("weichat",weichat);
+        }
+        String weichatLike = request.getParameter("weichatLike");
+        if(!StringUtil.isBlank(weichatLike)){
+            params.put("weichatLike",weichatLike);
+        }
+        String qq = request.getParameter("qq");
+        if(!StringUtil.isBlank(qq)){
+            params.put("qq",qq);
+        }
+        String face = request.getParameter("face");
+        if(!StringUtil.isBlank(face)){
+            params.put("face",face);
+        }
+        String faceLike = request.getParameter("faceLike");
+        if(!StringUtil.isBlank(faceLike)){
+            params.put("faceLike",faceLike);
+        }
+        String remark = request.getParameter("remark");
+        if(!StringUtil.isBlank(remark)){
+            params.put("remark",remark);
+        }
+        String remarkLike = request.getParameter("remarkLike");
+        if(!StringUtil.isBlank(remarkLike)){
+            params.put("remarkLike",remarkLike);
+        }
+        String createtime = request.getParameter("createtime");
+        if(!StringUtil.isBlank(createtime)){
+            if(StringUtil.checkNumeric(createtime)){
+                params.put("createtime",createtime);
+            }else if(StringUtil.checkDateStr(createtime, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtime, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createtimeBegin = request.getParameter("createtimeBegin");
+        if(!StringUtil.isBlank(createtimeBegin)){
+            if(StringUtil.checkNumeric(createtimeBegin)){
+                params.put("createtimeBegin",createtimeBegin);
+            }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createtimeEnd = request.getParameter("createtimeEnd");
+        if(!StringUtil.isBlank(createtimeEnd)){
+            if(StringUtil.checkNumeric(createtimeEnd)){
+                params.put("createtimeEnd",createtimeEnd);
+            }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String updatetime = request.getParameter("updatetime");
+        if(!StringUtil.isBlank(updatetime)){
+            if(StringUtil.checkNumeric(updatetime)){
+                params.put("updatetime",updatetime);
+            }else if(StringUtil.checkDateStr(updatetime, "yyyy-MM-dd HH:mm:ss")){
+                params.put("updatetime",new Timestamp( DateUtil.parseToDate(updatetime, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String updatetimeBegin = request.getParameter("updatetimeBegin");
+        if(!StringUtil.isBlank(updatetimeBegin)){
+            if(StringUtil.checkNumeric(updatetimeBegin)){
+                params.put("updatetimeBegin",updatetimeBegin);
+            }else if(StringUtil.checkDateStr(updatetimeBegin, "yyyy-MM-dd HH:mm:ss")){
+                params.put("updatetimeBegin",new Timestamp( DateUtil.parseToDate(updatetimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String updatetimeEnd = request.getParameter("updatetimeEnd");
+        if(!StringUtil.isBlank(updatetimeEnd)){
+            if(StringUtil.checkNumeric(updatetimeEnd)){
+                params.put("updatetimeEnd",updatetimeEnd);
+            }else if(StringUtil.checkDateStr(updatetimeEnd, "yyyy-MM-dd HH:mm:ss")){
+                params.put("updatetimeEnd",new Timestamp( DateUtil.parseToDate(updatetimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+
+            List<SysUser> sysUsers = sysUserService.listByParams(params);
+            return ResultUtil.getResult(sysUsers);
+        }
     
     /**
      * @param id 参数
@@ -549,9 +741,10 @@ public class SysUserController extends BaseController{
 
         String childids = request.getParameter("childids");
         return sysUserService.saveWithChilds(sysUser,childids);
+
        
     }
-    
+
     @RequestMapping(value = "/del.json")
     @ResponseBody
     public Object delete(HttpServletRequest request) {

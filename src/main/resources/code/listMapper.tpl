@@ -1,8 +1,8 @@
-<div id="SysUserRoleList" class="rgt_body ">
+<div id="${table.name}MapperList" class="rgt_body ">
     <div class="body_title">| ${table.remark}</div>
         <div class="body_top" >
             <form class="form-inline app-search">
-${"${table.mapper.parent}searchhtml"}
+${parentsearchhtml}
                 <button type="button" class="btn btn-default searchBtn">查询</button>
             </form>
         <div >
@@ -12,8 +12,13 @@ ${"${table.mapper.parent}searchhtml"}
              <button class="btn saveBtn" >保存</button>
         </div>
     </div>
-    <div id="grid" class="grid"></div>
-    <div id="grid-pager" class="pager"></div>
+     <div class="col-sm-6">
+    <div id="${table.name}MapperGrid" class="grid"></div>
+    <div id="${table.name}MapperGrid-pager" class="pager"></div>
+    </div>
+     <div class="col-sm-6">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
     <div class="modal" id="mymodal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -36,33 +41,52 @@ ${"${table.mapper.parent}searchhtml"}
 var ${abc}List={
     newWindow:false,
     mygrid:null,
+    treeObj:null,
+    root:$("#${table.name}MapperList"),
     init:function(){
-        mygrid = $("#SysUserRoleList").find(".grid").jqGrid(this.gridParam);
+        this.mygrid = $("#${table.name}MapperList").find(".grid").jqGrid(this.gridParam);
+        this.addEventListener();
+        this.initTree();
+    },
+    initTree:function(){
+    var that =this;
+     Ajax.getJSON(PATH+"/${table.mapper.child?uncap_first}/listAll.json",null,function(result){
+                if(result.r==AJAX_SUCC){
+                    if(result.data){
+                         that.treeObj=$.fn.zTree.init($(that.root).find("#treeDemo"), setting, result.data);
+                    }
+                }else{
+                    zerror("获取信息失败"+data.msg,"错误",function(){
+
+                    });
+                }
+
+            });
     },
     addEventListener:function(){
-        var root = $("#SysUserRoleList");
-        $(root).find(".addBtn").click(this.addInfo);
-        $(root).find(".editBtn").click(this.editInfo);
-        $(root).find(".deleteBtn").click(this.deleteInfo);
-         $(root).find(".saveBtn").click(this.saveInfo);
-           $(root).find(".searchBtn").click(this.searchInfo);
-    }
+        var root = $("#${table.name}MapperList");
+        $(root).find(".addBtn").click(this.addInfo.Apply(this));
+        $(root).find(".editBtn").click(this.editInfo.Apply(this));
+        $(root).find(".deleteBtn").click(this.deleteInfo.Apply(this));
+         $(root).find(".saveBtn").click(this.saveInfo.Apply(this));
+           $(root).find(".searchBtn").click(this.searchInfo.Apply(this));
+    },
     gridParam:{
                   page:{
                       curPage : 1,
                       pageSize : 10
                   },
                   multiselect : true,
-                  url : PATH+'/${abc}/list.json',
-                  grid_selector:"#SysUserRoleGrid",
-                  pager_selector:"#SysUserRoleGrid-Pager",
+                  url : PATH+'/${table.mapper.parent?uncap_first}/list.json',
+                  grid_selector:"#${table.name}MapperGrid",
+                  pager_selector:"#${table.name}MapperGrid-Pager",
                   searchParams : {
                       name : ''
                   },
                   colNames : [
-                   <#list allTable[table.mapper.parent].cols as col><#if col_index!=0>,</#if>"${col.remark}"</#list> , '操作' ],
+                   <#list parentTable.cols as col><#if col_index!=0>,</#if>"${col.remark}"</#list> , '操作' ],
                   colModel : [
-                           <#list table.cols as col>
+                           <#list parentTable.cols as col>
                           {
                               name : '${col.name}',
                               width : 80,
@@ -77,7 +101,7 @@ var ${abc}List={
                                   return new Date(value).format("yyyy-MM-dd");
                               }
                               </#if>
-                          } <#if col_index<table.cols?size-1>,</#if>
+                          } <#if col_index<parentTable.cols?size-1>,</#if>
                            </#list>
                           ,
                           {
@@ -86,11 +110,60 @@ var ${abc}List={
                               formatter : function(value, grid, rows) {
                                   return getViewHtml(value)+getEditHtml(value)+getDelHtml(value);
                               }
-                          } ]
+                          }
+                    ],
 
-              },
-    }
+                    onSelectRow: function(id){ //alert("单击选中"+id);
+                    var that =this;
+                  //  var treeObj = $.fn.zTree.getZTreeObj("tree");
+                     var celldata =${abc}List.mygrid.jqGrid('getRowData',id)["${parentTable.pk.name}"];
+                     //清空原来的选项
+                    ${abc}List.treeObj.checkAllNodes(false);
+                      Ajax.getJSON(PATH+"/${table.name?uncap_first}/listAll.json",{"${table.mapper.parentid}":celldata},function(result){
+                           if(result.data){
+                                          for(var i=0;i<result.data.length;i++){
+                                              var node = ${abc}List.treeObj.getNodeByParam("id",result.data[i].${table.mapper.childid});
+                                              ${abc}List.treeObj.checkNode(node,true,true);
+                                          }
+                                      }
+                      })
+                    },
+    },
+    saveInfo:function(){
+        //首先查出父节点勾选信息
+        var selarrrow =this.mygrid.jqGrid("getGridParam","selarrrow");
+        if(selarrrow==null || selarrrow.length==0){
+            selarrrow .push(this.mygrid.jqGrid('getGridParam','selrow'));
+        }
+        console.log(selarrrow);
+        //再查出子节点勾选信息
+         var childids=[];
+      var treeObj= this.treeObj;
+                         var checkedNodes= this.treeObj.getCheckedNodes(true);
+                         for(var i=0;i<checkedNodes.length;i++){
+                             var obj=checkedNodes[i];
+                             if(!checkedNodes[i].isParent){
+                                 childids.push(checkedNodes[i].id);
+                             }
+                         }
+        console.log(selarrrow.join(","));
+        var parentIdArray=new Array();
+        for(var i=0;i<selarrrow.length;i++){
+            parentIdArray.push( this.mygrid.jqGrid("getRowData",selarrrow[i])["id"]);
+        }
 
+        console.log(childids.join(","));
+         console.log(parentIdArray.join(","));
+        //进行保存
+
+        Ajax.post(PATH+"/${abc}/msave.json",{"${table.mapper.parentid}s":parentIdArray.join(","),"${table.mapper.childid}s":childids.join(",")},function(result){
+            if(result.r==AJAX_SUCC){
+                dialog.alert("关联成功");
+            }else{
+                dialog.alert(result.msg);
+            }
+        })
+    },
     addInfo:function (){
         showDialogue('/${abc}/edit.htm');
     },
@@ -159,6 +232,7 @@ var ${abc}List={
             });
         });
     }
-}
+};
+${abc}List.init()
 </script>
 

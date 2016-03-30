@@ -88,14 +88,14 @@ public class ControllerFactory extends DefaultGenCodeFactory {
         line(sb,"if(!StringUtil.isBlank(id)){");
         lineForw(sb,StringUtil.getAbc(table.getName())+" bean = "+StringUtil.getabc(table.getName())+"Service.selectByPrimaryKey("+GenCodeHelper.changeMySqlType2JavaType(table.getPk().getType())+".valueOf(id));");
         line(sb,"result.put(\"bean\", bean);");
-            if(table.getMapper()!=null){
+            if(table.getMapper()!=null&& table.getName().equals(table.getMapper().getParent())){
                 line(sb,"HashMap<String,String> params =new HashMap<String,String>();");
                 line(sb,"params.put(\""+table.getMapper().getChild()+"\",id);");
                 line(sb,"List<"+StringUtil.getAbc(table.getMapper().getMapper())+"> childMaps ="+StringUtil.getabc(table.getMapper().getMapper())+"Service.listByParams(new HashMap<String,String>());");
                 line(sb,"result.put(\"childMaps\", childMaps);");
             }
             lineBack(sb,"}");
-        if(table.getMapper()!=null){
+        if(table.getMapper()!=null&& table.getName().equals(table.getMapper().getParent())){
             line(sb,"List<"+StringUtil.getAbc(table.getMapper().getChild())+"> childs ="+StringUtil.getabc(table.getMapper().getChild())+"Service.listByParams(new HashMap<String,String>());");
             line(sb,"result.put(\"childs\", childs);");
         }
@@ -240,7 +240,14 @@ public class ControllerFactory extends DefaultGenCodeFactory {
        sb.append(tab3+String.format("return ResultUtil.getResult(%d,%s);",302,"validStr")).append(ctrl);
        sb.append(tab2+"}").append(ctrl);
        root.put("jsrules", jssb.toString());
+        root.put(table.getName()+"jsrules", jssb.toString());
+        if(table.getMapper()!=null && table.getMapper().getMapper().equals(table.getName())){
+
+            root.put("parentjsrules",root.get(table.getMapper().getParent()+"jsrules"));
+            root.put("parentjsmsg",root.get(table.getMapper().getParent()+"jsmsg"));
+        }
        root.put("jsmsg", jsmsg.toString());
+        root.put(table.getName()+"jsmsg", jsmsg.toString());
       return sb.toString();
         
     }

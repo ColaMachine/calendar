@@ -14,10 +14,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import cola.machine.bean.SysRole;
-import cola.machine.bean.SysUser;
-import cola.machine.dao.SysRoleMapper;
-import cola.machine.dao.SysUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,6 +26,14 @@ import cola.machine.util.UUIDUtil;
 import cola.machine.util.ValidateUtil;
 import cola.machine.util.StringUtil;
 import core.page.Page;
+import java.util.StringTokenizer;
+import cola.machine.bean.SysUserRole;
+import cola.machine.dao.SysUserRoleMapper;
+
+import cola.machine.bean.SysUser;
+import cola.machine.bean.SysRole;
+import cola.machine.dao.SysUserMapper;
+import cola.machine.dao.SysRoleMapper;
 
 import core.action.ResultDTO;
 
@@ -117,72 +121,73 @@ public class SysUserRoleService extends BaseService {
         }
         return ResultUtil.getSuccResult();
     }
+     /**
+         * 多项关联保存
+         * @param uids
+         * @param rids
+         * @return
+         */
+        public ResultDTO msave(String uids,String roleids) {
+          if(StringUtil.isBlank(uids)){
+                    return ResultUtil.getResult(101,"参数错误");
+            }
+            String[] uidAry= uids.split(",");
+            String[] roleidAry=roleids.split(",");
+             Long[] uidAryReal =new  Long[uidAry.length];
+            Long[] roleidAryReal =new  Long[roleidAry.length];
+            for(int i=0;i<uidAry.length;i++){
+                if(!StringUtil.checkNumeric(uidAry[i])){
+                    return ResultUtil.getResult(101,"参数错误");
+                }
+                uidAryReal[i]=Long.valueOf(uidAry[i]);
+            }
 
-    /**
-     * 多项关联保存
-     * @param uids
-     * @param rids
-     * @return
-     */
-    public ResultDTO msave(String uids,String rids) {
-        if(StringUtil.isBlank(uids)){
-            return ResultUtil.getResult(101,"参数错误");
-        }
-        String[] uidAry= uids.split(",");
-        String[] ridAry= rids.split(",");
-        Long[] uidAryReal =new Long[uidAry.length];
-        Long[] ridAryReal =new Long[ridAry.length];
-        for(int i=0;i<uidAry.length;i++){
-            if(!StringUtil.checkNumeric(uidAry[i])){
-                return ResultUtil.getResult(101,"参数错误");
+            for(int i=0;i<roleidAry.length;i++){
+                if(!StringUtil.checkNumeric(roleidAry[i])){
+                    return ResultUtil.getResult(101,"参数错误");
+                }
+                roleidAryReal[i]=Long.valueOf(roleidAry[i]);
             }
-            uidAryReal[i]=Long.valueOf(uidAry[i]);
-        }
-        for(int i=0;i<ridAry.length;i++){
-            if(!StringUtil.checkNumeric(ridAry[i])){
-                return ResultUtil.getResult(101,"参数错误");
+            //验证父亲id 正确性 是否存在
+            for(int i=0;i< uidAryReal.length;i++){
+                //
+                SysUser sysUser = sysUserMapper.selectByPrimaryKey(uidAryReal[i]);
+                if(sysUser==null ){
+                    return ResultUtil.getResult(101,"数据不存在");
+                }
+                //查询的数据不存在
             }
-            ridAryReal[i]=Long.valueOf(ridAry[i]);
-        }
-        //验证父亲id 正确性 是否存在
-        for(int i=0;i<uidAryReal.length;i++){
-            //
-           SysUser sysUser = sysUserMapper.selectByPrimaryKey(uidAryReal[i]);
-            if(sysUser==null ){
-                return ResultUtil.getResult(101,"数据不存在");
+            for(int i=0;i<roleidAryReal.length;i++){
+                 SysRole sysRole = sysRoleMapper.selectByPrimaryKey(roleidAryReal[i]);
+                //查询的数据不存在
+                if(sysRole==null ){
+                    return ResultUtil.getResult(101,"数据不存在");
+                }
             }
-            //查询的数据不存在
-        }
-        for(int i=0;i<ridAryReal.length;i++){
-            SysRole sysRole = sysRoleMapper.selectByPrimaryKey(ridAryReal[i]);
-            //查询的数据不存在
-            if(sysRole==null ){
-                return ResultUtil.getResult(101,"数据不存在");
+             HashMap params =new HashMap();
+            //验证子id 正确性 是否存在
+            for(int i=0;i<uidAryReal.length;i++){
+                for(int j=0;j<roleidAryReal.length;j++){
+                   SysUserRole sysUserRole =new  SysUserRole();
+                    Long uid =uidAryReal[i];
+                    Long roleid =roleidAryReal[j];
+                    //查找是否已经有关联数据了
+
+                    params.put("roleid",roleid);
+                    params.put("uid",uid);
+                    int count = sysUserRoleMapper.countByParams(params);
+                    if(count>0)continue;
+                    sysUserRole.setRoleid(roleid);
+                    sysUserRole.setUid(uid);
+                    sysUserRoleMapper.insert(sysUserRole);
+                }
             }
+            //删除多余的数据
+            params.clear();
+            params.put("roleids",roleidAryReal);
+            params.put("uids",uidAryReal);
+            sysUserRoleMapper.deleteExtra(params);
+            //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
+            return ResultUtil.getSuccResult();
         }
-        //验证子id 正确性 是否存在
-        for(int i=0;i<uidAryReal.length;i++){
-            for(int j=0;j<ridAryReal.length;j++){
-                SysUserRole sysUserRole =new SysUserRole();
-                Long rid =ridAryReal[j];
-                Long uid =uidAryReal[i];
-                //查找是否已经有关联数据了
-                HashMap map =new HashMap();
-                map.put("uid",uid);
-                map.put("roleid",rid);
-                int count = sysUserRoleMapper.countByParams(map);
-                if(count>0)continue;
-                sysUserRole.setRoleid(rid);
-                sysUserRole.setUid(uid);
-                sysUserRoleMapper.insert(sysUserRole);
-            }
-        }
-        //删除多余的数据
-        HashMap params =new HashMap();
-        params.put("uids",uidAryReal);
-        params.put("rids",ridAryReal);
-        sysUserRoleMapper.deleteExtra(params);
-        //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
-        return ResultUtil.getSuccResult();
-    }
 }

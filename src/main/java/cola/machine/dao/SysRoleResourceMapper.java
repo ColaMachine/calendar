@@ -13,7 +13,7 @@ public interface SysRoleResourceMapper {
     int insert(SysRoleResource record);
 
    
-    int insertSelective(SysRoleResource  record);
+    int insertSelective(SysRoleResource record);
 
     
     SysRoleResource  selectByPrimaryKey(Long id);
@@ -76,6 +76,5 @@ public interface SysRoleResourceMapper {
     int countByBean(SysRoleResource record);*/
     
     int countByParams(HashMap map);
-      
       
 }

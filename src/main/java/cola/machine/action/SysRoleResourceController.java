@@ -101,7 +101,36 @@ public class SysRoleResourceController extends BaseController{
         return ResultUtil.getResult(sysRoleResources, page);
     }
     
-    
+    /**
+         * 说明:ajax请求角色信息 无分页版本
+         *
+         * @param curPage
+         * @param pageSize
+         * @return
+         * @return Object
+         * @author dozen.zhang
+         * @date 2015年11月15日下午12:31:55
+         */
+        @RequestMapping(value = "/listAll.json")
+        @ResponseBody
+        public Object listAll(HttpServletRequest request) {
+                    HashMap<String,Object> params= new HashMap<String,Object>();
+        String id = request.getParameter("id");
+        if(!StringUtil.isBlank(id)){
+            params.put("id",id);
+        }
+        String roleid = request.getParameter("roleid");
+        if(!StringUtil.isBlank(roleid)){
+            params.put("roleid",roleid);
+        }
+        String rid = request.getParameter("rid");
+        if(!StringUtil.isBlank(rid)){
+            params.put("rid",rid);
+        }
+
+            List<SysRoleResource> sysRoleResources = sysRoleResourceService.listByParams(params);
+            return ResultUtil.getResult(sysRoleResources);
+        }
     
     /**
      * @param id 参数
@@ -198,7 +227,7 @@ public class SysRoleResourceController extends BaseController{
         return sysRoleResourceService.save(sysRoleResource);
        
     }
-    
+
     @RequestMapping(value = "/del.json")
     @ResponseBody
     public Object delete(HttpServletRequest request) {

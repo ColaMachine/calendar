@@ -57,12 +57,15 @@ public class ${Abc}Controller extends BaseController{
     private ${Abc}Service ${abc}Service;
     
     <#if table.mapper??>
+     <#if table.mapper.mapper==table.name>
+
+     <#else>
     @Autowired
     private <@getAbc>${table.mapper.mapper}</@getAbc>Service <@getabc>${table.mapper.mapper}</@getabc>Service;
 
      @Autowired
     private <@getAbc>${table.mapper.child}</@getAbc>Service <@getabc>${table.mapper.child}</@getabc>Service;
-
+</#if>
     </#if>
     /**
      * 说明: 跳转到角色列表页面
@@ -174,9 +177,14 @@ ${getSearchParam}
 ${setParam}
         //valid
 ${validCode}
-        <#if table.mapper??>
+          <#if table.mapper??>
+            <#if table.mapper.parent==table.name>
         String childids = request.getParameter("childids");
         return ${abc}Service.saveWithChilds(${abc},childids);
+        <#else>
+          return ${abc}Service.save(${abc});
+          </#if>
+
         <#else>
         return ${abc}Service.save(${abc});
         </#if>

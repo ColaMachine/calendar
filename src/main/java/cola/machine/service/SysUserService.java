@@ -38,7 +38,7 @@ public class SysUserService extends BaseService {
             .getLogger(SysUserService.class);
     @Resource
     private SysUserMapper sysUserMapper;
-       @Resource
+    @Resource
     private SysUserRoleMapper sysUserRoleMapper;
     /**
      * 说明:list by page and params

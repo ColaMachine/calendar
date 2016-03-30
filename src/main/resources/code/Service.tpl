@@ -30,8 +30,17 @@ import core.page.Page;
 import java.util.StringTokenizer;
 import cola.machine.bean.${table.mapper.mapper};
 import cola.machine.dao.${table.mapper.mapper}Mapper;
-</#if>
 
+</#if>
+ <#if table.mapper??>
+           <#if table.mapper.mapper==Abc>
+import cola.machine.bean.${table.mapper.parent};
+import cola.machine.bean.${table.mapper.child};
+import cola.machine.dao.${table.mapper.parent}Mapper;
+import cola.machine.dao.${table.mapper.child}Mapper;
+
+    </#if>
+        </#if>
 import core.action.ResultDTO;
 
 @Service("${abc}Service")
@@ -41,11 +50,11 @@ public class ${Abc}Service extends BaseService {
     @Resource
     private ${Abc}Mapper ${abc}Mapper;
         <#if table.mapper??>
-           <#if table.mapper.mapper==Abc>
+           <#if table.mapper.mapper==table.name>
     @Resource
-    private ${table.mapper.parent}Mapper ${table.mapper.parent?uncap_first};
+    private ${table.mapper.parent}Mapper ${table.mapper.parent?uncap_first}Mapper;
     @Resource
-    private ${table.mapper.child}Mapper ${table.mapper.child?uncap_first};
+    private ${table.mapper.child}Mapper ${table.mapper.child?uncap_first}Mapper;
            <#else>
     @Resource
     private <@getAbc>${table.mapper.mapper}</@getAbc>Mapper <@getabc>${table.mapper.mapper}</@getabc>Mapper;
@@ -97,6 +106,7 @@ public class ${Abc}Service extends BaseService {
         return ResultUtil.getSuccResult();
     }
     <#if table.mapper??>
+     <#if table.mapper.parent== table.name>
      /*
      * 说明:和关联关系一起保存
      * @param ${Abc}
@@ -170,6 +180,7 @@ public class ${Abc}Service extends BaseService {
 
         return ResultUtil.getSuccResult();
     }
+     </#if>
     </#if>
     /**
     * 说明:根据主键删除数据
@@ -213,7 +224,7 @@ public class ${Abc}Service extends BaseService {
          * @return
          */
         public ResultDTO msave(String ${table.mapper.parentid}s,String ${table.mapper.childid}s) {
-          if(StringUtil.isBlank(String ${table.mapper.parentid}s)){
+          if(StringUtil.isBlank(${table.mapper.parentid}s)){
                     return ResultUtil.getResult(101,"参数错误");
             }
             String[] ${table.mapper.parentid}Ary= ${table.mapper.parentid}s.split(",");
@@ -226,23 +237,23 @@ public class ${Abc}Service extends BaseService {
                 }
                 ${table.mapper.parentid}AryReal[i]=Long.valueOf(${table.mapper.parentid}Ary[i]);
             }
-            for(int i=0;i<${table.mapper.parentid}Ary.length;i++){
+            for(int i=0;i<${table.mapper.childid}Ary.length;i++){
                 if(!StringUtil.checkNumeric(${table.mapper.childid}Ary[i])){
                     return ResultUtil.getResult(101,"参数错误");
                 }
-                ${table.mapper.childid}AryReal[i]=Long.valueOf((${table.mapper.childid}Ary[i]);
+                ${table.mapper.childid}AryReal[i]=Long.valueOf(${table.mapper.childid}Ary[i]);
             }
             //验证父亲id 正确性 是否存在
             for(int i=0;i< ${table.mapper.parentid}AryReal.length;i++){
                 //
-                ${table.mapper.parent?cap_first} ${table.mapper.parent?uncap_first} = ${table.mapper.parent?uncap_first}Mapper.selectByPrimaryKey(${table.mapper.parentid}ryReal[i]);
+                ${table.mapper.parent?cap_first} ${table.mapper.parent?uncap_first} = ${table.mapper.parent?uncap_first}Mapper.selectByPrimaryKey(${table.mapper.parentid}AryReal[i]);
                 if(${table.mapper.parent?uncap_first}==null ){
                     return ResultUtil.getResult(101,"数据不存在");
                 }
                 //查询的数据不存在
             }
-            for(int i=0;i<ridAryReal.length;i++){
-                 ${table.mapper.child?cap_first} ${table.mapper.child?uncap_first} = ${table.mapper.child?uncap_first}Mapper.selectByPrimaryKey(${table.mapper.childid}ryReal[i]);
+            for(int i=0;i<${table.mapper.childid}AryReal.length;i++){
+                 ${table.mapper.child?cap_first} ${table.mapper.child?uncap_first} = ${table.mapper.child?uncap_first}Mapper.selectByPrimaryKey(${table.mapper.childid}AryReal[i]);
                 //查询的数据不存在
                 if(${table.mapper.child?uncap_first}==null ){
                     return ResultUtil.getResult(101,"数据不存在");
@@ -252,13 +263,13 @@ public class ${Abc}Service extends BaseService {
             //验证子id 正确性 是否存在
             for(int i=0;i<${table.mapper.parentid}AryReal.length;i++){
                 for(int j=0;j<${table.mapper.childid}AryReal.length;j++){
-                   ${table?cap_first} ${table?uncap_first} =new  ${table?cap_first}();
+                   ${table.name?cap_first} ${table.name?uncap_first} =new  ${table.name?cap_first}();
                     ${parentType} ${table.mapper.parentid} =${table.mapper.parentid}AryReal[i];
                     ${childType} ${table.mapper.childid} =${table.mapper.childid}AryReal[j];
                     //查找是否已经有关联数据了
 
-                    map.put("${table.mapper.childid}",${table.mapper.childid});
-                    map.put("${table.mapper.parentid}",${table.mapper.parentid});
+                    params.put("${table.mapper.childid}",${table.mapper.childid});
+                    params.put("${table.mapper.parentid}",${table.mapper.parentid});
                     int count = sysUserRoleMapper.countByParams(params);
                     if(count>0)continue;
                     ${table.name?uncap_first}.set${table.mapper.childid?cap_first}(${table.mapper.childid});
@@ -267,9 +278,9 @@ public class ${Abc}Service extends BaseService {
                 }
             }
             //删除多余的数据
-            HashMap params =new HashMap();
-            params.put("${table.mapper.childid}s",${table.mapper.childid}AryReals);
-            params.put("${table.mapper.parentid}s",${table.mapper.parentid}AryReals);
+            params.clear();
+            params.put("${table.mapper.childid}s",${table.mapper.childid}AryReal);
+            params.put("${table.mapper.parentid}s",${table.mapper.parentid}AryReal);
             ${table.name?uncap_first}Mapper.deleteExtra(params);
             //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
             return ResultUtil.getSuccResult();

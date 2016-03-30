@@ -13,7 +13,7 @@ public interface SysUserResourceMapper {
     int insert(SysUserResource record);
 
    
-    int insertSelective(SysUserResource  record);
+    int insertSelective(SysUserResource record);
 
     
     SysUserResource  selectByPrimaryKey(Long id);
@@ -76,6 +76,5 @@ public interface SysUserResourceMapper {
     int countByBean(SysUserResource record);*/
     
     int countByParams(HashMap map);
-      
       
 }

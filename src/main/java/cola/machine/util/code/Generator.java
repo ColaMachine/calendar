@@ -519,14 +519,14 @@ return ymd;
         sb.append("if(!StringUtil.isBlank(id)){").append(ctrl);
             sb.append(tab+""+StringUtil.getAbc(table.getName())+" bean = "+StringUtil.getabc(table.getName())+"Service.selectByPrimaryKey("+GenCodeHelper.changeMySqlType2JavaType(table.getPk().getType())+".valueOf(id));").append(ctrl);
             sb.append(tab+"result.put(\"bean\", bean);").append(ctrl);
-            if(table.getMapper()!=null){
+            if(table.getMapper()!=null && table.getName().equals(table.getMapper().getParent())){
             sb.append(tab+"HashMap<String,String> params =new HashMap<String,String>();").append(ctrl);
             sb.append(tab+"params.put(\""+table.getMapper().getChild()+"\",id);").append(ctrl);
         sb.append(tab+"List<"+StringUtil.getAbc(table.getMapper().getMapper())+"> childMaps ="+StringUtil.getabc(table.getMapper().getMapper())+"Service.listByParams(new HashMap<String,String>());").append(ctrl);
         sb.append(tab+"result.put(\"childMaps\", childMaps);").append(ctrl);
             }
         sb.append("}").append(ctrl);
-        if(table.getMapper()!=null){
+        if(table.getMapper()!=null&& table.getName().equals(table.getMapper().getParent())){
             sb.append("List<"+StringUtil.getAbc(table.getMapper().getChild())+"> childs ="+StringUtil.getabc(table.getMapper().getChild())+"Service.listByParams(new HashMap<String,String>());").append(ctrl);
             sb.append("result.put(\"childs\", childs);").append(ctrl);
         }
@@ -534,10 +534,10 @@ return ymd;
         return sb.toString();
     }
     public void genService() throws IOException, TemplateException {
-        ServiceFactory factory= new ServiceFactory(allTable, root);
+        cola.machine.util.code.ServiceFactory factory= new  cola.machine.util.code.ServiceFactory(allTable, root);
         factory.getService(table.getName());
         logger.info("genService");
-        if(table.getMapper()!=null){
+        if(table.getMapper()!=null&& table.getName().equals(table.getMapper().getParent())){
             ZTable childTable = allTable.get(table.getMapper().getMapper());
             String s= GenCodeHelper.changeMySqlType2JavaType(childTable.getPk().getType())+".valueOf(stNow)";
             root.put("serviceSaveWithChilds", s);
@@ -737,10 +737,12 @@ return ymd;
         }
         
         root.put("searchhtml", sb.toString());
-  
+        root.put(table.getName()+"searchhtml", sb.toString());
         logger.info("genListHtml");
         writeFile("src/main/webapp/static/html",table.getName() + "List.html", "list");
         if(table.getMapper()!=null && table.getName().equals(table.getMapper().getMapper())){
+            root.put("parentsearchhtml",root.get(table.getMapper().getParent()+"searchhtml"));
+            root.put("parentTable",allTable.get(table.getMapper().getParent()));
             writeFile("src/main/webapp/static/html",table.getName() + "ListMapper.html", "listMapper");
         }
     }

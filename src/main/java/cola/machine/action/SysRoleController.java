@@ -59,7 +59,6 @@ public class SysRoleController extends BaseController{
 
      @Autowired
     private SysResourceService sysResourceService;
-
     /**
      * 说明: 跳转到角色列表页面
      * 
@@ -88,7 +87,9 @@ public class SysRoleController extends BaseController{
     @ResponseBody
     public Object list(HttpServletRequest request) {
         Page page = RequestUtil.getPage(request);
-
+        if(page ==null){
+             return this.getWrongResultFromCfg("err.param.page");
+        }
         
         HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
@@ -151,16 +152,90 @@ public class SysRoleController extends BaseController{
                 params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
-        if(page ==null){
-            List<SysRole> sysRoles = sysRoleService.listByParams(params);
-            return ResultUtil.getResult(sysRoles, page);
-        }
+
         params.put("page",page);
         List<SysRole> sysRoles = sysRoleService.listByParams4Page(params);
         return ResultUtil.getResult(sysRoles, page);
     }
     
-    
+    /**
+         * 说明:ajax请求角色信息 无分页版本
+         *
+         * @param curPage
+         * @param pageSize
+         * @return
+         * @return Object
+         * @author dozen.zhang
+         * @date 2015年11月15日下午12:31:55
+         */
+        @RequestMapping(value = "/listAll.json")
+        @ResponseBody
+        public Object listAll(HttpServletRequest request) {
+                    HashMap<String,Object> params= new HashMap<String,Object>();
+        String id = request.getParameter("id");
+        if(!StringUtil.isBlank(id)){
+            params.put("id",id);
+        }
+        String name = request.getParameter("name");
+        if(!StringUtil.isBlank(name)){
+            params.put("name",name);
+        }
+        String nameLike = request.getParameter("nameLike");
+        if(!StringUtil.isBlank(nameLike)){
+            params.put("nameLike",nameLike);
+        }
+        String code = request.getParameter("code");
+        if(!StringUtil.isBlank(code)){
+            params.put("code",code);
+        }
+        String codeLike = request.getParameter("codeLike");
+        if(!StringUtil.isBlank(codeLike)){
+            params.put("codeLike",codeLike);
+        }
+        String order = request.getParameter("order");
+        if(!StringUtil.isBlank(order)){
+            params.put("order",order);
+        }
+        String status = request.getParameter("status");
+        if(!StringUtil.isBlank(status)){
+            params.put("status",status);
+        }
+        String remark = request.getParameter("remark");
+        if(!StringUtil.isBlank(remark)){
+            params.put("remark",remark);
+        }
+        String remarkLike = request.getParameter("remarkLike");
+        if(!StringUtil.isBlank(remarkLike)){
+            params.put("remarkLike",remarkLike);
+        }
+        String createtime = request.getParameter("createtime");
+        if(!StringUtil.isBlank(createtime)){
+            if(StringUtil.checkNumeric(createtime)){
+                params.put("createtime",createtime);
+            }else if(StringUtil.checkDateStr(createtime, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtime",new Timestamp( DateUtil.parseToDate(createtime, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createtimeBegin = request.getParameter("createtimeBegin");
+        if(!StringUtil.isBlank(createtimeBegin)){
+            if(StringUtil.checkNumeric(createtimeBegin)){
+                params.put("createtimeBegin",createtimeBegin);
+            }else if(StringUtil.checkDateStr(createtimeBegin, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtimeBegin",new Timestamp( DateUtil.parseToDate(createtimeBegin, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+        String createtimeEnd = request.getParameter("createtimeEnd");
+        if(!StringUtil.isBlank(createtimeEnd)){
+            if(StringUtil.checkNumeric(createtimeEnd)){
+                params.put("createtimeEnd",createtimeEnd);
+            }else if(StringUtil.checkDateStr(createtimeEnd, "yyyy-MM-dd HH:mm:ss")){
+                params.put("createtimeEnd",new Timestamp( DateUtil.parseToDate(createtimeEnd, "yyyy-MM-dd HH:mm:ss").getTime()));
+            }
+        }
+
+            List<SysRole> sysRoles = sysRoleService.listByParams(params);
+            return ResultUtil.getResult(sysRoles);
+        }
     
     /**
      * @param id 参数
@@ -306,9 +381,10 @@ public class SysRoleController extends BaseController{
 
         String childids = request.getParameter("childids");
         return sysRoleService.saveWithChilds(sysRole,childids);
+
        
     }
-    
+
     @RequestMapping(value = "/del.json")
     @ResponseBody
     public Object delete(HttpServletRequest request) {

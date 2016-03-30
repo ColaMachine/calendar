@@ -101,7 +101,36 @@ public class SysUserResourceController extends BaseController{
         return ResultUtil.getResult(sysUserResources, page);
     }
     
-    
+    /**
+         * 说明:ajax请求角色信息 无分页版本
+         *
+         * @param curPage
+         * @param pageSize
+         * @return
+         * @return Object
+         * @author dozen.zhang
+         * @date 2015年11月15日下午12:31:55
+         */
+        @RequestMapping(value = "/listAll.json")
+        @ResponseBody
+        public Object listAll(HttpServletRequest request) {
+                    HashMap<String,Object> params= new HashMap<String,Object>();
+        String id = request.getParameter("id");
+        if(!StringUtil.isBlank(id)){
+            params.put("id",id);
+        }
+        String uid = request.getParameter("uid");
+        if(!StringUtil.isBlank(uid)){
+            params.put("uid",uid);
+        }
+        String rid = request.getParameter("rid");
+        if(!StringUtil.isBlank(rid)){
+            params.put("rid",rid);
+        }
+
+            List<SysUserResource> sysUserResources = sysUserResourceService.listByParams(params);
+            return ResultUtil.getResult(sysUserResources);
+        }
     
     /**
      * @param id 参数
@@ -198,7 +227,7 @@ public class SysUserResourceController extends BaseController{
         return sysUserResourceService.save(sysUserResource);
        
     }
-    
+
     @RequestMapping(value = "/del.json")
     @ResponseBody
     public Object delete(HttpServletRequest request) {

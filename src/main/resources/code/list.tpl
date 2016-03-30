@@ -3,7 +3,7 @@
         <div class="body_top" >
             <form class="form-inline app-search">
 
-${"searchhtml"}
+${searchhtml}
  <!-- <#list table.cols as col>
         <div class="form-group">
             <label for="exampleInputName2">${col.remark}</label>

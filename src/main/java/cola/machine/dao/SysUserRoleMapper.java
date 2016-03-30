@@ -13,7 +13,7 @@ public interface SysUserRoleMapper {
     int insert(SysUserRole record);
 
    
-    int insertSelective(SysUserRole  record);
+    int insertSelective(SysUserRole record);
 
     
     SysUserRole  selectByPrimaryKey(Long id);
@@ -76,10 +76,6 @@ public interface SysUserRoleMapper {
     int countByBean(SysUserRole record);*/
     
     int countByParams(HashMap map);
-
-    /**
-     * 删除多余数据
-     * @param map
-     */
-    void deleteExtra(HashMap map);
+      
+    int deleteExtra(HashMap map);
 }

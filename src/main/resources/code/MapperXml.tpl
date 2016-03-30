@@ -24,11 +24,11 @@
   <#if table.mapper.mapper==Abc>
    <delete id="deleteExtra" parameterType="map">
           delete from sys_user_role
-          where uid in
+          where ${table.mapper.parentid} in
           <foreach collection="${table.mapper.parentid}s" item="item" index="index"
                    open="(" separator="," close=")"> ${r'#{'}item}</foreach>
-          and rid not in
-          <foreach collection="${table.mapper.child}s" item="item" index="index"
+          and ${table.mapper.childid} not in
+          <foreach collection="${table.mapper.childid}s" item="item" index="index"
                    open="(" separator="," close=")"> ${r'#{'}item}</foreach>
       </delete>
       </#if>

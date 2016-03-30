@@ -7,6 +7,7 @@
  */
 package cola.machine.bean;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class SysUserRole {
     /**主键**/

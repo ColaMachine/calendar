@@ -41,6 +41,10 @@ import cola.machine.util.ValidateUtil;
 import core.util.RequestUtil;
 import core.action.ResultDTO;
 import cola.machine.util.DateUtil;
+import cola.machine.bean.SysUserRole;
+import cola.machine.service.SysUserRoleService;
+import cola.machine.bean.SysRole;
+import cola.machine.service.SysRoleService;
 @Controller
 @RequestMapping("/sysUserRole")
 public class SysUserRoleController extends BaseController{
@@ -50,6 +54,7 @@ public class SysUserRoleController extends BaseController{
     @Autowired
     private SysUserRoleService sysUserRoleService;
     
+
     /**
      * 说明: 跳转到角色列表页面
      * 
@@ -60,7 +65,7 @@ public class SysUserRoleController extends BaseController{
      */
     @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
     public String list() {
-        return "/static/html/SysUserRoleList.html";
+        return "/static/html/SysUserRoleListMapper.html";
     }
 
  
@@ -100,23 +105,21 @@ public class SysUserRoleController extends BaseController{
         List<SysUserRole> sysUserRoles = sysUserRoleService.listByParams4Page(params);
         return ResultUtil.getResult(sysUserRoles, page);
     }
-
+    
     /**
-     * 说明:ajax请求角色信息
-     *
-     * @param curPage
-     * @param pageSize
-     * @return
-     * @return Object
-     * @author dozen.zhang
-     * @date 2015年11月15日下午12:31:55
-     */
-    @RequestMapping(value = "/listAll.json")
-    @ResponseBody
-    public Object listAll(HttpServletRequest request) {
-
-
-        HashMap<String,Object> params= new HashMap<String,Object>();
+         * 说明:ajax请求角色信息 无分页版本
+         *
+         * @param curPage
+         * @param pageSize
+         * @return
+         * @return Object
+         * @author dozen.zhang
+         * @date 2015年11月15日下午12:31:55
+         */
+        @RequestMapping(value = "/listAll.json")
+        @ResponseBody
+        public Object listAll(HttpServletRequest request) {
+                    HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
             params.put("id",id);
@@ -130,12 +133,10 @@ public class SysUserRoleController extends BaseController{
             params.put("roleid",roleid);
         }
 
-
-        List<SysUserRole> sysUserRoles = sysUserRoleService.listByParams(params);
-        return ResultUtil.getResult(sysUserRoles);
-    }
-
-
+            List<SysUserRole> sysUserRoles = sysUserRoleService.listByParams(params);
+            return ResultUtil.getResult(sysUserRoles);
+        }
+    
     /**
      * @param id 参数
      * @param request 发请求
@@ -228,17 +229,18 @@ public class SysUserRoleController extends BaseController{
             return ResultUtil.getResult(302,validStr);
         }
 
-        return sysUserRoleService.save(sysUserRole);
+          return sysUserRoleService.save(sysUserRole);
+
        
     }
     @RequestMapping(value = "/msave.json")
     @ResponseBody
     public Object msave(HttpServletRequest request) throws Exception {
-        SysUserRole sysUserRole =new  SysUserRole();
-        String fids= request.getParameter("fids");
-        String cids=request.getParameter("cids");
-        return sysUserRoleService.msave(fids,cids);
+        String uids= request.getParameter("uids");
+        String roleids= request.getParameter("roleids");
+        return sysUserRoleService.msave( uids, roleids);
     }
+
     @RequestMapping(value = "/del.json")
     @ResponseBody
     public Object delete(HttpServletRequest request) {

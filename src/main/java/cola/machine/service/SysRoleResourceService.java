@@ -26,7 +26,6 @@ import cola.machine.util.UUIDUtil;
 import cola.machine.util.ValidateUtil;
 import cola.machine.util.StringUtil;
 import core.page.Page;
-
 import core.action.ResultDTO;
 
 @Service("sysRoleResourceService")

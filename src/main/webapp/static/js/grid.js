@@ -3202,9 +3202,9 @@
 																		event.data.grid.selrow = event.data.id;
 																		
 																		if(that.onSelectRow){
-																			that.onSelectRow.call(this,index);
+																			that.onSelectRow.call($t,index);
 																		}
-																	
+
 																		
 					                                                    if(that.ondblClickRow){
 					                                                        $(this).dblclick({id : index,grid : that},

@@ -13,7 +13,7 @@ public interface SysUserMapper {
     int insert(SysUser record);
 
    
-    int insertSelective(SysUser  record);
+    int insertSelective(SysUser record);
 
     
     SysUser  selectByPrimaryKey(Long id);
@@ -76,6 +76,5 @@ public interface SysUserMapper {
     int countByBean(SysUser record);*/
     
     int countByParams(HashMap map);
-      
       
 }
