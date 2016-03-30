@@ -173,6 +173,7 @@ public class Generator {
         String mapperTpl = this.readFile2Str("src/main/resources/code/Mapper.tpl");
         String mapperXmlTpl = this.readFile2Str("src/main/resources/code/MapperXml.tpl");
         String list = this.readFile2Str("src/main/resources/code/list.tpl");
+        String listMapper = this.readFile2Str("src/main/resources/code/listMapper.tpl");
         String edit = this.readFile2Str("src/main/resources/code/edit.tpl");
         String sqlTpl = this.readFile2Str("src/main/resources/code/sql.tpl");
         String viewTpl = this.readFile2Str("src/main/resources/code/view.tpl");
@@ -191,6 +192,7 @@ public class Generator {
         temp.putTemplate("list", list);
         temp.putTemplate("edit", edit);
         temp.putTemplate("view", viewTpl);
+        temp.putTemplate("listMapper", listMapper);
         // temp.putTemplate("listHtml", listHtmlTpl);
         // temp.putTemplate("editHtml", editHtmlTpl);
         // temp.putTemplate("viewHtml", viewHtmlTpl);
@@ -738,6 +740,9 @@ return ymd;
   
         logger.info("genListHtml");
         writeFile("src/main/webapp/static/html",table.getName() + "List.html", "list");
+        if(table.getMapper()!=null && table.getName().equals(table.getMapper().getMapper())){
+            writeFile("src/main/webapp/static/html",table.getName() + "ListMapper.html", "listMapper");
+        }
     }
     public String getSearchFormItem(ZColum zcol){
         String type =zcol.getType().toLowerCase();

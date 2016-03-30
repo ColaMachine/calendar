@@ -2,7 +2,7 @@
     <div class="body_title">| ${table.remark}</div>
         <div class="body_top" >
             <form class="form-inline app-search">
-${searchhtml}
+${"${table.mapper.parent}searchhtml"}
                 <button type="button" class="btn btn-default searchBtn">查询</button>
             </form>
         <div >
