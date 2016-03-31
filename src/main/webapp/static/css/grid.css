@@ -13,11 +13,12 @@
 
 /** 确锟斤拷锟斤拷锟斤拷锟斤拷**/
 .table td{
-	white-space:normal; 
-	word-break:break-all;word-wrap:break-word;
+
+	overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
 }
 
 .table {
+table-layout: fixed;
 	cell-padding: 0px;
 	border-spacing: 0px;
 	border-collapse: collapse; 

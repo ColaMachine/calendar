@@ -23,13 +23,15 @@
   <#if table.mapper??>
   <#if table.mapper.mapper==Abc>
    <delete id="deleteExtra" parameterType="map">
-          delete from sys_user_role
+          delete from ${table.tableName}
           where ${table.mapper.parentid} in
           <foreach collection="${table.mapper.parentid}s" item="item" index="index"
                    open="(" separator="," close=")"> ${r'#{'}item}</foreach>
+         <if test="${table.mapper.childid}s != null and id != '' " >
           and ${table.mapper.childid} not in
           <foreach collection="${table.mapper.childid}s" item="item" index="index"
                    open="(" separator="," close=")"> ${r'#{'}item}</foreach>
+       </if>
       </delete>
       </#if>
       </#if>

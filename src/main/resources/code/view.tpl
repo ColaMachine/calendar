@@ -1,7 +1,4 @@
-<#assign abc="${table.name[0]?lower_case}${table.name[1..]}">
-<#assign Abc="${table.name[0]?upper_case}${table.name[1..]}">
-
- <div class="modal-content">
+ <div id="${Abc}View" class="modal-content">
     <form id="editForm" class="form-horizontal" method="post" action="/${abc}/save.json" enctype="multipart/form-data">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -18,41 +15,53 @@
 
 <!--<div class="body_title">| ${table.remark}编辑</div>
 <form id="editForm" class="form-horizontal" method="post" action="/${abc}/save.json" enctype="multipart/form-data">
- $ { viewhtml } 
+ $viewhtml
    <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-     
-       <button type="button" onclick="cancel()"  class="btn btn-default">返回</button>
+       <button type="button"   class="btn btn-default cancelBtn">返回</button>
     </div>
   </div>
 </form>
 </div>
 </div>-->
 <script type="text/javascript">
+var ${abc}View={
+    modal:false,
+    root:$("#${table.name}List"),
+    init:function(){
+    var that = this;
+        this.addEventListener();
+        //获取传入参数
+            if(!StringUtil.isBlank(getParam("id"))){
+                Ajax.getJSON("${abc}/view.json?id="+getParam("id"),function(data){
+                    if(data.r==AJAX_SUCC){
+                        fillJso2FormSpan("#${abc}View",data.data.bean);
+                    }else{
+                        dialog.error("获取信息失败"+data.msg,function(index){
+                            that.cancel();
+                            diablog.close(index);
+                        });
+                    }
 
-$(document).ready(function() {
-    //获取传入参数
-    if(!StringUtil.isBlank(getParam("id"))){
-        Ajax.getJSON("${abc}/view.json?id="+getParam("id"),function(data){
-            if(data.r==AJAX_SUCC){
-                fillJso2FormSpan("#editForm",data.data.bean);
-            }else{
-                zerror("获取信息失败"+data.msg,"错误",function(){
-                    cancel();
                 });
+
             }
-            
-        });
-        
+    },
+    cancel:function(){
+        if(${abc}View.modal){
+            dialog.closeWindow("${abc}View");
+        }else{
+            goPage("${abc}/list.htm");
+        }
+    },
+    addEventListener:function(){
+        $(this.root).find(".cancelBtn").click(${abc}View.cancel);
     }
-    
+}
+$(document).ready(function() {
+
+    ${abc}View.init();
 });
    
-    function cancel(){
-        if(newWindow){
-             $("#mymodal").modal("toggle");
-        }else{
-           goPage("${abc}/list.htm");
-        }
-    }
+
 </script>

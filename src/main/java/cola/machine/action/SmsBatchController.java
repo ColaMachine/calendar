@@ -411,7 +411,7 @@ public class SmsBatchController extends BaseController{
     @RequestMapping(value = "/export.json")
     @ResponseBody
     public Object exportExcel(HttpServletRequest request){
-               HashMap params= new HashMap();
+               HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
                 params.put("id",id);

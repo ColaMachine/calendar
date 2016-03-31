@@ -20,6 +20,17 @@
     delete from sys_role_resource
     where id = #{id,jdbcType=BIGINT}
   </delete>
+   <delete id="deleteExtra" parameterType="map">
+          delete from sys_role_resource
+          where roleid in
+          <foreach collection="roleids" item="item" index="index"
+                   open="(" separator="," close=")"> #{item}</foreach>
+         <if test="rids != null and id != '' " >
+          and rid not in
+          <foreach collection="rids" item="item" index="index"
+                   open="(" separator="," close=")"> #{item}</foreach>
+       </if>
+      </delete>
  <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="cola.machine.bean.SysRoleResource" >
 
     insert into sys_role_resource (  <include refid="Base_Column_List" />)

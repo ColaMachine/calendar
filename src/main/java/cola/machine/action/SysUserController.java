@@ -72,7 +72,11 @@ public class SysUserController extends BaseController{
         return "/static/html/SysUserList.html";
     }
 
- 
+    @RequestMapping(value = "/listMapper.htm", method = RequestMethod.GET)
+    public String listMapper() {
+        return "/static/html/SysUserListMapper.html";
+    }
+
     /**
      * 说明:ajax请求角色信息
      * 
@@ -506,7 +510,7 @@ public class SysUserController extends BaseController{
     
       /*  String id = request.getParameter("id");
         SysUser bean = sysUserService.selectByPrimaryKey(Long.valueOf(id));
-        HashMap result =new HashMap();
+        HashMap<String,Object> result =new HashMap<String,Object>();
         result.put("bean", bean);
         return this.getResult(bean);*/
     }
@@ -1020,7 +1024,7 @@ public class SysUserController extends BaseController{
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             SysUser sm = list.get(i);
-            HashMap map = new HashMap();
+            HashMap<String,Object> map = new HashMap<String,Object>();
             map.put("id",  list.get(i).getId());
             map.put("username",  list.get(i).getUsername());
             map.put("password",  list.get(i).getPassword());

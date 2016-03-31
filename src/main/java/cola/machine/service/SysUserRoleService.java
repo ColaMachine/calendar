@@ -128,12 +128,13 @@ public class SysUserRoleService extends BaseService {
          * @return
          */
         public ResultDTO msave(String uids,String roleids) {
-          if(StringUtil.isBlank(uids)){
-                    return ResultUtil.getResult(101,"参数错误");
+            if(StringUtil.isBlank(uids)){
+                return ResultUtil.getResult(101,"参数错误");
             }
+
             String[] uidAry= uids.split(",");
             String[] roleidAry=roleids.split(",");
-             Long[] uidAryReal =new  Long[uidAry.length];
+            Long[] uidAryReal =new  Long[uidAry.length];
             Long[] roleidAryReal =new  Long[roleidAry.length];
             for(int i=0;i<uidAry.length;i++){
                 if(!StringUtil.checkNumeric(uidAry[i])){
@@ -141,7 +142,11 @@ public class SysUserRoleService extends BaseService {
                 }
                 uidAryReal[i]=Long.valueOf(uidAry[i]);
             }
-
+            if(StringUtil.isBlank(roleids)){
+                roleidAryReal=null;
+                 roleidAry=null;
+            }
+            if(roleidAry!=null)
             for(int i=0;i<roleidAry.length;i++){
                 if(!StringUtil.checkNumeric(roleidAry[i])){
                     return ResultUtil.getResult(101,"参数错误");
@@ -149,6 +154,7 @@ public class SysUserRoleService extends BaseService {
                 roleidAryReal[i]=Long.valueOf(roleidAry[i]);
             }
             //验证父亲id 正确性 是否存在
+             if(uidAryReal!=null)
             for(int i=0;i< uidAryReal.length;i++){
                 //
                 SysUser sysUser = sysUserMapper.selectByPrimaryKey(uidAryReal[i]);
@@ -157,6 +163,7 @@ public class SysUserRoleService extends BaseService {
                 }
                 //查询的数据不存在
             }
+             if(roleidAryReal!=null)
             for(int i=0;i<roleidAryReal.length;i++){
                  SysRole sysRole = sysRoleMapper.selectByPrimaryKey(roleidAryReal[i]);
                 //查询的数据不存在
@@ -166,6 +173,7 @@ public class SysUserRoleService extends BaseService {
             }
              HashMap params =new HashMap();
             //验证子id 正确性 是否存在
+             if(roleidAryReal!=null)
             for(int i=0;i<uidAryReal.length;i++){
                 for(int j=0;j<roleidAryReal.length;j++){
                    SysUserRole sysUserRole =new  SysUserRole();

@@ -1,4 +1,4 @@
-<div class="rgt_body">
+<div id="SysResourceList" class="rgt_body">
     <div class="body_title">| 资源配置</div>
         <div class="body_top" >
             <form class="form-inline app-search">
@@ -113,13 +113,13 @@
                 <button type="button" onclick="search()" class="btn btn-default">查询</button>
             </form>
         <div >
-            <button class="btn" onclick="addInfo()">新增</button>
-            <button class="btn" onclick="multiDelete()">删除</button>
-            <button class="btn" onclick="exportExcel()">导出</button>
+            <button class="btn addBtn" >新增</button>
+            <button class="btn deleteBtn">删除</button>
+            <button class="btn exportBtn" >导出</button>
         </div>
     </div>
-    <div id="grid" class="grid"></div>
-    <div id="grid-pager" class="pager"></div>
+    <div id="SysResourceGrid" class="grid"></div>
+    <div id="SysResourceGrid-pager" class="pager"></div>
     <div class="modal" id="mymodal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -137,158 +137,175 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
 </div>
 <script>
-var gridParam = {
-    page:{
-        curPage : 1,
-        pageSize : 10
-    },
-    multiselect : true,
-    url : PATH+'/sysResource/list.json',
-    grid_selector : "#grid",
-    pager_selector : "#grid-pager",
-    searchParams : {
-        name : ''
-    },
-    colNames : [
-     "主键","父主键","资源名称","资源代码","资源分类","资源对应URL","排序id","状态","备注","创建时间" , '操作' ],
-    colModel : [
-            {
-                name : 'id',
-                width : 80,
-            } ,
-            {
-                name : 'pid',
-                width : 80,
-            } ,
-            {
-                name : 'name',
-                width : 80,
-            } ,
-            {
-                name : 'code',
-                width : 80,
-            } ,
-            {
-                name : 'type',
-                width : 80,
-            } ,
-            {
-                name : 'url',
-                width : 80,
-            } ,
-            {
-                name : 'order',
-                width : 80,
-            } ,
-            {
-                name : 'status',
-                width : 80,
-                formatter : function(value, grid, rows) {
-                    var map ={'1':'启用','2':'禁用',};
-                    return map[value];
-                }
-            } ,
-            {
-                name : 'remark',
-                width : 80,
-            } ,
-            {
-                name : 'createtime',
-                width : 80,
-                 formatter : function(value, grid, rows) {
-                    return new Date(value).format("yyyy-MM-dd");
-                }
-            } 
-            ,
-            {
-                name : 'id',
-                width : 150,
-                formatter : function(value, grid, rows) {
-                    return getViewHtml(value)+getEditHtml(value)+getDelHtml(value);
-                }
-            } ]
-            /*
-             * ondblClickRow: function(id){
-             * 
-             * alert("双击选中"+id);
-             *  },
-             */
-         /*
-             * onSelectRow: function(id){ alert("单击选中"+id); },
-             */
-};
-var newWindow=false;
-var mygrid = $("#grid").jqGrid(this.gridParam); 
-function addInfo(){
-    showDialogue('/sysResource/edit.htm');
-}
 
-function editInfo(id){
-    showDialogue("/sysResource/edit.htm?id="+id);
-}
-function search(){
-    var jso = changeForm2Jso(".app-search");
-    mygrid.jqGrid("search",jso);
-}
-function deleteInfo(id){
-     //弹窗
-     zconfirm("确定删除数据:"+id,"删除",function(){
-        Ajax.post(PATH+"/sysResource/del.json?id="+id,function(result){
-            result=ajaxResultHandler(result);
-            if(result.r==AJAX_SUCC){
-                zalert("删除成功，数据："+id,"删除",function(){
-                $("#grid").jqGrid("reloadGrid");
+var sysResourceList={
+    modal:false,
+    mygrid:null,
+    treeObj:null,
+    root:$("#SysResourceList"),
+    init:function(){
+        this.mygrid =this.root.find(".grid").jqGrid(this.gridParam);
+        this.addEventListener();
+
+    },
+    addEventListener:function(){
+        $(this.root).find(".addBtn").click(this.addInfo.Apply(this));
+        $(this.root).find(".editBtn").click(this.editInfo.Apply(this));
+        $(this.root).find(".deleteBtn").click(this.deleteInfo.Apply(this));
+        $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
+    },
+    gridParam:{
+                  page:{
+                      curPage : 1,
+                      pageSize : 10
+                  },
+                  multiselect : true,
+                  url : PATH+'/sysResource/list.json',
+                  grid_selector:"#SysResourceGrid",
+                  pager_selector:"#SysResourceGrid-Pager",
+                  searchParams : {
+                      name : ''
+                  },
+                  colNames : [
+                   "主键","父主键","资源名称","资源代码","资源分类","资源对应URL","排序id","状态","备注","创建时间" , '操作' ],
+                  colModel : [
+                          {
+                              name : 'id',
+                              width : 80,
+                          } ,
+                          {
+                              name : 'pid',
+                              width : 80,
+                          } ,
+                          {
+                              name : 'name',
+                              width : 80,
+                          } ,
+                          {
+                              name : 'code',
+                              width : 80,
+                          } ,
+                          {
+                              name : 'type',
+                              width : 80,
+                          } ,
+                          {
+                              name : 'url',
+                              width : 80,
+                          } ,
+                          {
+                              name : 'order',
+                              width : 80,
+                          } ,
+                          {
+                              name : 'status',
+                              width : 80,
+                              formatter : function(value, grid, rows) {
+                                  var map ={'1':'启用','2':'禁用',};
+                                  return map[value];
+                              }
+                          } ,
+                          {
+                              name : 'remark',
+                              width : 80,
+                          } ,
+                          {
+                              name : 'createtime',
+                              width : 80,
+                               formatter : function(value, grid, rows) {
+                                  return new Date(value).format("yyyy-MM-dd");
+                              }
+                          } 
+                          ,
+                          {
+                              name : 'id',
+                              width : 150,
+                              formatter : function(value, grid, rows) {
+                                  return getViewHtml(value,"sysResourceList")+getEditHtml(value,"sysResourceList")+getDelHtml(value,"sysResourceList");
+                              }
+                          }
+                    ],
+
+                    onSelectRow: function(id){ //alert("单击选中"+id);
+
+                    },
+    },
+    saveInfo:function(){
+    },
+    addInfo:function (){
+        dialog.window('/sysResource/edit.htm',this.modal);
+    },
+    editInfo:function (id){
+        dialog.window("/sysResource/edit.htm?id="+id,this.modal);
+    },
+    searchInfo:function (){
+        var jso = changeForm2Jso(".app-search");
+        this.mygrid.jqGrid("search",jso);
+    },
+    deleteInfo:function (id){
+         //弹窗
+         zconfirm("确定删除数据:"+id,"删除",function(){
+            Ajax.post(PATH+"/sysResource/del.json?id="+id,function(result){
+                result=ajaxResultHandler(result);
+                if(result.r==AJAX_SUCC){
+                    dialog.alert("删除成功，数据："+id,function(index){
+                    $("#grid").jqGrid("reloadGrid");
+                    dialog.close(index);
+                });
+                }else {
+                    dialog.error(result.msg,"提醒");
+                }
             });
-            }else {
-                zerror(result.msg,"提醒",function(){});
-            }
         });
-    });
-}
-function viewInfo(id){
-    showDialogue("/sysResource/view.htm?id="+id);
-}
-function search(){
-    var jso= changeForm2Jso(".app-search");
-    console.log(jso);
-    mygrid.search(jso);
-}
-function exportExcel(){
-    var jso= changeForm2Jso(".app-search");
-    Ajax.getJSON(PATH+"/sysResource/export.json",jso,function(data){
-        if(data.r==AJAX_SUCC){
-            window.location=PATH+"/"+data.data;
-        }else{
-            zerror(data.msg,"导出失败",null);
+    },
+    viewInfo:function (id){
+        dialog.window("/sysResource/view.htm?id="+id,this.modal);
+    },
+    search:function (){
+        var jso= changeForm2Jso(".app-search");
+        console.log(jso);
+        this.mygrid.search(jso);
+    },
+    exportInfo:function (){
+        var jso= changeForm2Jso(".app-search");
+        Ajax.getJSON(PATH+"/sysResource/export.json",jso,function(data){
+            if(data.r==AJAX_SUCC){
+                window.location=PATH+"/"+data.data;
+            }else{
+                dialog.error(data.msg,"导出失败",null);
+            }
+        })
+    },
+    multiDelete:function (){
+        //获取ids字符串
+        var ids=this.mygrid.jqGrid("getGridParam","selarrrow");
+        if(ids.length==0){
+            dialog.alert("请勾选数据");
+            return;
         }
-    })
-}
-function multiDelete(){
-    //获取ids字符串
-    var ids=$("#grid").jqGrid("getGridParam","selarrrow");
-    if(ids.length==0){
-        zalert("请勾选数据","提示");
-        return;
-    }
-    var data= $("#grid").jqGrid("getGridParam","data");
-    for(var i=0;i<ids.length;i++){
-        ids[i]=data[ids[i]]["id"]; 
-    }
-    //弹窗
-    zconfirm("确定删除数据:"+ids.join(","),"删除",function(){
-        Ajax.post(PATH+"/sysResource/mdel.json?ids="+ids.join(","),function(result){
-            result=ajaxResultHandler(result);
-            if(result.r==AJAX_SUCC){
-                zalert("删除成功，数据："+ids.join(","),"删除",function(){
-                $("#grid").jqGrid("reloadGrid");
+        var data= this.mygrid.jqGrid("getGridParam","data");
+        for(var i=0;i<ids.length;i++){
+            ids[i]=data[ids[i]]["id"];
+        }
+        //弹窗
+        dialog.confirm("确定删除数据:"+ids.join(","),function(){
+            Ajax.post(PATH+"/sysResource/mdel.json?ids="+ids.join(","),function(result){
+                result=ajaxResultHandler(result);
+                if(result.r==AJAX_SUCC){
+                    dialog.alert("删除成功，数据："+ids.join(","),function(index){
+                    this.mygrid.jqGrid("reloadGrid");
+                    dialog.close(index);
+                });
+                }else {
+                    dialog.error(result.msg);
+                }
             });
-            }else {
-                zerror(result.msg,"提醒",function(){});
-            }
         });
-    });
-}
+    }
+};
+sysResourceList.init()
 </script>
 

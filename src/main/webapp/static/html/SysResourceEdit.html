@@ -1,5 +1,5 @@
  <div class="modal-content">
-    <form id="editForm" class="form-horizontal" method="post" action="/sysResource/save.json" enctype="multipart/form-data">
+    <form id="sysResourceEditForm" class="form-horizontal" method="post" action="/sysResource/save.json" enctype="multipart/form-data">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
             <h4 class="modal-title">资源配置编辑</h4>
@@ -67,18 +67,20 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" onclick="save()" class="btn btn-primary">保存</button>
-            <button type="button" onclick="cancel()"  class="btn btn-default">取消</button>
+            <button type="button"  class="btn btn-primarys saveBtn">保存</button>
+            <button type="button" class="btn btn-default cancelBtn">取消</button>
         </div>
     </form>
 </div><!-- /.modal-content -->
         
 <script type="text/javascript">
-
-$(document).ready(function() {
-    $("#editForm").validate({
+var sysResourceEdit={
+    form:null,
+    modal:false,
+    formId:"#sysResourceEditForm",
+    validParam:{
         rules: {
-                    id:{
+                   id:{
             digits:true
         },
         pid:{
@@ -111,7 +113,7 @@ $(document).ready(function() {
 
         },
         messages:{
-                    id:{
+                   id:{
             digits:"必须输入整数"
         },
         pid:{
@@ -143,47 +145,60 @@ $(document).ready(function() {
         },
 
         }
-    });
-    //获取传入参数
- 
+    },
+    addEventListener:function(){
+        this.form.find(".saveBtn").click(this.saveInfo);
+        this.form.find(".cancelBtn").click(this.cancel);
+    },
+    init:function(){
+        this.form=$(this.formId);
+        this.addEventListener();
+        $("#sysResourceEditForm").validate(this.validParam);
         Ajax.getJSON("sysResource/view.json?id="+getParam("id"),null,function(data){
             if(data.r==AJAX_SUCC){
-                if(data.data.bean){
-                    fillJso2Form("#editForm",data.data.bean);
-                }
+            if(data.data.bean){
+                fillJso2Form("#sysResourceEditForm",data.data.bean);
+            }
             }else{
-                zerror("获取信息失败"+data.msg,"错误",function(){
+                dialog.error("获取信息失败"+data.msg,function(index){
                     goPage("sysResource/list.htm");
+                   dialog.close(index);
                 });
             }
-            
         });
-        
-    
-});
-    function save(){
-           if (!$("#editForm").valid())
-                    return;
-                     var jso = changeForm2Jso("#editForm");
-                     showWait();
-                     Ajax.post(PATH+$("#editForm").attr("action"),jso,function(data){
-                     hideWait();
-                     if(data.r==0){
-                        zalert(data.msg||"保存成功","提示",function(){
-                            //goPage("sysResource/list.htm");
-                            cancel();
-                            $("#grid").jqGrid("reloadGrid");
-                        });
-                     }else{
-                        zerror(data.msg, "失败");
-                     }
-                     },'json');
-    }
-    function cancel(){
-        if(newWindow){
-            $("#mymodal").modal("toggle");
+    },
+    saveInfo:function(){
+        if (!$("#sysResourceEditForm").valid())
+            return;
+        var jso = changeForm2Jso("#sysResourceEditForm");
+        showWait();
+        var that=this;
+        Ajax.post(PATH+$("#sysResourceEditForm").attr("action"),jso,function(data){
+            hideWait();
+            if(data.r==0){
+                dialog.alert(data.msg||"保存成功",function(index){
+                    //goPage("sysResource/list.htm");
+                     sysResourceEdit.cancel();
+                    if(this.modal){
+                        $("#sysResourceGrid").jqGrid("reloadGrid");
+                    }
+                     dialog.close(index);
+                });
+            }else{
+                dialog.error(data.msg);
+            }
+        },'json');
+    },
+    cancel:function(){
+        if(this.modal){
+                $("#mymodal").modal("toggle");
         }else{
             goPage("sysResource/list.htm");
         }
     }
+}
+$(document).ready(function() {
+    //获取传入参数
+ sysResourceEdit.init();
+});
 </script>

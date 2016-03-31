@@ -41,6 +41,10 @@ import cola.machine.util.ValidateUtil;
 import core.util.RequestUtil;
 import core.action.ResultDTO;
 import cola.machine.util.DateUtil;
+import cola.machine.bean.SysRoleResource;
+import cola.machine.service.SysRoleResourceService;
+import cola.machine.bean.SysResource;
+import cola.machine.service.SysResourceService;
 @Controller
 @RequestMapping("/sysRoleResource")
 public class SysRoleResourceController extends BaseController{
@@ -50,6 +54,7 @@ public class SysRoleResourceController extends BaseController{
     @Autowired
     private SysRoleResourceService sysRoleResourceService;
     
+
     /**
      * 说明: 跳转到角色列表页面
      * 
@@ -63,7 +68,11 @@ public class SysRoleResourceController extends BaseController{
         return "/static/html/SysRoleResourceList.html";
     }
 
- 
+    @RequestMapping(value = "/listMapper.htm", method = RequestMethod.GET)
+    public String listMapper() {
+        return "/static/html/SysRoleResourceListMapper.html";
+    }
+
     /**
      * 说明:ajax请求角色信息
      * 
@@ -163,7 +172,7 @@ public class SysRoleResourceController extends BaseController{
     
       /*  String id = request.getParameter("id");
         SysRoleResource bean = sysRoleResourceService.selectByPrimaryKey(Long.valueOf(id));
-        HashMap result =new HashMap();
+        HashMap<String,Object> result =new HashMap<String,Object>();
         result.put("bean", bean);
         return this.getResult(bean);*/
     }
@@ -224,8 +233,16 @@ public class SysRoleResourceController extends BaseController{
             return ResultUtil.getResult(302,validStr);
         }
 
-        return sysRoleResourceService.save(sysRoleResource);
+          return sysRoleResourceService.save(sysRoleResource);
+
        
+    }
+    @RequestMapping(value = "/msave.json")
+    @ResponseBody
+    public Object msave(HttpServletRequest request) throws Exception {
+        String roleids= request.getParameter("roleids");
+        String rids= request.getParameter("rids");
+        return sysRoleResourceService.msave( roleids, rids);
     }
 
     @RequestMapping(value = "/del.json")
@@ -323,7 +340,7 @@ public class SysRoleResourceController extends BaseController{
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             SysRoleResource sm = list.get(i);
-            HashMap map = new HashMap();
+            HashMap<String,Object> map = new HashMap<String,Object>();
             map.put("id",  list.get(i).getId());
             map.put("roleid",  list.get(i).getRoleid());
             map.put("rid",  list.get(i).getRid());

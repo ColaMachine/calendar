@@ -26,6 +26,15 @@ import cola.machine.util.UUIDUtil;
 import cola.machine.util.ValidateUtil;
 import cola.machine.util.StringUtil;
 import core.page.Page;
+import java.util.StringTokenizer;
+import cola.machine.bean.SysRoleResource;
+import cola.machine.dao.SysRoleResourceMapper;
+
+import cola.machine.bean.SysRole;
+import cola.machine.bean.SysResource;
+import cola.machine.dao.SysRoleMapper;
+import cola.machine.dao.SysResourceMapper;
+
 import core.action.ResultDTO;
 
 @Service("sysRoleResourceService")
@@ -34,6 +43,10 @@ public class SysRoleResourceService extends BaseService {
             .getLogger(SysRoleResourceService.class);
     @Resource
     private SysRoleResourceMapper sysRoleResourceMapper;
+    @Resource
+    private SysRoleMapper sysRoleMapper;
+    @Resource
+    private SysResourceMapper sysResourceMapper;
     /**
      * 说明:list by page and params
      * @param page
@@ -108,4 +121,81 @@ public class SysRoleResourceService extends BaseService {
         }
         return ResultUtil.getSuccResult();
     }
+     /**
+         * 多项关联保存
+         * @param uids
+         * @param rids
+         * @return
+         */
+        public ResultDTO msave(String roleids,String rids) {
+            if(StringUtil.isBlank(roleids)){
+                return ResultUtil.getResult(101,"参数错误");
+            }
+
+            String[] roleidAry= roleids.split(",");
+            String[] ridAry=rids.split(",");
+            Long[] roleidAryReal =new  Long[roleidAry.length];
+            Long[] ridAryReal =new  Long[ridAry.length];
+            for(int i=0;i<roleidAry.length;i++){
+                if(!StringUtil.checkNumeric(roleidAry[i])){
+                    return ResultUtil.getResult(101,"参数错误");
+                }
+                roleidAryReal[i]=Long.valueOf(roleidAry[i]);
+            }
+            if(StringUtil.isBlank(rids)){
+                ridAryReal=null;
+                 ridAry=null;
+            }
+            if(ridAry!=null)
+            for(int i=0;i<ridAry.length;i++){
+                if(!StringUtil.checkNumeric(ridAry[i])){
+                    return ResultUtil.getResult(101,"参数错误");
+                }
+                ridAryReal[i]=Long.valueOf(ridAry[i]);
+            }
+            //验证父亲id 正确性 是否存在
+             if(roleidAryReal!=null)
+            for(int i=0;i< roleidAryReal.length;i++){
+                //
+                SysRole sysRole = sysRoleMapper.selectByPrimaryKey(roleidAryReal[i]);
+                if(sysRole==null ){
+                    return ResultUtil.getResult(101,"数据不存在");
+                }
+                //查询的数据不存在
+            }
+             if(ridAryReal!=null)
+            for(int i=0;i<ridAryReal.length;i++){
+                 SysResource sysResource = sysResourceMapper.selectByPrimaryKey(ridAryReal[i]);
+                //查询的数据不存在
+                if(sysResource==null ){
+                    return ResultUtil.getResult(101,"数据不存在");
+                }
+            }
+             HashMap params =new HashMap();
+            //验证子id 正确性 是否存在
+             if(ridAryReal!=null)
+            for(int i=0;i<roleidAryReal.length;i++){
+                for(int j=0;j<ridAryReal.length;j++){
+                   SysRoleResource sysRoleResource =new  SysRoleResource();
+                    Long roleid =roleidAryReal[i];
+                    Long rid =ridAryReal[j];
+                    //查找是否已经有关联数据了
+
+                    params.put("rid",rid);
+                    params.put("roleid",roleid);
+                    int count = sysRoleResourceMapper.countByParams(params);
+                    if(count>0)continue;
+                    sysRoleResource.setRid(rid);
+                    sysRoleResource.setRoleid(roleid);
+                    sysRoleResourceMapper.insert(sysRoleResource);
+                }
+            }
+            //删除多余的数据
+            params.clear();
+            params.put("rids",ridAryReal);
+            params.put("roleids",roleidAryReal);
+            sysRoleResourceMapper.deleteExtra(params);
+            //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
+            return ResultUtil.getSuccResult();
+        }
 }

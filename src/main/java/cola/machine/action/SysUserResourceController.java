@@ -41,6 +41,10 @@ import cola.machine.util.ValidateUtil;
 import core.util.RequestUtil;
 import core.action.ResultDTO;
 import cola.machine.util.DateUtil;
+import cola.machine.bean.SysUserResource;
+import cola.machine.service.SysUserResourceService;
+import cola.machine.bean.SysResource;
+import cola.machine.service.SysResourceService;
 @Controller
 @RequestMapping("/sysUserResource")
 public class SysUserResourceController extends BaseController{
@@ -50,6 +54,7 @@ public class SysUserResourceController extends BaseController{
     @Autowired
     private SysUserResourceService sysUserResourceService;
     
+
     /**
      * 说明: 跳转到角色列表页面
      * 
@@ -63,7 +68,11 @@ public class SysUserResourceController extends BaseController{
         return "/static/html/SysUserResourceList.html";
     }
 
- 
+    @RequestMapping(value = "/listMapper.htm", method = RequestMethod.GET)
+    public String listMapper() {
+        return "/static/html/SysUserResourceListMapper.html";
+    }
+
     /**
      * 说明:ajax请求角色信息
      * 
@@ -163,7 +172,7 @@ public class SysUserResourceController extends BaseController{
     
       /*  String id = request.getParameter("id");
         SysUserResource bean = sysUserResourceService.selectByPrimaryKey(Long.valueOf(id));
-        HashMap result =new HashMap();
+        HashMap<String,Object> result =new HashMap<String,Object>();
         result.put("bean", bean);
         return this.getResult(bean);*/
     }
@@ -224,8 +233,16 @@ public class SysUserResourceController extends BaseController{
             return ResultUtil.getResult(302,validStr);
         }
 
-        return sysUserResourceService.save(sysUserResource);
+          return sysUserResourceService.save(sysUserResource);
+
        
+    }
+    @RequestMapping(value = "/msave.json")
+    @ResponseBody
+    public Object msave(HttpServletRequest request) throws Exception {
+        String uids= request.getParameter("uids");
+        String rids= request.getParameter("rids");
+        return sysUserResourceService.msave( uids, rids);
     }
 
     @RequestMapping(value = "/del.json")
@@ -323,7 +340,7 @@ public class SysUserResourceController extends BaseController{
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             SysUserResource sm = list.get(i);
-            HashMap map = new HashMap();
+            HashMap<String,Object> map = new HashMap<String,Object>();
             map.put("id",  list.get(i).getId());
             map.put("uid",  list.get(i).getUid());
             map.put("rid",  list.get(i).getRid());

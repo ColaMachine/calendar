@@ -1,5 +1,4 @@
-
- <div class="modal-content">
+ <div id="SysUserResourceView" class="modal-content">
     <form id="editForm" class="form-horizontal" method="post" action="/sysUserResource/save.json" enctype="multipart/form-data">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -27,41 +26,52 @@
 
 <!--<div class="body_title">| 用户资源关系编辑</div>
 <form id="editForm" class="form-horizontal" method="post" action="/sysUserResource/save.json" enctype="multipart/form-data">
- $ { viewhtml } 
+ $viewhtml
    <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-     
-       <button type="button" onclick="cancel()"  class="btn btn-default">返回</button>
+       <button type="button"   class="btn btn-default cancelBtn">返回</button>
     </div>
   </div>
 </form>
 </div>
 </div>-->
 <script type="text/javascript">
+var sysUserResourceView={
+    modal:false,
+    root:$("#SysUserResourceList"),
+    init:function(){
 
-$(document).ready(function() {
-    //获取传入参数
-    if(!StringUtil.isBlank(getParam("id"))){
-        Ajax.getJSON("sysUserResource/view.json?id="+getParam("id"),function(data){
-            if(data.r==AJAX_SUCC){
-                fillJso2FormSpan("#editForm",data.data.bean);
-            }else{
-                zerror("获取信息失败"+data.msg,"错误",function(){
-                    cancel();
+        this.addEventListener();
+        //获取传入参数
+            if(!StringUtil.isBlank(getParam("id"))){
+                Ajax.getJSON("sysUserResource/view.json?id="+getParam("id"),function(data){
+                    if(data.r==AJAX_SUCC){
+                        fillJso2FormSpan("#sysUserResourceView",data.data.bean);
+                    }else{
+                        zerror("获取信息失败"+data.msg,"错误",function(){
+                            cancel();
+                        });
+                    }
+
                 });
+
             }
-            
-        });
-        
+    },
+    cancel:function(){
+        if(sysUserResourceView.modal){
+            dialog.closeWindow("sysUserResourceView");
+        }else{
+            goPage("sysUserResource/list.htm");
+        }
+    },
+    addEventListener:function(){
+        $(this.root).find(".cancelBtn").click(sysUserResourceView.cancel);
     }
-    
+}
+$(document).ready(function() {
+
+    sysUserResourceView.init();
 });
    
-    function cancel(){
-        if(newWindow){
-             $("#mymodal").modal("toggle");
-        }else{
-           goPage("sysUserResource/list.htm");
-        }
-    }
+
 </script>

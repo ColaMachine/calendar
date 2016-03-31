@@ -564,39 +564,6 @@ function goPage(currentPage, everyPage) {
 //	window.location.href = $("#searchForm")[0].action + "?fy=1&currentPage="
 //			+ currentPage + "&everyPage=" + everyPage;
 }
-function zwindow(url){
-	window.data={};
-    //截取参数
-    var position=url.indexOf("?");
-    if(position>0){
-        var paramsStr= url.substring(position+1);
-        console.log("paramsStr:"+paramsStr);
-        var arr= paramsStr.split("&");
-        
-        for(var i=0;i<arr.length;i++){
-            var keyVal=arr[i].split("=");
-            var key=keyVal[0];
-            var val=keyVal[1];
-            console.log(keyVal[0]+":"+keyVal[1]);
-            window.data[key]=val;
-        }
-}
-    //  jLoading.start();
-        $.ajax({
-            type: 'GET',
-            url: url,
-            dataType: 'html',
-            success: function(data){
-                //jLoading.close();
-                $('.modal-dialog').html(data);
-                if(typeof fun == 'function') fun();
-            },
-            error: function(){
-                //jLoading.close();
-                //jDialog.alert('加载页面失败', '系统错误')
-            }
-        });
-}
 function openMenu(id) {
 	$("#" + id).addClass("open");
 	$("#" + id).find("ul").css("display", "block");
@@ -605,47 +572,47 @@ function openMenu(id) {
 function openMenu(level1, level2) {
 
 }
-function getAuditHtml(value) {
+function getAuditHtml(value,module) {
 	var strs= "";
 	for(var i=0;i<arguments.length;i++){
 		strs+="'"+arguments[i]+"',";
 	}
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"auditInfo("+strs.substr(1)+")\" >审核</a>";
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"auditInfo("+strs.substr(1)+")\" >审核</a>";
 }
-function getEditHtml(value) {
+function getEditHtml(value,module) {
 	var strs= "";
 	for(var i=0;i<arguments.length;i++){
 		strs+=",'"+arguments[i]+"'";
 	}
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"editInfo("+strs.substr(1)+")\" >修改</a>";
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"editInfo("+strs.substr(1)+")\" >修改</a>";
 }
-function getDelHtml(value) {
+function getDelHtml(value,module) {
 	var strs= "";
 	for(var i=0;i<arguments.length;i++){
 		strs+=",'"+arguments[i]+"'";
 	}
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"deleteInfo("+strs.substr(1)+")\" >删除</a>";
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"deleteInfo("+strs.substr(1)+")\" >删除</a>";
 }
-function getViewHtml(value) {
+function getViewHtml(value,module) {
 	var strs= "";
 	for(var i=0;i<arguments.length;i++){
 		strs+=",'"+arguments[i]+"'";
 	}
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"viewInfo("+strs.substr(1)+")\" >查看</a>";
+    return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"viewInfo("+strs.substr(1)+")\" >查看</a>";
 }
-function getLockHtml(value) {
+function getLockHtml(value,module) {
 	var strs= "";
 	for(var i=0;i<arguments.length;i++){
 		strs+=",'"+arguments[i]+"'";
 	}
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"lockinfo("+strs.substr(1)+")\" >禁用</a>";
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"lockinfo("+strs.substr(1)+")\" >禁用</a>";
 	}
-function getUnLockHtml(value) {
+function getUnLockHtml(value,module) {
 	var strs= "";
 	for(var i=0;i<arguments.length;i++){
 		strs+=",'"+arguments[i]+"'";
 	}
-	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\"unlockinfo("+strs.substr(1)+")\" >启用</a>";
+	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"unlockinfo("+strs.substr(1)+")\" >启用</a>";
 	}
 /*function getEditHtml1(value) {
 	return "<div title=\"\" style=\"float:left;cursor:pointer;\" class=\"ui-pg-div ui-inline-edit\" id=\"jEditButton_1\" onclick=\"editinfo('"
@@ -1038,6 +1005,71 @@ function zdialogue(msg,title,src,fontcolor,fn){
 	if (typeof(fn) != "undefined") 
 	$(html).find(".zbutton_wrap").find("a").click(fn);
 }*/
+var dialog={
+    alert:function(msg,fn){
+        if(typeof fn != 'undefined'){
+            layer.alert(msg,fn);
+        }else{
+          layer.alert(msg);
+        }
+    },
+    close:function(index){
+        layer.close(index);
+    },
+    closeWindow:function(index){
+        layer.close(index);
+    },
+    confirm:function(msg,fn){
+        layer.confirm(msg,fn);
+    },
+    error:function(msg,fn){
+        if(typeof fn != 'undefined'){
+                layer.alert(msg,fn);
+            }else{
+              layer.alert(msg);
+            }
+    },
+
+    window:function(url,flag){
+        window.data={};
+        //截取参数
+        var position=url.indexOf("?");
+        if(position>0){
+        var paramsStr= url.substring(position+1);
+        console.log("paramsStr:"+paramsStr);
+        var arr= paramsStr.split("&");
+
+        for(var i=0;i<arr.length;i++){
+            var keyVal=arr[i].split("=");
+            var key=keyVal[0];
+            var val=keyVal[1];
+            console.log(keyVal[0]+":"+keyVal[1]);
+            window.data[key]=val;
+        }
+        }
+        //  jLoading.start();
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'html',
+            success: function(data){
+                //jLoading.close();
+                if(flag){
+                     $('.modal-dialog').html(data);
+                     $('.modal-dialog').show();
+                }else{
+                    $(".main-content").html(data);
+                }
+
+                if(typeof fun == 'function') fun();
+            },
+            error: function(){
+                //jLoading.close();
+                //jDialog.alert('加载页面失败', '系统错误')
+            }
+        });
+    }
+}
 function zdialogue(jso){
 	showMask()
 	if(StringUtil.isBlank(jso.title)){
@@ -1180,12 +1212,12 @@ obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
 }
 
 
-function showDialogue(url){
-    if(!newWindow){
+function showDialogue(url,modal){
+    if(!modal){
         goPage(PATH+url);
     }else{
          zwindow(PATH+url);
-        $("#mymodal").modal("toggle");
+        //$("#mymodal").modal("toggle");
     }
 }
 
@@ -1201,9 +1233,3 @@ var setting = {
            }
        };
 
-var dialog={
-    alert:function(msg){
-        layer.alert(msg);
-    }
-
-}

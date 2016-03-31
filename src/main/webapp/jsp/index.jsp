@@ -198,13 +198,16 @@ var menuList=[
               {id:12,name:"alert",url:PATH+"/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
               {id:13,name:"短信",url:PATH+"/smsBatch/list.htm",icon:"fa fa-spinner",pid:0}, 
               {id:14,name:"合作伙伴",url:PATH+"/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0}, 
-              {id:15,name:"用户",url:PATH+"/sysUser/list.htm",icon:"fa fa-spinner",pid:0}, 
-              {id:16,name:"角色",url:PATH+"/sysRole/list.htm",icon:"fa fa-spinner",pid:0},
-              {id:17,name:"资源",url:PATH+"/sysResource/list.htm",icon:"fa fa-spinner",pid:0},
-              {id:18,name:"用户角色",url:PATH+"/sysUserRole/list.htm",icon:"fa fa-spinner",pid:0},
-              {id:19,name:"角色资源",url:PATH+"/sysRoleResource/list.htm",icon:"fa fa-spinner",pid:0},
-              {id:20,name:"用户资源",url:PATH+"/sysUserResource/list.htm",icon:"fa fa-spinner",pid:0},
-              {id:21,name:"短信验证码",url:PATH+"/smsRecord/list.htm",icon:"fa fa-spinner",pid:0},
+              {id:15,name:"用户",url:PATH+"/sysUser/list.htm",icon:"fa fa-spinner",pid:5},
+              {id:16,name:"角色",url:PATH+"/sysRole/list.htm",icon:"fa fa-spinner",pid:5},
+              {id:17,name:"资源",url:PATH+"/sysResource/list.htm",icon:"fa fa-spinner",pid:5},
+              {id:18,name:"用户角色",url:PATH+"/sysUserRole/list.htm",icon:"fa fa-spinner",pid:5},
+              {id:19,name:"角色资源",url:PATH+"/sysRoleResource/list.htm",icon:"fa fa-spinner",pid:5},
+              {id:20,name:"用户资源",url:PATH+"/sysUserResource/list.htm",icon:"fa fa-spinner",pid:5},
+               {id:21,name:"用户角色关联",url:PATH+"/sysUserRole/listMapper.htm",icon:"fa fa-spinner",pid:5},
+               {id:22,name:"角色资源关联",url:PATH+"/sysRoleResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
+               {id:23,name:"用户资源关联",url:PATH+"/sysUserResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
+              {id:24,name:"短信验证码",url:PATH+"/smsRecord/list.htm",icon:"fa fa-spinner",pid:0},
               ]
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 </script>

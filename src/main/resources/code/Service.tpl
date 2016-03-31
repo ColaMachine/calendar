@@ -224,12 +224,13 @@ public class ${Abc}Service extends BaseService {
          * @return
          */
         public ResultDTO msave(String ${table.mapper.parentid}s,String ${table.mapper.childid}s) {
-          if(StringUtil.isBlank(${table.mapper.parentid}s)){
-                    return ResultUtil.getResult(101,"参数错误");
+            if(StringUtil.isBlank(${table.mapper.parentid}s)){
+                return ResultUtil.getResult(101,"参数错误");
             }
+
             String[] ${table.mapper.parentid}Ary= ${table.mapper.parentid}s.split(",");
             String[] ${table.mapper.childid}Ary=${table.mapper.childid}s.split(",");
-             ${parentType}[] ${table.mapper.parentid}AryReal =new  ${parentType}[${table.mapper.parentid}Ary.length];
+            ${parentType}[] ${table.mapper.parentid}AryReal =new  ${parentType}[${table.mapper.parentid}Ary.length];
             ${childType}[] ${table.mapper.childid}AryReal =new  ${childType}[${table.mapper.childid}Ary.length];
             for(int i=0;i<${table.mapper.parentid}Ary.length;i++){
                 if(!StringUtil.checkNumeric(${table.mapper.parentid}Ary[i])){
@@ -237,6 +238,11 @@ public class ${Abc}Service extends BaseService {
                 }
                 ${table.mapper.parentid}AryReal[i]=Long.valueOf(${table.mapper.parentid}Ary[i]);
             }
+            if(StringUtil.isBlank(${table.mapper.childid}s)){
+                ${table.mapper.childid}AryReal=null;
+                 ${table.mapper.childid}Ary=null;
+            }
+            if(${table.mapper.childid}Ary!=null)
             for(int i=0;i<${table.mapper.childid}Ary.length;i++){
                 if(!StringUtil.checkNumeric(${table.mapper.childid}Ary[i])){
                     return ResultUtil.getResult(101,"参数错误");
@@ -244,6 +250,7 @@ public class ${Abc}Service extends BaseService {
                 ${table.mapper.childid}AryReal[i]=Long.valueOf(${table.mapper.childid}Ary[i]);
             }
             //验证父亲id 正确性 是否存在
+             if(${table.mapper.parentid}AryReal!=null)
             for(int i=0;i< ${table.mapper.parentid}AryReal.length;i++){
                 //
                 ${table.mapper.parent?cap_first} ${table.mapper.parent?uncap_first} = ${table.mapper.parent?uncap_first}Mapper.selectByPrimaryKey(${table.mapper.parentid}AryReal[i]);
@@ -252,6 +259,7 @@ public class ${Abc}Service extends BaseService {
                 }
                 //查询的数据不存在
             }
+             if(${table.mapper.childid}AryReal!=null)
             for(int i=0;i<${table.mapper.childid}AryReal.length;i++){
                  ${table.mapper.child?cap_first} ${table.mapper.child?uncap_first} = ${table.mapper.child?uncap_first}Mapper.selectByPrimaryKey(${table.mapper.childid}AryReal[i]);
                 //查询的数据不存在
@@ -261,6 +269,7 @@ public class ${Abc}Service extends BaseService {
             }
              HashMap params =new HashMap();
             //验证子id 正确性 是否存在
+             if(${table.mapper.childid}AryReal!=null)
             for(int i=0;i<${table.mapper.parentid}AryReal.length;i++){
                 for(int j=0;j<${table.mapper.childid}AryReal.length;j++){
                    ${table.name?cap_first} ${table.name?uncap_first} =new  ${table.name?cap_first}();
@@ -270,7 +279,7 @@ public class ${Abc}Service extends BaseService {
 
                     params.put("${table.mapper.childid}",${table.mapper.childid});
                     params.put("${table.mapper.parentid}",${table.mapper.parentid});
-                    int count = sysUserRoleMapper.countByParams(params);
+                    int count = ${abc}Mapper.countByParams(params);
                     if(count>0)continue;
                     ${table.name?uncap_first}.set${table.mapper.childid?cap_first}(${table.mapper.childid});
                     ${table.name?uncap_first}.set${table.mapper.parentid?cap_first}(${table.mapper.parentid});

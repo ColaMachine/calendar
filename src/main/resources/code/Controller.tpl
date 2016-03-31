@@ -80,7 +80,11 @@ public class ${Abc}Controller extends BaseController{
         return "/static/html/${Abc}List.html";
     }
 
- 
+    @RequestMapping(value = "/listMapper.htm", method = RequestMethod.GET)
+    public String listMapper() {
+        return "/static/html/${Abc}ListMapper.html";
+    }
+
     /**
      * 说明:ajax请求角色信息
      * 
@@ -147,7 +151,7 @@ ${getSearchParam}
     
       /*  String id = request.getParameter("id");
         ${Abc} bean = ${abc}Service.selectByPrimaryKey(<@javaType>${table.pk.type}</@javaType>.valueOf(id));
-        HashMap result =new HashMap();
+        HashMap<String,Object> result =new HashMap<String,Object>();
         result.put("bean", bean);
         return this.getResult(bean);*/
     }
@@ -197,7 +201,7 @@ ${validCode}
     public Object msave(HttpServletRequest request) throws Exception {
         String ${table.mapper.parentid}s= request.getParameter("${table.mapper.parentid}s");
         String ${table.mapper.childid}s= request.getParameter("${table.mapper.childid}s");
-        return sysUserRoleService.msave( ${table.mapper.parentid}s, ${table.mapper.childid}s);
+        return ${table.name?uncap_first}Service.msave( ${table.mapper.parentid}s, ${table.mapper.childid}s);
     }
     </#if>
     </#if>
@@ -283,7 +287,7 @@ ${validCode}
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             ${Abc} sm = list.get(i);
-            HashMap map = new HashMap();
+            HashMap<String,Object> map = new HashMap<String,Object>();
           <#list table.cols as col>
             map.put("${col.name}",  list.get(i).get${col.name[0]?upper_case}${col.name[1..]}());
           </#list>

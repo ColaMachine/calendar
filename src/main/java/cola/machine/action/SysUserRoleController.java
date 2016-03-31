@@ -65,10 +65,14 @@ public class SysUserRoleController extends BaseController{
      */
     @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
     public String list() {
+        return "/static/html/SysUserRoleList.html";
+    }
+
+    @RequestMapping(value = "/listMapper.htm", method = RequestMethod.GET)
+    public String listMapper() {
         return "/static/html/SysUserRoleListMapper.html";
     }
 
- 
     /**
      * 说明:ajax请求角色信息
      * 
@@ -168,7 +172,7 @@ public class SysUserRoleController extends BaseController{
     
       /*  String id = request.getParameter("id");
         SysUserRole bean = sysUserRoleService.selectByPrimaryKey(Long.valueOf(id));
-        HashMap result =new HashMap();
+        HashMap<String,Object> result =new HashMap<String,Object>();
         result.put("bean", bean);
         return this.getResult(bean);*/
     }
@@ -336,7 +340,7 @@ public class SysUserRoleController extends BaseController{
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             SysUserRole sm = list.get(i);
-            HashMap map = new HashMap();
+            HashMap<String,Object> map = new HashMap<String,Object>();
             map.put("id",  list.get(i).getId());
             map.put("uid",  list.get(i).getUid());
             map.put("roleid",  list.get(i).getRoleid());

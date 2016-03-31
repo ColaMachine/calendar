@@ -31,7 +31,7 @@ public class StringUtil {
 	}
 	
 	public static boolean checkNumeric(String str){
-        if (str == null) {
+        if (str == null|| str.equals("")) {
             return false;
         }
         int sz = str.length();

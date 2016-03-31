@@ -26,6 +26,15 @@ import cola.machine.util.UUIDUtil;
 import cola.machine.util.ValidateUtil;
 import cola.machine.util.StringUtil;
 import core.page.Page;
+import java.util.StringTokenizer;
+import cola.machine.bean.SysUserResource;
+import cola.machine.dao.SysUserResourceMapper;
+
+import cola.machine.bean.SysUser;
+import cola.machine.bean.SysResource;
+import cola.machine.dao.SysUserMapper;
+import cola.machine.dao.SysResourceMapper;
+
 import core.action.ResultDTO;
 
 @Service("sysUserResourceService")
@@ -34,6 +43,10 @@ public class SysUserResourceService extends BaseService {
             .getLogger(SysUserResourceService.class);
     @Resource
     private SysUserResourceMapper sysUserResourceMapper;
+    @Resource
+    private SysUserMapper sysUserMapper;
+    @Resource
+    private SysResourceMapper sysResourceMapper;
     /**
      * 说明:list by page and params
      * @param page
@@ -108,4 +121,81 @@ public class SysUserResourceService extends BaseService {
         }
         return ResultUtil.getSuccResult();
     }
+     /**
+         * 多项关联保存
+         * @param uids
+         * @param rids
+         * @return
+         */
+        public ResultDTO msave(String uids,String rids) {
+            if(StringUtil.isBlank(uids)){
+                return ResultUtil.getResult(101,"参数错误");
+            }
+
+            String[] uidAry= uids.split(",");
+            String[] ridAry=rids.split(",");
+            Long[] uidAryReal =new  Long[uidAry.length];
+            Long[] ridAryReal =new  Long[ridAry.length];
+            for(int i=0;i<uidAry.length;i++){
+                if(!StringUtil.checkNumeric(uidAry[i])){
+                    return ResultUtil.getResult(101,"参数错误");
+                }
+                uidAryReal[i]=Long.valueOf(uidAry[i]);
+            }
+            if(StringUtil.isBlank(rids)){
+                ridAryReal=null;
+                 ridAry=null;
+            }
+            if(ridAry!=null)
+            for(int i=0;i<ridAry.length;i++){
+                if(!StringUtil.checkNumeric(ridAry[i])){
+                    return ResultUtil.getResult(101,"参数错误");
+                }
+                ridAryReal[i]=Long.valueOf(ridAry[i]);
+            }
+            //验证父亲id 正确性 是否存在
+             if(uidAryReal!=null)
+            for(int i=0;i< uidAryReal.length;i++){
+                //
+                SysUser sysUser = sysUserMapper.selectByPrimaryKey(uidAryReal[i]);
+                if(sysUser==null ){
+                    return ResultUtil.getResult(101,"数据不存在");
+                }
+                //查询的数据不存在
+            }
+             if(ridAryReal!=null)
+            for(int i=0;i<ridAryReal.length;i++){
+                 SysResource sysResource = sysResourceMapper.selectByPrimaryKey(ridAryReal[i]);
+                //查询的数据不存在
+                if(sysResource==null ){
+                    return ResultUtil.getResult(101,"数据不存在");
+                }
+            }
+             HashMap params =new HashMap();
+            //验证子id 正确性 是否存在
+             if(ridAryReal!=null)
+            for(int i=0;i<uidAryReal.length;i++){
+                for(int j=0;j<ridAryReal.length;j++){
+                   SysUserResource sysUserResource =new  SysUserResource();
+                    Long uid =uidAryReal[i];
+                    Long rid =ridAryReal[j];
+                    //查找是否已经有关联数据了
+
+                    params.put("rid",rid);
+                    params.put("uid",uid);
+                    int count = sysUserResourceMapper.countByParams(params);
+                    if(count>0)continue;
+                    sysUserResource.setRid(rid);
+                    sysUserResource.setUid(uid);
+                    sysUserResourceMapper.insert(sysUserResource);
+                }
+            }
+            //删除多余的数据
+            params.clear();
+            params.put("rids",ridAryReal);
+            params.put("uids",uidAryReal);
+            sysUserResourceMapper.deleteExtra(params);
+            //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
+            return ResultUtil.getSuccResult();
+        }
 }

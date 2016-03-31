@@ -63,7 +63,11 @@ public class SysResourceController extends BaseController{
         return "/static/html/SysResourceList.html";
     }
 
- 
+    @RequestMapping(value = "/listMapper.htm", method = RequestMethod.GET)
+    public String listMapper() {
+        return "/static/html/SysResourceListMapper.html";
+    }
+
     /**
      * 说明:ajax请求角色信息
      * 
@@ -299,7 +303,7 @@ public class SysResourceController extends BaseController{
     
       /*  String id = request.getParameter("id");
         SysResource bean = sysResourceService.selectByPrimaryKey(Long.valueOf(id));
-        HashMap result =new HashMap();
+        HashMap<String,Object> result =new HashMap<String,Object>();
         result.put("bean", bean);
         return this.getResult(bean);*/
     }
@@ -608,7 +612,7 @@ public class SysResourceController extends BaseController{
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             SysResource sm = list.get(i);
-            HashMap map = new HashMap();
+            HashMap<String,Object> map = new HashMap<String,Object>();
             map.put("id",  list.get(i).getId());
             map.put("pid",  list.get(i).getPid());
             map.put("name",  list.get(i).getName());

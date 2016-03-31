@@ -25,9 +25,11 @@
           where uid in
           <foreach collection="uids" item="item" index="index"
                    open="(" separator="," close=")"> #{item}</foreach>
+         <if test="roleids != null and id != '' " >
           and roleid not in
           <foreach collection="roleids" item="item" index="index"
                    open="(" separator="," close=")"> #{item}</foreach>
+       </if>
       </delete>
  <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="cola.machine.bean.SysUserRole" >
 

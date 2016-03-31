@@ -1,8 +1,7 @@
-<div id="SysUserList" class="rgt_body">
-    <div class="body_title">| 用户</div>
+<div id="SysUserResourceMapperList" class="rgt_body ">
+    <div class="body_title">| 用户资源关系</div>
         <div class="body_top" >
             <form class="form-inline app-search">
-
         <label for="id">主键</label>
             <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="15" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="主键"></input>
         <label for="username">用户名</label>
@@ -77,187 +76,46 @@
             <input type="text" id="updatetimeEnd" name="updatetimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间结束" ></input>
             <label class="input-group-addon" for="updatetimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
 
- <!-- 
-        <div class="form-group">
-            <label for="exampleInputName2">主键</label>
-          
-            <input type="text" class="form-control" id="id" name="id" placeholder="主键">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">用户名</label>
-          
-            <input type="text" class="form-control" id="username" name="username" placeholder="用户名">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">密码</label>
-          
-            <input type="text" class="form-control" id="password" name="password" placeholder="密码">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">昵称</label>
-          
-            <input type="text" class="form-control" id="nkname" name="nkname" placeholder="昵称">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">类型</label>
-          
-            <input type="text" class="form-control" id="type" name="type" placeholder="类型">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">状态</label>
-          
-            <input type="text" class="form-control" id="status" name="status" placeholder="状态">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">邮箱地址</label>
-          
-            <input type="text" class="form-control" id="email" name="email" placeholder="邮箱地址">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">手机号码</label>
-          
-            <input type="text" class="form-control" id="telno" name="telno" placeholder="手机号码">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">身份证号码</label>
-          
-            <input type="text" class="form-control" id="idcard" name="idcard" placeholder="身份证号码">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">性别</label>
-          
-            <input type="text" class="form-control" id="sex" name="sex" placeholder="性别">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">出生年月</label>
-          
-            <input type="text" class="form-control" id="birth" name="birth" placeholder="出生年月">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">积分</label>
-          
-            <input type="text" class="form-control" id="integral" name="integral" placeholder="积分">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">地址</label>
-          
-            <input type="text" class="form-control" id="address" name="address" placeholder="地址">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">微信</label>
-          
-            <input type="text" class="form-control" id="weichat" name="weichat" placeholder="微信">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">qq</label>
-          
-            <input type="text" class="form-control" id="qq" name="qq" placeholder="qq">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">头像</label>
-          
-            <input type="text" class="form-control" id="face" name="face" placeholder="头像">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">备注</label>
-          
-            <input type="text" class="form-control" id="remark" name="remark" placeholder="备注">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">创建时间</label>
-          
-            <input type="text" class="form-control" id="createtime" name="createtime" placeholder="创建时间">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">更新时间</label>
-          
-            <input type="text" class="form-control" id="updatetime" name="updatetime" placeholder="更新时间">
-           
-        </div>
-  -->
-  
-                <button type="button" onclick="search()" class="btn btn-default">查询</button>
+                <button type="button" class="btn btn-default searchBtn">查询</button>
             </form>
         <div >
-            <button class="btn addBtn" >新增</button>
-            <button class="btn deleteBtn">删除</button>
-            <button class="btn exportBtn" >导出</button>
+             <button class="btn saveBtn" >保存</button>
         </div>
     </div>
-    <div id="SysUserGrid" class="grid"></div>
-    <div id="SysUserGrid-pager" class="pager"></div>
-    <div class="modal" id="mymodal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">模态弹出窗标题</h4>
-                </div>
-                <div class="modal-body">
-                    <p>模态弹出窗主体内容</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">保存</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
+     <div class="col-sm-6">
+    <div id="SysUserResourceMapperGrid" class="grid"></div>
+    <div id="SysUserResourceMapperGrid-pager" class="pager"></div>
+    </div>
+     <div class="col-sm-6">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
 </div>
 <script>
-
-var sysUserList={
+var sysUserResourceList={
     modal:false,
     mygrid:null,
     treeObj:null,
-    root:$("#SysUserList"),
+    root:$("#SysUserResourceMapperList"),
     init:function(){
-        this.mygrid =this.root.find(".grid").jqGrid(this.gridParam);
+        this.mygrid = $(this.root).find(".grid").jqGrid(this.gridParam);
         this.addEventListener();
-
+        this.initTree();
+    },
+    initTree:function(){
+        var that =this;
+        Ajax.getJSON(PATH+"/sysResource/listAll.json",null,function(result){
+            if(result.r==AJAX_SUCC){
+                if(result.data){
+                     that.treeObj=$.fn.zTree.init($(that.root).find("#treeDemo"), setting, result.data);
+                }
+            }else{
+                dialog.error("获取信息失败"+data.msg);
+            }
+        });
     },
     addEventListener:function(){
-        $(this.root).find(".addBtn").click(this.addInfo.Apply(this));
-        $(this.root).find(".editBtn").click(this.editInfo.Apply(this));
-        $(this.root).find(".deleteBtn").click(this.deleteInfo.Apply(this));
-        $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
+           $(this.root).find(".saveBtn").click(this.saveInfo.Apply(this));
+           $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
     gridParam:{
                   page:{
@@ -266,8 +124,8 @@ var sysUserList={
                   },
                   multiselect : true,
                   url : PATH+'/sysUser/list.json',
-                  grid_selector:"#SysUserGrid",
-                  pager_selector:"#SysUserGrid-Pager",
+                  grid_selector:"#SysUserResourceMapperGrid",
+                  pager_selector:"#SysUserResourceMapperGrid-Pager",
                   searchParams : {
                       name : ''
                   },
@@ -365,88 +223,74 @@ var sysUserList={
                               name : 'id',
                               width : 150,
                               formatter : function(value, grid, rows) {
-                                  return getViewHtml(value,"sysUserList")+getEditHtml(value,"sysUserList")+getDelHtml(value,"sysUserList");
+                                  return getViewHtml(value,"sysUserResourceList")+getEditHtml(value,"sysUserResourceList")+getDelHtml(value,"sysUserResourceList");
                               }
                           }
                     ],
 
                     onSelectRow: function(id){ //alert("单击选中"+id);
-
+                    var that =this;
+                  //  var treeObj = $.fn.zTree.getZTreeObj("tree");
+                     var celldata =sysUserResourceList.mygrid.jqGrid('getRowData',id)["id"];
+                     //清空原来的选项
+                    sysUserResourceList.treeObj.checkAllNodes(false);
+                      Ajax.getJSON(PATH+"/sysUserResource/listAll.json",{"uid":celldata},function(result){
+                           if(result.data){
+                                          for(var i=0;i<result.data.length;i++){
+                                              var node = sysUserResourceList.treeObj.getNodeByParam("id",result.data[i].rid);
+                                              sysUserResourceList.treeObj.checkNode(node,true,true);
+                                          }
+                                      }
+                      })
                     },
     },
     saveInfo:function(){
-    },
-    addInfo:function (){
-        dialog.window('/sysUser/edit.htm',this.modal);
-    },
-    editInfo:function (id){
-        dialog.window("/sysUser/edit.htm?id="+id,this.modal);
+        //首先查出父节点勾选信息
+        var selarrrow =this.mygrid.jqGrid("getGridParam","selarrrow");
+        if(selarrrow==null || selarrrow.length==0){
+            selarrrow .push(this.mygrid.jqGrid('getGridParam','selrow'));
+        }
+        console.log(selarrrow);
+        //再查出子节点勾选信息
+        var childids=[];
+        var treeObj= this.treeObj;
+                         var checkedNodes= this.treeObj.getCheckedNodes(true);
+                         for(var i=0;i<checkedNodes.length;i++){
+                             var obj=checkedNodes[i];
+                             if(!checkedNodes[i].isParent){
+                                 childids.push(checkedNodes[i].id);
+                             }
+                         }
+        console.log(selarrrow.join(","));
+        var parentIdArray=new Array();
+        for(var i=0;i<selarrrow.length;i++){
+            parentIdArray.push( this.mygrid.jqGrid("getRowData",selarrrow[i])["id"]);
+        }
+
+        console.log(childids.join(","));
+         console.log(parentIdArray.join(","));
+        //进行保存
+
+        Ajax.post(PATH+"/sysUserResource/msave.json",{"uids":parentIdArray.join(","),"rids":childids.join(",")},function(result){
+            if(result.r==AJAX_SUCC){
+                dialog.alert("关联成功");
+            }else{
+                dialog.alert(result.msg);
+            }
+        })
     },
     searchInfo:function (){
         var jso = changeForm2Jso(".app-search");
         this.mygrid.jqGrid("search",jso);
-    },
-    deleteInfo:function (id){
-         //弹窗
-         zconfirm("确定删除数据:"+id,"删除",function(){
-            Ajax.post(PATH+"/sysUser/del.json?id="+id,function(result){
-                result=ajaxResultHandler(result);
-                if(result.r==AJAX_SUCC){
-                    dialog.alert("删除成功，数据："+id,function(index){
-                    $("#grid").jqGrid("reloadGrid");
-                    dialog.close(index);
-                });
-                }else {
-                    dialog.error(result.msg,"提醒");
-                }
-            });
-        });
-    },
-    viewInfo:function (id){
-        dialog.window("/sysUser/view.htm?id="+id,this.modal);
     },
     search:function (){
         var jso= changeForm2Jso(".app-search");
         console.log(jso);
         this.mygrid.search(jso);
     },
-    exportInfo:function (){
-        var jso= changeForm2Jso(".app-search");
-        Ajax.getJSON(PATH+"/sysUser/export.json",jso,function(data){
-            if(data.r==AJAX_SUCC){
-                window.location=PATH+"/"+data.data;
-            }else{
-                dialog.error(data.msg,"导出失败",null);
-            }
-        })
-    },
-    multiDelete:function (){
-        //获取ids字符串
-        var ids=this.mygrid.jqGrid("getGridParam","selarrrow");
-        if(ids.length==0){
-            dialog.alert("请勾选数据");
-            return;
-        }
-        var data= this.mygrid.jqGrid("getGridParam","data");
-        for(var i=0;i<ids.length;i++){
-            ids[i]=data[ids[i]]["id"];
-        }
-        //弹窗
-        dialog.confirm("确定删除数据:"+ids.join(","),function(){
-            Ajax.post(PATH+"/sysUser/mdel.json?ids="+ids.join(","),function(result){
-                result=ajaxResultHandler(result);
-                if(result.r==AJAX_SUCC){
-                    dialog.alert("删除成功，数据："+ids.join(","),function(index){
-                    this.mygrid.jqGrid("reloadGrid");
-                    dialog.close(index);
-                });
-                }else {
-                    dialog.error(result.msg);
-                }
-            });
-        });
-    }
+
+
 };
-sysUserList.init()
+sysUserResourceList.init()
 </script>
 
