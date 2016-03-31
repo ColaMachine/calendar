@@ -8,7 +8,7 @@
             ${viewhtml}
         </div>
         <div class="modal-footer">
-            <button type="button" onclick="cancel()"  class="btn btn-default">取消</button>
+            <button type="button"   class="btn btn-default cancelBtn">取消</button>
         </div>
     </form>
 </div><!-- /.modal-content -->
@@ -27,15 +27,15 @@
 <script type="text/javascript">
 var ${abc}View={
     modal:false,
-    root:$("#${table.name}List"),
+    root:$("#${table.name}View"),
     init:function(){
     var that = this;
         this.addEventListener();
         //获取传入参数
             if(!StringUtil.isBlank(getParam("id"))){
-                Ajax.getJSON("${abc}/view.json?id="+getParam("id"),function(data){
+                Ajax.getJSON("${abc}/view.json?id="+getParam("id"),null,function(data){
                     if(data.r==AJAX_SUCC){
-                        fillJso2FormSpan("#${abc}View",data.data.bean);
+                        fillJso2FormSpan("#${Abc}View",data.data.bean);
                     }else{
                         dialog.error("获取信息失败"+data.msg,function(index){
                             that.cancel();
@@ -59,7 +59,6 @@ var ${abc}View={
     }
 }
 $(document).ready(function() {
-
     ${abc}View.init();
 });
    

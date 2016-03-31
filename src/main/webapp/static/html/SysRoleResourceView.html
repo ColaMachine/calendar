@@ -19,7 +19,7 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" onclick="cancel()"  class="btn btn-default">取消</button>
+            <button type="button"   class="btn btn-default cancelBtn">取消</button>
         </div>
     </form>
 </div><!-- /.modal-content -->
@@ -38,18 +38,19 @@
 <script type="text/javascript">
 var sysRoleResourceView={
     modal:false,
-    root:$("#SysRoleResourceList"),
+    root:$("#SysRoleResourceView"),
     init:function(){
-
+    var that = this;
         this.addEventListener();
         //获取传入参数
             if(!StringUtil.isBlank(getParam("id"))){
-                Ajax.getJSON("sysRoleResource/view.json?id="+getParam("id"),function(data){
+                Ajax.getJSON("sysRoleResource/view.json?id="+getParam("id"),null,function(data){
                     if(data.r==AJAX_SUCC){
-                        fillJso2FormSpan("#sysRoleResourceView",data.data.bean);
+                        fillJso2FormSpan("#SysRoleResourceView",data.data.bean);
                     }else{
-                        zerror("获取信息失败"+data.msg,"错误",function(){
-                            cancel();
+                        dialog.error("获取信息失败"+data.msg,function(index){
+                            that.cancel();
+                            diablog.close(index);
                         });
                     }
 
@@ -69,7 +70,6 @@ var sysRoleResourceView={
     }
 }
 $(document).ready(function() {
-
     sysRoleResourceView.init();
 });
    
