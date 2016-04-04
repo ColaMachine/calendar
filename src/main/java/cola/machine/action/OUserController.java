@@ -138,7 +138,7 @@ public class OUserController extends BaseController {
      */
     @RequestMapping(value = "/register.htm", method = RequestMethod.GET)
     public String registerGet(HttpServletRequest request) {
-        return "user/register.html";
+        return "static/html/zregisterByEmail.html";
     }
 
     /**

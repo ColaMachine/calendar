@@ -1,6 +1,7 @@
 ﻿@CHARSET "UTF-8";
 div,input,button,select,textarea{outline:none;}
 body {
+
 font: 12px/1.5 \5FAE\8F6F\96C5\9ED1,arial,sans-serif;
 font-size: 16px;
 line-height: 1.62;
@@ -331,6 +332,7 @@ color:red;
     border-color: #D6E9C6;
 }
 
+/*
 .alert {
 	display:none;
     padding: 15px;
@@ -338,6 +340,7 @@ color:red;
     border: 1px solid transparent;
     border-radius: 4px;
 }
+*/
 
 
 
@@ -397,3 +400,13 @@ color:red;
 display:table;	
 }
 
+
+.center {
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+.text-center {
+  text-align: center;
+}

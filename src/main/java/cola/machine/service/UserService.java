@@ -172,10 +172,10 @@ public class UserService {
 		 * .validate(user);
 		 */
 
-		ResultDTO result = valid.valid(user);
+		/*ResultDTO result = valid.valid(user);
 		if (result.getR() != 1) {
 			return result;
-		}
+		}*/
 		/*
 		 * if (!constraintViolations.isEmpty()) { HashMap errorMap = new
 		 * HashMap(); for (ConstraintViolation<User> constraintViolation :
@@ -189,6 +189,8 @@ public class UserService {
 
 		// 检测是否有冲突的用户
 		// TODO 改成int 数
+		//检查是否有相同账号用户
+		//TODO 改成count 就可以了
 		User sameEmailUser = this.getUserByEmail(user.getEmail());
 		if (sameEmailUser != null) {
 			return ResultUtil.getWrongResultFromCfg("mail.has.owner");

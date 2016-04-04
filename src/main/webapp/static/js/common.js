@@ -953,8 +953,9 @@ function clearErrorMsg(formid){
 
 function showWait(msg){
 	
-	showMask()
+	showMask();
 	$(".wait").show();
+	var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
 }
 function hideWait(){
 	hideWaitTrue();

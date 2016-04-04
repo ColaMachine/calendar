@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 // 创建一个闭包
 (function($) {
@@ -1162,7 +1162,7 @@
 			 */
 			/*
 			 * width_sum:0,
-			 * 
+			 *
 			 * multiselect:false, url:'', grid_selector:"", pager_selector:"",
 			 * searchParams:{}, colNames:[], colModel:[], loadComplete:null,
 			 * rowNum:0, selrow:null, data:null,
@@ -2781,7 +2781,7 @@
 					this
 							.each(function() {
 								var $t = this;
-								//显示 
+								//显示
 								//要排除不存在的参数
 								/*	for(i in gridParam){
 										if(typeof (this.p[i])!= 'undefined')
@@ -2798,7 +2798,7 @@
 									gridHeadhtml += "<th style=\"width:5%;\" ><input type='checkbox' class='cbox' id='cb_"+this.id+"' name='cb_"+this.id+"' > </th>";
 								}
 								for (var i = 0; i < this.p.colNames.length; i++) {
-									
+
 									if (this.p.colModel[i].width == 0) {
 										gridHeadhtml += "<th style='display:none' width=\""
 												+ this.p.colModel[i].width
@@ -2820,7 +2820,7 @@
 								var gridTableHtml = "<div class=\"grid-content\"></div>";
 								var pageHtml="";
 								//var pageHtml = "<nav class=\"nav\">        <ul class=\"pagination pagination-lg\">         <li><a href=\"#\" aria-label=\"Previous\"><span aria-hidden=\"true\">上一页</span></a>         </li><li class=\"active\"><a href=\"#\">1</a>         </li><li><a href=\"#\">2</a>         </li><li><a href=\"#\">3</a>         </li><li><a href=\"#\">4</a>         </li><li><a href=\"#\">5</a>         </li><li><a href=\"#\" aria-label=\"Next\"><span aria-hidden=\"true\">下一页</span></a>        </li></ul>       </nav>";
-								
+
 								if(this.p.gridHead!=null){
 									$(this.p.grid_selector).html(
 											"<div>" + $(this.p.gridHead).html() + gridTableHtml
@@ -2831,7 +2831,7 @@
 												+ "</div>");
 								//		this.p.width_sum=width_sum;
 								$(this.p.pager_selector).html(pageHtml);
-								
+
 								if(this.p.multiselect){
 									var id = this.id;
 									$(this.p.grid_selector).find(
@@ -2864,7 +2864,7 @@
 					return ret;
 				},
 				search : function(json) {
-					
+
 					this.each(function() {
 						var $t = this;
 						this.p.searchParams = json;
@@ -2906,20 +2906,20 @@
 				selectAll : function() {//alert($(this).jqGrid("getGridParam","selarrrow"));
 					this.each(function() {
 						var $t = this;
-					
+
 						var status = $(this).find("input[name='cb_"+this.id+"']").is(":checked");
-							
-						this.p.selarrrow=[];	
+
+						this.p.selarrrow=[];
 							$(this).find("input[type='checkbox']").each(function(index,element){
 								$(this).prop("checked",status);
 								if(status){
 									$t.p.selarrrow.push(index);
 								}
 							});
-						
+
 					});
 				},
-				
+
 				goNext : function(event) {
 					var $t = event.data.t;
 					//console.log("curPage:"+$t.p.page.curPage+"totalPage")
@@ -2977,7 +2977,7 @@
 						$(this).jqGrid("initParam");
 						//		this.p.searchParams.curPage= this.p.page.curPage;
 						//		this.p.searchParams.pageSize= this.p.page.pageSize;
-						
+
 						/* Protocol.request(this.p.url,{parameter:this.p.searchParams,
 				                success:$.fn.jqGrid.ajaxCallBack.Apply($(this)),scope:$t});  */
 						/*$.post(this.p.url, this.p.searchParams,function(data){
@@ -3011,9 +3011,9 @@
 				            			zalert(result);return;
 				            		}
 				            		 }catch(e){
-				            			
+
 				            		 }
-				            		 
+
 				            	 }
 				            	 zalert("请求异常");
 				            	 return;
@@ -3024,12 +3024,12 @@
 				              },
 
 				             success: function(data){ hideWait();
-				            	 			
+
 			            				$($t).jqGrid("ajaxCallBack",data);
 
 				                       /*  $('#resText').empty();   //清空resText里面的所有内容
 
-				                         var html = ''; 
+				                         var html = '';
 
 				                         $.each(data, function(commentIndex, comment){
 
@@ -3045,17 +3045,17 @@
 
 				                      }
 
-				         });		
+				         });
 					});
 				},
 				getGridParam : function(pName) {
 					var result;
 					this.each(function(){
-						
+
 						if(pName=="selarrrow"){
 							this.p[pName]=[];
 							var arr = this.p[pName];
-							
+
 							//alert($(this).find(".table").find("input:checkbox:checked").length)
 							$(this).find(".grid-content").find("input:checkbox:checked").each(function(){
 							/*	var status = $(this).is(":checked");
@@ -3091,7 +3091,7 @@
 
 						/*
 						var html="<div><table class='table'><tbody>";
-						
+
 						for(var i=0;i<result.data.length;i++){
 							html+="<tr>";
 							for(var j=0;j<this.gridParam.colModel.length;j++){
@@ -3136,7 +3136,7 @@
 								if(this.p.data.length==0){
 								html += "<thead><div style='text-align:center;'>暂无数据</div></thead>";
 								}
-								
+
 								html += "<tbody>";
 								for (var i = 0; i < this.p.data.length; i++) {
 									html += "<tr >";
@@ -3149,7 +3149,7 @@
 										if (typeof (value) == 'undefined') {
 											value = '';
 										}
-										
+
 										if (this.p.colModel[j].width == 0) {
 											html += "<td style='display:none' width=\""
 													+ this.p.colModel[j].width
@@ -3200,12 +3200,12 @@
 																		//				alert(event.data.grid);
 																		//				alert(event.data.grid.selrow);
 																		event.data.grid.selrow = event.data.id;
-																		
+
 																		if(that.onSelectRow){
 																			that.onSelectRow.call($t,index);
 																		}
 
-																		
+
 					                                                    if(that.ondblClickRow){
 					                                                        $(this).dblclick({id : index,grid : that},
 					                                                                function(    event) {
@@ -3215,10 +3215,10 @@
 					                                                                    if(typeof that.ondblClickRow!= 'undefined'){
 					                                                                        that.ondblClickRow.call(this,index);
 					                                                                    }
-					                                                                    
+
 					                                                                });
 					                                                        }
-					                                                        
+
 
 																	});
 												});
@@ -3266,8 +3266,8 @@
 										pageHtml += "<li class=\"num\" ><a href=\"javascript:void(0)\" >" + i
 												+ "</a></li>";
 								}
-								
-								
+
+
 								if(_max<page.totalPage){
 									pageHtml += "<li >...</li><li class=\"  num\" ><a href=\"javascript:void(0)\" >"+page.totalPage+"</a></li>";
 								}
@@ -3301,7 +3301,7 @@
 										}, $.fn.jqGrid.goNext);
 								var eles = $(this.p.pager_selector).find(".num");
 								for (var i = 0; i < eles.length ; i++) {
-									
+
 									$(eles[i]).click({
 										curPage : $(eles[i]).text(),
 										t : this
@@ -3329,5 +3329,5 @@
 					});
 				},
 			});
-	//闭包结束   
+	//闭包结束
 })(jQuery);

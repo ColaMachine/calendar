@@ -77,15 +77,15 @@ body {
 					id="form_type" onclick="changeForm()">注册</a>
 			</h3>
 
-			<label for="email" class="sr-only">邮箱地址</label> 
+			<label for="email" class="sr-only">邮箱地址</label>
 			<input id="login-email"
 				type="email" name="email" maxlength="50" class="form-control"
-				placeholder="邮件地址" required autofocus> 
+				placeholder="邮件地址" required autofocus>
 				<label for="pwd"
 				class="sr-only">密码</label> <input type="password" name="pwd"
 				maxlength="50" class="form-control" placeholder="密码" required>
 			<div class="checkbox">
-				<label> <input type="checkbox" id="rememberme"  > 
+				<label> <input type="checkbox" id="rememberme"  >
 					记住我
 				</label> <a href="javascript:goUrl('/forgetpwd.htm')" style="float: right">忘记密码</a>
 			</div>
@@ -103,20 +103,20 @@ body {
 		<form id="register_form" style="display: none" class="form-signin"
 			action="<%=path %>/pwdrestPost" method="post">
 			<h3 class="form-signin-heading">
-				<span id="form_title">注册账号</span> 
+				<span id="form_title">注册账号</span>
 				<a style="float: right"
 					id="form_type" onclick="changeForm()">登录</a>
 			</h3>
-			<label for="username" class="sr-only">姓名</label> 
+			<label for="username" class="sr-only">姓名</label>
 			<input name="username" maxlength="50" class="form-control" placeholder="姓名"
-				required autofocus> 
+				required autofocus>
 				<label for="email" class="sr-only">邮件地址</label>
 			<input type="email" name="email" maxlength="50" class="form-control"
-				placeholder="邮件地址" required autofocus> 
+				placeholder="邮件地址" required autofocus>
 				<label for="pwd"
 				class="sr-only">密码</label> <input type="password" id="pwd" name="pwd"
 				maxlength="50" class="form-control" placeholder="密码" required>
-			
+
 			<label for="pwdrepeat" class="sr-only">再次输入密码</label>
 			 <input type="password" name="pwdrepeat" maxlength="50" class="form-control" placeholder="请再次输入密码" required>
 			<div class="failure">

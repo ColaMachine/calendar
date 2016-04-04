@@ -14,7 +14,7 @@
 </head>
 <body>
     <div id="login-wrap" class="container ">
-        <div class="container col-sm-4">
+        <div class="container  center">
     <!-- 登录form -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#login" " data-toggle="tab">登录 </a></li>
@@ -48,7 +48,7 @@
                     <input type="text"  id="picCaptcha" name="picCaptcha" class="form-control" placeholder="验证码">
                     <span id="picCaptchaGet" class="input-group-addon btn btn-lg btn-primary btn-block" ><img  src=""/></span>
                 </div>
-                </div> 
+                </div>
                  <div class="form-group">
                 <div class="checkbox">
                     <label> <input type="checkbox" id="rememberme">
@@ -65,44 +65,7 @@
                     onclick="login()" type="button">登录</button>
             </form>
         </div>
-        <div class="tab-pane fade " id="register">
-            <!-- - 注册 -->
-            <form id="register_form" style="" class="form-signin"
-                action="<%=path %>/pwdrestPost" method="post">
-                   <hr>
-            <div class="form-group">
-                <label for="username" class="sr-only">姓名</label> 
-                <input
-                    name="username" maxlength="50" class="form-control"
-                    placeholder="姓名" required autofocus/>
-                    </div>
-                    <div class="form-group">
-                     <label for="email"
-                    class="sr-only">邮件地址</label> 
-                    <input type="email" name="email"
-                    maxlength="50" class="form-control" placeholder="邮件地址" required
-                    autofocus/>
-                    </div>
-                    <div class="form-group">
-                     <label for="pwd" class="sr-only">密码</label> 
-                     <input
-                    type="password" id="pwd" name="pwd" maxlength="50"
-                    class="form-control" placeholder="密码" required/>
-                     </div>
-                     <div class="form-group">
-                     <label
-                    for="pwdrepeat" class="sr-only">再次输入密码</label> <input
-                    type="password" name="pwdrepeat" maxlength="50"
-                    class="form-control" placeholder="请再次输入密码" required/>
-                    </div>
-                <div class="failure">
-                    <ul>
-                    </ul>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" id="registerBtn"
-                    type="button">注册</button>
-            </form>
-        </div>
+
     </div>
 </div>
 

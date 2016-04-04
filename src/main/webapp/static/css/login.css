@@ -8,8 +8,12 @@ body {
     padding-top: 40px;
     padding-bottom: 40px;
     background-color: #eee;
-}
 
+     background: transparent url("/static/img/sea.bmp") no-repeat scroll 0% 0%;
+}
+button{
+outline: none;
+}
 .form-signin {
     position:relative;
     /*为了让alert提示框靠在tab下端*/
@@ -76,16 +80,25 @@ body {
 .form-group{
 	margin-top:1em;
 	line-height:1em;
+	position:relative;
 }
-
+.help-block{
+    color: #FFF !important;
+    position: absolute;
+    font-size:1.2rem;
+    left: 230px;
+    width: 200px;
+    top: 1px;
+    float: right;
+    margin-left: 1px;
+    white-space: nowrap;
+}
+/*
 #login-wrap .alert {
     text-align:center;
         font: 12px/1.5 \5FAE\8F6F\96C5\9ED1,arial,sans-serif;
     position:absolute;
+    width:100%;
     top:0px;
-/*     
-    background-color:#f9a200;
-    padding:5px 12px;
-    width:80%;
-    color:#ffffff; */
-}
+
+}*/

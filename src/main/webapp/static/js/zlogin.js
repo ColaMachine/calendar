@@ -3,7 +3,7 @@
  *
  * Author:
  *	zzw <zzw1986@gmail.com>
- *	
+ *
  *
  * File: td_view.js
  * Create Date: 2013-9-23 8:29
@@ -40,7 +40,7 @@ var loginValidator = function() {
 					messages : {
 						email : {
 							required : "邮箱未填写",
-							email : "请填写真实的邮箱",
+
 							rangelength : "邮箱长度应在50字符以内",
 						},
 						pwd : {
@@ -57,11 +57,13 @@ var loginValidator = function() {
 						$(e).closest('.form-group').removeClass('has-error')
 								.addClass('has-info');
 						$(e).remove();
-						
+						$("#loginBtn").removeAttr("disabled");
+
 					},
 
 					errorPlacement : function(error, element) {
 						error.insertAfter(element);
+						$("#loginBtn").attr("disabled",true);
 					},
 
 					submitHandler : function(form) {
@@ -107,101 +109,7 @@ var form_type = "login";
 	}
 }*/
 
-/**
- *注册表单验证器
- */
-var registerValidator = function() {
-	var handleSubmit = function() {
-		$('#register_form').validate(
-				{
-					errorElement : 'div',
-					errorClass : 'alert alert-warning',
-					focusInvalid : false,
-					rules : {
-						username : {
-							required : true,
-							rangelength : [ 3, 15 ]
-						},
-						email : {
-							email : true,
-							required : true,
-							rangelength : [ 1, 50 ],
-							isemail : true
-						},
-						pwd : {
-							stringCheck : true,
-							required : true,
-							rangelength : [ 6, 15 ]
-						},
-						pwdrepeat : {
-							stringCheck : true,
-							required : true,
-							rangelength : [ 6, 15 ],
-							equalTo : "#pwd"
-						}
-					},
-					messages : {
-						username : {
-							required : "请填写真实的姓名",
-							rangelength : "姓名长度应在5~15个字符"
-						},
-						email : {
-							email : "请填写真实的邮箱",
-							required : "邮箱未填写",
-							rangelength : "邮箱长度应在50字符以内"
-						},
-						pwd : {
-							required : "密码未填写",
-							rangelength : "密码应由6~20个的数字或字母组成"
-						},
-						pwdrepeat : {
-							required : "密码未填写",
-							rangelength : "密码应由6~20个的数字或字母组成",
-							equalTo : "两次输入密码不同"
-						}
-					},
 
-					highlight : function(element) {
-						$(element).closest('.form-signin').removeClass(
-								'has-info').addClass('has-error');
-					},
-
-					success : function(e) {
-						$(e).closest('.form-signin').removeClass('has-error')
-								.addClass('has-info');
-						$(e).remove();
-					},
-
-					errorPlacement : function(error, element) {
-						error.insertAfter(element);
-					},
-
-					submitHandler : function(form) {
-						register();
-
-					},
-					invalidHandler : function(form) {
-					}
-				});
-		$("#registerBtn").click(function() {
-			register();
-		})
-		$('#form-signin input').keypress(function(e) {
-			if (e.which == 13) {
-				if ($(e).closest('.form-signin').validate().form()) {
-					$(e).closest('.form-horizontal').submit();
-				}
-				return false;
-			}
-		});
-	};
-	return {
-		init : function() {
-			handleSubmit();
-		}
-	};
-
-}();
 
 /***
  ** 取cookie值
@@ -258,13 +166,13 @@ function login() {
 		return;
 	}
 	var jso = changeForm2Jso("#login_form");
-	//jso.password=$.md5(jso.password); 
+	//jso.password=$.md5(jso.password);
 	//先禁用按钮
 	$("#loginBtn").attr("disabled", "disabled");
 	//alert($("#rememberme").attr("checked"));
 	//判断是否使用记住功能
 	if ($("#rememberme").attr("checked") == 'checked') {//alert("选中了记住我");
-		console.log("选中了记住我" );
+	/*	console.log("选中了记住我" );*/
 		console.log("username:" + jso.email);
 		setCookie('username', jso.email, 365);
 		setCookie('password', jso.password, 365);
@@ -309,17 +217,6 @@ function register() {
 		$("#registerBtn").removeAttr("disabled");
 	});
 }
-function sendSms(){
-	//获取手机号码
-	var phone = $("#login-email").val();
-	//验证手机号码
-	if(checker.isPhone(phone)){
-		
-	}
-	//禁用再次发送验证码
-	
-	//设置text为正在发送 然后显示倒计时
-}
 $(document).ready(function() {
 	//$("#loginBtn").bind('click',function(){alert('tt!')});
 	//登录表单验证器初始化
@@ -327,8 +224,23 @@ $(document).ready(function() {
 	//注册表单初始化
 	registerValidator.init();
 	checkCookie();
+
+jQuery.validator.addMethod("isemailorphone", function(value, element) {console.log(element);
+if(this.optional(element) )
+	return true;
+	if( /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(value)){
+	 $("#register").find("#smsCaptcha").parent().parent().hide();
+	return true;
+	}
+	if(/^[1][345678][0-9]{9}$/.test(value)){
+	    $("#register").find("#smsCaptcha").parent().parent().show();
+	    return true;
+	}
+return false;}
+	, "请输入有效的邮箱地址或者手机号");
+
 	//show user name and password
-	
+
 });
 
 
@@ -339,7 +251,7 @@ $(document).ready(function() {
  *
  * Author:
  *	zzw <zzw1986@gmail.com>
- *	
+ *
  *
  * File: td_view.js
  * Create Date: 2013-9-23 8:29
@@ -408,12 +320,12 @@ $(document).ready(function() {
 			if (config.params) {
 				this.params = config.params;
 			}
-			
+
 			if (config.systemNo) {
 				this.systemNo = config.systemNo;
 			}
-			
-			
+
+
 			//请求host
 			if (config.host) {
 				this.host = config.host;
@@ -426,7 +338,7 @@ $(document).ready(function() {
 			if (config.captchaType) {
 				this.captchaType = config.captchaType;
 			}
-			//验证码倒计时 
+			//验证码倒计时
 			this.captchaCutdownTime = typeof(config.captchaCutdownTime) == 'undefined' ? this.captchaCutdownTime : config.captchaCutdownTime;
 
 			if (this.captchaType == 'pic') {
@@ -437,7 +349,7 @@ $(document).ready(function() {
 				//this.mainContain.html(this.captchaTpl);
 				//this.getCaptcha();
 			}
-			
+
 			this.$main = this.mainContain;
 			if(this.mainContain.length==0){
 				console.log("mainContain not exist");
@@ -455,19 +367,19 @@ $(document).ready(function() {
 			this.$smsCaptchaGet=$main.find("#smsCaptchaGet");
 			this.addEventListener();
 		},
-		
+
 		initValid:function(){
 
 		},
 		/**
-		 * 获取验证码 
+		 * 获取验证码
 		 */
 		initSmsCaptcha: function() {
 			var that = this;
 			var checker = that.checker;
 			var $username =this.$username;
 			var $error =this.$error;
-			
+
 			/*this.$smsCaptchaGet.on('click', function() {
 				if ($(this).attr("disabled")) {
 					return;
@@ -477,7 +389,7 @@ $(document).ready(function() {
 					$error.text("请输入正确的帐号");
 					return false;
 				}
-			
+
 				var appid = params.appid || '';
 				var timestamp = params.timestamp || '';
 				var token = params.token || '';
@@ -520,7 +432,7 @@ $(document).ready(function() {
 				timestamp: timestamp,
 				token: token,
 				systemno:this.systemNo
-				
+
 			};
 			if(this.checker.isBlank(phone)){
 				this.alert("请先填写手机号");
@@ -555,27 +467,27 @@ $(document).ready(function() {
 			}else{
 				console.log("$smsCaptchaGet not exist");
 			}
-			
+
 			/*this.$loginBtn.on('click', function() {
-				
+
 				var username, captcha;
 				username = that.$username.val() || '';
 				captcha = that.$smsCaptcha.val() || '';
-				
+
 				//6位验证码验证
-				
+
 				if(that.$smsCaptcha.length>0){
 					if(that.checker.checkCaptcha(captcha)){
-						
+
 					}
-					
+
 				}
-				
+
 				if (that.checker.checkCaptcha(captcha) || that.checker.checkUserName(username)) {
 					that.alert("请输入正确的帐号或验证码");
 					return false;
 				}
-			
+
 				var data = {
 					phone: username,
 					code: captcha,
@@ -618,7 +530,7 @@ $(document).ready(function() {
 						if($sessionid.length==0){
 							$sessionid=$("<input type='hidden' id='sessionid' name='sessionid' />");
 							that.$main.append($sessionid);
-							
+
 						}
 						$sessionid.val(data.data.sessionid);
 					}
@@ -649,7 +561,7 @@ $(document).ready(function() {
 				},
 				success: function(data, textStatus, jqXHR) {
 					if (data.r == 0 ) {
-						
+
 					}else{
 						that.alert(data.msg);
 						console.log(data);
@@ -828,7 +740,7 @@ Awifi_UI.captcha.init({
 	 *  参数
 	 */
 	params: {
-		
+
 		appid: '1111',
 		timestamp: '1111111111111',
 		token: 'adcfgvftgf'
