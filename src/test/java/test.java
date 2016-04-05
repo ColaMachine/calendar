@@ -1,3 +1,7 @@
+import cola.machine.config.Config;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -14,52 +18,54 @@ public class test {
 	 * @author dozen.zhang
 	 * @date 2015年12月15日下午11:15:17
 	 */
+
+    static void setFinalStatic(Field field, Object newValue) throws Exception {
+        field.setAccessible(true);
+
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+        field.set(null, newValue);
+    }
+    public static void main1(String args[]) throws Exception {
+        setFinalStatic(Boolean.class.getField("FALSE"), true);
+
+        System.out.format("Everything is %s", false); // "Everything is true"
+    }
+
     public static void main(String[] args) {
-        System.out.println(Integer.MAX_VALUE);
-        ExecutorService executor = Executors.newCachedThreadPool();
-        Task task = new Task(1);
-        Future<Integer> result = executor.submit(task);
-        executor.shutdown();
-         
         try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
-         
-        System.out.println("主线程在执行任务");
-         
-        try {
-        
-            System.out.println("task运行结果"+result.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-         
-        System.out.println("所有任务执行完毕");
-    }
-}
-class Task implements Callable<Integer>{
-    private int i;
-    private int complete;
-    private int succ;
-    Task(int j){
-      
-    }
-    @Override
-    public Integer call() throws Exception {
-        System.out.println("子线程在进行计算");
-        for(int i=0;i<100;i++){
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+      System.out.println("123");
+        Class x = Config.class;
+        Field[] fields = x.getDeclaredFields();
+            setFinalStatic(Config.class.getField("a"), 1);
+        for(int i=0;i<fields.length;i++){
+            fields[i].setAccessible(true);
+
+
+            Field modifiersField = null;
+                modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+
+                modifiersField.setInt(fields[i], fields[i].getModifiers() & ~Modifier.FINAL);
+
+
+            if((fields[i].getModifiers() & 8) == 8){
+
+                    System.out.println(fields[i].getName());
+                    System.out.println(fields[i].get(null));
+                    fields[i].set(null,1);
+
             }
-            complete = i;
         }
-        return complete;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(Config.a);
+
+        System.out.println("所有任务执行完毕");
     }
 }

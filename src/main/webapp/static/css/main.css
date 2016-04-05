@@ -410,3 +410,11 @@ display:table;
 .text-center {
   text-align: center;
 }
+
+.modal-backdrop {
+z-index:3;
+}
+
+.modal-dialog-small{
+    width:300px;
+}

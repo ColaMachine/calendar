@@ -1,6 +1,7 @@
 package cola.machine.calendar.filter;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cola.machine.config.Config;
 import cola.machine.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +45,6 @@ public class LoginFilter implements Filter {
     /**
      * 说明:程序结束时候执行
      * 
-     * @param request
-     * @return
      * @return boolean
      * @author dozen.zhang
      * @date 2015年12月21日下午2:10:30
@@ -148,13 +148,12 @@ public class LoginFilter implements Filter {
     /**
      * 说明:初始化
      * 
-     * @param request
-     * @return
-     * @return boolean
      * @author dozen.zhang
      * @date 2015年12月21日下午2:10:30
      */
     public void init(FilterConfig filterConfig) throws ServletException {
+
+
         this.filterConfig = filterConfig;
         redirectURL = filterConfig.getInitParameter("redirectURL");
         sessionKey = filterConfig.getInitParameter("checkSessionKey");

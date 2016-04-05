@@ -65,7 +65,7 @@ public class OUserController extends BaseController {
         // s.substring(12);
         // logger.debug("s");
         // System.out.println(123);
-        return "/static/html/zloginByEmail.html";
+        return "/static/html/zlogin.html";
     }
 
     @RequestMapping(value = "/user/listTree.json", method = RequestMethod.GET)
@@ -125,6 +125,8 @@ public class OUserController extends BaseController {
             request.getSession().setAttribute("user", user);
             result.setData(null);
         }
+
+        //若果密码输入多次 增加 验证码 和锁定功能
         return result;
     }
 
@@ -141,6 +143,11 @@ public class OUserController extends BaseController {
         return "static/html/zregisterByEmail.html";
     }
 
+    @RequestMapping(value = "/register/captcha.json", method = RequestMethod.GET)
+    public @ResponseBody ResultDTO getPicCaptcha(HttpServletRequest request){
+        ValidCodeService validCodeService = new ValidCodeService();
+        return validCodeService.getImgValidCode("calendar",request.getRequestedSessionId());
+    }
     /**
      * 说明:注册提交
      * 

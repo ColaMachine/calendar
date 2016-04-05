@@ -18,12 +18,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author dozen.zhang
  *
  */
 public class Config {
+
     private ValidCodeConfig validCode;
     public ValidCodeConfig getValidCode() {
         return validCode;

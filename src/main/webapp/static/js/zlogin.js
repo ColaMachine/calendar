@@ -40,7 +40,7 @@ var loginValidator = function() {
 					messages : {
 						email : {
 							required : "邮箱未填写",
-
+                            isemailorphone:true,
 							rangelength : "邮箱长度应在50字符以内",
 						},
 						pwd : {
@@ -109,7 +109,102 @@ var form_type = "login";
 	}
 }*/
 
+/**
+ *注册表单验证器
+ */
+var registerValidator = function() {
+	var handleSubmit = function() {
+		$('#register_form').validate(
+				{
+					errorElement : 'div',
+					errorClass : 'alert alert-warning',
+					focusInvalid : false,
+					rules : {
+						username : {
+							required : true,
+							rangelength : [ 3, 15 ]
+						},
+						email : {
+						/*	email : true,*/
+							required : true,
+							isemailorphone:true,
+							rangelength : [ 1, 50 ],
+						/*	isemail : true*/
+						},
+						pwd : {
+							stringCheck : true,
+							required : true,
+							rangelength : [ 6, 15 ]
+						},
+						pwdrepeat : {
+							stringCheck : true,
+							required : true,
+							rangelength : [ 6, 15 ],
+							equalTo : "#pwd"
+						}
+					},
+					messages : {
+						username : {
+							required : "请填写真实的姓名",
+							rangelength : "姓名长度应在5~15个字符"
+						},
+						email : {
+							email : "请填写真实的邮箱",
+							required : "邮箱未填写",
+							rangelength : "邮箱长度应在50字符以内"
+						},
+						pwd : {
+							required : "密码未填写",
+							rangelength : "密码应由6~20个的数字或字母组成"
+						},
+						pwdrepeat : {
+							required : "密码未填写",
+							rangelength : "密码应由6~20个的数字或字母组成",
+							equalTo : "两次输入密码不同"
+						}
+					},
 
+					highlight : function(element) {
+						$(element).closest('.form-signin').removeClass(
+								'has-info').addClass('has-error');
+					},
+
+					success : function(e) {
+						$(e).closest('.form-signin').removeClass('has-error')
+								.addClass('has-info');
+						$(e).remove();
+					},
+
+					errorPlacement : function(error, element) {
+						error.insertAfter(element);
+					},
+
+					submitHandler : function(form) {
+						register();
+
+					},
+					invalidHandler : function(form) {
+					}
+				});
+		$("#registerBtn").click(function() {
+			register();
+		})
+		$('#form-signin input').keypress(function(e) {
+			if (e.which == 13) {
+				if ($(e).closest('.form-signin').validate().form()) {
+					$(e).closest('.form-horizontal').submit();
+				}
+				return false;
+			}
+		});
+	};
+	return {
+		init : function() {
+			handleSubmit();
+		}
+	};
+
+}();
 
 /***
  ** 取cookie值
@@ -201,6 +296,13 @@ function register() {
 	}
 	$("#registerBtn").attr("disabled", "disabled");
 	var jso = changeForm2Jso("#register_form");
+	//如果是用手机注册的就弹出手机验证码 发送窗口
+    if(StringUtil.isPhone(jso.email)){
+        alert(1123);
+    }
+    return;
+	//如果是邮箱注册的就弹出邮箱验证码 发送窗口
+
 	$.post(PATH + "/registerPost.json", jso, function(data) {
 		if (data[AJAX_RESULT] == AJAX_SUCC) {
 			window.location = PATH + "/index.htm";
@@ -223,9 +325,29 @@ $(document).ready(function() {
 	loginValidator.init();
 	//注册表单初始化
 	registerValidator.init();
+//在这里面输入任何合法的js语句
+//页面层-自定义
+/*layer.open({
+  type: 1,
+  title: false,
+  closeBtn: 1,
+  shadeClose: false,
+  skin: 'yourclass',
+  content: '自定义HTML内容'
+});*/
+	  $("#register_form").find("#picCaptchaGet").click(function(){
+	    Ajax.getJSON(PATH+"/register/captcha.json",null,function(result){
+        	    if(result.r==AJAX_SUCC){
+        	        $("#register_form").find("#picCaptchaGet").find("img").prop("src","data:image/png;base64,"+result.data.imgdata);
+        	    }else{
+        	        dialog.error(result.msg);
+        	    }
+        	});
+	});
+
 	checkCookie();
 
-jQuery.validator.addMethod("isemailorphone", function(value, element) {console.log(element);
+jQuery.validator.addMethod("isemailorphone", function(value, element) {
 if(this.optional(element) )
 	return true;
 	if( /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(value)){
@@ -236,7 +358,8 @@ if(this.optional(element) )
 	    $("#register").find("#smsCaptcha").parent().parent().show();
 	    return true;
 	}
-return false;}
+return false;
+}
 	, "请输入有效的邮箱地址或者手机号");
 
 	//show user name and password
@@ -714,7 +837,7 @@ return false;}
 	}
 
 })();
-$(document).ready(function(){
+$(document).ready(function(){return;
 Awifi_UI.captcha.init({
 	/**
 	 * 必选

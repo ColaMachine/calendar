@@ -930,7 +930,6 @@ function showModal(id,w,h){
 }
 
 
-
 function hideModal(id){
 	$(id).hide();
 	$(".mask").hide()
@@ -1155,6 +1154,9 @@ StringUtil.isBlank=function(it){
 		return true;
 	}
 	return null;
+}
+StringUtil.isPhone=function(it){
+return /^[1][3578][0-9]{9}$/.test(it);
 }
 
 function getParam(key){

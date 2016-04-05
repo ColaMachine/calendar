@@ -219,8 +219,8 @@ public class ValidCodeService {
             if ((timeStamp + liveTime) < nowTime) {
                 return ResultUtil.getResult(methodCode, ErrorMsg.SYSTEM_ERROR, 309, "缓存格式错误");
             }
-        // 验证短信验证码是否相同
-        if (code.equals(realCode)) {
+        // 验证短信验证码是否相同 忽略大小写
+        if (code.equals(realCode.toLowerCase())) {
             CacheUtil.getInstance().clearCache(systemCode + phone);
             return ResultUtil.getSuccResult();
             // 销毁该验证码
@@ -284,6 +284,7 @@ public class ValidCodeService {
         } else {
             // 取缓存中业务+手机号 的value
             String json = RedisUtil.get(systemCode + sessionid);
+            //TODO json maybe null
              history = JSON.parseObject(json, SmsHistory.class);
             //String mapValue = (String) CacheUtil.getInstance().readCache(systemCode + sessionid, String.class);
             // 验证指定时间内只能发送一次 防止攻击
