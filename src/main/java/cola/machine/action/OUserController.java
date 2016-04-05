@@ -65,7 +65,7 @@ public class OUserController extends BaseController {
         // s.substring(12);
         // logger.debug("s");
         // System.out.println(123);
-        return "/static/html/login.html";
+        return "/static/html/zloginByEmail.html";
     }
 
     @RequestMapping(value = "/user/listTree.json", method = RequestMethod.GET)
