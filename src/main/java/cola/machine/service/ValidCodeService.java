@@ -217,7 +217,7 @@ public class ValidCodeService {
         // 验证码是否过期
         Long nowTime = new Date().getTime();
             if ((timeStamp + liveTime) < nowTime) {
-                return ResultUtil.getResult(methodCode, ErrorMsg.SYSTEM_ERROR, 309, "缓存格式错误");
+                return ResultUtil.getResult(methodCode, ErrorMsg.SYSTEM_ERROR, 309, "请重新获取短信验证码");
             }
         // 验证短信验证码是否相同 忽略大小写
         if (code.equalsIgnoreCase(realCode.toLowerCase())) {
@@ -422,7 +422,7 @@ public class ValidCodeService {
     public ResultDTO remoteValidSms(String phone, String code) {
         // 获取systemcode
         if (StringUtil.isBlank(phone)) {
-            return ResultUtil.getResult(ResultUtil.fail, "sessionid不能为空");
+            return ResultUtil.getResult(ResultUtil.fail, "手机号码不能为空");
         }
         if (StringUtil.isBlank(code)) {
             return ResultUtil.getResult(ResultUtil.fail, "验证码不能为空");

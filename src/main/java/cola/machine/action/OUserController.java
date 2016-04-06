@@ -251,8 +251,8 @@ public class OUserController extends BaseController {
         String phone =user.getTelno();
        // String phone = request.getParameter("phone");
         String smsCaptcha = request.getParameter("smsCaptcha");
-        if(StringUtil.isBlank(smsCaptcha)||smsCaptcha.length()<4 ){
-            return ResultUtil.getResult(301,"请填写验证码");
+        if(StringUtil.isBlank(smsCaptcha)||smsCaptcha.length()<4||smsCaptcha.length()>12 ){
+            return ResultUtil.getResult(301,"请填写正确验证码");
         }
         ValidCodeService validCodeService=new ValidCodeService();
         ResultDTO result = validCodeService.remoteValidSms(phone, smsCaptcha);

@@ -66,7 +66,7 @@ var registerForm={
         this.registerEnterBtn.click(function(){
             registerForm.submit();
         });
-        this.modal.modal("show");
+
     },
 
     register:function () {
@@ -114,7 +114,7 @@ var registerForm={
     	    return;
     	}
         jso.smsCaptcha=this.registerEnterForm.find("#smsCaptcha").val();
-        Ajax.getJSON(PATH+"/validPhone.json",jso,function(result){
+        Ajax.post(PATH+"/validPhone.json",jso,function(result){
             if(result.r==AJAX_SUCC){
                  window.location=PATH+"/index.htm";
             }else{
