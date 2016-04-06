@@ -42,7 +42,6 @@ public class SysUserService extends BaseService {
     private SysUserRoleMapper sysUserRoleMapper;
     /**
      * 说明:list by page and params
-     * @param page
      * @return
      * @return List<Role>
      * @author dozen.zhang
@@ -54,7 +53,9 @@ public class SysUserService extends BaseService {
      public List<SysUser> listByParams(HashMap params) {
         return sysUserMapper.listByParams(params);
     }
-
+    public int countByParams(HashMap params) {
+        return sysUserMapper.countByParams(params);
+    }
     /*
      * 说明:
      * @param SysUser

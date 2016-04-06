@@ -2,12 +2,17 @@ package cola.machine.util;
 
 
 import cola.machine.config.Config;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.util.Set;
+
 public final class RedisUtil {
-    
+    private static Logger logger = LoggerFactory.getLogger(RedisUtil.class);
     /** Redis服务器IP */
     private static String ADDR =Config.getInstance().getCache().getRedis().getAddr();
     
@@ -85,7 +90,7 @@ public final class RedisUtil {
      * @param key 
      * @return 
      */  
-    public static String get(String key){  
+  /*  public static String get(String key){
         String value = null;  
           
       ;
@@ -103,7 +108,7 @@ public final class RedisUtil {
         }  
           
         return value;  
-    }  
+    }  */
     
     /** 
      * 获取数据 
@@ -111,7 +116,7 @@ public final class RedisUtil {
      * @param key 
      * @return 
      */  
-    public static void set(String key,String value){  
+   /* public static void set(String key,String value){
 
         Jedis jedis = null;  
         try {  
@@ -126,30 +131,29 @@ public final class RedisUtil {
             returnResource( jedis);  
         }  
           
-    }  
+    }  */
     
-    /** 
-     * 获取数据 
-     *  
-     * @param key 
-     * @return 
-     */  
-    public static void set(String key,String value,int seconds){  
-        JedisPool pool = null;  
-        Jedis jedis = null;  
-        try {  
-            jedis = jedisPool.getResource();  
-            jedis.setex(key,seconds,value);  
-        } catch (Exception e) {  
-            //释放redis对象  
+    /**
+     * 获取数据
+     *
+     * @param key
+     * @return
+     */
+    public static void setex(String key,String value,int seconds){
+        JedisPool pool = null;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            jedis.setex(key,seconds,value);
+        } catch (Exception e) {
+            //释放redis对象
             jedisPool.returnBrokenResource(jedis);
-            e.printStackTrace();  
-        } finally {  
-            //返还到连接池  
-            returnResource( jedis);  
-        }  
-          
-    } 
+            e.printStackTrace();
+        } finally {
+            //返还到连接池
+            returnResource( jedis);
+        }
+    }
     
     /** 
      * 获取数据 
@@ -158,19 +162,202 @@ public final class RedisUtil {
      * @return 
      */  
     public static void del(String key){  
+        if(StringUtils.isNotBlank(key)) {
+            Jedis jedis = null;
+            boolean success =true;
+            try {
+                jedis = jedisPool.getResource();
 
-        Jedis jedis = null;  
-        try {  
-            jedis = jedisPool.getResource();  
-            jedis.del(key);  
-        } catch (Exception e) {  
-            //释放redis对象  
-            jedisPool.returnBrokenResource(jedis);
-            e.printStackTrace();  
-        } finally {  
-            //返还到连接池  
-            returnResource( jedis);  
-        }  
-          
-    }  
+                jedis.del(key);
+            } catch (Exception e) {
+                //释放redis对象
+                if(jedis != null){
+                    jedisPool.returnBrokenResource(jedis);
+                }
+                e.printStackTrace();
+                throw e;
+            } finally {
+                if(success && jedis != null){
+                    jedisPool.returnResource(jedis);
+                }
+                //返还到连接池
+
+            }
+        }
+    }
+
+
+    public static Set<String> hkeys(String key) {
+        Set<String> retValue = null;
+        boolean success =true;
+        if (StringUtils.isNotBlank(key)) {
+            Jedis jedis =null;
+            try {jedis= jedisPool.getResource();
+                Set<String> result = jedis.hkeys(key);
+                logger.debug("Redis.hkeys : result({}).", result);
+            } catch (Exception e) {
+                success  = false;
+                if(jedis != null){
+                    jedisPool.returnBrokenResource(jedis);
+                }
+                logger.error("redis",e);
+                throw e;
+            }finally{
+                if(success && jedis != null){
+                    jedisPool.returnResource(jedis);
+                }
+            }
+        }
+        return retValue;
+    }
+
+    public static void expire(String key, int seconds) {
+        if (StringUtils.isNotBlank(key)) {
+            Jedis jedis=null;
+            boolean success =true;
+            try { jedis= jedisPool.getResource();
+                Long result = jedis.expire(key, seconds);
+                logger.debug("Redis.expire result for key: key({}), result({}).",key, result);
+            } catch (Exception e) {
+                success  = false;
+                if(jedis != null){
+                    jedisPool.returnBrokenResource(jedis);
+                }
+                logger.error("redis",e);
+                throw e;
+            }finally{
+                if(success && jedis != null){
+                    jedisPool.returnResource(jedis);
+                }
+            }
+        }
+    }
+
+	/*public static InputStream readProperties() throws FileNotFoundException {
+		// Properties props = new Properties();
+		InputStream in = ClassLoader.getSystemResourceAsStream(configFilePath);
+		if (in == null) {
+			try {
+				String filename = new URI(AccessAuth.class.getClassLoader()
+						.getResource(configFilePath).toString()).toString();
+				File file = new File(filename.replace("file:", ""));
+				// System.out.println("File: " + file.getAbsolutePath());
+				in = new FileInputStream(file);
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return in;
+	}*/
+
+    /**
+     * hset + 还连接
+     * @param key
+     * @param field
+     * @param value
+     * @author dozen.zhang
+     */
+    public static void hset(String key ,String field,String value){
+        Jedis jedis = null;
+        boolean success =true;
+        try {
+            jedis = jedisPool.getResource();
+            jedis.hset(key,field,value);
+        } catch (Exception e) {
+            success  = false;
+            if(jedis != null){
+                jedisPool.returnBrokenResource(jedis);
+            }
+            logger.error("redis",e);
+            throw e;
+        }finally{
+            if(success && jedis != null){
+                jedisPool.returnResource(jedis);
+            }
+        }
+    }
+    /**
+     * 强制归还资源的hget
+     * @param key
+     * @param field
+     * @author dozen.zhang
+     */
+    public static String hget(String key ,String field){
+        Jedis jedis = null;
+        String value=null;
+        boolean success =true;
+        try {
+            jedis = jedisPool.getResource();
+            value=jedis.hget(key,field);
+        } catch (Exception e) {
+            success  = false;
+            if(jedis != null){
+                jedisPool.returnBrokenResource(jedis);
+            }
+            logger.error("redis",e);
+            throw e;
+        }finally{
+            if(success && jedis != null){
+                jedisPool.returnResource(jedis);
+            }
+        }
+        return value;
+    }
+    /**
+     * 获取数据 归还资源
+     *
+     * @param key
+     * @return
+     */
+    public static String get(String key){
+        String value = null;
+        Jedis jedis = null;
+        boolean success =true;
+        try {
+            jedis = jedisPool.getResource();
+            value = jedis.get(key);
+        } catch (Exception e) {
+            success  = false;
+            if(jedis != null){
+                jedisPool.returnBrokenResource(jedis);
+            }
+            logger.error("redis",e);
+            throw e;
+        }finally{
+            if(success && jedis != null){
+                jedisPool.returnResource(jedis);
+            }
+        }
+
+        return value;
+    }
+
+    /**
+     * 获取数据 归还连接
+     *
+     * @param key
+     * @return
+     */
+    public static void set(String key,String value){
+        Jedis jedis = null;
+        boolean success = true;
+        try {
+            jedis = jedisPool.getResource();
+            jedis.set(key,value);
+        } catch (Exception e) {
+            success  = false;
+            if(jedis != null){
+                jedisPool.returnBrokenResource(jedis);
+            }
+            logger.error("redis",e);
+            throw e;
+        }finally{
+            if(success && jedis != null){
+                jedisPool.returnResource(jedis);
+            }
+        }
+
+    }
 }

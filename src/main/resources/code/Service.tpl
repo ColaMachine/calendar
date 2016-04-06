@@ -61,10 +61,9 @@ public class ${Abc}Service extends BaseService {
            </#if>
        </#if>
     /**
-     * 说明:list by page and params
+     * 说明:list by page and params根据参数返回列表
      * @param page
-     * @return
-     * @return List<Role>
+     * @return List<HashMap>
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
      */
@@ -73,6 +72,17 @@ public class ${Abc}Service extends BaseService {
     }
      public List<${Abc}> listByParams(HashMap params) {
         return ${abc}Mapper.listByParams(params);
+    }
+    ${.now?date}
+     /**
+     * 说明:countByParams 根据参数提取个数
+     * @param page
+     * @return int
+     * @author dozen.zhang
+     * @date 2015年11月15日下午12:36:24
+     */
+    public int countByParams(HashMap params) {
+           return ${abc}Mapper.countByParams(params);
     }
 
     /*

@@ -9,11 +9,13 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import cola.machine.dao.SysUserMapper;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -24,7 +26,7 @@ import org.springframework.stereotype.Service;
 import core.action.ResultDTO;
 import cola.machine.bean.Active;
 import cola.machine.bean.Pwdrst;
-import cola.machine.bean.User;
+import cola.machine.bean.SysUser;
 import cola.machine.common.msgbox.MsgReturn;
 import cola.machine.constants.SysConfig;
 import cola.machine.dao.ActiveMapper;
@@ -45,31 +47,24 @@ import cola.machine.util.mail.SimpleMailSender;
  *
  */
 @Service("userService")
-public class UserService {
+public class UserService extends SysUserService{
 
     private static final Logger logger = LoggerFactory
             .getLogger(UserService.class);
 	@Autowired
 	private UserMapper userMapper;
+
+	@Autowired
+	private SysUserMapper sysUserMapper;
 	@Autowired
 	private ActiveMapper activeMapper;
 	@Autowired
 	private PwdrstMapper pwdrstMapper;
 
-	/*
-	 * public void setPwdrstMapper(PwdrstMapper pwdrstMapper) {
-	 * this.pwdrstMapper = pwdrstMapper; }
-	 * 
-	 * public ActiveMapper getActiveMapper() { return activeMapper; }
-	 * 
-	 * public void setActiveMapper(ActiveMapper activeMapper) {
-	 * this.activeMapper = activeMapper; }
-	 * 
-	 * public UserMapper getUserMapper() { return userMapper; }
-	 */
 
-	public User getUserByLoginName(String loginname) {
-		User user = userMapper.selectUserByLoginName(loginname);
+
+	public SysUser getUserByUserName(String loginname) {
+		SysUser user = userMapper.selectUserByUsername(loginname);
 		return user;
 	}
 
@@ -77,40 +72,32 @@ public class UserService {
 		this.userMapper = userMapper;
 	}
 
-	public User saveUser(User user) {
+/*	public SysUser saveUser(SysUser user) {
 		if (user != null) {
-			if (StringUtils.isEmpty(user.getUserid())) {
-				UUID uuid = UUID.randomUUID();
-				user.setUserid(uuid.toString());
+			if (user.getId()==null || user.getId()==0) {
+				//
 			}
-			userMapper.insertUser(user);
+
 		}
 		return user;
-	}
+	}*/
 
-	public User getUserByEmail(String email) {
-		User user = userMapper.selectUserByEmail(email);
+	public SysUser getUserByEmail(String email) {
+		SysUser user = userMapper.selectUserByEmail(email);
+		return user;
+	}
+	public SysUser getUserByTelno(String email) {
+		SysUser user = userMapper.selectUserByTelno(email);
 		return user;
 	}
 
-	public User getUserByUserid(String id) {
-		User user = userMapper.selectUserByUserId(id);
-		return user;
-	}
 
 	public int countAll() {
 		return userMapper.countAll();
 	}
 
-	public java.util.List<Map> getUsersByParam(Map map) {
-		List<Map> list = userMapper.getUsersByParam(map);
-		return list;
-	}
 
-	public User addUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	/**
 	 * 登录验证
@@ -133,17 +120,17 @@ public class UserService {
 	        }
 			
 			params.put("pwd", pwd);
-			List list = userMapper.getUsersByParam(params);
+			List list = sysUserMapper.listByParams(params);
 			if (list != null && list.size() > 0) {
 				HashMap userMap = (HashMap) list.get(0);
 //				returnMap.putAll(userMap);
 				
-				 User user =new User();
+				 SysUser user =new SysUser();
 				  user.setEmail(MapUtils.getString(userMap, "email"));
 				  user.setTelno(MapUtils.getString(userMap, "telno"));
 				  user.setUsername(MapUtils.getString(userMap, "username"));
-				  user.setUserid(MapUtils.getString(userMap, "userid"));
-				  user.setStatus(MapUtils.getByteValue(userMap, "active"));
+				  user.setId(MapUtils.getLong(userMap, "userid"));
+				  user.setStatus(MapUtils.getIntValue(userMap, "active"));
 				  
 				ResultDTO result = ResultUtil.getSuccResult();
 				result.setData(user);
@@ -157,12 +144,12 @@ public class UserService {
 	/**
 	 * 注册
 	 */
-	public ResultDTO saveRegisterUser(User user) {
-		user.setStatus((byte)1);
+	public ResultDTO saveRegisterUser(SysUser user) {
+		user.setStatus(1);
 		// / this.userMapper.getUsersByParam(map)
 		// 校验数据
-		user.setUserid(UUIDUtil.getUUID());
-		ValidateUtil<User> valid = new ValidateUtil<User>();
+
+		//ValidateUtil<User> valid = new ValidateUtil<User>();
 		/*
 		 * ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		 * Validator validator = factory.getValidator(); //
@@ -191,16 +178,25 @@ public class UserService {
 		// TODO 改成int 数
 		//检查是否有相同账号用户
 		//TODO 改成count 就可以了
-		User sameEmailUser = this.getUserByEmail(user.getEmail());
+		SysUser sameEmailUser =new SysUser();
+		if(StringUtil.isNotEmpty(user.getEmail())){
+			 sameEmailUser = this.getUserByEmail(user.getEmail());
+
+		}else if(StringUtil.isNotEmpty(user.getTelno())){
+			sameEmailUser = this.getUserByTelno(user.getTelno());
+		}else{
+			return ResultUtil.getResult(301,"手机号或邮箱地址必填");
+		}
+
 		if (sameEmailUser != null) {
-			return ResultUtil.getWrongResultFromCfg("mail.has.owner");
+			return ResultUtil.getResult(303,"手机号或邮箱地址已被注册");
 		} else {
-			user.setLoginname(user.getEmail());
-			user.setPwd(MD5Utils.MD5Encode(user.getPwd()));
-			this.userMapper.insertUser(user);
+			user.setEmail(user.getEmail());
+			user.setPassword(MD5Utils.MD5Encode(user.getPassword()));
+			this.sysUserMapper.insert(user);
 			// 插入激活数据
 			Active active = new Active();
-			active.setUserid(user.getUserid());
+			active.setUserid(user.getId());
 			active.setActiveid(UUIDUtil.getUUID());
 			this.activeMapper.insertActive(active);
 
@@ -219,7 +215,11 @@ public class UserService {
 			// 这个类主要来发送邮件
 			SimpleMailSender sms = new SimpleMailSender();
 			// sms.sendTextMail(mailInfo);//发送文体格式
-			sms.sendHtmlMail(mailInfo);// 发送html格式
+			try {
+				sms.sendHtmlMail(mailInfo);// 发送html格式
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
 			return ResultUtil.getSuccResult();
 			// }
 		}
@@ -233,7 +233,7 @@ public class UserService {
 	 * @see cola.machine.service.UserService#saveSenPwdrstEmail(java.lang.String)
 	 * @author colamachine
 	 */
-	public ResultDTO saveSenPwdrstEmail(String email) {
+	public ResultDTO saveSendPwdrstEmail(String email) {
 
 		// 格式判断
 		ResultDTO result = RegexUtil.email(email);
@@ -241,13 +241,13 @@ public class UserService {
 			return result;
 		}
 		// 数据判断
-		User user = userMapper.selectUserByEmail(email);
-		if (user == null || StringUtils.isBlank(user.getUserid())) {
+		SysUser user = userMapper.selectUserByEmail(email);
+		if (user == null ||user.getId()==null||user.getId()==0 ) {
 			return ResultUtil.getWrongResultFromCfg("mail.not.register");
 		}
 		// 判断是否有未使用的邮件重置数据
 		// 根据used=0 和 userid 来判断
-		List list = pwdrstMapper.selectUnusedPwdrstByUserId(user.getUserid());
+		List list = pwdrstMapper.selectUnusedPwdrstByUserId(user.getId());
 		Pwdrst pwdrst = new Pwdrst();
 		if (list != null && list.size() > 0) {
 			pwdrst = (Pwdrst) list.get(0);
@@ -256,7 +256,7 @@ public class UserService {
 			// List list=
 			// 保存数据
 			pwdrst = new Pwdrst();
-			pwdrst.setUserid(user.getUserid());
+			pwdrst.setUserid(user.getId());
 			pwdrst.setUsed(false);
 			pwdrst.setCreatetime(new Timestamp((new Date()).getTime()));
 			pwdrst.setIdpwdrst(UUIDUtil.getUUID());
@@ -269,7 +269,7 @@ public class UserService {
 		mailInfo.setMailServerPort("25");
 		mailInfo.setValidate(true);
 		mailInfo.setUserName("likegadfly");
-		mailInfo.setPassword("21656886026774");// 您的邮箱密码
+		mailInfo.setPassword("216568wangyi");// 您的邮箱密码
 		mailInfo.setFromAddress("likegadfly@163.com");
 		mailInfo.setToAddress("371452875@qq.com");
 		mailInfo.setSubject("密码重置");
@@ -278,7 +278,11 @@ public class UserService {
 		// 这个类主要来发送邮件
 		SimpleMailSender sms = new SimpleMailSender();
 		// sms.sendTextMail(mailInfo);//发送文体格式
-		sms.sendHtmlMail(mailInfo);// 发送html格式
+		try {
+			sms.sendHtmlMail(mailInfo);// 发送html格式
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 
 		// 发送邮件
 		// 是否已经发送过重置邮件了
@@ -309,10 +313,10 @@ public class UserService {
 		active.setActived(true);
 		active.setActivedtime(new Timestamp((new Date()).getTime()));
 		this.activeMapper.updateActive(active);
-		User user = this.userMapper.selectUserByUserId(active.getUserid());
-		user.setStatus((byte)2);
-		this.userMapper.updateUser(user);
-		
+		SysUser user = this.sysUserMapper.selectByPrimaryKey(active.getUserid());
+		user.setStatus(2);
+		this.sysUserMapper.updateByPrimaryKey(user);
+
 		return ResultUtil.getSuccResult();
 		/*HashMap returnMap = new HashMap();
 		returnMap.put("user", user);
@@ -345,117 +349,23 @@ public class UserService {
 		}
 		pwdrst.setUsed(true);
 		pwdrstMapper.used(code);
-		String userid = pwdrst.getUserid();
-		User user = new User();
-		user.setUserid(userid);
-		user.setPwd(MD5Utils.MD5Encode(pwd));
+		Long userid = pwdrst.getUserid();
+		SysUser user = new SysUser();
+		user.setId(userid);
+		user.setPassword(MD5Utils.MD5Encode(pwd));
 		userMapper.restPwd(user);
 		return ResultUtil.getSuccResult( "pwd.reset.code.succ");
 	}
-	
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    /**
-     * 说明:list by page and params
-     * @param page
-     * @return
-     * @return List<Role>
-     * @author dozen.zhang
-     * @date 2015年11月15日下午12:36:24
+	/**
+	 * 更新用户状态
+	 * @param status
+	 * @param userid
      */
-    public List<User> listByParams4Page(HashMap params) {
-        return userMapper.listByParams4Page(params);
-    }
-     public List<User> listByParams(HashMap params) {
-        return userMapper.listByParams(params);
-    }
-
-    /*
-     * 说明:
-     * @param User
-     * @return
-     * @return Object
-     * @author dozen.zhang
-     * @date 2015年11月15日下午1:33:54
-     */
-    public ResultDTO save(User user) {
-        // 进行字段验证
-      /* ValidateUtil<User> vu = new ValidateUtil<User>();
-        ResultDTO result = vu.valid(user);
-        if (result.getR() != 1) {
-            return result;
-        }*/
-         //逻辑业务判断判断
-       
-       //判断是更新还是插入
-        if (user.getUserid()==null) {
-                user.setUserid(UUIDUtil.getUUID());
-            userMapper.insert(user);
-        } else {
-             userMapper.updateByPrimaryKey(user);
-        }
-        return ResultUtil.getSuccResult();
-    }
-    /**
-    * 说明:根据主键删除数据
-    * description:delete by key
-    * @param id
-    * @return void
-    * @author dozen.zhang
-    * @date 2015年12月27日下午10:56:38
-    */
-    public void delete(String  userid){
-        userMapper.deleteByPrimaryKey(userid);
-    }   
-    /**
-    * 说明:根据主键获取数据
-    * description:delete by key
-    * @param id
-    * @return void
-    * @author dozen.zhang
-    * @date 2015年12月27日下午10:56:38
-    */
-    public User selectByPrimaryKey(String id){
-       return userMapper.selectByPrimaryKey(id);
-    }
-    /**多id删除
-     * @param idAry
-     * @return
-     * @author dozen.zhang
-     */
-    public ResultDTO multilDelete(String[] idAry) {
-        for(int i=0;i<idAry.length;i++){
-            userMapper.deleteByPrimaryKey(idAry[i]);
-        }
-        return ResultUtil.getSuccResult();
-    }
-
-
+	public void updateStatus(int status ,Long userid) {
+		SysUser user =new SysUser();
+		user.setStatus(status);
+		user.setId(userid);
+		userMapper.updateStatus(user);
+	}
 }

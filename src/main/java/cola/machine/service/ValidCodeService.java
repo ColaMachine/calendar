@@ -202,7 +202,7 @@ public class ValidCodeService {
         // 取缓存中业务+手机号 的value
         SmsHistory history = (SmsHistory) CacheUtil.getInstance().readCache(systemCode + phone, SmsHistory.class);
         if (history == null||StringUtil.isBlank(history.getCode())) {
-            return ResultUtil.getResult(methodCode, ErrorMsg.PARAM_ERROR, 307, "验证码错误");
+            return ResultUtil.getResult(methodCode, ErrorMsg.PARAM_ERROR, 307, "请重新刷新验证码");
         }
 
         // 获取上次访问时间
@@ -220,7 +220,7 @@ public class ValidCodeService {
                 return ResultUtil.getResult(methodCode, ErrorMsg.SYSTEM_ERROR, 309, "缓存格式错误");
             }
         // 验证短信验证码是否相同 忽略大小写
-        if (code.equals(realCode.toLowerCase())) {
+        if (code.equalsIgnoreCase(realCode.toLowerCase())) {
             CacheUtil.getInstance().clearCache(systemCode + phone);
             return ResultUtil.getSuccResult();
             // 销毁该验证码
@@ -362,7 +362,7 @@ public class ValidCodeService {
                 e.printStackTrace();
                 return ResultUtil.getResult(methodCode, ErrorMsg.SYSTEM_ERROR, 304, "缓存失败");
             }
-        }
+        }//redis.clients.jedis.exceptions.JedisConnectionException
         return result;
     }
 

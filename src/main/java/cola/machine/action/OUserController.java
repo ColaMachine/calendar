@@ -12,6 +12,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import cola.machine.bean.SysUser;
+import cola.machine.service.SysUserService;
+import cola.machine.util.*;
+import cola.machine.util.rules.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,16 +34,6 @@ import cola.machine.bean.User;
 import cola.machine.constants.SysConfig;
 import cola.machine.service.UserService;
 import cola.machine.service.ValidCodeService;
-import cola.machine.util.DateUtil;
-import cola.machine.util.RandomValidateCode;
-import cola.machine.util.ResultUtil;
-import cola.machine.util.StringUtil;
-import cola.machine.util.ValidateUtil;
-import cola.machine.util.rules.DateValue;
-import cola.machine.util.rules.EmailRule;
-import cola.machine.util.rules.Length;
-import cola.machine.util.rules.NotEmpty;
-import cola.machine.util.rules.Rule;
 import cola.machine.web.listener.MySessionContext;
 import core.action.ResultDTO;
 import core.page.Page;
@@ -147,14 +141,13 @@ public class OUserController extends BaseController {
     /**
      * 说明:注册提交
      * 
-     * @param user
      * @param request
      * @return
      * @author dozen.zhang
      * @date 2015年5月14日上午11:34:13
      */
     @RequestMapping(value = "/registerPost.json", method = RequestMethod.POST)
-    public @ResponseBody ResultDTO registerPost(User user, HttpServletRequest request) {
+    public @ResponseBody ResultDTO registerPost( HttpServletRequest request) {
         // 新注册的用户激活状态为false
         // 判断邮箱是否邮箱
         // 判断用户名是否有效
@@ -163,17 +156,126 @@ public class OUserController extends BaseController {
         // 两次密码输入是否相同
         // 密码是否有效
         // 验证码是否有效
+        String email = request.getParameter("email");
+        String username =request.getParameter("username");
+        String password = request.getParameter("pwd");
+        String imgCaptcha = request.getParameter("picCaptcha");
 
-        ResultDTO result = this.userService.saveRegisterUser(user);// .loginValid(loginName,
+       // String smsCaptcha = request.getParameter("smsCaptcha");
+        String sessionid = request.getParameter("sessionid");
+
+        ValidateUtil vu = new ValidateUtil();
+        String validStr="";
+
+        vu.add("username", username, "用户名",  new Rule[]{new Required(),new Length(20),new NotEmpty()});
+        vu.add("password", password, "密码",  new Rule[]{new Required(),new Length(50),new NotEmpty()});
+
+        try {
+            validStr = vu.validateString();
+        } catch (Exception e) {
+
+            return ResultUtil.getResult(302,"验证参数错误");
+        }
+        if(StringUtil.isNotEmpty(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+
+        ValidCodeService validCodeService = new ValidCodeService();
+
+
+        SysUser user =new SysUser();
+        user.setPassword(password);
+        user.setUsername(username);
+        if(StringUtil.isPhone(email)){
+            user.setTelno(email);
+        }else if(StringUtil.isEmail(email)){
+            user.setEmail(email);
+        }else{
+            return ResultUtil.getResult(301,"邮箱或手机号必填");
+        }
+        ResultDTO result = validCodeService.remoteValidImg(request.getRequestedSessionId(), imgCaptcha);
+        if(!result.isRight()){
+            return result;
+        }
+         result = this.userService.saveRegisterUser(user);// .loginValid(loginName,
                                                                    // pwd);
         if (result.isRight()) {
             HttpSession session = request.getSession();
-            user.setPwd("");
-            user.setStatus((byte)1);
+            user.setPassword("");
+            user.setStatus(1);
             session.putValue("user", user);
         }
         return result;
 
+    }
+    @RequestMapping(value = "/requestValidPhoneCode.json", method = RequestMethod.POST)
+    public @ResponseBody ResultDTO requestValidPhoneCode( HttpServletRequest request) {
+        SysUser user = (SysUser)request.getSession().getAttribute("user");
+        if(user==null ){
+            return ResultUtil.getResult(300,"未登陆");
+        }
+        if(StringUtil.isBlank(user.getTelno())){
+            return ResultUtil.getResult(301,"手机号未填写");
+        }
+        String phone =user.getTelno();
+
+        ValidCodeService validCodeService=new ValidCodeService();
+
+        //status 位置标识 0000 新注册  冻结 邮箱验证  手机验证
+        int status =user.getStatus();
+        if((status & 1) ==1){
+            //说明已经激活过了
+            return ResultUtil.getResult(301,"手机已验证过了");
+        }
+        ResultDTO result = validCodeService.getSmsValidCode("calendar",phone);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/validPhone.json", method = RequestMethod.POST)
+    public @ResponseBody ResultDTO validPhone( HttpServletRequest request) {
+        // 新注册的用户激活状态为false
+        // 判断邮箱是否邮箱
+        // 判断用户名是否有效
+        // 判断注册邮箱是否重复
+        // 两次密码输入是否相同
+        // 密码是否有效
+        // 验证码是否有效
+        SysUser user = (SysUser)request.getSession().getAttribute("user");
+        if(user==null ){
+            return ResultUtil.getResult(300,"未登陆");
+        }
+        if(StringUtil.isBlank(user.getTelno())){
+            return ResultUtil.getResult(301,"手机号未填写");
+        }
+        String phone =user.getTelno();
+       // String phone = request.getParameter("phone");
+        String smsCaptcha = request.getParameter("smsCaptcha");
+        if(StringUtil.isBlank(smsCaptcha)||smsCaptcha.length()<4 ){
+            return ResultUtil.getResult(301,"请填写验证码");
+        }
+        ValidCodeService validCodeService=new ValidCodeService();
+        ResultDTO result = validCodeService.remoteValidSms(phone, smsCaptcha);
+        if(!result.isRight()){
+            return result;
+        }
+        //status 位置标识 0000 新注册  冻结 邮箱验证  手机验证
+        int status =user.getStatus();
+        if((status & 1) ==1){
+            //说明已经激活过了
+            return ResultUtil.getResult(301,"手机已验证过了");
+        }
+        status = status | 1;
+        userService.updateStatus(status,user.getId());
+        result = this.userService.saveRegisterUser(user);// .loginValid(loginName,
+        // pwd);
+        if (result.isRight()) {
+            HttpSession session = request.getSession();
+            user.setPassword("");
+            user.setStatus(1);
+            session.putValue("user", user);
+        }
+        return result;
     }
 
     /**
@@ -285,7 +387,7 @@ public class OUserController extends BaseController {
             return this.getWrongResultFromCfg("validatecode.wrong");
         }
         String email = request.getParameter("email");
-        return userService.saveSenPwdrstEmail(email);
+        return userService.saveSendPwdrstEmail(email);
         // 发送邮件
         // return "/login/pwdreset.jsp";
     }

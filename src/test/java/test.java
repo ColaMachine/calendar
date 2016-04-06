@@ -64,7 +64,7 @@ public class test {
             e.printStackTrace();
         }
 
-        System.out.println(Config.a);
+      //  System.out.println(Config.a);
 
         System.out.println("所有任务执行完毕");
     }

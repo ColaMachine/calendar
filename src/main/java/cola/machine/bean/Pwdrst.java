@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Pwdrst {
 private String idpwdrst;
-private String userid;
+private long userid;
 private Timestamp createtime;
 private boolean used;
 private Timestamp resttime;
@@ -14,10 +14,10 @@ public String getIdpwdrst() {
 public void setIdpwdrst(String idpwdrst) {
 	this.idpwdrst = idpwdrst;
 }
-public String getUserid() {
+public Long getUserid() {
 	return userid;
 }
-public void setUserid(String userid) {
+public void setUserid(Long userid) {
 	this.userid = userid;
 }
 public Timestamp getCreatetime() {

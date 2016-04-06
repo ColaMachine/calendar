@@ -12,6 +12,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import cola.machine.bean.SysUser;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cola.machine.bean.User;
+import cola.machine.bean.SysUser;
 import cola.machine.service.UserService;
 import cola.machine.service.ValidCodeService;
 import cola.machine.util.DateUtil;
@@ -47,39 +48,36 @@ import core.action.ResultDTO;
 import core.page.Page;
 import core.util.RequestUtil;
 
-@Controller
- @RequestMapping("/user")
-public class UserController extends BaseController {
+/*@Controller
+ @RequestMapping("/user")*/
+public class UserController extends BaseController {/*
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
 
     
     
-    /**
+    *//**
      * 说明: 跳转到角色列表页面
      * 
      * @return
      * @return String
      * @author dozen.zhang
      * @date 2015年11月15日下午12:30:45
-     */
+     *//*
     @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
     public String list() {
         return "/static/html/UserList.html";
     }
 
  
-    /**
+    *//**
      * 说明:ajax请求角色信息
-     * 
-     * @param curPage
-     * @param pageSize
      * @return
      * @return Object
      * @author dozen.zhang
      * @date 2015年11月15日下午12:31:55
-     */
+     *//*
     @RequestMapping(value = "/list.json")
     @ResponseBody
     public Object list(HttpServletRequest request) {
@@ -175,17 +173,16 @@ if(!StringUtil.isBlank(status)){
 }
 
         params.put("page",page);
-        List<User> users = userService.listByParams4Page(params);
+        List<SysUser> users = userService.listByParams4Page(params);
         return ResultUtil.getResult(users, page);
     }
     
     
     
-    /**
-     * @param id 参数
+    *//**
      * @param request 发请求
      * @return Object
-     */
+     *//*
     @RequestMapping(value = "/edit.htm")
     public Object edit( HttpServletRequest request) {
         // 查找所有的角色
@@ -202,7 +199,7 @@ if(!StringUtil.isBlank(status)){
     String id = request.getParameter("id");
 HashMap<String,Object> result =new HashMap<String,Object>();
 if(!StringUtil.isBlank(id)){
-    User bean = userService.selectByPrimaryKey(String.valueOf(id));
+    SysUser bean = userService.selectByPrimaryKey(Long.valueOf(id));
     result.put("bean", bean);
 }
 return this.getResult(result);
@@ -210,15 +207,15 @@ return this.getResult(result);
 
 
     
-      /*  String id = request.getParameter("id");
+      *//*  String id = request.getParameter("id");
         User bean = userService.selectByPrimaryKey(String.valueOf(id));
         HashMap result =new HashMap();
         result.put("bean", bean);
-        return this.getResult(bean);*/
+        return this.getResult(bean);*//*
     }
 
     
-    /**
+    *//**
      * 说明:保存角色信息
      * 
      * @param request
@@ -227,13 +224,13 @@ return this.getResult(result);
      * @return Object
      * @author dozen.zhang
      * @date 2015年11月15日下午1:33:00
-     */
+     *//*
     // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
     @RequestMapping(value = "/save.json")
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
-        User user =new  User();
-        /*
+        SysUser user =new  SysUser();
+        *//*
         String userid = request.getParameter("userid");
         if(!StringUtil.isBlank(userid)){
             user.setUserid(String.valueOf(userid)) ;
@@ -278,7 +275,7 @@ return this.getResult(result);
         if(!StringUtil.isBlank(status)){
             user.setStatus(Byte.valueOf(status)) ;
         }
-        */
+        *//*
         String userid = request.getParameter("userid");
         if(!StringUtil.isBlank(userid)){
             user.setUserid(userid);
@@ -352,12 +349,12 @@ return this.getResult(result);
         userService.delete(userid);
         return this.getResult(SUCC);
     }
-     /**
+     *//**
      * 多行删除
      * @param request
      * @return
      * @author dozen.zhang
-     */
+     *//*
     @RequestMapping(value = "/mdel.json")
     @ResponseBody
     public Object multiDelete(HttpServletRequest request) {
@@ -389,12 +386,12 @@ return this.getResult(result);
        return  userService.multilDelete(idAry);
     }
 
-    /**
+    *//**
      * 导出
      * @param request
      * @return
      * @author dozen.zhang
-     */
+     *//*
     @RequestMapping(value = "/export.json")
     @ResponseBody   
     public Object exportExcel(HttpServletRequest request) {
@@ -512,7 +509,7 @@ return this.getResult(result);
         colTitle.put("status", "状态");
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
-            User sm = list.get(i);
+            SysUser sm = list.get(i);
             HashMap map = new HashMap();
             map.put("userid", list.get(i).getUserid());
             map.put("loginname", list.get(i).getLoginname());
@@ -529,11 +526,11 @@ return this.getResult(result);
             if (cola.machine.util.ExcelUtil.getExcelFile(finalList, fileName, colTitle) != null) {
                 return this.getResult(SUCC, "导出成功", fileName);
             }
-            /*
+            *//*
              * return new ResponseEntity<byte[]>(
              * FileUtils.readFileToByteArray(new File(fileName)), headers,
              * HttpStatus.CREATED);
-             */
+             *//*
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -543,5 +540,5 @@ return this.getResult(result);
     @RequestMapping(value = "/import.json")
     public void importExcel(){
         
-    }
+    }*/
 }

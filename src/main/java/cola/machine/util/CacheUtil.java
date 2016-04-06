@@ -160,7 +160,7 @@ public class CacheUtil {
     public void writeServerCache(String key, Object value,int seconds) {
         Gson gson = new Gson();
         String json = gson.toJson(value);
-        RedisUtil.set(key, json,seconds);
+        RedisUtil.setex(key, json,seconds);
 //        Jedis jedis = RedisUtil.getJedis();
 //        jedis.set(key, json);
 //        RedisUtil.returnResource(jedis);

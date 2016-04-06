@@ -46,7 +46,7 @@ public interface PwdrstMapper {
 	 * @author dozen.zhang
 	 * @date 2015年5月22日下午1:59:35
 	 */
-	public List selectUnusedPwdrstByUserId(String userid);
+	public List selectUnusedPwdrstByUserId(Long userid);
 
 
 

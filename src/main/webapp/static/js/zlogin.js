@@ -14,58 +14,117 @@ var loginForm={
 
 }
 var registerForm={
-    formEle:null,
-    registerButton:null,
-    sendSmsForm:null,
+    registerForm:null,
+    registerBtn:null,//注册按钮
+    registerEnterBtn:null,
+    modal:null,
+    registerEnterForm:null,
     init:function(){
-        $.extend(this.valid,BaseValidator);
-        this.root.validate(valid);
-        this.registerValidator.init();
-        this.formEle=$("#register_form");
-        this.button=this.formEle.find("#registerBtn");
+
+
+        this.registerForm=$("#registerForm");
+         this.modal=$("#registerEnterModal");
+         this.registerEnterForm=$("#registerEnterForm");
+
+        this.registerBtn=this.registerForm.find("#registerBtn");
+
+        this.registerEnterBtn=this.modal.find("#registerEnterBtn");
+         this.registerBtn.removeAttr("disabled");
+        this.registerEnterBtn.removeAttr("disabled");
         this.addEventListener();
-        this.sendSmsForm=$("#register_sms_form");
+           $.extend(this.valid,BaseValidator);
+                this.registerForm.validate(this.valid);
+
     },
     addEventListener:function(){
-        this.button.click(this.register);
+        //注册按钮
+        this.registerBtn.click(this.register);
+        //获取验证码按钮
+
+        registerForm.modal.find("#smsCaptchaGet").click(function(){
+            registerForm.captchaCutdown(this);
+            //发送短信
+            Ajax.getJSON(PATH+"/code/sms/request.json",{"phone":registerForm.registerForm.find("#email").val()},function(result){
+                if(result.r==AJAX_SUCC){
+                   dialog.alert("发送成功");
+                }else{
+                    dialog.error(result.msg);
+                }
+            });
+       });
+
+        this.registerForm.find("#picCaptchaGet").click(function(){
+            Ajax.getJSON(PATH+"/code/img/request.json",null,function(result){
+                if(result.r==AJAX_SUCC){
+                   registerForm.registerForm.find("#picCaptchaGet").find("img").prop("src","data:image/png;base64,"+result.data.imgdata);
+                }else{
+                    dialog.error(result.msg);
+                }
+            });
+        });
+
+        this.registerEnterBtn.click(function(){
+            registerForm.submit();
+        });
+        this.modal.modal("show");
     },
 
     register:function () {
-    	if (!this.formEle.valid()) {
+    	if (!registerForm.registerForm.valid()) {
     		return;
     	}
-    	this.button.attr("disabled", "disabled");
+    	registerForm.registerBtn.attr("disabled", "disabled");
+        var jso=changeForm2Jso("#registerForm");
+        $.post(PATH + "/registerPost.json", jso, function(data) {
+             registerForm.registerBtn.removeAttr("disabled");
+           if (data[AJAX_RESULT] == AJAX_SUCC) {
+                //如果是用手机注册的就弹出手机验证码 发送窗口
+                if(StringUtil.isPhone(jso.email)){
+                //手机号复制
+                    registerForm.registerEnterForm.find("#phone").text(jso.email);
+                    registerForm.modal.modal("show");
+                }else
+                if(StringUtil.isEmail(jso.email)){
+                //手机号复制
+                    registerForm.registerEnterForm.find("#phone").text(jso.email);
+                    registerForm.modal.modal("show");
+                }
 
-    	//如果是用手机注册的就弹出手机验证码 发送窗口
-        if(StringUtil.isPhone(jso.email)){
-           $("#myModal").modal("show");
-           $("#myModal").find("#smsCaptchaGet").click(function(){
-                registerForm.captchaCutdown(this);
-           });
-        }
-        return;
+
+           } else {
+               var ul = registerForm.registerForm.find(".failure").find("ul");
+               ul.empty();
+               ul.append("<li>" + data[AJAX_MSG] + "</li>");
+               if (data[AJAX_ERRORS]) {
+                   for ( var key in data[AJAX_ERRORS]) {
+                       ul.append("<li>" + data[AJAX_ERRORS][key] + "</li>");
+                   }
+               }
+           }
+
+        });
     	//如果是邮箱注册的就弹出邮箱验证码 发送窗口
-
-
     },
     submit:function(){
-        var jso = changeForm2Jso("#register_form");
-        jso.smsCaptcha=sendSmsForm.find("#smsCaptcha").val();
-        $.post(PATH + "/registerPost.json", jso, function(data) {
-                if (data[AJAX_RESULT] == AJAX_SUCC) {
-                    window.location = PATH + "/index.htm";
-                } else {
-                    var ul = registerForm.formEle.find(".failure").find("ul");
-                    ul.empty();
-                    ul.append("<li>" + data[AJAX_MSG] + "</li>");
-                    if (data[AJAX_ERRORS]) {
-                        for ( var key in data[AJAX_ERRORS]) {
-                            ul.append("<li>" + data[AJAX_ERRORS][key] + "</li>");
-                        }
-                    }
-                }
-                registerForm.button.removeAttr("disabled");
-            });
+
+    	var jso={};
+    	jso.smsCaptcha=this.registerEnterForm.find("#smsCaptcha").val();
+    	if(StringUtil.isBlank(jso.smsCaptcha)|| jso.smsCaptcha.length<4){
+    	    dialog.alert("请输入验证码");
+    	    return;
+    	}
+        jso.smsCaptcha=this.registerEnterForm.find("#smsCaptcha").val();
+        Ajax.getJSON(PATH+"/validPhone.json",jso,function(result){
+            if(result.r==AJAX_SUCC){
+                 window.location=PATH+"/index.htm";
+            }else{
+                dialog.alert(result.msg);
+            }
+
+        });
+
+
+
     },
     valid:{
         rules : {
@@ -115,8 +174,8 @@ var registerForm={
     },
 
     captchaCutdown:function(smsBtn){
-           var smsBtn =$(smsBtn);
-			smsBtn.attr('disabled', true);
+           var self =$(smsBtn);
+			self.attr('disabled', true);
 			self.text('发送中');
 			var time =  60;
 			var sI = setInterval(function() {
@@ -349,7 +408,8 @@ $(document).ready(function() {
 	//登录表单验证器初始化
 	loginValidator.init();
 	//注册表单初始化
-	registerValidator.init();
+	//registerValidator.init();
+	registerForm.init();
 //在这里面输入任何合法的js语句
 //页面层-自定义
 /*layer.open({
@@ -360,21 +420,11 @@ $(document).ready(function() {
   skin: 'yourclass',
   content: '自定义HTML内容'
 });*/
-$("#registerBtn").removeAttr("disabled");
-	  $("#register_form").find("#picCaptchaGet").click(function(){
-	    Ajax.getJSON(PATH+"/register/captcha.json",null,function(result){
-        	    if(result.r==AJAX_SUCC){
-        	        $("#register_form").find("#picCaptchaGet").find("img").prop("src","data:image/png;base64,"+result.data.imgdata);
-        	    }else{
-        	        dialog.error(result.msg);
-        	    }
-        	});
-	});
 
 	checkCookie();
 
 
-	, "请输入有效的邮箱地址或者手机号");
+
 
 	//show user name and password
 

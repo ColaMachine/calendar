@@ -4,7 +4,16 @@ import java.sql.Timestamp;
 
 public class Active {
 private String activeid;
-private String userid;
+
+	public long getUserid() {
+		return userid;
+	}
+
+	public void setUserid(long userid) {
+		this.userid = userid;
+	}
+
+	private long userid;
 private boolean actived;
 public boolean isActived() {
 	return actived;
@@ -19,12 +28,7 @@ public String getActiveid() {
 public void setActiveid(String activeid) {
 	this.activeid = activeid;
 }
-public String getUserid() {
-	return userid;
-}
-public void setUserid(String userid) {
-	this.userid = userid;
-}
+
 public Timestamp getActivedtime() {
 	return activedtime;
 }
