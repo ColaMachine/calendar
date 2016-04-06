@@ -143,11 +143,7 @@ public class OUserController extends BaseController {
         return "static/html/zregisterByEmail.html";
     }
 
-    @RequestMapping(value = "/register/captcha.json", method = RequestMethod.GET)
-    public @ResponseBody ResultDTO getPicCaptcha(HttpServletRequest request){
-        ValidCodeService validCodeService = new ValidCodeService();
-        return validCodeService.getImgValidCode("calendar",request.getRequestedSessionId());
-    }
+
     /**
      * 说明:注册提交
      * 

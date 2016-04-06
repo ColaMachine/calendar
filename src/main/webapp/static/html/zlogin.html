@@ -126,13 +126,13 @@
                     <h6 class="modal-title center" id="myModalLabel">请输入你收到的6位数字短信验证码</h6>
                 </div>
                 <div class="modal-body">
-                    <form id="register_form" style="" class="form-signin"
+                    <form id="register_sms_form" style="" class="form-signin"
                           action="<%=path %>/pwdrestPost" method="post">
                     <div class="form-group">
                         <label for="username" class="sr-only">手机号码</label>
-                        <span
-                                name="username" maxlength="50" class="form-control"
-                                placeholder="姓名" required autofocus>13958173965</span>
+                        <span   id="phone"
+                                name="phone"  class="form-control"
+                                  ></span>
                     </div>
                     <div class="form-group">
                         <label for="email" class="sr-only">手机验证码</label>
@@ -144,7 +144,7 @@
                     </form>
                 </div>
                 <div class="modal-footer ">
-                    <button type="button" class="btn btn-primary center">点击进入</button>
+                    <button type="button" id="registerSubmitBtn" class="btn btn-primary center">点击进入</button>
                 </div>
             </div>
         </div>

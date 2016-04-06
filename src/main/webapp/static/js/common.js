@@ -1236,3 +1236,29 @@ var setting = {
            }
        };
 
+var BaseValidator={
+	errorElement : 'div',
+            					errorClass : 'alert alert-warning',
+            					focusInvalid : false,
+highlight : function(element) {
+            						$(element).closest('.form-signin').removeClass(
+            								'has-info').addClass('has-error');
+            					},
+
+            					success : function(e) {
+            						$(e).closest('.form-signin').removeClass('has-error')
+            								.addClass('has-info');
+            						$(e).remove();
+            					},
+
+            					errorPlacement : function(error, element) {
+            						error.insertAfter(element);
+            					},
+
+            					submitHandler : function(form) {
+            						register();
+
+            					},
+            					invalidHandler : function(form) {
+            					}
+}

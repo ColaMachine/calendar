@@ -8,11 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import cola.machine.config.Config;
 import cola.machine.config.ValidCodeConfig;
+import cola.machine.util.ResultUtil;
+import cola.machine.util.StringUtil;
 import cola.machine.util.encrypt.StringEncryptUtil;
 import org.codehaus.jackson.map.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -180,6 +183,18 @@ public class ValidCodeController {
         //调用生成验证码服务 返回验证码 或者失败原因
         ResultDTO result = validCodeService.imgValidCode(systemno, sessionid, code);
         return result;
+    }
+    @RequestMapping(value = "/img/request.json", method = RequestMethod.GET)
+    public @ResponseBody ResultDTO imgRequest(HttpServletRequest request){
+        return validCodeService.getImgValidCode("calendar",request.getRequestedSessionId());
+    }
+    @RequestMapping(value = "/sms/request.json", method = RequestMethod.GET)
+    public @ResponseBody ResultDTO smsRequest(HttpServletRequest request){
+        String phone =request.getParameter("phone");
+        if(StringUtil.isBlank(phone)||!StringUtil.isPhone(phone)){
+            return ResultUtil.getResult(302,"手机号不能为空");
+        }
+        return validCodeService.getSmsValidCode("calendar",phone);
     }
     public static void main(String[] args) {
         //\222\200\177\000\000\001

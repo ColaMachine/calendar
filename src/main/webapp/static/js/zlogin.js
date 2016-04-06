@@ -10,6 +10,127 @@
  *
  *
  */
+var loginForm={
+
+}
+var registerForm={
+    formEle:null,
+    registerButton:null,
+    sendSmsForm:null,
+    init:function(){
+        $.extend(this.valid,BaseValidator);
+        this.root.validate(valid);
+        this.registerValidator.init();
+        this.formEle=$("#register_form");
+        this.button=this.formEle.find("#registerBtn");
+        this.addEventListener();
+        this.sendSmsForm=$("#register_sms_form");
+    },
+    addEventListener:function(){
+        this.button.click(this.register);
+    },
+
+    register:function () {
+    	if (!this.formEle.valid()) {
+    		return;
+    	}
+    	this.button.attr("disabled", "disabled");
+
+    	//如果是用手机注册的就弹出手机验证码 发送窗口
+        if(StringUtil.isPhone(jso.email)){
+           $("#myModal").modal("show");
+           $("#myModal").find("#smsCaptchaGet").click(function(){
+                registerForm.captchaCutdown(this);
+           });
+        }
+        return;
+    	//如果是邮箱注册的就弹出邮箱验证码 发送窗口
+
+
+    },
+    submit:function(){
+        var jso = changeForm2Jso("#register_form");
+        jso.smsCaptcha=sendSmsForm.find("#smsCaptcha").val();
+        $.post(PATH + "/registerPost.json", jso, function(data) {
+                if (data[AJAX_RESULT] == AJAX_SUCC) {
+                    window.location = PATH + "/index.htm";
+                } else {
+                    var ul = registerForm.formEle.find(".failure").find("ul");
+                    ul.empty();
+                    ul.append("<li>" + data[AJAX_MSG] + "</li>");
+                    if (data[AJAX_ERRORS]) {
+                        for ( var key in data[AJAX_ERRORS]) {
+                            ul.append("<li>" + data[AJAX_ERRORS][key] + "</li>");
+                        }
+                    }
+                }
+                registerForm.button.removeAttr("disabled");
+            });
+    },
+    valid:{
+        rules : {
+            username : {
+                required : true,
+                rangelength : [ 3, 15 ]
+            },
+            email : {
+            /*	email : true,*/
+                required : true,
+                isemailorphone:true,
+                rangelength : [ 1, 50 ],
+            /*	isemail : true*/
+            },
+            pwd : {
+                stringCheck : true,
+                required : true,
+                rangelength : [ 6, 15 ]
+            },
+            pwdrepeat : {
+                stringCheck : true,
+                required : true,
+                rangelength : [ 6, 15 ],
+                equalTo : "#pwd"
+            }
+        },
+        messages : {
+            username : {
+                required : "请填写真实的姓名",
+                rangelength : "姓名长度应在5~15个字符"
+            },
+            email : {
+                email : "请填写真实的邮箱",
+                required : "邮箱未填写",
+                rangelength : "邮箱长度应在50字符以内"
+            },
+            pwd : {
+                required : "密码未填写",
+                rangelength : "密码应由6~20个的数字或字母组成"
+            },
+            pwdrepeat : {
+                required : "密码未填写",
+                rangelength : "密码应由6~20个的数字或字母组成",
+                equalTo : "两次输入密码不同"
+            }
+        }
+    },
+
+    captchaCutdown:function(smsBtn){
+           var smsBtn =$(smsBtn);
+			smsBtn.attr('disabled', true);
+			self.text('发送中');
+			var time =  60;
+			var sI = setInterval(function() {
+				time = time - 1;
+				if (time > 0) {
+					self.text(time + '秒后重试');
+				} else {
+					window.clearInterval(sI);
+					self.text('重新获取');
+					self.removeAttr("disabled");
+				}
+			}, 1000);
+    }
+}
 
 function doRegister() {
 	document.location = "register.html";
@@ -22,7 +143,7 @@ var loginValidator = function() {
 		$('#login_form').validate(
 				{
 					errorElement : 'div',
-					errorClass : 'alert alert-warning',
+					errorClass : 'help-block',
 					focusInvalid : false,
 					rules : {
 						email : {
@@ -83,7 +204,7 @@ var loginValidator = function() {
 			}
 		});
 		//注册表单初始化
-		registerValidator.init();
+		//loginValidator.init();
 	};
 	return {
 		init : function() {
@@ -115,77 +236,7 @@ var form_type = "login";
 var registerValidator = function() {
 	var handleSubmit = function() {
 		$('#register_form').validate(
-				{
-					errorElement : 'div',
-					errorClass : 'alert alert-warning',
-					focusInvalid : false,
-					rules : {
-						username : {
-							required : true,
-							rangelength : [ 3, 15 ]
-						},
-						email : {
-						/*	email : true,*/
-							required : true,
-							isemailorphone:true,
-							rangelength : [ 1, 50 ],
-						/*	isemail : true*/
-						},
-						pwd : {
-							stringCheck : true,
-							required : true,
-							rangelength : [ 6, 15 ]
-						},
-						pwdrepeat : {
-							stringCheck : true,
-							required : true,
-							rangelength : [ 6, 15 ],
-							equalTo : "#pwd"
-						}
-					},
-					messages : {
-						username : {
-							required : "请填写真实的姓名",
-							rangelength : "姓名长度应在5~15个字符"
-						},
-						email : {
-							email : "请填写真实的邮箱",
-							required : "邮箱未填写",
-							rangelength : "邮箱长度应在50字符以内"
-						},
-						pwd : {
-							required : "密码未填写",
-							rangelength : "密码应由6~20个的数字或字母组成"
-						},
-						pwdrepeat : {
-							required : "密码未填写",
-							rangelength : "密码应由6~20个的数字或字母组成",
-							equalTo : "两次输入密码不同"
-						}
-					},
-
-					highlight : function(element) {
-						$(element).closest('.form-signin').removeClass(
-								'has-info').addClass('has-error');
-					},
-
-					success : function(e) {
-						$(e).closest('.form-signin').removeClass('has-error')
-								.addClass('has-info');
-						$(e).remove();
-					},
-
-					errorPlacement : function(error, element) {
-						error.insertAfter(element);
-					},
-
-					submitHandler : function(form) {
-						register();
-
-					},
-					invalidHandler : function(form) {
-					}
-				});
+				);
 		$("#registerBtn").click(function() {
 			register();
 		})
@@ -290,35 +341,9 @@ function login() {
 		$("#loginBtn").removeAttr("disabled", "");
 	});
 }
-function register() {
-	if (!$("#register_form").valid()) {
-		return;
-	}
-	$("#registerBtn").attr("disabled", "disabled");
-	var jso = changeForm2Jso("#register_form");
-	//如果是用手机注册的就弹出手机验证码 发送窗口
-    if(StringUtil.isPhone(jso.email)){
-        alert(1123);
-    }
-    return;
-	//如果是邮箱注册的就弹出邮箱验证码 发送窗口
 
-	$.post(PATH + "/registerPost.json", jso, function(data) {
-		if (data[AJAX_RESULT] == AJAX_SUCC) {
-			window.location = PATH + "/index.htm";
-		} else {
-			var ul = $("#register_form").find(".failure").find("ul");
-			ul.empty();
-			ul.append("<li>" + data[AJAX_MSG] + "</li>");
-			if (data[AJAX_ERRORS]) {
-				for ( var key in data[AJAX_ERRORS]) {
-					ul.append("<li>" + data[AJAX_ERRORS][key] + "</li>");
-				}
-			}
-		}
-		$("#registerBtn").removeAttr("disabled");
-	});
-}
+
+
 $(document).ready(function() {
 	//$("#loginBtn").bind('click',function(){alert('tt!')});
 	//登录表单验证器初始化
@@ -335,6 +360,7 @@ $(document).ready(function() {
   skin: 'yourclass',
   content: '自定义HTML内容'
 });*/
+$("#registerBtn").removeAttr("disabled");
 	  $("#register_form").find("#picCaptchaGet").click(function(){
 	    Ajax.getJSON(PATH+"/register/captcha.json",null,function(result){
         	    if(result.r==AJAX_SUCC){
@@ -347,19 +373,7 @@ $(document).ready(function() {
 
 	checkCookie();
 
-jQuery.validator.addMethod("isemailorphone", function(value, element) {
-if(this.optional(element) )
-	return true;
-	if( /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(value)){
-	 $("#register").find("#smsCaptcha").parent().parent().hide();
-	return true;
-	}
-	if(/^[1][345678][0-9]{9}$/.test(value)){
-	    $("#register").find("#smsCaptcha").parent().parent().show();
-	    return true;
-	}
-return false;
-}
+
 	, "请输入有效的邮箱地址或者手机号");
 
 	//show user name and password
