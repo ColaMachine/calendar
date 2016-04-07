@@ -162,7 +162,7 @@ public class OUserController extends BaseController {
         String imgCaptcha = request.getParameter("picCaptcha");
 
        // String smsCaptcha = request.getParameter("smsCaptcha");
-        String sessionid = request.getParameter("sessionid");
+        String sessionid = request.getRequestedSessionId();
 
         ValidateUtil vu = new ValidateUtil();
         String validStr="";
@@ -191,9 +191,9 @@ public class OUserController extends BaseController {
         }else if(StringUtil.isEmail(email)){
             user.setEmail(email);
         }else{
-            return ResultUtil.getResult(301,"邮箱或手机号必填");
+            return ResultUtil.getResult(301,"邮箱或手机号输入错误");
         }
-        ResultDTO result = validCodeService.remoteValidImg(request.getRequestedSessionId(), imgCaptcha);
+        ResultDTO result = validCodeService.remoteValidImg(sessionid, imgCaptcha);
         if(!result.isRight()){
             return result;
         }
@@ -202,8 +202,8 @@ public class OUserController extends BaseController {
         if (result.isRight()) {
             HttpSession session = request.getSession();
             user.setPassword("");
-            user.setStatus(1);
-            session.putValue("user", user);
+           // user.setStatus(1);
+            session.setAttribute("user", user);
         }
         return result;
 
@@ -241,7 +241,8 @@ public class OUserController extends BaseController {
         // 两次密码输入是否相同
         // 密码是否有效
         // 验证码是否有效
-        SysUser user = (SysUser)request.getSession().getAttribute("user");
+        HttpSession session = request.getSession();
+        SysUser user = (SysUser)session.getAttribute("user");
         if(user==null ){
             return ResultUtil.getResult(300,"未登陆");
         }
@@ -267,13 +268,13 @@ public class OUserController extends BaseController {
         }
         status = status | 1;
         userService.updateStatus(status,user.getId());
-        result = this.userService.saveRegisterUser(user);// .loginValid(loginName,
+        //result = this.userService.saveRegisterUser(user);// .loginValid(loginName,
         // pwd);
         if (result.isRight()) {
-            HttpSession session = request.getSession();
+
             user.setPassword("");
-            user.setStatus(1);
-            session.putValue("user", user);
+            user.setStatus(status);
+            session.setAttribute("user", user);
         }
         return result;
     }

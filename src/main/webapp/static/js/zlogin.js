@@ -11,6 +11,10 @@
  *
  */
 var loginForm={
+    formId:null,
+    formDom:null,
+    validImgId:null,
+
 
 }
 var registerForm={
