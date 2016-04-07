@@ -11,10 +11,121 @@
  *
  */
 var loginForm={
-    formId:null,
-    formDom:null,
-    validImgId:null,
+    ids:{
+        form:null,
+        picCaptchaInput:null,
+        picCaptchaImg:null,
+        userName:null,
+        pwd:null,
+        rememberMe:null,
+        forgetLink:null,
+        submitBtn:null,
+    },
+    doms:{
 
+    },
+    init:function(){
+        var cfg={
+            form:"#login_form",
+            userName:"#email",
+            pwd:"#loginpwd",
+            picCaptchaInput:"#loginPicCaptchaInput",
+            picCaptchaImg:"#loginPicCaptchaImg",
+            rememberMe:"#rememberme",
+            forgetLink:"#forgetLink",
+            submitBtn:"#loginBtn",
+        };
+
+        $.extend(this.ids,cfg);
+        for(var i in this.ids){
+            this.doms[i]=$(this.ids[i]);
+            if(this.doms[i].length==0){
+                console.log(this.ids[i] +"doesn't find ");
+            }
+        }
+        $.extend(this.valid,BaseValidator);
+        this.doms.form.validate(this.valid);
+        this.doms.submitBtn.removeAttr("disabled");
+        this.addEventListener();
+    },
+    addEventListener:function(){
+        //注册按钮
+        this.doms.submitBtn.click(this.submit.Apply(this) );
+        this.doms.picCaptchaImg.click(this.getPicCaptcha);
+    },
+    //登录按扭提交
+    submit:function(){
+        if(!this.doms.form.valid()){
+            return;
+        }
+        var jso = changeForm2Jso("#login_form");
+        //jso.password=$.md5(jso.password);
+        //先禁用按钮
+        $("#loginBtn").attr("disabled", "disabled");
+        //alert($("#rememberme").attr("checked"));
+        //判断是否使用记住功能
+        if ($("#rememberme").attr("checked") == 'checked') {//alert("选中了记住我");
+        /*	console.log("选中了记住我" );*/
+            console.log("username:" + jso.email);
+            setCookie('username', jso.email, 365);
+            setCookie('password', jso.password, 365);
+        }
+        $.post(PATH + "/loginPost.json", jso, function(data) {
+            if (data[AJAX_RESULT] == AJAX_SUCC) {
+                window.location = PATH + "/index.htm";
+            } else {
+                var ul = $("#login_form").find(".failure").find("ul");
+                ul.empty();
+                ul.append("<li>" + data[AJAX_MSG] + "</li>");
+                if (data[AJAX_ERRORS] && data[AJAX_ERRORS].length > 0) {
+                    for ( var i in data[AJAX_ERRORS]) {
+                        ul.append("<li style='color:red'>" + data[AJAX_ERRORS][i]
+                                + "</li>");
+                    }
+                }
+
+            }
+            $("#loginBtn").removeAttr("disabled", "");
+        });
+    },
+    //获取验证码图片点击事件
+    getPicCaptcha:function(){
+        Ajax.getJSON(PATH+"/code/img/request.json",null,function(result){
+            if(result.r==AJAX_SUCC){
+               this.doms.picCaptchaImg.prop("src","data:image/png;base64,"+result.data.imgdata);
+            }else{
+                dialog.error(result.msg);
+            }
+        });
+    },
+    valid:
+    {
+        rules : {
+            email : {
+                required : true,
+              /*  email : true,*/
+                rangelength : [ 1, 50 ],
+                isemailorphone : true
+            },
+            pwd : {
+                stringCheck : true,
+                required : true,
+                rangelength : [ 6, 15 ],
+            },
+        },
+        messages : {
+            email : {
+                required : "邮箱/手机号未填写",
+              /*  isemailorphone:true,*/
+                rangelength : "邮箱/手机号长度应在50字符以内",
+            },
+            pwd : {
+                required : "密码未填写",//TODO 增加判断
+                rangelength : "密码应由6~20个的数字或字母组成"
+            }
+        },
+
+    },
 
 }
 var registerForm={
@@ -198,84 +309,7 @@ var registerForm={
 function doRegister() {
 	document.location = "register.html";
 }
-/**
- * 登录表单验证器
- */
-var loginValidator = function() {
-	var handleSubmit = function() {
-		$('#login_form').validate(
-				{
-					errorElement : 'div',
-					errorClass : 'help-block',
-					focusInvalid : false,
-					rules : {
-						email : {
-							required : true,
-							email : true,
-							rangelength : [ 1, 50 ],
-							isemail : true
-						},
-						pwd : {
-							stringCheck : true,
-							required : true,
-							rangelength : [ 6, 15 ],
-						},
-					},
-					messages : {
-						email : {
-							required : "邮箱未填写",
-                            isemailorphone:true,
-							rangelength : "邮箱长度应在50字符以内",
-						},
-						pwd : {
-							required : "密码未填写",
-							rangelength : "密码应由6~20个的数字或字母组成"
-						}
-					},
-					highlight : function(element) {
-						$(element).closest('.form-group').removeClass(
-								'has-info').addClass('has-error');
-					},
 
-					success : function(e) {
-						$(e).closest('.form-group').removeClass('has-error')
-								.addClass('has-info');
-						$(e).remove();
-						$("#loginBtn").removeAttr("disabled");
-
-					},
-
-					errorPlacement : function(error, element) {
-						error.insertAfter(element);
-						$("#loginBtn").attr("disabled",true);
-					},
-
-					submitHandler : function(form) {
-						login();
-
-					},
-					invalidHandler : function(form) {
-					}
-				});
-
-		$('#form-signin input').keypress(function(e) {
-			if (e.which == 13) {
-				if ($(e).closest('.form-signin').validate().form()) {
-					$(e).closest('.form-horizontal').submit();
-				}
-				return false;
-			}
-		});
-		//注册表单初始化
-		//loginValidator.init();
-	};
-	return {
-		init : function() {
-			handleSubmit();
-		}
-	};
-
-}();
 
 var form_type = "login";
 //切换登录表单和注册表单
@@ -293,32 +327,6 @@ var form_type = "login";
 	}
 }*/
 
-/**
- *注册表单验证器
- */
-var registerValidator = function() {
-	var handleSubmit = function() {
-		$('#register_form').validate(
-				);
-		$("#registerBtn").click(function() {
-			register();
-		})
-		$('#form-signin input').keypress(function(e) {
-			if (e.which == 13) {
-				if ($(e).closest('.form-signin').validate().form()) {
-					$(e).closest('.form-horizontal').submit();
-				}
-				return false;
-			}
-		});
-	};
-	return {
-		init : function() {
-			handleSubmit();
-		}
-	};
-
-}();
 
 /***
  ** 取cookie值
@@ -370,47 +378,13 @@ function checkCookie() {
  *登录
  *
  **/
-function login() {
-	if(!$("#login_form").valid()){
-		return;
-	}
-	var jso = changeForm2Jso("#login_form");
-	//jso.password=$.md5(jso.password);
-	//先禁用按钮
-	$("#loginBtn").attr("disabled", "disabled");
-	//alert($("#rememberme").attr("checked"));
-	//判断是否使用记住功能
-	if ($("#rememberme").attr("checked") == 'checked') {//alert("选中了记住我");
-	/*	console.log("选中了记住我" );*/
-		console.log("username:" + jso.email);
-		setCookie('username', jso.email, 365);
-		setCookie('password', jso.password, 365);
-	}
-	$.post(PATH + "/loginPost.json", jso, function(data) {
-		if (data[AJAX_RESULT] == AJAX_SUCC) {
-			window.location = PATH + "/index.htm";
-		} else {
-			var ul = $("#login_form").find(".failure").find("ul");
-			ul.empty();
-			ul.append("<li>" + data[AJAX_MSG] + "</li>");
-			if (data[AJAX_ERRORS] && data[AJAX_ERRORS].length > 0) {
-				for ( var i in data[AJAX_ERRORS]) {
-					ul.append("<li style='color:red'>" + data[AJAX_ERRORS][i]
-							+ "</li>");
-				}
-			}
-
-		}
-		$("#loginBtn").removeAttr("disabled", "");
-	});
-}
-
 
 
 $(document).ready(function() {
 	//$("#loginBtn").bind('click',function(){alert('tt!')});
 	//登录表单验证器初始化
-	loginValidator.init();
+	loginForm.init();
+	//loginValidator.init();
 	//注册表单初始化
 	//registerValidator.init();
 	registerForm.init();
