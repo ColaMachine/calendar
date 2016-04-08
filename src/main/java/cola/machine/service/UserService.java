@@ -104,7 +104,7 @@ public class UserService extends SysUserService{
 	 */
 	public ResultDTO loginValid(String email, String UnencryptedPwd) {
 		// / this.userMapper.getUsersByParam(map)
-		String pwd = MD5Utils.MD5Encode(UnencryptedPwd);
+	String pwd = MD5Utils.MD5Encode(UnencryptedPwd);
 		if (StringUtil.isBlank(email) || StringUtil.isBlank(UnencryptedPwd)) {
 			return ResultUtil.getWrongResultFromCfg("err.account.empty");
 		}
@@ -119,18 +119,18 @@ public class UserService extends SysUserService{
 	            return ResultUtil.getResult(ResultUtil.fail,"既不是手机号也不是邮箱");
 	        }
 			
-			params.put("pwd", pwd);
+			params.put("password", pwd);
 			List list = sysUserMapper.listByParams(params);
 			if (list != null && list.size() > 0) {
-				HashMap userMap = (HashMap) list.get(0);
+				SysUser  user = (SysUser) list.get(0);
 //				returnMap.putAll(userMap);
 				
-				 SysUser user =new SysUser();
+				/* SysUser user =new SysUser();
 				  user.setEmail(MapUtils.getString(userMap, "email"));
 				  user.setTelno(MapUtils.getString(userMap, "telno"));
 				  user.setUsername(MapUtils.getString(userMap, "username"));
 				  user.setId(MapUtils.getLong(userMap, "userid"));
-				  user.setStatus(MapUtils.getIntValue(userMap, "active"));
+				  user.setStatus(MapUtils.getIntValue(userMap, "active"));*/
 				  
 				ResultDTO result = ResultUtil.getSuccResult();
 				result.setData(user);

@@ -51,7 +51,7 @@ var loginForm={
     addEventListener:function(){
         //注册按钮
         this.doms.submitBtn.click(this.submit.Apply(this) );
-        this.doms.picCaptchaImg.click(this.getPicCaptcha);
+        this.doms.picCaptchaImg.click(this.getPicCaptcha.Apply(this));
     },
     //登录按扭提交
     submit:function(){
@@ -90,9 +90,10 @@ var loginForm={
     },
     //获取验证码图片点击事件
     getPicCaptcha:function(){
+        that =this;
         Ajax.getJSON(PATH+"/code/img/request.json",null,function(result){
             if(result.r==AJAX_SUCC){
-               this.doms.picCaptchaImg.prop("src","data:image/png;base64,"+result.data.imgdata);
+               that.doms.picCaptchaImg.prop("src","data:image/png;base64,"+result.data.imgdata);
             }else{
                 dialog.error(result.msg);
             }

@@ -102,20 +102,20 @@ public class OUserController extends BaseController {
         String pwd = request.getParameter("pwd");
         String imgCaptcha = request.getParameter("picCaptcha");
         String smsCaptcha = request.getParameter("smsCaptcha");
-        String sessionid = request.getParameter("sessionid");
+        //String sessionid = request.getParameter("sessionid");
         ValidCodeService validCodeService = new ValidCodeService();
 
         ResultDTO result = validCodeService.remoteValidSms(email, smsCaptcha);
         if (!result.isRight()) {
             // return result;
         }
-        result = validCodeService.remoteValidImg(sessionid, imgCaptcha);
+        result = validCodeService.remoteValidImg(request.getRequestedSessionId(), imgCaptcha);
         if (!result.isRight()) {
             return result;
         }
         result = this.userService.loginValid(email, pwd);
         if (result.isRight()) {
-            User user = (User) result.getData();
+            SysUser user = (SysUser) result.getData();
             request.getSession().setAttribute("user", user);
             result.setData(null);
         }
@@ -421,6 +421,12 @@ public class OUserController extends BaseController {
     public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
         return "/static/html/login.html";
+    }
+
+    @RequestMapping(value = "/user/edit.htm", method = RequestMethod.GET)
+    public String userEdit(HttpServletRequest request) {
+        request.getSession().removeAttribute("user");
+        return "/static/html/userEdit.html";
     }
 /*
     @RequestMapping(value = "/user/edit.htm", method = RequestMethod.GET)
