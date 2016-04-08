@@ -262,7 +262,7 @@ public class ImageUtil {
     /**
      * 上传文件到服务器
      * 
-     * @param filePaths
+     *
      *            是相对于webroot的路径
      */
     /*
@@ -443,6 +443,10 @@ public class ImageUtil {
     private static boolean saveImageToDisk(byte[] data, String path, String imageName) throws IOException {
         int len = data.length;
         // 写入到文件
+   /*     System.out.println(data);
+        for(int i=0;i<data.length;i++){
+            System.out.print(data[i]);
+        }*/
         FileOutputStream outputStream = new FileOutputStream(new File(path, imageName));
         outputStream.write(data);
         outputStream.flush();
@@ -451,13 +455,16 @@ public class ImageUtil {
     }
 
     private static byte[] decode(String imageData) throws IOException {
-        byte[] data = Base64Util.getFromBASE64(imageData).getBytes();
-        for (int i = 0; i < data.length; ++i) {
+       /* sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
+        return decoder.decodeBuffer(imageData)*/;
+
+        byte[] data = Base64Util.decodeBuffer(imageData);
+        /*for (int i = 0; i < data.length; ++i) {
             if (data[i] < 0) {
                 // 调整异常数据
                 data[i] += 256;
             }
-        }
+        }*/
         return data;
     }
 

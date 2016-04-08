@@ -1238,7 +1238,7 @@ var setting = {
 
 var BaseValidator={
 	errorElement : 'div',
-            					errorClass : 'alert alert-warning',
+            					errorClass : 'help-block-left-animation',
             					focusInvalid : false,
 highlight : function(element) {
             						$(element).closest('.form-signin').removeClass(
@@ -1261,4 +1261,110 @@ highlight : function(element) {
             					},
             					invalidHandler : function(form) {
             					}
+}
+
+function zImageUtil(config) {
+	var o = {
+		imgDom: null, //回显的image的id
+		maxHeight: null, //预设的最大高度
+		maxWidth: null, //预设的最大宽度
+		inputDom:null,
+		postUrl: null, //提交的url"/calendar/image/upload.json"
+		preShow: true,
+		callback: null,
+
+		fileChange: function(e) {//
+			var f = e.files[0]; //一次只上传1个文件，其实可以上传多个的
+			var FR = new FileReader();//创建fileReader
+			var _this = this;
+
+			FR.onload = function(f) {//fr  readAsDataURL 的时候触发方法
+
+				_this.compressImg(this.result, 300, function(data) { //压缩完成后执行的callback
+					console.log("压缩完成后执行的callback");
+					//document.getElementById('imgData').value = data;//写到form元素待提交服务器
+					//document.getElementById('myImg').src = data;//压缩结果验证
+					if (_this.preShow) {
+						console.log("img pre show");
+						_this.imgDom.src = data;
+						console.log(_this.imgDom);
+
+					}
+					console.log("begin send img");
+					var json = {};
+					// json.imageName= "myImage.png";
+					data = data.substring(22);
+					// alert(data)
+					json.imageData = encodeURIComponent(data);
+					console.log("begin post");
+
+					Ajax.post(_this.postUrl,
+						json,
+						function(data) {
+							if (data.r == 1) {
+								_this.imgDom.src = "/" + data.data;
+								$(_this).parent().find("#picurl")
+								console.log("imgUrl:" + data.data);
+							} else {
+								//	                        		zalert(data.msg);
+							}
+							if (_this.callback != null)
+								_this.callback(data);
+						}
+					);
+				});
+			};
+			FR.readAsDataURL(f); //先注册onload，再读取文件内容，否则读取内容是空的
+		},
+		compressImg: function(imgData, maxHeight, onCompress) {
+			var _this = this;
+			if (!imgData)
+				return;
+			onCompress = onCompress || function() {};
+			maxHeight = maxHeight || this.maxHeight; //默认最大高度200px
+			var canvas = document.createElement('canvas');
+			var img = new Image();
+			console.log("maxHeight:" + maxHeight);
+			img.onload = function() {
+				if (img.height > maxHeight) { //按最大高度等比缩放
+					img.width *= maxHeight / img.height;
+					img.height = maxHeight;
+				}
+				canvas.width = img.width;
+				canvas.height = img.height;
+				var ctx = canvas.getContext("2d");
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height); // canvas清屏
+
+				//重置canvans宽高 canvas.width = img.width; canvas.height = img.height;
+				console.log("width:" + img.width + "height:" + img.height);
+				ctx.drawImage(img, 0, 0, img.width, img.height); // 将图像绘制到canvas上
+				console.log("begin compress img");
+				onCompress(canvas.toDataURL("image/png")); //必须等压缩完才读取canvas值，否则canvas内容是黑帆布
+			};
+			// 记住必须先绑定事件，才能设置src属性，否则img没内容可以画到canvas
+			console.log("begin origin data load:");
+			img.src = imgData;
+
+		},
+		init: function(jso) {
+		var _this =this;
+			this.imgDom = jso.imgDom;
+			this.maxHeight = jso.maxHeight;
+			this.maxWidth = jso.maxWidth;
+			this.postUrl = jso.postUrl;
+			this.callback = jso.callback;
+			this.inputDom=jso.inputDom;
+			var _this =this;
+			$(this.imgDom).click(function(){
+                $(_this.inputDom).trigger("click");
+			})
+
+				$(this.inputDom).change(function(){
+            			    _this.fileChange(_this.inputDom);
+                })
+		},
+	};
+	o.init(config);
+	return o;
 }

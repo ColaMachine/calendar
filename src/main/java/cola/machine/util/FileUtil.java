@@ -35,6 +35,7 @@ try {
        // System.out.println(s);
         //System.out.println(s.split("\\s+").length);
         String arr[] = s.split("\\s+");
+        System.out.println(arr[0]);
         if(name.equals("")){
              name=arr[arr.length-1];
         }else if(arr[arr.length-1].trim().equals(name.trim())){
@@ -43,7 +44,7 @@ try {
 
         }else{
 
-            System.out.println(name+"select distinct  IPAddress from wii_device_ssid where deviceid in(select id from wii_device where DevId in ("+result.toString()+"))");
+           // System.out.println(name+"select distinct  IPAddress from wii_device_ssid where deviceid in(select id from wii_device where DevId in ("+result.toString()+"))");
             result=new StringBuffer();
             name=arr[arr.length-1];
         }
@@ -52,7 +53,7 @@ try {
         }
 
     }
-    System.out.println(name+"select distinct  IPAddress from wii_device_ssid where id in(select id from wii_device where DevId in ("+result.toString()+")");
+   // System.out.println(name+"select distinct  IPAddress from wii_device_ssid where id in(select id from wii_device where DevId in ("+result.toString()+")");
     fr.close();
 }catch(Exception e){
     e.printStackTrace();

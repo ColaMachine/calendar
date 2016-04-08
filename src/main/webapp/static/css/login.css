@@ -15,10 +15,12 @@ button{
 outline: none;
 }
 .form-signin {
+
+    padding-top:20px;
     position:relative;
     /*为了让alert提示框靠在tab下端*/
     max-width: 330px;
-    padding: 15px;
+  /*  padding: 15px;*/
     margin: 0 auto;
 }
 
@@ -31,6 +33,8 @@ outline: none;
 }
 
 .form-signin .form-control {
+
+
     position: relative;
     height: auto;
     -webkit-box-sizing: border-box;
@@ -82,7 +86,7 @@ outline: none;
 	line-height:1em;
 	position:relative;
 }
-.help-block{
+.help-block-left-white{
     color: #FFF !important;
     position: absolute;
     font-size:1.2rem;
@@ -93,6 +97,44 @@ outline: none;
     margin-left: 1px;
     white-space: nowrap;
 }
+.help-block-left-animation{
+    color:red !important;
+    position: absolute;
+    font-size:1.5rem;
+/*    left: 230px;*/
+  /*  width: 200px;*/
+    top: 10px;
+    background-color:#fff;
+    right:0px;
+
+  /*  float: right;*/
+ /*   margin-left: 1px;*/
+    white-space: nowrap;
+}
+ input {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #fff;
+}
+input : -webkit-autofill {
+-webkit-box-shadow : 0 0 0px 1000px white inset ;
+border : 1px solid #CCC !important ;
+}
+input : -webkit-autofill {
+-webkit-box-shadow : 0 0 0px 1000px white inset ;
+border : 1px solid #CCC !important ;
+height : 27px !important ;
+line-height : 27px !important ;
+border-radius : 0 4px 4px 0 ;
+}
+
+/*input{
+    background-color:#fff;!important;
+   }
+   input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill{
+   background-color:#fff;!important;
+   }*/
 /*
 #login-wrap .alert {
     text-align:center;
@@ -102,3 +144,12 @@ outline: none;
     top:0px;
 
 }*/
+.form-group {
+     margin-bottom: 0px;
+       margin-top: 0px;
+ }
+.form-group input {
+     margin-bottom: 0px;
+       margin-top: 0px;
+       background :#FFF;
+ }

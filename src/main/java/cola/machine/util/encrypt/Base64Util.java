@@ -2,6 +2,8 @@ package cola.machine.util.encrypt;
 
 import sun.misc.BASE64Decoder;
 
+import java.io.IOException;
+
 public class Base64Util {
 	
 	// 将 s 进行 BASE64 编码
@@ -38,5 +40,10 @@ public class Base64Util {
 				return null;
 			}
 		}
+
+	public static byte[] decodeBuffer(String s ) throws IOException {
+		BASE64Decoder decoder = new BASE64Decoder();
+		return decoder.decodeBuffer(s);
+	}
 
 }
