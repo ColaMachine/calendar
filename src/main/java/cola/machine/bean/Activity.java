@@ -26,10 +26,19 @@ public class Activity {
 	private String title;
 	
 	//主键id
-	/** 
+
+	public Long getActivityId() {
+		return activityId;
+	}
+
+	/**
 	* @Fields activityId : 主键id 
 	*/ 
-	private String activityId;
+	private Long activityId;
+
+	public void setActivityId(Long activityId) {
+		this.activityId = activityId;
+	}
 	//开始时间
 	/** 
 	* @Fields startTime : 开始时间 YYYY-MM-DD H24:MI:SS
@@ -49,7 +58,7 @@ public class Activity {
 	/** 
 	* @Fields userId : 用户的id
 	*/ 
-	private String userId;
+	private Long userId;
 	//说明
 	/** 
 	* @Fields description : 详细描述
@@ -71,21 +80,7 @@ public class Activity {
 	*/ 
 	private String busyLevel; //0有空 1忙碌
 	
-	/**
-	 * 返回主键
-	 * @return String
-	 */
-	public String getActivityId() {
-		return activityId;
-	}
-	/**
-	 * 设置主键
-	 * @param activityId
-	 */
-	public void setActivityId(String activityId) {
-		this.activityId = activityId;
-	}
-	
+
 	/**
 	 * 获取开始时间
 	 * @return
@@ -93,10 +88,11 @@ public class Activity {
 	public long getStartTime() {
 		return startTime;
 	}
+
 	/**
 	 * 设置开始时间
-	 * @param startDate
-	 */
+	 * @param startTime
+     */
 	public void setStartTime(int startTime) {
 		this.startTime = startTime;
 	}
@@ -109,7 +105,7 @@ public class Activity {
 	}
 	/**
 	 * 设置结束时间
-	 * @param endDate
+	 * @param endTime
 	 */
 	public void setEndTime(int endTime) {
 		this.endTime = endTime;
@@ -132,14 +128,14 @@ public class Activity {
 	 * 获得用户id
 	 * @return
 	 */
-	public String getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 	/**
 	 * 设置用户id
 	 * @param userId
 	 */
-	public void setUserId(String userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 	/**
@@ -197,7 +193,7 @@ public class Activity {
 	
 	/**
 	 * 设置忙碌程度 BUSYLEVEL_IDLE 0 空闲 BUSYLEVEL_BUSY 忙碌  1
-	 * @param bUSYLEVEL_BUSY
+	 * @param busyLevel
 	 */
 	public void setBusyLevel(String busyLevel) {
 		this.busyLevel = busyLevel;

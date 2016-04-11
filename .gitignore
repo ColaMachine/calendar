@@ -22,3 +22,4 @@ src/main/webapp/static/vc
 calendar.iml
 src/main/resources/properties/jdbc.properties
 src/main/resources/config.cfg
+src/main/webapp/kaqmimage/

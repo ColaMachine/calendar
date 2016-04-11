@@ -773,7 +773,7 @@ CalendarView.prototype.refreshDatePickerView = function() {
 	this.clear();
 	//this.init();
 };
-CalendarView.prototype.refreshCalendarEventView = function() {
+CalendarView.prototype.refreshCalendarEventView = function() {console.log("refreshCalendarEventView");
 	$$("div_CalendarEventView_" + this.index).innerHTML = this
 			.getCalendarScheduleStr();
 	document.getElementById("scrolltimedeventswk").style.height = window.innerHeight
@@ -1799,7 +1799,7 @@ CalendarView.prototype.changeColor = function(it){
  *初始化 
  **/
 CalendarView.prototype.init= function() {
-	this.initEvent();
+	this.addEventListener();
 	
 	//alert("开始时间"+global_weekdays[0].getMonth());//给他毫秒数 + 格林威治时间差
 	//alert("测试UTC"+global_weekdays[0].UTC());
@@ -1818,25 +1818,31 @@ CalendarView.prototype.loadEvents=function(){//alert("before loadevents");
 	//alert(global_weekdays[0]);
 	//alert(global_weekdays[0]);
 	//alert(global_weekdays[6]);
+
+	//print offsettime;
+	var datename =new Date();
+	//console.log(datename.getTimezoneOffset());
+	//alert(global_weekdays[0].format("yyyy-MM-ddT00:00:00"));
+
 	if(this.viewMode==0){
-		jso.STARTDATE=parseInt((new Date(global_weekdays[0].format("yyyy-MM-ddT00:00:00"))).getTime()/60000);
+		jso.STARTDATE=parseInt(DateUtils.retainDay(DateUtils.copyDate(global_weekdays[0])).getTime()/60000);
 		//jso.STARTSZSHIFT=startSzShift;
-		jso.ENDDATE=parseInt((new Date((global_weekdays[0].format("yyyy-MM-ddT00:00:00"))).getTime()+24*60*60*1000)/60000);
+		jso.ENDDATE=parseInt((DateUtils.retainDay(DateUtils.copyDate(global_weekdays[0])).getTime()+24*60*60*1000)/60000);
 	}else if(this.viewMode==1){
-		jso.STARTDATE=parseInt((new Date(global_weekdays[0].format("yyyy-MM-ddT00:00:00"))).getTime()/60000);
+		jso.STARTDATE=parseInt(DateUtils.retainDay(DateUtils.copyDate(global_weekdays[0])).getTime()/60000);
 		//jso.STARTSZSHIFT=startSzShift;
-		jso.ENDDATE=parseInt((new Date((global_weekdays[6].format("yyyy-MM-ddT00:00:00"))).getTime()+24*60*60*1000)/60000);
+		jso.ENDDATE=parseInt((DateUtils.retainDay(DateUtils.copyDate(global_weekdays[6])).getTime()+24*60*60*1000)/60000);
 	}else{
-		jso.STARTDATE=parseInt((new Date(global_weekdays[0].format("yyyy-MM-ddT00:00:00"))).getTime()/60000);
+		jso.STARTDATE=parseInt(DateUtils.retainDay(DateUtils.copyDate(global_weekdays[0])).getTime()/60000);
 		//jso.STARTSZSHIFT=startSzShift;
-		jso.ENDDATE=parseInt((new Date((global_weekdays[6].format("yyyy-MM-ddT00:00:00"))).getTime()+24*60*60*1000)/60000);
+		jso.ENDDATE=parseInt((DateUtils.retainDay(DateUtils.copyDate(global_weekdays[6])).getTime()+24*60*60*1000)/60000);
 	}
 	
 	//jso.endSZSHIFT=startSzShift;alert(1)
 	/*$.post("http://127.0.0.1:8080/calendar/activity/getActivities",jso,function (data){
 		alert(data[AJAX_RESULT]);
 	});*/
-	AjaxFun(PATH+"/activity/getActivities.json",jso,this.showActivities.Apply(this));
+	Ajax.post(PATH+"/activity/getActivities.json",jso,this.showActivities.Apply(this));
 };
 
 
@@ -1845,7 +1851,7 @@ CalendarView.prototype.loadEvents=function(){//alert("before loadevents");
  * @param data
  */
 CalendarView.prototype.showActivities=function(data){//alert(this);//alert("before showActivities");
-	this.valueStack={};
+	this.valueStack={};alert(data)
 	if(data!=null && data.data!=null && data.data.length>0){
 		for(var i=0,length=data.data.length;i<length;i++){
 			if(data.data[i]){
@@ -1861,7 +1867,7 @@ CalendarView.prototype.showActivities=function(data){//alert(this);//alert("befo
  * 
  *初始化 事件初始化
  **/
-CalendarView.prototype.initEvent= function() {
+CalendarView.prototype.addEventListener= function() {
 	bind($$("dp_canopy_div"),'click',new Function("Instance('"
 			+ this.index
 			+ "').showMCalTitle()"));
@@ -1933,9 +1939,9 @@ function changeJson2CE(data){
 	
 	ce.title=data.title;
 	ce.day=new Date(data.startTime*60000).format("yyyy-MM-dd");
-	ce.timeStart=new Date(data.startTime*60000).format("hh:mm");
+	ce.timeStart=new Date(data.startTime*60000).format("HH:mm");
 	
-	ce.timeEnd=new Date(data.endTime*60000).format("hh:mm");
+	ce.timeEnd=new Date(data.endTime*60000).format("HH:mm");
 	
 	console.log((data.startTime%(24*60)/60)+":"+(data.startTime%(60))  );
 	
@@ -1994,7 +2000,7 @@ function loopCheckAndSave(){
 		arr.push(translateCE2Activity(synStack[key]));
 	}
 	if(arr.length>0){console.log(arr);
-		AjaxFun(PATH+"/activity/saveActivitys.json",{'jsonstr':	JSON.stringify(arr) },saveHandler);
+		Ajax.post(PATH+"/activity/saveActivitys.json",{'jsonstr':	JSON.stringify(arr) },saveHandler);
 	}else{
 		setTimeout("loopCheckAndSave()",1000);
 	}

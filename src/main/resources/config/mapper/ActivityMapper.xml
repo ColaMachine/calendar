@@ -20,7 +20,7 @@
 		<result property="privacy" column="PRIVACY" />
 	</resultMap>
 
-	<select id="selecActivityByActivityId" parameterType="string"
+	<select id="selecActivityByActivityId" parameterType="java.lang.Long"
 		resultType="cola.machine.bean.Activity">
 		SELECT * FROM activity WHERE ACTIVITYID = #{ActivityId}
 	</select>
@@ -38,7 +38,7 @@
 		#{busyLevel} WHERE ACTIVITYID = #{activityId}
 	</update>
 
-	<delete id="deleteActivity" parameterType="java.lang.String">
+	<delete id="deleteActivity" parameterType="java.lang.Long">
 		DELETE FROM activity WHERE
 		ACTIVITYID = #{ACTIVITYID}
 	</delete>
@@ -52,7 +52,7 @@
     
 	
 		<select id="getActivityById" resultType="cola.machine.bean.Activity"
-		parameterType="java.lang.String">
+		parameterType="java.lang.Long">
 		SELECT * FROM activity WHERE ACTIVITYID=#{ACTIVITYID}
 	</select>
 	

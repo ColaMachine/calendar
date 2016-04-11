@@ -36,7 +36,7 @@ public interface ActivityService {
 	* @return Activity    返回类型 
 	* @throws 
 	*/
-	public Activity  selecActivityByActivityId(String id);
+	public Activity  selecActivityByActivityId(Long id);
 	
 	/** 
 	* @Title: deleteActivityById 
@@ -46,7 +46,7 @@ public interface ActivityService {
 	* @author zhangzw
 	* @throws 
 	*/
-	public boolean  deleteActivityById(String id);
+	public boolean  deleteActivityById(Long id);
 	
 	/** 
 	* @Title: getActivities 
@@ -57,7 +57,7 @@ public interface ActivityService {
 	* @date 2014年4月17日
 	* @throws 
 	*/
-	public List<HashMap> getActivities(long startDate,long endDate,String userid);
+	public List<HashMap> getActivities(long startDate,long endDate,Long userid);
 
 	/** 
 	* @Title: updagteActivitys 

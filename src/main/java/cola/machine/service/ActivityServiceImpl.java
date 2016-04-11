@@ -52,14 +52,14 @@ public class ActivityServiceImpl implements ActivityService{
 		
 		//
 		if(activity!=null){
-			if(StringUtils.isNotBlank(activity.getActivityId())){
+			if(activity.getActivityId()!=null && activity.getActivityId()!=0){
 				Activity activityFromDb =activityDao.getActivityById(activity.getActivityId());
 				if(activityFromDb!=null){
 					activityDao.updateActivity(activity);
 					return true;
 				}
 			}
-			activity.setActivityId(UUIDUtil.getUUID());
+			//activity.setActivityId(UUIDUtil.getUUID());
 			activityDao.insertActivity(activity);
 			return true;
 		}else{
@@ -70,7 +70,7 @@ public class ActivityServiceImpl implements ActivityService{
 	/* (non-Javadoc)
 	 * @see cola.machine.calendar.activity.service.ActivityService#selecActivityByActivityId(java.lang.String)
 	 */
-	public Activity selecActivityByActivityId(String activityId) {
+	public Activity selecActivityByActivityId(Long activityId) {
 		return activityDao.selecActivityByActivityId(activityId);
 		 
 	}
@@ -78,12 +78,12 @@ public class ActivityServiceImpl implements ActivityService{
 	/* (non-Javadoc)
 	 * @see cola.machine.calendar.activity.service.ActivityService#deleteActivityById(java.lang.String)
 	 */
-	public boolean deleteActivityById(String activityId) {
+	public boolean deleteActivityById(Long activityId) {
 		activityDao.deleteActivity(activityId);
 		return true;
 	}
 
-	public List<HashMap> getActivities(long startDate, long endDate,String userid) {
+	public List<HashMap> getActivities(long startDate, long endDate,Long userid) {
 		Map map =new HashMap();
 		map.put("STARTTIME",startDate);//23885280
 		map.put("ENDTIME",endDate);//23893920

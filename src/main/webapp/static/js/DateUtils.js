@@ -503,3 +503,15 @@ function getMFromYMD(str){
 function getDFromYMD(str){
 	return parseInt(str.substr(8,2));
 }
+var DateUtils={}
+DateUtils.retainDay=function(date){
+    date.setSeconds(0);
+    date.setMinutes(0);
+    date.setHours(0);
+    return date;
+}
+DateUtils.copyDate=function(date){
+var dateNew =new Date(date.getTime());
+
+    return dateNew;
+}

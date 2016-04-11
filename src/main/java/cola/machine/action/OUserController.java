@@ -1,19 +1,13 @@
 package cola.machine.action;
 
-import java.io.File;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import cola.machine.bean.SysUser;
-import cola.machine.service.SysUserService;
 import cola.machine.util.*;
 import cola.machine.util.rules.*;
 import org.apache.commons.lang.StringUtils;
@@ -22,22 +16,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cola.machine.bean.User;
 import cola.machine.constants.SysConfig;
 import cola.machine.service.UserService;
 import cola.machine.service.ValidCodeService;
 import cola.machine.web.listener.MySessionContext;
 import core.action.ResultDTO;
-import core.page.Page;
-import core.util.RequestUtil;
 
 @Controller
 // @RequestMapping("/")
@@ -74,8 +63,8 @@ public class OUserController extends BaseController {
                 Object userObj = session.getAttribute("user");
                 session.invalidate();
                 if (userObj != null) {
-                    System.out.println(((User) userObj).getEmail());
-                    userList.add(((User) userObj).getEmail());
+                    System.out.println(((SysUser) userObj).getEmail());
+                    userList.add(((SysUser) userObj).getEmail());
                 }
             }
         }
@@ -312,7 +301,7 @@ public class OUserController extends BaseController {
         }
         if (result.isRight()) {
             // 把用户信息传入到session 中并让他登录到首页
-            User user = (User) result.getData();
+            SysUser user = (SysUser) result.getData();
             request.getSession().setAttribute("user", user);
         } else {
             // 提示激活url无效

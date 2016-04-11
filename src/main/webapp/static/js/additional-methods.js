@@ -980,7 +980,7 @@ jQuery.validator.addMethod("isemail", function(value, element) {console.log(elem
 	return this.optional(element) ||  /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(value);
 	}, "请输入有效的邮箱地址");
 
-jQuery.validator.addMethod("isemailorphone", function(value, element) {console.log(element);
+jQuery.validator.addMethod("isemailorphone", function(value, element) {/*console.log(element);*/
 
 	return this.optional(element) ||  /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(value)
 	||/^[1][345678][0-9]{9}$/.test(value);

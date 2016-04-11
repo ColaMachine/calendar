@@ -19,15 +19,182 @@ String.prototype.trim= function(){
 }
 var PATH="";
 
+function AjaxClass()
+{
+    var XmlHttp = false;
+    try
+    {
+        XmlHttp = new XMLHttpRequest();        //FireFox专有
+    }
+    catch(e)
+    {
+        try
+        {
+            XmlHttp = new ActiveXObject("MSXML2.XMLHTTP");
+        }
+        catch(e2)
+        {
+            try
+            {
+                XmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch(e3)
+            {
+                alert("你的浏览器不支持XMLHTTP对象，请升级到IE6以上版本！");
+                XmlHttp = false;
+            }
+        }
+    }
+
+    var me = this;
+    this.Method = "POST";
+    this.Url = "";
+    this.Async = true;
+    this.Arg = "";
+    this.dataType="";
+    this.data=null;
+    this.CallBack = function(){};
+    this.Loading = function(){};
+
+    this.Send = function()
+    {
+        if (this.Url=="")
+        {
+            return false;
+        }
+        if (!XmlHttp)
+        {
+            return IframePost();
+        }
+        if(this.data){
+            var arr=new Array();
+                        for(var key in this.data){
+                            arr.push(key+"="+this.data[key]);
+                        }
+                        this.data= arr.join("&");
+
+        }
+        if(this.Method=="GET"&&this.data){
+
+            if(this.Url.indexOf("?")!=-1){
+               if(this.Url.indexOf("=")!=-1){
+                    this.Url+="&"+arr.join("&");
+               }else{
+                 this.Url+=arr.join("&");
+               }
+
+            }else{
+                this.Url+="?"+arr.join("&");
+            }
+        }
+
+        XmlHttp.open (this.Method, this.Url, this.Async);
+        if (this.Method=="POST")
+        {
+            XmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        }
+       if (this.dataType=="JSON")
+            {
+                XmlHttp.setRequestHeader("Content-Type","application/json");
+
+            }
+        XmlHttp.onreadystatechange = function()
+        {
+            if (XmlHttp.readyState==4)
+            {
+                var Result = false;
+                if (XmlHttp.status==200)
+                {
+                    Result = XmlHttp.responseText;
+                }
+                XmlHttp = null;
+
+                me.CallBack(Result);
+            }
+             else
+             {
+                me.Loading();
+             }
+        }
+        if (this.Method=="POST")
+        {
+            XmlHttp.send(this.data);
+        }
+        else
+        {
+            XmlHttp.send(null);
+        }
+    }
+
+    //Iframe方式提交
+    function IframePost()
+    {
+        var Num = 0;
+        var obj = document.createElement("iframe");
+        obj.attachEvent("onload",function(){ me.CallBack(obj.contentWindow.document.body.innerHTML); obj.removeNode() });
+        obj.attachEvent("onreadystatechange",function(){ if (Num>=5) {alert(false);obj.removeNode()} });
+        obj.src = me.Url;
+        obj.style.display = 'none';
+        document.body.appendChild(obj);
+    }
+}
+function ajax(options){
+
+
+
+/*----------------------------调用方法------------------------------
+    var Ajax = new AjaxClass();         // 创建AJAX对象
+    Ajax.Method = "POST";               // 设置请求方式为POST
+    Ajax.Url = "default.asp"            // URL为default.asp
+    Ajax.Async = true;                  // 是否异步
+    Ajax.Arg = "a=1&b=2";               // POST的参数
+    Ajax.Loading = function(){          //等待函数
+        document.write("loading...");
+    }
+    Ajax.CallBack = function(str)       // 回调函数
+    {
+        document.write(str);
+    }
+    Ajax.Send();                        // 发送请求
+   -----------------------------------------------------------
+    var Ajax = new AjaxClass();         // 创建AJAX对象
+    Ajax.Method = "GET";                // 设置请求方式为POST
+    Ajax.Url = "default.asp?a=1&b=2"    // URL为default.asp
+    Ajax.Async = true;                  // 是否异步
+    Ajax.Loading = function(){          //等待函数
+        document.write("loading...");
+    }
+    Ajax.CallBack = function(str)       // 回调函数
+    {
+        document.write(str);
+    }
+    Ajax.Send();
+    --------------------------------------------------------------------*/
+    //1.创建对象
+
+      var Ajax = new AjaxClass();         // 创建AJAX对象
+        Ajax.Method = options.type;                // 设置请求方式为POST
+        Ajax.Url = options.url;    // URL为default.asp
+        Ajax.Async = true;                  // 是否异步
+        Ajax.dataType =options.dataType;                  // 是否异步
+        Ajax.data =options.data;
+
+        Ajax.Loading = function(){          //等待函数
+           // document.write("loading...");
+        }
+        Ajax.CallBack = options.success ;
+        Ajax.Send();
+
+}
 var Ajax={
  get:function(url,data,callback){
-    this.AjaxFun(url,data,callback,{type:"get"});
+    this.AjaxFun(url,data,callback,{type:"GET"});
  },
  getJSON:function(url,data,callback){
-    this.AjaxFun(url,data,callback,{type:"get",dataType:"json"});
+    this.AjaxFun(url,data,callback,{type:"GET",dataType:"JSON"});
  },
  post:function(url,data,callback){
-    this.AjaxFun(url,data,callback,{type:"post"});
+    this.AjaxFun(url,data,callback,{type:"POST"});
  },
  AjaxFun:function (url, inputData, callback, options, callbackOnError) {
          	var contextUrl = window.location.href;
@@ -62,6 +229,7 @@ var Ajax={
          		}
          	};
          	delete options['inputData'];
+         	ajax(options);
          	$.ajax(options);
          }
 };
@@ -1239,10 +1407,11 @@ var setting = {
 var BaseValidator={
 	errorElement : 'div',
             					errorClass : 'help-block-left-animation',
-            					focusInvalid : false,
-highlight : function(element) {
-            						$(element).closest('.form-signin').removeClass(
-            								'has-info').addClass('has-error');
+            					focusInvalid : true,
+
+                                highlight : function(element) {
+            						/*$(element).closest('.form-signin').removeClass(
+            								'has-info').addClass('has-error');*/
             					},
 
             					success : function(e) {
@@ -1260,6 +1429,7 @@ highlight : function(element) {
 
             					},
             					invalidHandler : function(form) {
+            					alert(1);
             					}
 }
 

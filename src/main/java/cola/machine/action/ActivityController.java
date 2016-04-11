@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cola.machine.bean.SysUser;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cola.machine.bean.Activity;
-import cola.machine.bean.User;
 import cola.machine.service.ActivityService;
 import cola.machine.util.DateUtil;
 import core.action.ResultDTO;
@@ -83,11 +83,11 @@ public class ActivityController extends BaseController {
 		log.debug("endDate:" + endDate);
 		DateUtil.printTimestampby60(23930940);
 		HashMap returnMap = new HashMap();
-		User user = (User) request.getSession().getAttribute("user");
+		SysUser user = (SysUser) request.getSession().getAttribute("user");
 		if (user == null) {
 			throw new Exception("err.logic.session.notexsist");
 		}
-		String userid = user.getUserid();
+		Long userid = user.getId();
 		List activities = activityService.getActivities(startDate, endDate,
 				userid);
 		return this.getResult(activities);
@@ -111,15 +111,22 @@ public class ActivityController extends BaseController {
 		JSONArray jsonArray = JSONArray.fromObject(jsonstr);
 		List<JSONObject> mapListJson = (List) jsonArray;
 		List<Activity> list = new ArrayList<Activity>();
-		User user = (User) request.getSession().getAttribute("user");
-		String userid = user.getUserid();
+		SysUser user = (SysUser) request.getSession().getAttribute("user");
+		long userid = user.getId();
 		for (JSONObject object : mapListJson) {
 			log.debug("starttime" + object.get("STARTTIME") + "  endtime"
 					+ object.get("ENDTIME"));
 			int startTime = (int) object.get("STARTTIME");
 			int endTime = (int) object.get("ENDTIME");
 			String title = (String) object.get("TITLE");
-			String id = (String) object.get("ID");
+
+			Object value = object.get("ID");
+			Long id=0l;
+			if(value instanceof Integer){
+				id =Long.valueOf((int) object.get("ID") );
+			}else if(value instanceof String){
+				 id =Long.valueOf((String)object.get("ID")) ;
+			}
 			Activity activity = new Activity();
 			if (object.has("ISDEL")) {
 				activity.setIsdel(object.getBoolean("ISDEL"));
@@ -167,7 +174,7 @@ public class ActivityController extends BaseController {
 		activity.setStartTime(startTime);
 		activity.setEndTime(endTime);
 		activity.setTitle(request.getParameter("TITLE"));
-		activity.setActivityId(request.getParameter("ID"));
+		activity.setActivityId(Long.valueOf(request.getParameter("ID")));
 		activityService.saveActivity(activity);
 		/*
 		 * if(StringUtil.isEmpty(request.getParameter("ID"))){

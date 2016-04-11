@@ -25,12 +25,12 @@ public interface ActivityDao {
 	/** 
 	* @Title: selecActivityByActivityId 
 	* @Description: 根据id查询活动
-	* @param String activityId
+	* @param long activityId
 	* @return Activity    返回类型 
 	* @author 371452875@qq.com
 	* @throws 
 	*/
-	public Activity selecActivityByActivityId(String activityId);
+	public Activity selecActivityByActivityId(long activityId);
 
 	/** 
 	* @Title: insertActivity 
@@ -60,7 +60,7 @@ public interface ActivityDao {
 	 * @author dozen.zhang
 	 * @date 2015年5月28日下午5:29:26
 	 */
-	public Activity getActivityById(String activityId);
+	public Activity getActivityById(long activityId);
 	/** 
 	* @Title: deleteActivity 
 	* @Description: 删除活动
@@ -69,7 +69,7 @@ public interface ActivityDao {
 	* @author 371452875@qq.com
 	* @throws 
 	*/
-	public void deleteActivity(String activityId);
+	public void deleteActivity(long activityId);
 
 	/** 
 	* @Title: selectActivityBetween2Date 
