@@ -24,7 +24,7 @@ public class ActivityTest{
 		DateTime endDate =DateTime.parseDateTime("2014-07-19T14:30:00");
 		List list = activityService.getActivities(startDate.getValue(),endDate.getValue());
 		if(list.size()>0){
-			Activity activity =(Activity)list.get(0);
+			Activity.cfg activity =(Activity.cfg)list.get(0);
 		
 			activityService.updateActivity(activity);
 		
@@ -34,7 +34,7 @@ public class ActivityTest{
     }
     @Test
 	public void saveActivity() {
-		Activity activity=new Activity();
+		Activity.cfg activity=new Activity.cfg();
 		activity.setAddress("上海浦东机场陆边的12号弄3楼301");
 		activity.setBusyLevel(activity.BUSYLEVEL_IDLE);
 		activity.setDescription("描述信息");
@@ -59,7 +59,7 @@ public class ActivityTest{
     }
     
     
-	public Activity selecActivityByActivityId(String id) {
+	public Activity.cfg selecActivityByActivityId(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

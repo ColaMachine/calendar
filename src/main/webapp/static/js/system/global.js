@@ -73,7 +73,7 @@ function getInfo(o){//取得坐标
 	  	
 	   	var twidth=o.offsetWidth;
 	   	var theight=o.offsetHeight;	
-	   	while(o!=document.body&&!isNull(o)){
+	   	while(o!=document.body && !isNull(o)){
 	   		if(isNull(o.offsetParent)){
 	     		alert("can't find it's parentNode1:"+o);
 	     	}
@@ -336,6 +336,7 @@ var color_list=[
 window.System =new Object();
 System._instances = {};
 window.Instance = function(hashCode) {//console.log("Instance" +System._instances[hashCode]);
+
 	return System._instances[hashCode];
 };
 /*

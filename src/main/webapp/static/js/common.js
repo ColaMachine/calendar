@@ -108,7 +108,7 @@ function AjaxClass()
                     Result = XmlHttp.responseText;
                 }
                 XmlHttp = null;
-
+                alert(typeof Result)
                 me.CallBack(Result);
             }
              else
@@ -229,7 +229,7 @@ var Ajax={
          		}
          	};
          	delete options['inputData'];
-         	ajax(options);
+         	//ajax(options);
          	$.ajax(options);
          }
 };

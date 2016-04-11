@@ -21,7 +21,7 @@
 table-layout: fixed;
 	cell-padding: 0px;
 	border-spacing: 0px;
-	border-collapse: collapse; 
+	border-collapse: collapse;
 	width : 100%;
 	max-width: 100%;
 	line-height: 1.625;
@@ -41,7 +41,7 @@ table-layout: fixed;
 
 .table>thead>tr>th:first-child {
 	/* border-left:1px solid #DDD; */
-	
+
 }
 /**grid head end**/
 /**grid body start**/
@@ -56,20 +56,20 @@ table-layout: fixed;
 	line-height: 1.625;
 }
 .grid-content tr:first-child td{
- 	border-top: 0px solid red ; 
+ 	border-top: 0px solid red ;
 }
 .grid-content tr:first-child{
- 	border-top: 0px solid red ; 
+ 	border-top: 0px solid red ;
 }
 .table tr:last-child{
-	border-bottom: 0px solid red ; 
+	border-bottom: 0px solid red ;
 }
 .table>thead>tr>th{padding-left:1px;padding-right:1px;}
 /* .table tr:last-child th{
-	border-bottom: 1px  ; 
+	border-bottom: 1px  ;
 } */
 .table{
-	border-top: 0px solid red ; 
+	border-top: 0px solid red ;
 }
 .grid-content button:hover{
 	background-color: #5296BA;
@@ -131,7 +131,7 @@ border-radius: 3px;
 }
 
 /* .table>tbody>tr>td {
-	
+
 } */
 /**grid body end**/
 /**pagination**/
@@ -148,8 +148,8 @@ border-radius: 3px;
     display: block;
    /* border: 2px solid #4777c8;*/
     padding: 0 8px;
-} 
-/* 
+}
+/*
 .nav{
 	text-align:center;
 	align:center;
@@ -172,7 +172,7 @@ border-radius: 3px;
 
 .pagination>li{
 	display:inline;
-	
+
 }
 
 .pagination>li>a,.pagination>li>span{
@@ -223,23 +223,22 @@ margin-left:15px;
     border-bottom-left-radius: 6px;
         border-top-right-radius:6px;
     border-bottom-right-radius:6px
-} 
+}
 .pagination > li:first-child > a, .pagination > li:first-child > span {
     margin-left: 0px;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
-    
+
 }
  .pagination-sm>li:first-child>a,.pagination-sm>li:first-child>span{
 	border-top-left-radius:6px;
 	border-bottom-left-radius:6px
-} 
+}
  .pagination-sm>li:first-child>a,.pagination-sm>li:first-child>span{
     border-top-right-radius:6px;
     border-bottom-right-radius:6px
-} 
+}
  .pagination-sm>li:last-child>a,.pagination-sm>li:last-child>span{
 	border-top-right-radius:6px;
 	border-bottom-right-radius:6px
 }
- 

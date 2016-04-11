@@ -860,7 +860,8 @@ CalendarView.prototype.showCalendarEventDialog = function(id) {
 	eventBarInfo=getInfo($$(event_id));
 	// $$("calendarEventDialog").style.top =
 	// eventBarInfo.top-$$("calendarEventDialog").offsetHeight-scrollTop;
-	$$("calendarEventDialog").style.left = eventBarInfo.left - 70;
+
+	$$("calendarEventDialog").style.left = eventBarInfo.left - 70-getInfo($$("tt")).left+"px";
 	var bottom = eventBarInfo.top - $$("calendarEventDialog").offsetHeight
 			- scrollTop;
 	var table2ParentInfo = getInfo($$("scrolltimedeventswk"));
@@ -1851,7 +1852,7 @@ CalendarView.prototype.loadEvents=function(){//alert("before loadevents");
  * @param data
  */
 CalendarView.prototype.showActivities=function(data){//alert(this);//alert("before showActivities");
-	this.valueStack={};alert(data)
+	this.valueStack={};
 	if(data!=null && data.data!=null && data.data.length>0){
 		for(var i=0,length=data.data.length;i<length;i++){
 			if(data.data[i]){
@@ -1935,7 +1936,7 @@ window['CalendarView'] = CalendarView;
  */
 function changeJson2CE(data){
 	var ce=new calendarEvent();
-	ce.id=data.activityId;
+	ce.id=data.id;
 	
 	ce.title=data.title;
 	ce.day=new Date(data.startTime*60000).format("yyyy-MM-dd");

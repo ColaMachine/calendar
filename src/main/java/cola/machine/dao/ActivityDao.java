@@ -20,69 +20,81 @@ import cola.machine.bean.Activity;
 @Component("activityDao") 
 public interface ActivityDao {
 
-	
-	
-	/** 
-	* @Title: selecActivityByActivityId 
-	* @Description: 根据id查询活动
-	* @param long activityId
-	* @return Activity    返回类型 
-	* @author 371452875@qq.com
-	* @throws 
-	*/
-	public Activity selecActivityByActivityId(long activityId);
 
-	/** 
-	* @Title: insertActivity 
-	* @Description: 插入一条新的活动 
-	* @param @param activity    设定文件 
-	* @return void    返回类型 
-	* @author 371452875@qq.com
-	* @throws 
-	*/
-	public void insertActivity(Activity activity);
-	
-	/** 
-	* @Title: updateActivity 
-	* @Description: 更新活动
-	* @param @param activity    设定文件 
-	* @return void    返回类型 
-	* @author 371452875@qq.com
-	* @throws 
-	*/
-	public void updateActivity(Activity activity);
-	
-	
+
+
+	int deleteByPrimaryKey(Long id);
+
+
+	int insert(Activity record);
+
+
+	int insertSelective(Activity  record);
+
+
+	Activity  selectByPrimaryKey(Long id);
+
 	/**
-	 * 说明:根据id得到activity
-	 * @param activityId
-	 * @return
+	 * 说明:根据主键修改所存在属性内容
+	 * @param Activity
+	 * @return int 更新数量
 	 * @author dozen.zhang
-	 * @date 2015年5月28日下午5:29:26
+	 * @date 2015年5月14日上午11:34:13
 	 */
-	public Activity getActivityById(long activityId);
-	/** 
-	* @Title: deleteActivity 
-	* @Description: 删除活动
-	* @param @param activityId    设定文件 
-	* @return void    返回类型 
-	* @author 371452875@qq.com
-	* @throws 
-	*/
-	public void deleteActivity(long activityId);
+	int updateByPrimaryKeySelective(Activity record);
 
-	/** 
-	* @Title: selectActivityBetween2Date 
-	* @Description: 根据两个日期 开始时间和结束时间查询到活动列表
-	* @param String startDate
-	* @param String endDate
-	* @return List<Activity>    返回类型 
-	* @author 371452875@qq.com
-	* @throws 
-	*/
-	//public List<HashMap> selectActivityBetween2Date(int startDate,int endDate);
-	
-	public List<HashMap> selectActivityBetween2Date(Map map);
+	/**
+	 * 说明:根据主键修改record完整内容
+	 * @param Activity
+	 * @return int 更新数量
+	 * @author dozen.zhang
+	 * @date 2015年5月14日上午11:34:13
+	 */
+	int updateByPrimaryKey(Activity record);
+
+	/**
+	 * 说明:根据map查找bean结果集
+	 * @param Activity
+	 * @return int 更新数量
+	 * @author dozen.zhang
+	 * @date 2015年5月14日上午11:34:13
+	 */
+	List<Activity> listByParams(Map map);
+
+	/**
+	 * 说明:根据bean查找bean结果集
+	 * @param Activity
+	 * @return int 更新数量
+	 * @author dozen.zhang
+	 * @date 2015年5月14日上午11:34:13
+	 */
+	List<Activity> listByParams4Page(Map map);
+
+	/**
+	 * 说明:根据map查找map结果集
+	 * @param Activity
+	 * @return int 更新数量
+	 * @author dozen.zhang
+	 * @date 2015年5月14日上午11:34:13
+	 */
+   /* List<Map> selectMapByBean4Page(Activity record);*/
+
+
+	/**
+	 * 说明:根据map查找map结果集
+	 * @param Activity
+	 * @return int 更新数量
+	 * @author dozen.zhang
+	 * @date 2015年5月14日上午11:34:13
+	 */
+    /*List<Activity> selectBeanByMap4Page(HashMap map);
+
+    int countByBean(Activity record);*/
+
+	int countByParams(HashMap map);
+
+
+	 List<HashMap> selectActivityBetween2Date(Map map);
 	
 
 }

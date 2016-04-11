@@ -77,140 +77,6 @@
             <input type="text" id="updatetimeEnd" name="updatetimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间结束" ></input>
             <label class="input-group-addon" for="updatetimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
 
- <!-- 
-        <div class="form-group">
-            <label for="exampleInputName2">主键</label>
-          
-            <input type="text" class="form-control" id="id" name="id" placeholder="主键">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">用户名</label>
-          
-            <input type="text" class="form-control" id="username" name="username" placeholder="用户名">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">密码</label>
-          
-            <input type="text" class="form-control" id="password" name="password" placeholder="密码">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">昵称</label>
-          
-            <input type="text" class="form-control" id="nkname" name="nkname" placeholder="昵称">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">类型</label>
-          
-            <input type="text" class="form-control" id="type" name="type" placeholder="类型">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">状态</label>
-          
-            <input type="text" class="form-control" id="status" name="status" placeholder="状态">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">邮箱地址</label>
-          
-            <input type="text" class="form-control" id="email" name="email" placeholder="邮箱地址">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">手机号码</label>
-          
-            <input type="text" class="form-control" id="telno" name="telno" placeholder="手机号码">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">身份证号码</label>
-          
-            <input type="text" class="form-control" id="idcard" name="idcard" placeholder="身份证号码">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">性别</label>
-          
-            <input type="text" class="form-control" id="sex" name="sex" placeholder="性别">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">出生年月</label>
-          
-            <input type="text" class="form-control" id="birth" name="birth" placeholder="出生年月">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">积分</label>
-          
-            <input type="text" class="form-control" id="integral" name="integral" placeholder="积分">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">地址</label>
-          
-            <input type="text" class="form-control" id="address" name="address" placeholder="地址">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">微信</label>
-          
-            <input type="text" class="form-control" id="weichat" name="weichat" placeholder="微信">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">qq</label>
-          
-            <input type="text" class="form-control" id="qq" name="qq" placeholder="qq">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">头像</label>
-          
-            <input type="text" class="form-control" id="face" name="face" placeholder="头像">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">备注</label>
-          
-            <input type="text" class="form-control" id="remark" name="remark" placeholder="备注">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">创建时间</label>
-          
-            <input type="text" class="form-control" id="createtime" name="createtime" placeholder="创建时间">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">更新时间</label>
-          
-            <input type="text" class="form-control" id="updatetime" name="updatetime" placeholder="更新时间">
-           
-        </div>
-  -->
   
                 <button type="button" onclick="search()" class="btn btn-default">查询</button>
             </form>
@@ -220,7 +86,7 @@
             <button class="btn exportBtn" >导出</button>
         </div>
     </div>
-    <div id="SysUserGrid" class="grid"></div>
+    <table id="SysUserGrid" class="grid"></table>
     <div id="SysUserGrid-pager" class="pager"></div>
     <div class="modal" id="mymodal">
         <div class="modal-dialog">
@@ -250,6 +116,7 @@ var sysUserList={
     root:$("#SysUserList"),
     init:function(){
         this.mygrid =this.root.find(".grid").jqGrid(this.gridParam);
+
         this.addEventListener();
 
     },
@@ -266,6 +133,7 @@ var sysUserList={
                   },
                   multiselect : true,
                   url : PATH+'/sysUser/list.json',
+                  pager:"#SysUserGrid-Pager",
                   grid_selector:"#SysUserGrid",
                   pager_selector:"#SysUserGrid-Pager",
                   searchParams : {

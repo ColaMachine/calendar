@@ -966,7 +966,7 @@ return ymd;
     public static void main(String[] args) {
 
         Generator.generate(new String[]{
-               "SysResource","SysRole","SysUser","SysUserRole",
+               "Activity","SysResource","SysRole","SysUser","SysUserRole",
                 "SysRoleResource","SysUserResource"
                 });
        

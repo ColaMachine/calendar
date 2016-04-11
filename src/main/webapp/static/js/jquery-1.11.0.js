@@ -8839,7 +8839,7 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 					if ( conv && s[ "throws" ] ) {
 						response = conv( response );
 					} else {
-						try {
+						try {//parseJSON
 							response = conv( response );
 						} catch ( e ) {
 							return { state: "parsererror", error: conv ? e : "No conversion from " + prev + " to " + current };

@@ -33,7 +33,7 @@ public interface ActivityService {
 	* @Title: selecActivityByActivityId 
 	* @Description: 根据id查询活动
 	* @param @param id
-	* @return Activity    返回类型 
+	* @return Activity.cfg    返回类型
 	* @throws 
 	*/
 	public Activity  selecActivityByActivityId(Long id);

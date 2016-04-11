@@ -136,7 +136,7 @@ public class ActivityController extends BaseController {
 			activity.setStartTime(startTime);
 			activity.setEndTime(endTime);
 			activity.setTitle(title);
-			activity.setActivityId(id);
+			activity.setId(id);
 			activity.setUserId(userid);
 			list.add(activity);
 		}
@@ -174,7 +174,7 @@ public class ActivityController extends BaseController {
 		activity.setStartTime(startTime);
 		activity.setEndTime(endTime);
 		activity.setTitle(request.getParameter("TITLE"));
-		activity.setActivityId(Long.valueOf(request.getParameter("ID")));
+		activity.setId(Long.valueOf(request.getParameter("ID")));
 		activityService.saveActivity(activity);
 		/*
 		 * if(StringUtil.isEmpty(request.getParameter("ID"))){

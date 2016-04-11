@@ -90,7 +90,12 @@ public class SysUserController extends BaseController{
     @RequestMapping(value = "/list.json")
     @ResponseBody
     public Object list(HttpServletRequest request) {
+        System.out.println(request.getParameter("page"));
+        System.out.println(request.getParameter("rows"));
+        System.out.println(request.getParameter("sidx"));
+        System.out.println(request.getParameter("sord"));
         Page page = RequestUtil.getPage(request);
+        // page =new Page(1,20);
         if(page ==null){
              return this.getWrongResultFromCfg("err.param.page");
         }
@@ -275,6 +280,12 @@ public class SysUserController extends BaseController{
 
         params.put("page",page);
         List<SysUser> sysUsers = sysUserService.listByParams4Page(params);
+        //return ResultUtil.getResult(sysUsers, page);
+        HashMap map2 =new HashMap();
+      /*  map2.put("page",1);
+        map2.put("total",13);
+        map2.put("records",10);
+        map2.put("rows",sysUsers);*/
         return ResultUtil.getResult(sysUsers, page);
     }
     

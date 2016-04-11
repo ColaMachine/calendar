@@ -40,7 +40,7 @@ public class ActivityAjax {/*
 		HashMap returnMap =new HashMap();
 		int startDate = MapUtils.getIntValue(inputMap, "STARTDATE");
 		int endDate = MapUtils.getIntValue(inputMap, "ENDDATE");
-		Activity activity =new Activity();
+		Activity.cfg activity =new Activity.cfg();
 		
 		
 		activity.setStartDate(startDate);

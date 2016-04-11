@@ -46,21 +46,21 @@ public class ActivityServiceImpl implements ActivityService{
 
 	/* (non-Javadoc)
 	 * 保存日历活动 arrangements
-	 * @see cola.machine.calendar.activity.service.ActivityService#saveActivity(cola.machine.calendar.activity.bean.Activity)
+	 * @see cola.machine.calendar.activity.service.ActivityService#saveActivity(cola.machine.calendar.activity.bean.Activity.cfg)
 	 */
 	public boolean saveActivity(Activity activity) {
 		
 		//
 		if(activity!=null){
-			if(activity.getActivityId()!=null && activity.getActivityId()!=0){
-				Activity activityFromDb =activityDao.getActivityById(activity.getActivityId());
+			if(activity.getId()!=null && activity.getId()!=0){
+				Activity activityFromDb =activityDao.selectByPrimaryKey(activity.getId());
 				if(activityFromDb!=null){
-					activityDao.updateActivity(activity);
+					activityDao.updateByPrimaryKey(activity);
 					return true;
 				}
 			}
 			//activity.setActivityId(UUIDUtil.getUUID());
-			activityDao.insertActivity(activity);
+			activityDao.insert(activity);
 			return true;
 		}else{
 			return false;
@@ -71,7 +71,7 @@ public class ActivityServiceImpl implements ActivityService{
 	 * @see cola.machine.calendar.activity.service.ActivityService#selecActivityByActivityId(java.lang.String)
 	 */
 	public Activity selecActivityByActivityId(Long activityId) {
-		return activityDao.selecActivityByActivityId(activityId);
+		return activityDao.selectByPrimaryKey(activityId);
 		 
 	}
 
@@ -79,15 +79,15 @@ public class ActivityServiceImpl implements ActivityService{
 	 * @see cola.machine.calendar.activity.service.ActivityService#deleteActivityById(java.lang.String)
 	 */
 	public boolean deleteActivityById(Long activityId) {
-		activityDao.deleteActivity(activityId);
+		activityDao.deleteByPrimaryKey(activityId);
 		return true;
 	}
 
 	public List<HashMap> getActivities(long startDate, long endDate,Long userid) {
 		Map map =new HashMap();
-		map.put("STARTTIME",startDate);//23885280
-		map.put("ENDTIME",endDate);//23893920
-		map.put("USERID",userid);//23893920
+		map.put("startTime",startDate);//23885280
+		map.put("endTime",endDate);//23893920
+		map.put("userId",userid);//23893920
 		return activityDao.selectActivityBetween2Date(map);
 	}
 	
@@ -96,7 +96,7 @@ public class ActivityServiceImpl implements ActivityService{
 	}*/
 
 	public boolean updateActivity(Activity activity) {
-		 activityDao.updateActivity(activity);
+		 activityDao.updateByPrimaryKey(activity);
 		 return true;
 	}
 
@@ -108,7 +108,7 @@ public class ActivityServiceImpl implements ActivityService{
 	public void saveActivitys(List<Activity> list) {
 		for(Activity activity:list){
 			if(activity.isdel){
-				this.deleteActivityById(activity.getActivityId());
+				this.deleteActivityById(activity.getId());
 			}else
 			this.saveActivity(activity);
 		}
