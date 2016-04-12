@@ -10,7 +10,7 @@ ${parentsearchhtml}
         </div>
     </div>
      <div class="col-sm-6">
-    <div id="${table.name}MapperGrid" class="grid"></div>
+    <table id="${table.name}MapperGrid" class="grid"></table>
     <div id="${table.name}MapperGrid-pager" class="pager"></div>
     </div>
      <div class="col-sm-6">
@@ -45,17 +45,15 @@ var ${abc}List={
            $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
     gridParam:{
-                  page:{
-                      curPage : 1,
-                      pageSize : 10
-                  },
+                  datatype: "json",
+                          viewrecords: true, sortorder: "desc", caption:"JSON Example",
+                          rowNum:10,
+                          rowList:[10,20,30],
                   multiselect : true,
                   url : PATH+'/${table.mapper.parent?uncap_first}/list.json',
-                  grid_selector:"#${table.name}MapperGrid",
-                  pager_selector:"#${table.name}MapperGrid-Pager",
-                  searchParams : {
-                      name : ''
-                  },
+                  grid:"#${table.name}MapperGrid",
+                  pager:"#${table.name}MapperGrid-Pager",
+                  jsonReader:jsonReader,
                   colNames : [
                    <#list parentTable.cols as col><#if col_index!=0>,</#if>"${col.remark}"</#list> , '操作' ],
                   colModel : [

@@ -202,6 +202,7 @@ var Ajax={
          	options.url =  url;
          	options.type = options.type||"POST";
          	options.data = inputData;
+         	options.contentType="application/x-www-form-urlencoded; charset=utf-8";
          	//options.data = encodeURIComponent(JSON.stringify(inputData));
          	if (typeof options.async == 'undifined')
          		options.async = false;
@@ -1538,3 +1539,14 @@ function zImageUtil(config) {
 	o.init(config);
 	return o;
 }
+var jsonReader={
+    root: "data",
+    page: "curPage",
+    total: "totalcount",
+    records: "totalcount",
+    repeatitems: true,
+    cell: "cell",
+    id: "id",
+    userdata: "userdata",
+    subgrid: {root:"rows", repeatitems: true, cell:"cell"}
+};

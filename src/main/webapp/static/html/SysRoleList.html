@@ -1,8 +1,8 @@
+
 <div id="SysRoleList" class="rgt_body">
     <div class="body_title">| 角色</div>
         <div class="body_top" >
             <form class="form-inline app-search">
-
         <label for="id">主键</label>
             <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="主键"></input>
         <label for="name">角色名</label>
@@ -32,57 +32,6 @@
             <input type="text" id="createtimeEnd" name="createtimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间结束" ></input>
             <label class="input-group-addon" for="createtimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
 
- <!-- 
-        <div class="form-group">
-            <label for="exampleInputName2">主键</label>
-          
-            <input type="text" class="form-control" id="id" name="id" placeholder="主键">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">角色名</label>
-          
-            <input type="text" class="form-control" id="name" name="name" placeholder="角色名">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">角色代码</label>
-          
-            <input type="text" class="form-control" id="code" name="code" placeholder="角色代码">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">排序</label>
-          
-            <input type="text" class="form-control" id="order" name="order" placeholder="排序">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">状态</label>
-          
-            <input type="text" class="form-control" id="status" name="status" placeholder="状态">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">备注</label>
-          
-            <input type="text" class="form-control" id="remark" name="remark" placeholder="备注">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">创建时间</label>
-          
-            <input type="text" class="form-control" id="createtime" name="createtime" placeholder="创建时间">
-           
-        </div>
-  -->
-  
                 <button type="button" onclick="search()" class="btn btn-default">查询</button>
             </form>
         <div >
@@ -91,26 +40,8 @@
             <button class="btn exportBtn" >导出</button>
         </div>
     </div>
-    <div id="SysRoleGrid" class="grid"></div>
+    <table id="SysRoleGrid" class="grid"></table>
     <div id="SysRoleGrid-pager" class="pager"></div>
-    <div class="modal" id="mymodal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">模态弹出窗标题</h4>
-                </div>
-                <div class="modal-body">
-                    <p>模态弹出窗主体内容</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">保存</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
 </div>
 <script>
 
@@ -131,68 +62,49 @@ var sysRoleList={
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
     gridParam:{
-                  page:{
-                      curPage : 1,
-                      pageSize : 10
-                  },
-                  multiselect : true,
-                  url : PATH+'/sysRole/list.json',
-                  grid_selector:"#SysRoleGrid",
-                  pager_selector:"#SysRoleGrid-Pager",
-                  searchParams : {
-                      name : ''
-                  },
-                  colNames : [
-                   "主键","角色名","角色代码","排序","状态","备注","创建时间" , '操作' ],
-                  colModel : [
-                          {
-                              name : 'id',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'name',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'code',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'order',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'status',
-                              width : 80,
-                              formatter : function(value, grid, rows) {
-                                  var map ={'1':'正常','2':'禁用',};
-                                  return map[value];
-                              }
-                          } ,
-                          {
-                              name : 'remark',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'createtime',
-                              width : 80,
-                               formatter : function(value, grid, rows) {
-                                  return new Date(value).format("yyyy-MM-dd");
-                              }
-                          } 
-                          ,
-                          {
-                              name : 'id',
-                              width : 150,
-                              formatter : function(value, grid, rows) {
-                                  return getViewHtml(value,"sysRoleList")+getEditHtml(value,"sysRoleList")+getDelHtml(value,"sysRoleList");
-                              }
-                          }
-                    ],
-
-                    onSelectRow: function(id){ //alert("单击选中"+id);
-
-                    },
+        datatype: "json",
+        viewrecords: true, sortorder: "desc", caption:"JSON Example",
+        rowNum:10,
+        rowList:[10,20,30],
+        multiselect : true,
+        url : PATH+'/sysRole/list.json',
+        grid:"#SysRoleGrid",
+        pager:"#SysRoleGrid-Pager",
+        jsonReader:jsonReader,
+        colNames : [
+        "主键","角色名","角色代码","排序","状态","备注","创建时间" , '操作' ],
+        colModel : [
+            {   name : 'id',width : 80,
+            } ,
+            {   name : 'name',width : 80,
+            } ,
+            {   name : 'code',width : 80,
+            } ,
+            {   name : 'order',width : 80,
+            } ,
+            {   name : 'status',width : 80,
+                formatter : function(value, grid, rows) {
+                  var map ={'2':'禁用','1':'正常',};
+                  return map[value];
+                }
+            } ,
+            {   name : 'remark',width : 80,
+            } ,
+            {   name : 'createtime',width : 80,
+                formatter : function(value, grid, rows) {
+                  return new Date(value).format("yyyy-MM-dd");
+                }
+            } 
+              ,
+            {   name : 'id',
+                width : 150,
+                formatter : function(value, grid, rows) {
+                    return getViewHtml(value,"sysRoleList")+getEditHtml(value,"sysRoleList")+getDelHtml(value,"sysRoleList");
+                }
+            }
+        ],
+        onSelectRow: function(id){ //alert("单击选中"+id);
+        },
     },
     saveInfo:function(){
     },
@@ -208,7 +120,7 @@ var sysRoleList={
     },
     deleteInfo:function (id){
          //弹窗
-         zconfirm("确定删除数据:"+id,"删除",function(){
+        zconfirm("确定删除数据:"+id,"删除",function(){
             Ajax.post(PATH+"/sysRole/del.json?id="+id,function(result){
                 result=ajaxResultHandler(result);
                 if(result.r==AJAX_SUCC){

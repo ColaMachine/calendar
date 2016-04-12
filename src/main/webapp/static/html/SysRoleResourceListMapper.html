@@ -38,7 +38,7 @@
         </div>
     </div>
      <div class="col-sm-6">
-    <div id="SysRoleResourceMapperGrid" class="grid"></div>
+    <table id="SysRoleResourceMapperGrid" class="grid"></table>
     <div id="SysRoleResourceMapperGrid-pager" class="pager"></div>
     </div>
      <div class="col-sm-6">
@@ -73,17 +73,15 @@ var sysRoleResourceList={
            $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
     gridParam:{
-                  page:{
-                      curPage : 1,
-                      pageSize : 10
-                  },
+                  datatype: "json",
+                          viewrecords: true, sortorder: "desc", caption:"JSON Example",
+                          rowNum:10,
+                          rowList:[10,20,30],
                   multiselect : true,
                   url : PATH+'/sysRole/list.json',
-                  grid_selector:"#SysRoleResourceMapperGrid",
-                  pager_selector:"#SysRoleResourceMapperGrid-Pager",
-                  searchParams : {
-                      name : ''
-                  },
+                  grid:"#SysRoleResourceMapperGrid",
+                  pager:"#SysRoleResourceMapperGrid-Pager",
+                  jsonReader:jsonReader,
                   colNames : [
                    "主键","角色名","角色代码","排序","状态","备注","创建时间" , '操作' ],
                   colModel : [
@@ -107,7 +105,7 @@ var sysRoleResourceList={
                               name : 'status',
                               width : 80,
                               formatter : function(value, grid, rows) {
-                                  var map ={'1':'正常','2':'禁用',};
+                                  var map ={'2':'禁用','1':'正常',};
                                   return map[value];
                               }
                           } ,

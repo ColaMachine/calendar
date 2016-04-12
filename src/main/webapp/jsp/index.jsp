@@ -336,31 +336,14 @@ var sysUserList={
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
     gridParam:{
-
                   datatype: "json",
-                page:2,
                   viewrecords: true, sortorder: "desc", caption:"JSON Example",
-                  rowNum:5,
+                  rowNum:10,
                   rowList:[10,20,30],
                   multiselect : true,
                   url : PATH+'/sysUser/list.json',
                   pager:"#pagetest",
-                  grid_selector:"#SysUserGrid",
-                  pager_selector:"#SysUserGrid-Pager",
-                  searchParams : {
-                      name : ''
-                  },
-                  jsonReader:{
-                  root: "data",
-                  			page: "curPage",
-                  			total: "totalcount",
-                  			records: "totalcount",
-                  			repeatitems: true,
-                  			cell: "cell",
-                  			id: "id",
-                  			userdata: "userdata",
-                  			subgrid: {root:"rows", repeatitems: true, cell:"cell"}
-                  },
+                  jsonReader:jsonReader,
                   colNames : [
                    "主键","用户名","密码","昵称","类型","状态","邮箱地址","手机号码","身份证号码","性别","出生年月","积分","地址","微信","qq","头像","备注","创建时间","更新时间" , '操作' ],
                   colModel : [

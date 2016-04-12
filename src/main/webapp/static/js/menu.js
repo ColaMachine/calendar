@@ -100,20 +100,9 @@ var zMenu={
 			    $(".main-content").fadeIn('slow');}
 			  );return;*/
 			//	jLoading.start();
-				$.ajax({
-					type: 'GET',
-					url: url,
-					dataType: 'html',
-					success: function(data){
-						//jLoading.close();
-						$('.main-content').html(data);
-						if(typeof fun == 'function') fun();
-					},
-					error: function(){
-						//jLoading.close();
-						//jDialog.alert('加载页面失败', '系统错误')
-					}
-				});
+			    Ajax.get(url,null,function(data){$('.main-content').html(data);
+                                             						if(typeof fun == 'function') fun();});
+
 			},
 		createIcon:function(){
 			

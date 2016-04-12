@@ -87,9 +87,6 @@ public class ${Abc}Controller extends BaseController{
 
     /**
      * 说明:ajax请求角色信息
-     * 
-     * @param curPage
-     * @param pageSize
      * @return
      * @return Object
      * @author dozen.zhang
@@ -109,26 +106,21 @@ ${getSearchParam}
         return ResultUtil.getResult(${abc}s, page);
     }
     
-    /**
-         * 说明:ajax请求角色信息 无分页版本
-         *
-         * @param curPage
-         * @param pageSize
-         * @return
-         * @return Object
-         * @author dozen.zhang
-         * @date 2015年11月15日下午12:31:55
-         */
-        @RequestMapping(value = "/listAll.json")
-        @ResponseBody
-        public Object listAll(HttpServletRequest request) {
-            ${getSearchParam}
-            List<${Abc}> ${abc}s = ${abc}Service.listByParams(params);
-            return ResultUtil.getResult(${abc}s);
-        }
+   /**
+    * 说明:ajax请求角色信息 无分页版本
+    * @return Object
+    * @author dozen.zhang
+    * @date 2015年11月15日下午12:31:55
+    */
+    @RequestMapping(value = "/listAll.json")
+    @ResponseBody
+    public Object listAll(HttpServletRequest request) {
+        ${getSearchParam}
+        List<${Abc}> ${abc}s = ${abc}Service.listByParams(params);
+        return ResultUtil.getResult(${abc}s);
+    }
     
     /**
-     * @param id 参数
      * @param request 发请求
      * @return Object
      */
@@ -142,13 +134,10 @@ ${getSearchParam}
         return "/static/html/${Abc}View.html";
     }
    
-      @RequestMapping(value = "/view.json")
+    @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
     ${controllerViewMethod}
-
-
-    
       /*  String id = request.getParameter("id");
         ${Abc} bean = ${abc}Service.selectByPrimaryKey(<@javaType>${table.pk.type}</@javaType>.valueOf(id));
         HashMap<String,Object> result =new HashMap<String,Object>();

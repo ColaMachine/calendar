@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,8 @@ public class SysUserController extends BaseController{
      * @date 2015年11月15日下午12:30:45
      */
     @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
-    public String list() {
+    public String list(HttpServletRequest request, HttpServletResponse response) {
+
         return "/static/html/SysUserList.html";
     }
 
@@ -80,8 +82,6 @@ public class SysUserController extends BaseController{
     /**
      * 说明:ajax请求角色信息
      * 
-     * @param curPage
-     * @param pageSize
      * @return
      * @return Object
      * @author dozen.zhang
@@ -90,12 +90,7 @@ public class SysUserController extends BaseController{
     @RequestMapping(value = "/list.json")
     @ResponseBody
     public Object list(HttpServletRequest request) {
-        System.out.println(request.getParameter("page"));
-        System.out.println(request.getParameter("rows"));
-        System.out.println(request.getParameter("sidx"));
-        System.out.println(request.getParameter("sord"));
         Page page = RequestUtil.getPage(request);
-        // page =new Page(1,20);
         if(page ==null){
              return this.getWrongResultFromCfg("err.param.page");
         }
@@ -280,20 +275,12 @@ public class SysUserController extends BaseController{
 
         params.put("page",page);
         List<SysUser> sysUsers = sysUserService.listByParams4Page(params);
-        //return ResultUtil.getResult(sysUsers, page);
-        HashMap map2 =new HashMap();
-      /*  map2.put("page",1);
-        map2.put("total",13);
-        map2.put("records",10);
-        map2.put("rows",sysUsers);*/
         return ResultUtil.getResult(sysUsers, page);
     }
     
     /**
          * 说明:ajax请求角色信息 无分页版本
          *
-         * @param curPage
-         * @param pageSize
          * @return
          * @return Object
          * @author dozen.zhang
@@ -485,7 +472,6 @@ public class SysUserController extends BaseController{
         }
     
     /**
-     * @param id 参数
      * @param request 发请求
      * @return Object
      */

@@ -1,8 +1,8 @@
+
 <div id="SysRoleResourceList" class="rgt_body">
     <div class="body_title">| 角色资源关系</div>
         <div class="body_top" >
             <form class="form-inline app-search">
-
         <label for="id">主键</label>
             <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="15" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="主键"></input>
         <label for="roleid">角色id</label>
@@ -10,29 +10,6 @@
         <label for="rid">资源id</label>
             <input type="number" id="rid" name="rid"  class="form-control input-sm"  maxlength="15" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="资源id"></input>
 
- <!-- 
-        <div class="form-group">
-            <label for="exampleInputName2">主键</label>
-          
-            <input type="text" class="form-control" id="id" name="id" placeholder="主键">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">角色id</label>
-          
-            <input type="text" class="form-control" id="roleid" name="roleid" placeholder="角色id">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">资源id</label>
-          
-            <input type="text" class="form-control" id="rid" name="rid" placeholder="资源id">
-           
-        </div>
-  -->
-  
                 <button type="button" onclick="search()" class="btn btn-default">查询</button>
             </form>
         <div >
@@ -41,26 +18,8 @@
             <button class="btn exportBtn" >导出</button>
         </div>
     </div>
-    <div id="SysRoleResourceGrid" class="grid"></div>
+    <table id="SysRoleResourceGrid" class="grid"></table>
     <div id="SysRoleResourceGrid-pager" class="pager"></div>
-    <div class="modal" id="mymodal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">模态弹出窗标题</h4>
-                </div>
-                <div class="modal-body">
-                    <p>模态弹出窗主体内容</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">保存</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
 </div>
 <script>
 
@@ -81,45 +40,34 @@ var sysRoleResourceList={
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
     gridParam:{
-                  page:{
-                      curPage : 1,
-                      pageSize : 10
-                  },
-                  multiselect : true,
-                  url : PATH+'/sysRoleResource/list.json',
-                  grid_selector:"#SysRoleResourceGrid",
-                  pager_selector:"#SysRoleResourceGrid-Pager",
-                  searchParams : {
-                      name : ''
-                  },
-                  colNames : [
-                   "主键","角色id","资源id" , '操作' ],
-                  colModel : [
-                          {
-                              name : 'id',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'roleid',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'rid',
-                              width : 80,
-                          } 
-                          ,
-                          {
-                              name : 'id',
-                              width : 150,
-                              formatter : function(value, grid, rows) {
-                                  return getViewHtml(value,"sysRoleResourceList")+getEditHtml(value,"sysRoleResourceList")+getDelHtml(value,"sysRoleResourceList");
-                              }
-                          }
-                    ],
-
-                    onSelectRow: function(id){ //alert("单击选中"+id);
-
-                    },
+        datatype: "json",
+        viewrecords: true, sortorder: "desc", caption:"JSON Example",
+        rowNum:10,
+        rowList:[10,20,30],
+        multiselect : true,
+        url : PATH+'/sysRoleResource/list.json',
+        grid:"#SysRoleResourceGrid",
+        pager:"#SysRoleResourceGrid-Pager",
+        jsonReader:jsonReader,
+        colNames : [
+        "主键","角色id","资源id" , '操作' ],
+        colModel : [
+            {   name : 'id',width : 80,
+            } ,
+            {   name : 'roleid',width : 80,
+            } ,
+            {   name : 'rid',width : 80,
+            } 
+              ,
+            {   name : 'id',
+                width : 150,
+                formatter : function(value, grid, rows) {
+                    return getViewHtml(value,"sysRoleResourceList")+getEditHtml(value,"sysRoleResourceList")+getDelHtml(value,"sysRoleResourceList");
+                }
+            }
+        ],
+        onSelectRow: function(id){ //alert("单击选中"+id);
+        },
     },
     saveInfo:function(){
     },
@@ -135,7 +83,7 @@ var sysRoleResourceList={
     },
     deleteInfo:function (id){
          //弹窗
-         zconfirm("确定删除数据:"+id,"删除",function(){
+        zconfirm("确定删除数据:"+id,"删除",function(){
             Ajax.post(PATH+"/sysRoleResource/del.json?id="+id,function(result){
                 result=ajaxResultHandler(result);
                 if(result.r==AJAX_SUCC){

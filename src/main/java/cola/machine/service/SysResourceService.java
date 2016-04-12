@@ -35,18 +35,28 @@ public class SysResourceService extends BaseService {
     @Resource
     private SysResourceMapper sysResourceMapper;
     /**
-     * 说明:list by page and params
+     * 说明:list by page and params根据参数返回列表
      * @param page
-     * @return
-     * @return List<Role>
+     * @return List<HashMap>
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
      */
     public List<SysResource> listByParams4Page(HashMap params) {
         return sysResourceMapper.listByParams4Page(params);
     }
-     public List<SysResource> listByParams(HashMap params) {
+    public List<SysResource> listByParams(HashMap params) {
         return sysResourceMapper.listByParams(params);
+    }
+
+     /**
+     * 说明:countByParams 根据参数提取个数
+     * @param page
+     * @return int
+     * @author dozen.zhang
+     * @date 2015年11月15日下午12:36:24
+     */
+    public int countByParams(HashMap params) {
+           return sysResourceMapper.countByParams(params);
     }
 
     /*

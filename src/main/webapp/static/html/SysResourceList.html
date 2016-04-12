@@ -1,8 +1,8 @@
+
 <div id="SysResourceList" class="rgt_body">
     <div class="body_title">| 资源配置</div>
         <div class="body_top" >
             <form class="form-inline app-search">
-
         <label for="id">主键</label>
             <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="主键"></input>
         <label for="pid">父主键</label>
@@ -38,78 +38,6 @@
             <input type="text" id="createtimeEnd" name="createtimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间结束" ></input>
             <label class="input-group-addon" for="createtimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
 
- <!-- 
-        <div class="form-group">
-            <label for="exampleInputName2">主键</label>
-          
-            <input type="text" class="form-control" id="id" name="id" placeholder="主键">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">父主键</label>
-          
-            <input type="text" class="form-control" id="pid" name="pid" placeholder="父主键">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">资源名称</label>
-          
-            <input type="text" class="form-control" id="name" name="name" placeholder="资源名称">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">资源代码</label>
-          
-            <input type="text" class="form-control" id="code" name="code" placeholder="资源代码">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">资源分类</label>
-          
-            <input type="text" class="form-control" id="type" name="type" placeholder="资源分类">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">资源对应URL</label>
-          
-            <input type="text" class="form-control" id="url" name="url" placeholder="资源对应URL">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">排序id</label>
-          
-            <input type="text" class="form-control" id="order" name="order" placeholder="排序id">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">状态</label>
-          
-            <input type="text" class="form-control" id="status" name="status" placeholder="状态">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">备注</label>
-          
-            <input type="text" class="form-control" id="remark" name="remark" placeholder="备注">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">创建时间</label>
-          
-            <input type="text" class="form-control" id="createtime" name="createtime" placeholder="创建时间">
-           
-        </div>
-  -->
-  
                 <button type="button" onclick="search()" class="btn btn-default">查询</button>
             </form>
         <div >
@@ -118,26 +46,8 @@
             <button class="btn exportBtn" >导出</button>
         </div>
     </div>
-    <div id="SysResourceGrid" class="grid"></div>
+    <table id="SysResourceGrid" class="grid"></table>
     <div id="SysResourceGrid-pager" class="pager"></div>
-    <div class="modal" id="mymodal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">模态弹出窗标题</h4>
-                </div>
-                <div class="modal-body">
-                    <p>模态弹出窗主体内容</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">保存</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
 </div>
 <script>
 
@@ -158,80 +68,55 @@ var sysResourceList={
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
     gridParam:{
-                  page:{
-                      curPage : 1,
-                      pageSize : 10
-                  },
-                  multiselect : true,
-                  url : PATH+'/sysResource/list.json',
-                  grid_selector:"#SysResourceGrid",
-                  pager_selector:"#SysResourceGrid-Pager",
-                  searchParams : {
-                      name : ''
-                  },
-                  colNames : [
-                   "主键","父主键","资源名称","资源代码","资源分类","资源对应URL","排序id","状态","备注","创建时间" , '操作' ],
-                  colModel : [
-                          {
-                              name : 'id',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'pid',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'name',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'code',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'type',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'url',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'order',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'status',
-                              width : 80,
-                              formatter : function(value, grid, rows) {
-                                  var map ={'1':'启用','2':'禁用',};
-                                  return map[value];
-                              }
-                          } ,
-                          {
-                              name : 'remark',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'createtime',
-                              width : 80,
-                               formatter : function(value, grid, rows) {
-                                  return new Date(value).format("yyyy-MM-dd");
-                              }
-                          } 
-                          ,
-                          {
-                              name : 'id',
-                              width : 150,
-                              formatter : function(value, grid, rows) {
-                                  return getViewHtml(value,"sysResourceList")+getEditHtml(value,"sysResourceList")+getDelHtml(value,"sysResourceList");
-                              }
-                          }
-                    ],
-
-                    onSelectRow: function(id){ //alert("单击选中"+id);
-
-                    },
+        datatype: "json",
+        viewrecords: true, sortorder: "desc", caption:"JSON Example",
+        rowNum:10,
+        rowList:[10,20,30],
+        multiselect : true,
+        url : PATH+'/sysResource/list.json',
+        grid:"#SysResourceGrid",
+        pager:"#SysResourceGrid-Pager",
+        jsonReader:jsonReader,
+        colNames : [
+        "主键","父主键","资源名称","资源代码","资源分类","资源对应URL","排序id","状态","备注","创建时间" , '操作' ],
+        colModel : [
+            {   name : 'id',width : 80,
+            } ,
+            {   name : 'pid',width : 80,
+            } ,
+            {   name : 'name',width : 80,
+            } ,
+            {   name : 'code',width : 80,
+            } ,
+            {   name : 'type',width : 80,
+            } ,
+            {   name : 'url',width : 80,
+            } ,
+            {   name : 'order',width : 80,
+            } ,
+            {   name : 'status',width : 80,
+                formatter : function(value, grid, rows) {
+                  var map ={'2':'禁用','1':'启用',};
+                  return map[value];
+                }
+            } ,
+            {   name : 'remark',width : 80,
+            } ,
+            {   name : 'createtime',width : 80,
+                formatter : function(value, grid, rows) {
+                  return new Date(value).format("yyyy-MM-dd");
+                }
+            } 
+              ,
+            {   name : 'id',
+                width : 150,
+                formatter : function(value, grid, rows) {
+                    return getViewHtml(value,"sysResourceList")+getEditHtml(value,"sysResourceList")+getDelHtml(value,"sysResourceList");
+                }
+            }
+        ],
+        onSelectRow: function(id){ //alert("单击选中"+id);
+        },
     },
     saveInfo:function(){
     },
@@ -247,7 +132,7 @@ var sysResourceList={
     },
     deleteInfo:function (id){
          //弹窗
-         zconfirm("确定删除数据:"+id,"删除",function(){
+        zconfirm("确定删除数据:"+id,"删除",function(){
             Ajax.post(PATH+"/sysResource/del.json?id="+id,function(result){
                 result=ajaxResultHandler(result);
                 if(result.r==AJAX_SUCC){

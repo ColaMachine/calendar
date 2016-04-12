@@ -70,10 +70,10 @@ public class ${Abc}Service extends BaseService {
     public List<${Abc}> listByParams4Page(HashMap params) {
         return ${abc}Mapper.listByParams4Page(params);
     }
-     public List<${Abc}> listByParams(HashMap params) {
+    public List<${Abc}> listByParams(HashMap params) {
         return ${abc}Mapper.listByParams(params);
     }
-    ${.now?date}
+
      /**
      * 说明:countByParams 根据参数提取个数
      * @param page
