@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import cola.machine.core.page.PageUtil;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.logging.Log;
@@ -128,7 +129,9 @@ public class PageInterceptor implements Interceptor {
                 totalCount = rs.getInt(1);
             }
             page.setTotalCount(totalCount);
-            page.init(page.getCurPage(), page.getPageSize(), totalCount);
+          PageUtil.init(page,page.getCurPage(), page.getPageSize(), totalCount);
+
+
 
         } catch (SQLException e) {
             logger.error("Ignore this exception", e);

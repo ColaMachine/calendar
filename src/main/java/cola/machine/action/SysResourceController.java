@@ -70,9 +70,6 @@ public class SysResourceController extends BaseController{
 
     /**
      * 说明:ajax请求角色信息
-     * 
-     * @param curPage
-     * @param pageSize
      * @return
      * @return Object
      * @author dozen.zhang
@@ -173,20 +170,16 @@ public class SysResourceController extends BaseController{
         return ResultUtil.getResult(sysResources, page);
     }
     
-    /**
-         * 说明:ajax请求角色信息 无分页版本
-         *
-         * @param curPage
-         * @param pageSize
-         * @return
-         * @return Object
-         * @author dozen.zhang
-         * @date 2015年11月15日下午12:31:55
-         */
-        @RequestMapping(value = "/listAll.json")
-        @ResponseBody
-        public Object listAll(HttpServletRequest request) {
-                    HashMap<String,Object> params= new HashMap<String,Object>();
+   /**
+    * 说明:ajax请求角色信息 无分页版本
+    * @return Object
+    * @author dozen.zhang
+    * @date 2015年11月15日下午12:31:55
+    */
+    @RequestMapping(value = "/listAll.json")
+    @ResponseBody
+    public Object listAll(HttpServletRequest request) {
+                HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
             params.put("id",id);
@@ -268,12 +261,11 @@ public class SysResourceController extends BaseController{
             }
         }
 
-            List<SysResource> sysResources = sysResourceService.listByParams(params);
-            return ResultUtil.getResult(sysResources);
-        }
+        List<SysResource> sysResources = sysResourceService.listByParams(params);
+        return ResultUtil.getResult(sysResources);
+    }
     
     /**
-     * @param id 参数
      * @param request 发请求
      * @return Object
      */
@@ -287,7 +279,7 @@ public class SysResourceController extends BaseController{
         return "/static/html/SysResourceView.html";
     }
    
-      @RequestMapping(value = "/view.json")
+    @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
             String id = request.getParameter("id");
@@ -298,9 +290,6 @@ public class SysResourceController extends BaseController{
         }
         return this.getResult(result);
 
-
-
-    
       /*  String id = request.getParameter("id");
         SysResource bean = sysResourceService.selectByPrimaryKey(Long.valueOf(id));
         HashMap<String,Object> result =new HashMap<String,Object>();

@@ -82,11 +82,11 @@
              <button class="btn saveBtn" >保存</button>
         </div>
     </div>
-     <div class="col-sm-6">
+     <div class="col-sm-6 mapper-grid-parent-wrap" >
     <table id="SysUserResourceMapperGrid" class="grid"></table>
-    <div id="SysUserResourceMapperGrid-pager" class="pager"></div>
+    <div id="SysUserResourceMapperGrid-Pager" class="pager"></div>
     </div>
-     <div class="col-sm-6">
+     <div class="col-sm-6 mapper-grid-child-wrap">
             <ul id="treeDemo" class="ztree"></ul>
         </div>
 </div>
@@ -119,7 +119,7 @@ var sysUserResourceList={
     },
     gridParam:{
                   datatype: "json",
-                          viewrecords: true, sortorder: "desc", caption:"JSON Example",
+                          viewrecords: true, sortorder: "desc", caption:"",
                           rowNum:10,
                           rowList:[10,20,30],
                   multiselect : true,
@@ -154,7 +154,7 @@ var sysUserResourceList={
                               name : 'status',
                               width : 80,
                               formatter : function(value, grid, rows) {
-                                  var map ={'3':'未激活','2':'禁用','1':'正常',};
+                                  var map ={'1':'正常','2':'禁用','3':'未激活',};
                                   return map[value];
                               }
                           } ,
@@ -218,10 +218,10 @@ var sysUserResourceList={
                           } 
                           ,
                           {
-                              name : 'id',
+                              name : 'operation',
                               width : 150,
                               formatter : function(value, grid, rows) {
-                                  return getViewHtml(value,"sysUserResourceList")+getEditHtml(value,"sysUserResourceList")+getDelHtml(value,"sysUserResourceList");
+                                  return getViewHtml(rows.id,"sysUserResourceList")+getEditHtml(rows.id.,"sysUserResourceList")+getDelHtml(rows.id.,"sysUserResourceList");
                               }
                           }
                     ],
@@ -279,7 +279,7 @@ var sysUserResourceList={
     },
     searchInfo:function (){
         var jso = changeForm2Jso(".app-search");
-        this.mygrid.jqGrid("search",jso);
+        this.mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
     },
     search:function (){
         var jso= changeForm2Jso(".app-search");

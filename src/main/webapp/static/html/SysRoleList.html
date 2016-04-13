@@ -32,7 +32,7 @@
             <input type="text" id="createtimeEnd" name="createtimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间结束" ></input>
             <label class="input-group-addon" for="createtimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
 
-                <button type="button" onclick="search()" class="btn btn-default">查询</button>
+                <button type="button"  class="btn btn-default searchBtn">查询</button>
             </form>
         <div >
             <button class="btn addBtn" >新增</button>
@@ -41,7 +41,7 @@
         </div>
     </div>
     <table id="SysRoleGrid" class="grid"></table>
-    <div id="SysRoleGrid-pager" class="pager"></div>
+    <div id="SysRoleGrid-Pager" class="pager"></div>
 </div>
 <script>
 
@@ -63,7 +63,7 @@ var sysRoleList={
     },
     gridParam:{
         datatype: "json",
-        viewrecords: true, sortorder: "desc", caption:"JSON Example",
+        viewrecords: true, sortorder: "desc", caption:"",
         rowNum:10,
         rowList:[10,20,30],
         multiselect : true,
@@ -84,7 +84,7 @@ var sysRoleList={
             } ,
             {   name : 'status',width : 80,
                 formatter : function(value, grid, rows) {
-                  var map ={'2':'禁用','1':'正常',};
+                  var map ={'1':'正常','2':'禁用',};
                   return map[value];
                 }
             } ,
@@ -96,10 +96,10 @@ var sysRoleList={
                 }
             } 
               ,
-            {   name : 'id',
+            {   name : 'operation',
                 width : 150,
                 formatter : function(value, grid, rows) {
-                    return getViewHtml(value,"sysRoleList")+getEditHtml(value,"sysRoleList")+getDelHtml(value,"sysRoleList");
+                    return getViewHtml(rows.id,"sysRoleList")+getEditHtml(rows.id,"sysRoleList")+getDelHtml(rows.id,"sysRoleList");
                 }
             }
         ],
@@ -116,7 +116,8 @@ var sysRoleList={
     },
     searchInfo:function (){
         var jso = changeForm2Jso(".app-search");
-        this.mygrid.jqGrid("search",jso);
+
+        this.mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
     },
     deleteInfo:function (id){
          //弹窗
@@ -137,11 +138,7 @@ var sysRoleList={
     viewInfo:function (id){
         dialog.window("/sysRole/view.htm?id="+id,this.modal);
     },
-    search:function (){
-        var jso= changeForm2Jso(".app-search");
-        console.log(jso);
-        this.mygrid.search(jso);
-    },
+
     exportInfo:function (){
         var jso= changeForm2Jso(".app-search");
         Ajax.getJSON(PATH+"/sysRole/export.json",jso,function(data){

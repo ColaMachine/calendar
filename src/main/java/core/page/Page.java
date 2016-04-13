@@ -72,4 +72,5 @@ public class Page {
 		this.pageSize=pageSize2;
 		this.totalCount=totalCount2;
 	}
+
 }

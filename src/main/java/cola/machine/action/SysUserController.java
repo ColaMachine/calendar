@@ -17,7 +17,6 @@ import java.util.LinkedHashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,8 +68,7 @@ public class SysUserController extends BaseController{
      * @date 2015年11月15日下午12:30:45
      */
     @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
-    public String list(HttpServletRequest request, HttpServletResponse response) {
-
+    public String list() {
         return "/static/html/SysUserList.html";
     }
 
@@ -81,7 +79,6 @@ public class SysUserController extends BaseController{
 
     /**
      * 说明:ajax请求角色信息
-     * 
      * @return
      * @return Object
      * @author dozen.zhang
@@ -278,18 +275,16 @@ public class SysUserController extends BaseController{
         return ResultUtil.getResult(sysUsers, page);
     }
     
-    /**
-         * 说明:ajax请求角色信息 无分页版本
-         *
-         * @return
-         * @return Object
-         * @author dozen.zhang
-         * @date 2015年11月15日下午12:31:55
-         */
-        @RequestMapping(value = "/listAll.json")
-        @ResponseBody
-        public Object listAll(HttpServletRequest request) {
-                    HashMap<String,Object> params= new HashMap<String,Object>();
+   /**
+    * 说明:ajax请求角色信息 无分页版本
+    * @return Object
+    * @author dozen.zhang
+    * @date 2015年11月15日下午12:31:55
+    */
+    @RequestMapping(value = "/listAll.json")
+    @ResponseBody
+    public Object listAll(HttpServletRequest request) {
+                HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
             params.put("id",id);
@@ -467,9 +462,9 @@ public class SysUserController extends BaseController{
             }
         }
 
-            List<SysUser> sysUsers = sysUserService.listByParams(params);
-            return ResultUtil.getResult(sysUsers);
-        }
+        List<SysUser> sysUsers = sysUserService.listByParams(params);
+        return ResultUtil.getResult(sysUsers);
+    }
     
     /**
      * @param request 发请求
@@ -485,7 +480,7 @@ public class SysUserController extends BaseController{
         return "/static/html/SysUserView.html";
     }
    
-      @RequestMapping(value = "/view.json")
+    @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
             String id = request.getParameter("id");
@@ -502,9 +497,6 @@ public class SysUserController extends BaseController{
         result.put("childs", childs);
         return this.getResult(result);
 
-
-
-    
       /*  String id = request.getParameter("id");
         SysUser bean = sysUserService.selectByPrimaryKey(Long.valueOf(id));
         HashMap<String,Object> result =new HashMap<String,Object>();

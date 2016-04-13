@@ -9,11 +9,11 @@ ${parentsearchhtml}
              <button class="btn saveBtn" >保存</button>
         </div>
     </div>
-     <div class="col-sm-6">
+     <div class="col-sm-6 mapper-grid-parent-wrap" >
     <table id="${table.name}MapperGrid" class="grid"></table>
-    <div id="${table.name}MapperGrid-pager" class="pager"></div>
+    <div id="${table.name}MapperGrid-Pager" class="pager"></div>
     </div>
-     <div class="col-sm-6">
+     <div class="col-sm-6 mapper-grid-child-wrap">
             <ul id="treeDemo" class="ztree"></ul>
         </div>
 </div>
@@ -46,7 +46,7 @@ var ${abc}List={
     },
     gridParam:{
                   datatype: "json",
-                          viewrecords: true, sortorder: "desc", caption:"JSON Example",
+                          viewrecords: true, sortorder: "desc", caption:"",
                           rowNum:10,
                           rowList:[10,20,30],
                   multiselect : true,
@@ -54,6 +54,7 @@ var ${abc}List={
                   grid:"#${table.name}MapperGrid",
                   pager:"#${table.name}MapperGrid-Pager",
                   jsonReader:jsonReader,
+                   autowidth:true,
                   colNames : [
                    <#list parentTable.cols as col><#if col_index!=0>,</#if>"${col.remark}"</#list> , '操作' ],
                   colModel : [
@@ -76,10 +77,10 @@ var ${abc}List={
                            </#list>
                           ,
                           {
-                              name : 'id',
+                              name : 'operation',
                               width : 150,
                               formatter : function(value, grid, rows) {
-                                  return getViewHtml(value,"${abc}List")+getEditHtml(value,"${abc}List")+getDelHtml(value,"${abc}List");
+                                  return getViewHtml(rows.${parentTable.pk.name},"${abc}List")+getEditHtml(rows.${parentTable.pk.name}.,"${abc}List")+getDelHtml(rows.${parentTable.pk.name}.,"${abc}List");
                               }
                           }
                     ],
@@ -137,7 +138,7 @@ var ${abc}List={
     },
     searchInfo:function (){
         var jso = changeForm2Jso(".app-search");
-        this.mygrid.jqGrid("search",jso);
+        this.mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
     },
     search:function (){
         var jso= changeForm2Jso(".app-search");

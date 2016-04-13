@@ -422,3 +422,7 @@ z-index:3;
     margin: auto;
 }
 /******end*****/
+
+.mapper-grid-parent-wrap{
+overflow:scroll;
+}

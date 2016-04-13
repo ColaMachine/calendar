@@ -4,7 +4,7 @@
         <div class="body_top" >
             <form class="form-inline app-search">
 ${searchhtml}
-                <button type="button" onclick="search()" class="btn btn-default">查询</button>
+                <button type="button"  class="btn btn-default searchBtn">查询</button>
             </form>
         <div >
             <button class="btn addBtn" >新增</button>
@@ -13,7 +13,7 @@ ${searchhtml}
         </div>
     </div>
     <table id="${table.name}Grid" class="grid"></table>
-    <div id="${table.name}Grid-pager" class="pager"></div>
+    <div id="${table.name}Grid-Pager" class="pager"></div>
 </div>
 <script>
 
@@ -35,11 +35,12 @@ var ${abc}List={
     },
     gridParam:{
         datatype: "json",
-        viewrecords: true, sortorder: "desc", caption:"JSON Example",
+        viewrecords: true, sortorder: "desc", caption:"",
         rowNum:10,
         rowList:[10,20,30],
         multiselect : true,
         url : PATH+'/${abc}/list.json',
+         autowidth:true,
         grid:"#${table.name}Grid",
         pager:"#${table.name}Grid-Pager",
         jsonReader:jsonReader,
@@ -62,10 +63,10 @@ var ${abc}List={
             } <#if col_index<table.cols?size-1>,</#if>
                </#list>
               ,
-            {   name : 'id',
+            {   name : 'operation',
                 width : 150,
                 formatter : function(value, grid, rows) {
-                    return getViewHtml(value,"${abc}List")+getEditHtml(value,"${abc}List")+getDelHtml(value,"${abc}List");
+                    return getViewHtml(rows.${table.pk.name},"${abc}List")+getEditHtml(rows.${table.pk.name},"${abc}List")+getDelHtml(rows.${table.pk.name},"${abc}List");
                 }
             }
         ],
@@ -82,7 +83,8 @@ var ${abc}List={
     },
     searchInfo:function (){
         var jso = changeForm2Jso(".app-search");
-        this.mygrid.jqGrid("search",jso);
+
+        this.mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
     },
     deleteInfo:function (id){
          //弹窗
@@ -103,11 +105,7 @@ var ${abc}List={
     viewInfo:function (id){
         dialog.window("/${abc}/view.htm?id="+id,this.modal);
     },
-    search:function (){
-        var jso= changeForm2Jso(".app-search");
-        console.log(jso);
-        this.mygrid.search(jso);
-    },
+
     exportInfo:function (){
         var jso= changeForm2Jso(".app-search");
         Ajax.getJSON(PATH+"/${abc}/export.json",jso,function(data){

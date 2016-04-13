@@ -1,256 +1,180 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1″>
-    <title>Insert title here</title>
-    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/common.js"></script>
-    <script type="text/javascript" >
-var WEBCONTEXT="";
-var PATH="";
-includeCSS(["/static/css/bootstrap.min.css",
-"/static/css/font-awesome.css",
-"/static/css/main.css",
-"/static/css/menu.css",
-"/static/css/collapse.css",
-"/static/css/form.css",
-"/static/css/col.css",
-"/static/css/font.css",
- "/static/css/grid.css",
-  "/static/css/head.css",
-   "/static/css/global.css",
-    "/static/css/widget.css",
-    "/static/css/window.css",
-    "/static/css/zTreeStyle.css",
-     "/static/css/layer.css"
 
-]);
-
-
-includeJS(["/static/js/menu.js" ,
-           "/static/js/validmsg.js",
-           "/static/js/DateUtils.js",
-           "/static/js/jquery-ui.min.js",
-            "/static/js/grid.js",
-            "/static/js/jquery.form.js",
-            "/static/js/My97DatePicker/WdatePicker.js",
-            "/static/js/jquery.validate.js",
-            "/static/js/additional-methods.js",
-            "/static/js/index.js",
-            "/static/js/window.js",
-            "/static/js/bootstrap.min.js",
-            "/static/js/drag.js",
-            "/static/js/dialog.js",
-            "/static/js/jquery.ztree.core-3.5.js",
-            "/static/js/jquery.ztree.excheck-3.5.js",
-              "/static/js/layer.js",
-                 "/static/js/userEdit.js",
-          ]);
-</script>
-
-
-</head>
-<body>
-
-<div id="page" class="page" style="">
-    <div class=" menu-wrap clearfix dark ">
-        <div class="logo">
-            <!-- <span class="logo-head">aWiFi</span> -->
-
-
-            <div class="logo-desc" ><span class="nav-icon"><i onclick="$('#page').toggleClass('collapse1')" style="" class="fa fa-reorder">&nbsp;</i></span><span class="logo-desc-text"'>后台管理系统</span></div>
+ <div class="modal-content">
+    <form id="editForm" class="form-horizontal" method="post" action="/user/save.json" enctype="multipart/form-data">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">用户编辑</h4>
         </div>
-        <div id="menu" class="menu">
+        <div class="modal-body">
+                <input type="hidden" id="userid" name="userid"  class="form-control input-sm" >
+    <div class="form-group">
+        <label for="loginname" class="col-sm-2 control-label">登录名:</label>
+        <div class="col-sm-10">
+            <input  type="text"  id="loginname" name="loginname"  class="form-control input-sm"   maxlength="40"></input>
         </div>
     </div>
-    <div class="main-wrap">
-        <div  class="head-wrap navbar white">
-
-            <div class="navbar-item pull-left h5 ng-binding"  ng-bind="$state.current.data.title" id="pageTitle">Widgets</div>
-            <!-- 				<div class="dropdown pull-left navbar-item "  style="vertical-align:middle">
-              <button class="btn btn-default dropdown-toggle" type="button"
-              id="dropdownMenu1" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true">
-                Dropdown
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </div> -->
-            <ul class="login-info navbak navbar-nav pull-right">
-                <li class="nav-item dropdown pos-stc-xs"><a class="nav-link"
-                                                            href="" data-toggle="dropdown">
-                    <i class="fa fa-bell-o"></i>
-                    <span class="label label-sm up warn">3</span></a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a aria-expanded="false"
-                       class="nav-link clear" href="" data-toggle="dropdown">&nbsp;<span
-                            class="avatar w-32"><img src="img/a0.jpg"
-                                                     alt="..."> <i class="on b-white bottom"></i></span></a>
-                    <ul id="menu1" class="pull-right dropdown-menu" aria-labelledby="drop4">
-                        <li><a href="javascript:void(0)" id="logout">登出</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">修改资料</a></li>
-                    </ul>
-                </li>
-
-                <!-- <li><a><img style="width:50px ;height:50px;" alt="头像" src="img/a0.jpg" /></a>
-        </li>-->
-
-            </ul>
-            <div id="dialog-zone"></div>
-            <!-- <div class="collapse navbar-toggleable-sm"   id="collapse">
-                    <form
-                        class="navbar-form form-inline pull-right pull-none-sm navbar-item v-m ng-pristine ng-valid ng-scope"
-                        role="search">
-
-                        <div class="form-group l-h m-a-0">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control p-x b-a rounded"
-                                    placeholder="Search projects..." type="text"> <span
-                                    class="input-group-btn"><button type="submit"
-                                        class="btn white b-a rounded no-b-l no-shadow">
-                                        <i class="fa fa-search"></i>
-                                    </button></span>
-                            </div>
-                        </div>
-                    </form>
-                    <ul class="nav navbar-nav" >
-                        <li class="nav-item dropdown"><a aria-expanded="false"
-                            class="nav-link" href="" data-toggle="dropdown"><i
-                                class="fa fa-fw fa-plus text-muted"></i> <span>New</span></a>
-                        <div class="dropdown-menu dropdown-menu-scale ng-scope">
-                                <a href="#/app/inbox/compose" class="dropdown-item"
-                                    ui-sref="app.inbox.compose"><span>Inbox</span></a> <a
-                                    href="#/app/todo" class="dropdown-item" ui-sref="app.todo"><span>Todo</span></a>
-                                <a href="#/app/note/list" class="dropdown-item"
-                                    ui-sref="app.note.list"><span>Note</span> <span
-                                    class="label primary m-l-xs">3</span></a>
-                                <div class="dropdown-divider"></div>
-                                <a href="#/app/contact" class="dropdown-item"
-                                    ui-sref="app.contact">Contact</a>
-                            </div></li>
-                    </ul>
-                </div> -->
+    <div class="form-group">
+        <label for="nickname" class="col-sm-2 control-label">昵称:</label>
+        <div class="col-sm-10">
+            <input  type="text"  id="nickname" name="nickname"  class="form-control input-sm"   maxlength="40"></input>
         </div>
-        <div class="footer-wrap"></div>
-        <div id="main " class="body-wrapper " >
-            <div id="main " class="main-content  container " >
-
-                <div class="row white" style="color:black;margin-top:15px;">
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">编辑个人资料</h3>
-                        </div>
-                        <div class="panel-body">
-                            <form class="form-horizontal">
-
-                                <div class="form-group">
-                                    <label for="inputPassword3" class="col-sm-2 control-label">头像</label>
-
-                                    <div class="col-sm-10">
-
-                                        <a href="#" class="thumbnail">
-                                            <img id="headImg" src="..." alt="头像">
-                                            <input style="display:none" id="headInput" type="file"/>
-                                        </a>
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputPassword3" class="col-sm-2 control-label">性别</label>
-                                    <div class="col-sm-offset-2 col-sm-10">
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-default">Sign in</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="row">
-
-
-
-                            </div>
-                            <div class="row">
-                                <label class="col-xs-3 col-md-3">性别</label>
-                                <div class="col-xs-9 col-md-3">
-
-                                    <a href="#" class="thumbnail">
-                                        <img id="headImg" src="..." alt="头像">
-                                        <input style="display:none" id="headInput" type="file"/>
-                                    </a>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <h1></h1>
-                <!-- 	<div id="modal" class="modal" >
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-red">提交</button>
-                            <button type="button" data-dismiss='modal' class="btn btn-red">取消</button>
-                        </div>
-                    </div> -->
-
-
-            </div><!--  main content 结束 -->
+    </div>
+    <div class="form-group">
+        <label for="pwd" class="col-sm-2 control-label">密码:</label>
+        <div class="col-sm-10">
+            <input  type="text"  id="pwd" name="pwd"  class="form-control input-sm"   maxlength="40"></input>
         </div>
-
+    </div>
+    <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">邮箱地址:</label>
+        <div class="col-sm-10">
+            <input  type="text"  id="email" name="email"  class="form-control input-sm"   maxlength="40"></input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="username" class="col-sm-2 control-label">姓名:</label>
+        <div class="col-sm-10">
+            <input  type="text"  id="username" name="username"  class="form-control input-sm"   maxlength="45"></input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="telno" class="col-sm-2 control-label">手机号码:</label>
+        <div class="col-sm-10">
+            <input  type="text"  id="telno" name="telno"  class="form-control input-sm"   maxlength="11"></input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="createtime" class="col-sm-2 control-label">创建时间:</label>
+        <div class="col-sm-10 z-col-table">
+            <input type="text" id="createtime" name="createtime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  ></input>
+            <label class="input-group-addon" for="createtime" ><i class="fa fa-calendar"></i></label>        </div>
+    </div>
+    <div class="form-group">
+        <label for="status" class="col-sm-2 control-label">状态:</label>
+        <div class="col-sm-10">
+            <select  id="status" name="status"  class="form-control input-sm"  >
+                <option value=''>-请选择-</option>
+                <option value=1>未激活</option>
+                <option value=2>正常</option>
+                <option value=3>禁用</option>
+            </select>
+        </div>
     </div>
 
+        </div>
+        <div class="modal-footer">
+            <button type="button" onclick="save()" class="btn btn-primary">保存</button>
+            <button type="button" onclick="cancel()"  class="btn btn-default">取消</button>
+        </div>
+    </form>
+</div><!-- /.modal-content -->
+        
+<script type="text/javascript">
 
+$(document).ready(function() {
+    $("#editForm").validate({
+        rules: {
+            userid:{
+    maxlength:40
+},
+loginname:{
+    maxlength:40
+},
+nickname:{
+    maxlength:40,required:true
+},
+pwd:{
+    maxlength:40,required:true
+},
+email:{
+    maxlength:40,required:true,email:true
+},
+username:{
+    maxlength:45
+},
+telno:{
+    maxlength:11,required:true,phone:true
+},
+createtime:{
+    ymd:"yyyy-MM-dd HH:mm:ss"
+},
+status:{
+    
+},
 
-</div>
-<div class="widget"></div>
-<div class="mask" ></div>
+        },
+        messages:{
+            userid:{
+    maxlength:"userid不能多于40个字符"
+},
+loginname:{
+    maxlength:"loginname不能多于40个字符"
+},
+nickname:{
+    maxlength:"nickname不能多于40个字符"
+},
+pwd:{
+    maxlength:"pwd不能多于40个字符"
+},
+email:{
+    maxlength:"email不能多于40个字符"
+},
+username:{
+    maxlength:"username不能多于45个字符"
+},
+telno:{
+    maxlength:"telno不能多于11个字符"
+},
+createtime:{
+    ymd:"必须输入合法日期"
+},
+status:{
+    
+},
 
-
-</body>
-
-
-<script type="text/javascript" >
-var menuList=[
-              {id:1,name:"日志管理",url:"",pid:0,icon:"fa fa-bank"},
-              {id:2,name:"访问日志",url:"",pid:1},
-              {id:3,name:"异常日志",url:PATH+"/log/listRequestLog",pid:1},
-              {id:21,name:"访问日志A",url:PATH+"/log/listRequestLog",pid:2},
-              {id:22,name:"访问日志B",url:PATH+"/log/listRequestLog",pid:2},
-              {id:5,name:"用户管理",url:"",pid:0,icon:"fa fa-diamond"},
-              {id:51,name:"用户管理",url:PATH+"/user/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:6,name:"角色管理",url:PATH+"/auth/role/list.htm",pid:5},
-              {id:7,name:"日历",url:PATH+"/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
-               {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},
-              {id:9,name:"手机登录页面",url:PATH+"/login/login.htm",icon:"fa fa-spinner",pid:8},
-              {id:10,name:"上传图片",url:PATH+"/static/html/imageCompress.html",icon:"fa fa-bank",pid:8},
-              {id:11,name:"列表",url:PATH+"/static/html/example/table.html",icon:"fa fa-spinner",pid:8},
-              {id:12,name:"alert",url:PATH+"/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
-              {id:13,name:"短信",url:PATH+"/smsBatch/list.htm",icon:"fa fa-spinner",pid:0},
-              {id:14,name:"合作伙伴",url:PATH+"/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0},
-              {id:15,name:"用户",url:PATH+"/sysUser/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:16,name:"角色",url:PATH+"/sysRole/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:17,name:"资源",url:PATH+"/sysResource/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:18,name:"用户角色",url:PATH+"/sysUserRole/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:19,name:"角色资源",url:PATH+"/sysRoleResource/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:20,name:"用户资源",url:PATH+"/sysUserResource/list.htm",icon:"fa fa-spinner",pid:5},
-               {id:21,name:"用户角色关联",url:PATH+"/sysUserRole/listMapper.htm",icon:"fa fa-spinner",pid:5},
-               {id:22,name:"角色资源关联",url:PATH+"/sysRoleResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
-               {id:23,name:"用户资源关联",url:PATH+"/sysUserResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
-              {id:24,name:"短信验证码",url:PATH+"/smsRecord/list.htm",icon:"fa fa-spinner",pid:0},
-              ]
-zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
+        }
+    });
+    //获取传入参数
+    if(!StringUtil.isBlank(getParam("id"))){
+        GetJSON("user/view.json?id="+getParam("id"),function(data){
+            if(data.r==AJAX_SUCC){
+                if(data.data.bean){
+                    fillJso2Form("#editForm",data.data.bean);
+                }
+            }else{
+                zerror("获取信息失败"+data.msg,"错误",function(){
+                    goPage("user/list.htm");
+                });
+            }
+            
+        });
+        
+    }
+    
+});
+    function save(){
+           if (!$("#editForm").valid())
+                    return;
+                     var jso = changeForm2Jso("#editForm");
+                     showWait();
+                     Post(PATH+$("#editForm").attr("action"),jso,function(data){
+                     hideWait();
+                     if(data.r==0){
+                        zalert(data.msg||"保存成功","提示",function(){
+                            //goPage("user/list.htm");
+                            cancel();
+                            $("#grid").jqGrid("reloadGrid");
+                        });
+                     }else{
+                        zerror(data.msg, "失败");
+                     }
+                     },'json');
+    }
+    function cancel(){
+        if(newWindow){
+            $("#mymodal").modal("toggle");
+        }else{
+            goPage("user/list.htm");
+        }
+    }
 </script>
-</html>

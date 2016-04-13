@@ -75,9 +75,6 @@ public class SysUserResourceController extends BaseController{
 
     /**
      * 说明:ajax请求角色信息
-     * 
-     * @param curPage
-     * @param pageSize
      * @return
      * @return Object
      * @author dozen.zhang
@@ -110,20 +107,16 @@ public class SysUserResourceController extends BaseController{
         return ResultUtil.getResult(sysUserResources, page);
     }
     
-    /**
-         * 说明:ajax请求角色信息 无分页版本
-         *
-         * @param curPage
-         * @param pageSize
-         * @return
-         * @return Object
-         * @author dozen.zhang
-         * @date 2015年11月15日下午12:31:55
-         */
-        @RequestMapping(value = "/listAll.json")
-        @ResponseBody
-        public Object listAll(HttpServletRequest request) {
-                    HashMap<String,Object> params= new HashMap<String,Object>();
+   /**
+    * 说明:ajax请求角色信息 无分页版本
+    * @return Object
+    * @author dozen.zhang
+    * @date 2015年11月15日下午12:31:55
+    */
+    @RequestMapping(value = "/listAll.json")
+    @ResponseBody
+    public Object listAll(HttpServletRequest request) {
+                HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
             params.put("id",id);
@@ -137,12 +130,11 @@ public class SysUserResourceController extends BaseController{
             params.put("rid",rid);
         }
 
-            List<SysUserResource> sysUserResources = sysUserResourceService.listByParams(params);
-            return ResultUtil.getResult(sysUserResources);
-        }
+        List<SysUserResource> sysUserResources = sysUserResourceService.listByParams(params);
+        return ResultUtil.getResult(sysUserResources);
+    }
     
     /**
-     * @param id 参数
      * @param request 发请求
      * @return Object
      */
@@ -156,7 +148,7 @@ public class SysUserResourceController extends BaseController{
         return "/static/html/SysUserResourceView.html";
     }
    
-      @RequestMapping(value = "/view.json")
+    @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
             String id = request.getParameter("id");
@@ -167,9 +159,6 @@ public class SysUserResourceController extends BaseController{
         }
         return this.getResult(result);
 
-
-
-    
       /*  String id = request.getParameter("id");
         SysUserResource bean = sysUserResourceService.selectByPrimaryKey(Long.valueOf(id));
         HashMap<String,Object> result =new HashMap<String,Object>();

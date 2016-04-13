@@ -39,7 +39,7 @@ var ${abc}View={
                     }else{
                         dialog.error("获取信息失败"+data.msg,function(index){
                             that.cancel();
-                            diablog.close(index);
+                            dialog.close(index);
                         });
                     }
 

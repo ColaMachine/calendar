@@ -1541,9 +1541,9 @@ function zImageUtil(config) {
 }
 var jsonReader={
     root: "data",
-    page: "curPage",
-    total: "totalcount",
-    records: "totalcount",
+    page: "page.curPage",
+    total: "page.totalPage",
+    records: "page.totalCount",
     repeatitems: true,
     cell: "cell",
     id: "id",

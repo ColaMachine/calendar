@@ -17,8 +17,29 @@ public class PageUtil {
         boolean hasNextPage = getHasNextPage(totalPage, currentPage);  
         return new Page(everyPage, totalCount, totalPage, currentPage,  
                 beginIndex, hasPrePage,  hasNextPage);  
-    }  
-      
+    }
+
+    public static void init(Page page ,int everyPage,int currentPage,int totalCount) {
+        everyPage = getEveryPage(everyPage);
+        currentPage = getCurrentPage(currentPage);
+        int totalPage = getTotalPage(everyPage, totalCount);
+        if(currentPage>totalPage){
+            currentPage=totalPage;
+        }
+        int beginIndex = getBeginIndex(everyPage, currentPage);
+
+        boolean hasPrePage = getHasPrePage(currentPage);
+        boolean hasNextPage = getHasNextPage(totalPage, currentPage);
+        page.setPageSize(everyPage);
+        page.setTotalCount(totalCount);
+        page.setTotalPage(totalPage);
+        page.setCurPage(currentPage);
+        page.setBeginIndex(beginIndex);
+        page.setHasPrePage(hasPrePage);
+        page.setHasNextPage(hasNextPage);
+
+    }
+
     public static Page createPage(Page page,int totalCount) {  
         int everyPage = getEveryPage(page.getPageSize());  
         int currentPage = getCurrentPage(page.getCurPage());  
