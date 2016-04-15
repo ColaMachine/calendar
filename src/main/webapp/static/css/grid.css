@@ -243,8 +243,30 @@ margin-left:15px;
 	border-bottom-right-radius:6px
 }
 .ui-icon{
-display:block;
+    display:block;
     width:50px;
     height:20px;
-    background-color:blue;
+color: #333;
+background-color: #fff;
+  text-align:center;
+border:1px solid #ccc;
+}
+
+.ui-icon:focus, .ui-icon:hover {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+
+}
+.ui-icon-seek-first:after{
+content:"第一页"
+}
+.ui-icon-seek-prev:after{
+content:"上一页"
+}
+.ui-icon-seek-next:after{
+content:"下一页"
+}
+.ui-icon-seek-end:after{
+content:"最后页"
 }

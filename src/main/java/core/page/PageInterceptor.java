@@ -129,7 +129,7 @@ public class PageInterceptor implements Interceptor {
                 totalCount = rs.getInt(1);
             }
             page.setTotalCount(totalCount);
-          PageUtil.init(page,page.getCurPage(), page.getPageSize(), totalCount);
+          PageUtil.init(page,page.getPageSize(), page.getCurPage(), totalCount);
 
 
 
