@@ -174,7 +174,7 @@ td {
 	/*background-color:transparent;
 filter:alpha(opacity=30);*/ /* -moz-opacity:0.3;Moz + FF 透锟斤拷锟�0%*/
 	/*opacity: 0.3;  支锟斤拷CSS3锟斤拷锟斤拷锟斤拷锟紽F 1.5也支锟街ｏ拷透锟斤拷锟�0%*/
-	filter: progid: DXImageTransform.Microsoft.gradient( startColorstr= 
+	filter: progid: DXImageTransform.Microsoft.gradient( startColorstr=
 		#11555555, endColorstr= #11555555, enabled= true, gradientType= '1');
 	/</
 	em
@@ -252,7 +252,7 @@ border-color: #ADADAD;
 	margin: 0px;
 	/*BACKGROUND-COLOR: #a32929;*/
 	width: 100%;
-	
+
 }
 
 .calendarEventBar DT {
@@ -274,7 +274,7 @@ border-color: #ADADAD;
 	border: 1px solid #a32929;
 	margin: 0px 0px 0px 0px;
 	width: 100%;
-	height: 100%;
+	height: auto;/*100%;*/
 	font: normal 12px/22px "锟斤拷锟斤拷";
 	background-color: #F6C4CE;
 	/*height: 80;
@@ -290,7 +290,7 @@ border-color: #ADADAD;
 .calendarEventBar DD {
 	text-align: left;
 	margin: 0px;
-	HEIGHT: 100% /*BACKGROUND-COLOR: #D89CA8;*/ 
+	HEIGHT: 100% /*BACKGROUND-COLOR: #D89CA8;*/
 	 width: 100%;
 	left: -111px;
 	overflow: hidden;
@@ -312,7 +312,7 @@ border-color: #ADADAD;
 }
 
 .wk-scrolltimedevents {
-	
+
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
@@ -354,3 +354,60 @@ height: 39px;
 .xb2 {margin:0 3px; border-width:0 2px;}
 .xb3 {margin:0 2px;}
 .xb4 {height:2px; margin:0 1px;}*/
+
+.ca-ty-ch-wrp a{
+    cursor:pointer;
+
+    padding-top:4px;
+    padding-left:5px;
+    padding-right:5px;
+    padding-bottom:4px;
+    border:1px solid #ddd;
+    color: #337ab7;
+    /*border-left:1px solid rgb(162, 187, 221);
+    border-top:1px solid rgb(162, 187, 221);
+    border-bottom:1px solid rgb(162, 187, 221);*/
+margin-left:-1px;
+}
+.ca-ty-ch-wrp a:hover{
+
+   background-color: #eee;
+   border-color: #ddd;
+}
+.ca-ty-ch-wrp a:first-child{
+border-top-left-radius: 4px;
+border-bottom-left-radius: 4px;
+
+  /*  border-right:1px solid rgb(162, 187, 221);*/
+
+}
+.ca-ty-ch-wrp a:last-child{
+border-top-right-radius: 4px;
+border-bottom-right-radius: 4px;
+
+  /*  border-right:1px solid rgb(162, 187, 221);*/
+
+}
+.active{
+z-index: 2;
+color: #fff ;
+cursor: default;
+background-color: #337ab7;
+border-color: #337ab7;
+}
+.ca-ty-ch-wrp .active{
+color: #fff ;
+}
+.ca-ty-ch-wrp .active:hover{
+
+background-color: #3aaaaa;
+}
+.wk_mv_table  td{
+border:1px solid #aaa;
+
+width:500px;
+height:150px;
+position:relative;
+/*padding-top:25px;*/
+}
+.wk_mv_table  td:hover{ background-color: #C3D9FF }

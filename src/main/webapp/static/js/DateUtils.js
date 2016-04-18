@@ -166,7 +166,13 @@ function DateAdd(day,increment){//date int
 	return myDay;
 
 }
+function DateAddInSelf(day,increment){//date int
 
+
+	day.setDate(day.getDate()+increment);
+
+
+}
 
 /**
  * 根据指定日期得到 当前星期的数组
@@ -427,6 +433,24 @@ function getNextDay(day){
 	myDate.setMonth(m);
 	myDate.setDate(day.getDate()+1)
 	return myDate;
+}
+function getFirstMonthDay(date){
+    var day =DateUtils.copyDate(date);
+    day.setHours(0);
+    day.setMinutes(0);
+    day.setSeconds(0);
+    day.setDate(1);
+
+
+    return day;
+}
+function getLastMonthDay(date){
+    var day =DateUtils.copyDate(date);
+        day.setHours(0);
+        day.setMinutes(0);
+        day.setSeconds(0);
+        day.setDate(CaculateMonthDays(day.getFullYear,day.getMonth()+1));
+        return day;
 }
 
 /**

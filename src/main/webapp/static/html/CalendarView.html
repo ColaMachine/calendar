@@ -159,7 +159,7 @@ table td{padding:0;}
 	window.onmousemove = function() {
 	}
 	//d.displaySingleEvent(newEvent);
-	Drag.inint();
+	Drag.init();
 	//Drag.displayMCalTypes();
 	function writeNow(){
 		var str=$("codeInput").value;
@@ -190,14 +190,14 @@ table td{padding:0;}
 	disableMouseSelection(document.documentElement);
 	window.onresize=findDimensions;
 	function hiddenDialogue(){
-
+console.log("hidedialogue");
 
 		document.getElementById("calendarEventDialog").style.display="none";
 
-		d.deleteEventData("newEvent");
+		d.deleteEventDataService("newEvent");
 
 
-	d.deleteEventBar("newEvent");
+	d.deleteEventBarAction("newEvent");
 
 	}
 	  function findDimensions() 

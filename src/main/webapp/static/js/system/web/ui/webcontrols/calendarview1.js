@@ -26,6 +26,7 @@ function CalendarView() {
 	this.preColumn = 0;
 	this.currColumn = 0;
 	this.valueStack = {};
+	this.serverStack={};
 	this.calTypes={};
 	this.currentCalType=null;
 	this.hourHeight=40;//一个小时有多高
@@ -68,19 +69,24 @@ CalendarView.prototype.render = function() {
 			+ this.index
 			+ "').addEvent(null);event.cancelBubble=true;\">写日志</button>"
 			+ "</td>"
-			+ "<td  align=right>"
-			+ "<span  onclick=\"Instance('"
+			+ "<td  >"
+            + "<button onclick=\"Instance('"
+            + this.index
+            + "').datePickerGoTodayAction();event.cancelBubble=true;\">今天</button>"
+            + "</td>"
+			+ "<td class='ca-ty-ch-wrp' align=right>"
+			+ "<a  id='ca-ty-day' onclick=\"Instance('"
 			+ this.index
-			+ "').changeToDayView()\">day</span>&nbsp;<span onclick=\"Instance('"
-			+ this.index + "').changeToWeekView()\">week</span>"
-			+ " &nbsp;<span onclick=\"Instance('" + this.index
-			+ "').changeToMonthView()\">month</span>" + "</td>" + "</tr>"
+			+ "').changeToDayView()\">day</a><a id='ca-ty-week'  onclick=\"Instance('"
+			+ this.index + "').changeToWeekView()\">week</a>"
+			+ "<a id='ca-ty-month' onclick=\"Instance('" + this.index
+			+ "').changeToMonthAction()\">month</a>" + "</td>" + "</tr>"
 			+ "<tr>" + "<td  style=\"padding-top:50px\">"
 			+ "<div id='dp_canopy_div' class='dp_canopy_div' style='display:none'><span class='h zippy-arrow2' unselectable='on'></span><span class='calHeaderSpace'>迷你日历</span></div>" 
 			+"<div  id='dp_div' class='dp_div'  >" 
 			
 			//minicalendar 
-			 + this.getDatePickerStr() + "</div>" 
+			 + this.getDatePickerView() + "</div>"
 			+"<h2 id='mycal_h2' class='mycal_h2'>"
 			+	"<span class='mycal_arrow_sp'></span>"
 			+	"<span  class='mycal_title_sp'>我的日历</span>"
@@ -97,12 +103,13 @@ CalendarView.prototype.render = function() {
 			+"</div >"
 			+ "</td>"
 			+ "<td id=div_CalendarEventView_" + this.index + ">"
-			+ this.getCalendarScheduleStr() + "</td>" + "</tr>" + "</table>"
-			+ this.getCalendarEventDialogStr();//
+			+ this.getCalendarScheduleView() + "</td>" + "</tr>" + "</table>"
+			+ this.getCalendarEventDialogView();//
 	return str;
 };
+
 // 界面的拆分--------------------------------------------------------------------------------------------------
-CalendarView.prototype.getRowDraw = function() {
+CalendarView.prototype.getRowDrawView = function() {
 	var str = "";
 	str = "<div  class=\"horizontal-line-container\"><div  class=\"horizontal-line-container2\">";
 	for (var i = 0; i < 24; i++) {
@@ -111,9 +118,9 @@ CalendarView.prototype.getRowDraw = function() {
 	str += "</div></div>";
 	return str;
 };
-
+//deprecated
 //显示类别--------------------------------------------------------------------------------------------------
-CalendarView.prototype.displayMCalTypes = function() {
+CalendarView.prototype.getMCalTypesView = function() {
 	/*testdata start**/
 	var type={};
 	type.id="321";
@@ -126,9 +133,9 @@ CalendarView.prototype.displayMCalTypes = function() {
 };
 /*
  * 
- * 右侧布局
+ * 右侧日历主体内容布局
  */
-CalendarView.prototype.getCalendarScheduleStr = function() {
+CalendarView.prototype.getCalendarScheduleView = function() {console.log("getCalendarScheduleView begin");
 	// 周视图
 	// style='border:solid 1px red'
 	var now = new Date();
@@ -138,9 +145,11 @@ CalendarView.prototype.getCalendarScheduleStr = function() {
 		weekDays = [this.dummyDay];
 	} else if (this.viewMode == 1) {
 		weekDays = getDateOfWeek(this.dummyDay);
-	} else if (this.viewMode == 2) {
-		weekDays = getDateOfMonth(this.dummyDay);
+	} else if (this.viewMode == 2) {console.log("hellow");
+		//weekDays = getDateOfMonth(this.dummyDay);
+		return this.getMonthView();
 	}
+
 	global_weekdays = weekDays;
 	// <b class=\"xb1\" style=\"width:1002px; \"></b><b class=\"xb2\"
 	// style=\"width:1006px; \"></b><b class=\"xb3\" style=\"width:1008px;
@@ -155,7 +164,7 @@ CalendarView.prototype.getCalendarScheduleStr = function() {
 			+ "<td class='wk-tzlabel' style=\"WIdtH: 76px; height:3px\" rowSpan=3>&nbsp;</td>";
 
 	for (var i = 0; i < weekDays.length; i++) {
-		str += "<td  title=\""
+		str += "<td  id='h_td_"+weekDays[i].format("yyyy-MM-dd")+"' title=\""
 				+ (weekDays[i].getMonth() + 1)
 				+ "/"
 				+ weekDays[i].getDate()
@@ -175,7 +184,7 @@ CalendarView.prototype.getCalendarScheduleStr = function() {
 			+ "<TABLE class=\"innertoptable\" width=\"100%\"  height=\"100%\" >"
 			+ "<tr  height=\"100%\">";
 	for (var i = 0; i < weekDays.length; i++) {
-		str += "<td class=\"st-c st-s \"  rowSpan=2></td>";
+		str += "<td id='m_td_"+weekDays[i].format("yyyy-MM-dd")+"'  class=\"st-c st-s \"  rowSpan=2></td>";
 	}
 	str += "</tr>"
 			+ "</TABLE>"
@@ -193,8 +202,8 @@ CalendarView.prototype.getCalendarScheduleStr = function() {
 
 			+ "<table   id='table2' class='table2' >"
 			+ "<tbody>" + "<tr >" + "<td  class='td-time-pri' >" + "</td>"
-			+ "<td colSpan='7'>" + this.getRowDraw() + "</td>" + "</tr>"
-			+ "<tr>"
+			+ "<td colSpan='7'>" + this.getRowDrawView() + "</td>" + "</tr>"
+			+ "<tr id='wb-main-tr'>"
 
 			+ "<td    >";
 
@@ -210,7 +219,7 @@ CalendarView.prototype.getCalendarScheduleStr = function() {
 				&& weekDays[i].getDate() == now.getDate()) {
 			css = " class=\"td-time-pri-today\"";
 		} else {
-
+            //css = " class=\"td-time-pri-not-today\"";
 		}
 		str += "<td  id=\"td_"
 				+ weekDays[i].format("yyyy-MM-dd") + "\" " + css+ (this.viewMode == 0?" colspan='7'" :" ")
@@ -220,7 +229,7 @@ CalendarView.prototype.getCalendarScheduleStr = function() {
 			// str += "&nbsp";
 		}
 		str += "<div onclick=\"Instance('" + this.index
-				+ "').createEvent(event) \"  class=\"div-tg-time\"></div></td>";
+				+ "').createEventAction(event) \"  class=\"div-tg-time\"></div></td>";
 
 	}
 	str += "</tr></tbody></table></div></td></tr></table><b class=\"xb4\" style=\"width:1010px; \"></b><b class=\"xb3\" style=\"width:1007px; \"></b><b class=\"xb2\" style=\"width:1006px; \"></b><b class=\"xb1\" style=\"width:1002px; \"></b>";
@@ -230,7 +239,7 @@ CalendarView.prototype.getCalendarScheduleStr = function() {
  * 对话框
  * @returns {String}
  */
-CalendarView.prototype.getCalendarEventDialogStr = function() {
+CalendarView.prototype.getCalendarEventDialogView = function() {
 	var str = "<div onclick=\"try{event.stopPropagation();}catch(e){event.cancelBubble=true;}\" id=\"calendarEventDialog\" class=\"calendarEventDialog\" style=\"display:none\"><table>"
 			+ "<tr><td></td><td align=right><i onclick=\"Instance('"
 			+ this.index
@@ -239,16 +248,19 @@ CalendarView.prototype.getCalendarEventDialogStr = function() {
 			+ "<tr><td><span>TITLE:</span></td><td><input type=\"text\" id=\"calendarEventDialog_title\"></input></td></tr>"
 			+ "<tr><td><input type=\"button\" value=\"save\" onclick=\"Instance('"
 			+ this.index
-			+ "').saveCalendarEvent()\"></input></td><td>"
+			+ "').saveCalendarEventAction()\"></input></td><td>"
 			+ "<input type=\"button\" value=\"delete\" onclick=\"Instance('"
 			+ this.index
-			+ "').deleteCalendarEvent()\"></input>"
+			+ "').deleteCalendarEventAction()\"></input>"
+            + "<input type=\"button\" value=\"edit\" onclick=\"Instance('"
+            + this.index
+            + "').editCalendarEventAction()\"></input>"
 			+ "</td></tr>"
 			+ "</table></div>";
 	return str;
 };
 //minicalendar 左侧mini 日历
-CalendarView.prototype.getDatePickerStr = function() {
+CalendarView.prototype.getDatePickerView = function() {
 
 	var today_y = this.today.getFullYear()
 	var today_m = this.today.getMonth() + 1;
@@ -281,8 +293,8 @@ CalendarView.prototype.getDatePickerStr = function() {
 			+ "年"
 			+ m
 			+ "月</span></th>"
-			+ "<th > <i id='dp_prev_month' class='dp_prev_month'></i> </th>"
-			+ "<th  > <i id='dp_next_month' class='dp_prev_month dp_next_month'> </i></th>"
+			+ "<th > <i id='dp_prev_month' onClick='Instance(\""+this.index+"\").datePickerGoPrevMonthAction()' class='dp_prev_month'></i> </th>"
+			+ "<th  > <i id='dp_next_month' onClick='Instance(\""+this.index+"\").datePickerGoNextMonthAction()' class='dp_prev_month dp_next_month'> </i></th>"
 			+ "</tr>"
 			+ "<tr class='dp_week_title_tr'><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>七</th></tr>"
 			+ "<tr>";
@@ -300,7 +312,7 @@ CalendarView.prototype.getDatePickerStr = function() {
 		str += "<td id='dp-mini-" + pre_year + "-" + pre_mon + "-"
 				+ (pre_days - _weekFirstDay + i + 1)
 				+ "' onclick=\"Instance('" + this.index
-				+ "').selectDateTd(this)\" class='othermonth'>"
+				+ "').selectDateTdAction(this)\" class='othermonth'>"
 				+ (pre_days - _weekFirstDay + i + 1) + "</td>";
 		_index++;
 	}
@@ -316,7 +328,7 @@ CalendarView.prototype.getDatePickerStr = function() {
 				+ ((b_thisMonth && today_d == _date)
 						? "class='todayTd' "
 						: "") + "  onclick=\"Instance('" + this.index
-				+ "').clickHandle(event)\">"
+				+ "').dpClickAction(event)\">"
 				+ (_date < 10 ? ("&nbsp;" + _date) : _date) + "</td>";
 		_index++;
 		_date++;// td中的字符表示日期
@@ -334,7 +346,7 @@ CalendarView.prototype.getDatePickerStr = function() {
 
 		str += "<td id='calendar-mini-" + y + "-" + m + "-" + (k)
 				+ "' class='othermonth' onclick=\"Instance('" + this.index
-				+ "').selectDateTd(this)\">" + k + "</td>";
+				+ "').selectDateTdAction(this)\">" + k + "</td>";
 		k++;
 	}
 
@@ -346,7 +358,7 @@ CalendarView.prototype.getDatePickerStr = function() {
 
 			str += "<td id='calendar-mini-" + y + "-" + m + "-" + (k++)
 					+ "' class='othermonth' onclick=\"Instance('"
-					+ this.index + "').selectDateTd(this) \">" + (k - 1)
+					+ this.index + "').selectDateTdAction(this) \">" + (k - 1)
 					+ "</td>";
 		}
 		str += "</tr>";
@@ -357,13 +369,139 @@ CalendarView.prototype.getDatePickerStr = function() {
 	return str;
 };
 
+
+//日历主体内容切换到月视图
+CalendarView.prototype.getMonthView = function() {
+
+	var today_y = this.today.getFullYear()
+	var today_m = this.today.getMonth() + 1;
+	var today_d = this.today.getDate();
+
+	var y = this.dummyDay.getFullYear();
+	var m = this.dummyDay.getMonth() + 1;
+	var b_thisMonth = false;
+	if (y == today_y && m == today_m)
+		b_thisMonth = true;
+
+	// var d=this.date.getDate();
+	var _weekFirstDay = CaculateDaysWeekNum(y, m, 1);//这月的第一天是星期几
+	var _days = CaculateMonthDays(y, m);
+
+	if (m == 1) {
+		var pre_days = CaculateMonthDays(y - 1, 12);
+
+	} else {
+		var pre_days = CaculateMonthDays(y, m - 1);
+	}
+	var _weekLastDay = CaculateDaysWeekNum(y, m, _days)
+	var _index =0;
+	var _date = 1;
+	var _rows =1;
+	var str = "<table  class='wk_mv_table wk-scrolltimedevents'  id='scrolltimedeventswk'>"
+			+ "<tr class='dp_title_tr'  >"
+			+ "<th id='dp_ym_th' class='dp_ym_th' colspan=5 ><span class='zippy-arrow' unselectable='on'></span><span> "
+			+ y
+			+ "年"
+			+ m
+			+ "月</span></th>"
+			+ "<th > <i id='dp_prev_month' onClick='Instance(\""+this.index+"\").datePickerGoPrevMonthAction()' class='dp_prev_month'></i> </th>"
+			+ "<th  > <i id='dp_next_month' onClick='Instance(\""+this.index+"\").datePickerGoNextMonthAction()' class='dp_prev_month dp_next_month'> </i></th>"
+			+ "</tr>"
+			+ "<tr class='dp_week_title_tr'><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>七</th></tr>"
+			+ "<tr>";
+	var pre_mon;
+	var pre_year;
+	if (m == 1) {
+		var pre_mon = 12;
+		pre_year = y - 1;
+	} else {
+		pre_mon = m - 1;
+		pre_year = y;
+	}
+	//计算出包含上月的第一行日期行
+	var first_block_date=new Date();
+	first_block_date.setFullYear(pre_year);
+	first_block_date.setMonth(pre_mon-1);
+	first_block_date.setDate(pre_days-_weekFirstDay+2);
+	for (var i = 1; i < _weekFirstDay; i++) {
+		str += "<td id='td_" +first_block_date.format("yyyy-MM-dd")
+				+ "' onclick=\"Instance('" + this.index
+				+ "')\" class='othermonth'>"
+
+
+				+ (pre_days - _weekFirstDay + i + 1) + "</td>";
+		_index++;
+		DateAddInSelf(first_block_date,1);
+	}
+	if (_index == 7)
+		str += "</tr>";
+
+	for (var i = 0; i < _days; i++) {
+		if (_index % 7 == 0 && _index > 0) {
+			str += "<tr>";
+			_rows++;
+		}
+		str += "<td   id='td_"  +first_block_date.format("yyyy-MM-dd")
+
+                       				+ "'"
+				+ ((b_thisMonth && today_d == _date)
+						? "class='todayTd' "
+						: "") + "  onclick=\"Instance('" + this.index
+				+ "')\">"+ (_date < 10 ? ("&nbsp;" + _date) : _date)
+
+				 + "</td>";
+		_index++;DateAddInSelf(first_block_date,1);
+		_date++;// td中的字符表示日期
+		if (_index % 7 == 0)
+			str += "</tr>";
+	}
+	var k = 1;
+	if (m == 12) {
+		m = 1;
+		y++;
+	} else {
+		m++;
+	}
+	for (var i = _weekLastDay + 1; i <= 7; i++) {
+
+		str += "<td id='td_"  +first_block_date.format("yyyy-MM-dd")
+
+                                           				+ "'"
+				+ "' class='othermonth' onclick=\"Instance('" + this.index
+				+ "')\">" 	+  k+"</td>";
+		k++;
+		DateAddInSelf(first_block_date,1);
+	}
+
+	str += "</tr>";
+
+	if (_rows < 6) {
+		str += "<tr>";
+		for (var i = 0; i < 7; i++) {
+            k++;
+			str += "<td  id='td_"  +first_block_date.format("yyyy-MM-dd")
+					+ "' class='othermonth' onclick=\"Instance('"
+					+ this.index + "')\">" + (k - 1)
+					+ "</td>";	DateAddInSelf(first_block_date,1);
+		}
+		str += "</tr>";
+		_rows++;
+	}
+	str += "</table>";
+
+	return str;
+};
+
 // get the view str end
+/**
+*deprecate
+*/
 CalendarView.prototype.displaySingleEvent = function(ce) {
 	this.valueStack["event_" + ce.id] = ce;
 	var title = ce.title;
 	var date = ce.day;
-	var timeStart = ce.startTime;
-	var timeEnd = ce.endTime;
+	var startTimeSV = ce.startTimeSV;
+	var endTimeSV = ce.endTimeSV;
 	//alert(ce.startTime);
 	// 根据日期找到td 根据kssj 结束时间 找到div 根据结束时间决定buttom的值
 	var td = document.getElementById("td_" + date);
@@ -376,9 +514,9 @@ CalendarView.prototype.displaySingleEvent = function(ce) {
 	div_html.appendChild(dl_html);
 	
 	dl_html.innerHTML = "<dt>"
-			+ timeStart
+			+ startTimeSV
 			+ "~"
-			+ timeEnd
+			+ endTimeSV
 			+ "</dt> "
 			+ "<DD  >"
 			+ title
@@ -390,7 +528,7 @@ CalendarView.prototype.displaySingleEvent = function(ce) {
 	div_html.id = "event_" + ce.id;
 	// 修改样式 确定位置
 	div_html.className = "calendarEventBar";
-	var position = this.timeSectToPosition(timeStart, timeEnd, date);
+	var position = this.timeSectToPosition(startTimeSV, endTimeSV, date);
 	div_html.style.position = "absolute";
 	
 	
@@ -417,16 +555,61 @@ CalendarView.prototype.displaySingleEvent = function(ce) {
 				Instance(index).openCalendarEventDialog(div_html);
 			});
 };
+
+/**
+*deprecate
+*/
 CalendarView.prototype.displayAllEvent = function(ces) {
 	for (var ce in ces) {
 		this.displaySingleEvent(ce);
 	}
 };
-
+//action------------------------------------------
 // 大的动作
 // 可以拆分为多个连续性的一系列界面类动作---------------------------------------------------------------------------------------------
+CalendarView.prototype.createEventInMonthViewAction = function(e) {// 分解此方法
+	e = e.srcElement || e.target;
+    e.cancelBubble=true;
+    try{event.stopPropagation();}catch(e){event.cancelBubble=true;}
+	// 先设置它的position absolute 获取当前的div
+	var div;
+	var td;
+	if (e.tagName == "DIV") {
+		div = e;
+		td = e.parentNode;
+	} else if (e.tagName == "TD") {
+		div = e.childNodes[0];
+		td = e;
+	} else
+	{
+		return;
+	}
 
-CalendarView.prototype.createEvent = function(e) {// 分解此方法
+
+    this.deleteEventDataService("newEvent");
+    	// 界面的修改
+    this.deleteEventBarAction("newEvent");
+
+    var ce = new calendarEvent();
+    	// document.createElement("div");
+
+    ce.id = "newEvent";
+    this.currentEventId="newEvent";
+    ce.title = "";
+    ce.startTime = 0;
+    ce.endTime = 60*60;
+ ce.startTimeSV = "00:00";
+  ce.endTimeSV = "01:00";
+  ce.day=td.id.substr(3);
+    this.valueStack["event_newEvent"] = ce;
+
+    var div_html =this.calendarEventRenderWithOutStyle(ce);
+    console.log(div);
+    div.appendChild(div_html);
+    this.showCalendarEventDialogView("event_newEvent");
+
+}
+CalendarView.prototype.createEventAction = function(e) {// 分解此方法
 													// 该造成addEvent(calendarEvent)的方法
 	// 得到当前鼠标位置
 
@@ -437,6 +620,7 @@ CalendarView.prototype.createEvent = function(e) {// 分解此方法
 	if ($$("scrolltimedeventswk").scrollTop) {
 		scrollTop = $$("scrolltimedeventswk").scrollTop;
 	}
+
 	var data_arr = this.getPositionFromMousePosition(mouse_cur_p_y, scrollTop);
 	//创建模型
 	//模型转视图
@@ -445,11 +629,11 @@ CalendarView.prototype.createEvent = function(e) {// 分解此方法
 	
 	var top = data_arr[2];// 没用到
 	// 先删除原来没有保存的
-	this.deleteEventData("newEvent");
+	this.deleteEventDataService("newEvent");
 
 	// 界面的修改
 	
-	this.deleteEventBar("newEvent");
+	this.deleteEventBarAction("newEvent");
 
 	e.cancelBubble = true;
 	e = window.event || e;
@@ -469,12 +653,12 @@ CalendarView.prototype.createEvent = function(e) {// 分解此方法
 	{
 		return;
 	}
-	var timeStart = data_arr[1];
-//	 console.log("timeStart:"+timeStart);
-	var timeEnd = data_arr[0];// getElementsByTagName("div")
+	var startTimeSV = data_arr[1];
+//	 console.log("startTimeSV:"+startTimeSV);
+	var endTimeSV = data_arr[0];// getElementsByTagName("div")
 	/*
 	 * var i; for ( i = 0, divs = td.childNodes; i < divs.length; i++) { if (div ==
-	 * divs[i]) { timeStart = this.timeSect[i]; timeEnd = (i + 1) ==
+	 * divs[i]) { startTimeSV = this.timeSect[i]; endTimeSV = (i + 1) ==
 	 * this.timeSect.length ? "24:00" : this.timeSect[i + 1]; break; } }
 	 */
 	this.currentEventId = "newEvent";
@@ -485,8 +669,8 @@ CalendarView.prototype.createEvent = function(e) {// 分解此方法
 
 	ce.id = "newEvent";
 	ce.title = "";
-	ce.timeStart = timeStart;
-	ce.timeEnd = timeEnd;
+	ce.startTimeSV = startTimeSV;
+	ce.endTimeSV = endTimeSV;
 
 	ce.j = data_arr[3];
 	ce.day = td.id.substr(3);
@@ -496,9 +680,11 @@ CalendarView.prototype.createEvent = function(e) {// 分解此方法
 	ce.startIndex = data_arr[3];
 	ce.endIndex = data_arr[3] + 2;
 	// ce.cellIndex=0;
+	//the second tr
 	var parentTable = $$("table2").childNodes[0].childNodes[1];
 
 	var mouseCurrentCell;
+	/**foreach ever column ervery week day**/
 	for (i = 1; i < parentTable.cells.length; i++) {
 
 		if (div == parentTable.cells[i].childNodes[0]) {
@@ -516,7 +702,7 @@ CalendarView.prototype.createEvent = function(e) {// 分解此方法
 	ce.length = 2;
 	// alert("开始："+ce.startIndex+"结束"+ce.endIndex);
 	// this.adjust();
-	
+	// create the html and bind the drag
 	var div_html =this.calendarEventRender(ce);
 	div.appendChild(div_html);
 	/*var div_html=document.createElement("div");
@@ -527,9 +713,9 @@ CalendarView.prototype.createEvent = function(e) {// 分解此方法
 	//dl_html.id = "event_newEvent";
 	//dl_html.className = "calendarEventBar";
 	dl_html.innerHTML = "<dt >"
-			+ timeStart
+			+ startTimeSV
 			+ "~"
-			+ timeEnd
+			+ endTimeSV
 			+ "</dt> "
 			+ "<DD >&nbsp;</DD><div   onmouseup=\"Drag.dragEnd();\" onmousedown=\"Drag.drawStart(this)\">_</div>";
 	div_html.style.position = "absolute";
@@ -542,7 +728,7 @@ CalendarView.prototype.createEvent = function(e) {// 分解此方法
 	div_html.style.height = this.hourHeight-2+"px";
 	// td.appendChild(newEvent);
 	var index = this.index;// ?
-*/	this.showCalendarEventDialog(this.currentEventId);
+*/	this.showCalendarEventDialogView(this.currentEventId);
 	
 /*	dl_html.attachEvent("ondblclick", function() {
 		Instance(index).openCalendarEventDialog(div_html)
@@ -558,29 +744,41 @@ CalendarView.prototype.createEvent = function(e) {// 分解此方法
 CalendarView.prototype.rejustPositionAndShape = function(calendarEvent) {
 
 };
-CalendarView.prototype.datePickerGoPrevMonth = function(e) {
+CalendarView.prototype.datePickerGoPrevMonthAction = function(e) {
 	this.dummyDay=getPreMonth(this.dummyDay);
 	this.refreshDatePickerView();
 	//重新绑定事件
-	bind($$("dp_prev_month"),'click',new Function("Instance('"
+	/*bind($$("dp_prev_month"),'click',new Function("Instance('"
 			+ this.index
-			+ "').datePickerGoPrevMonth()"));
+			+ "').datePickerGoPrevMonthAction()"));
 	bind($$("dp_next_month"),'click',new Function("Instance('"
 			+ this.index
-			+ "').datePickerGoNextMonth ()"));
+			+ "').datePickerGoNextMonthAction ()"));*/
 }
-CalendarView.prototype.datePickerGoNextMonth = function(e) {
+CalendarView.prototype.datePickerGoNextMonthAction = function(e) {
 	this.dummyDay=getNextMonth(this.dummyDay);
 	this.refreshDatePickerView();
 	//重新绑定事件
-	bind($$("dp_prev_month"),'click',new Function("Instance('"
+	/*bind($$("dp_prev_month"),'click',new Function("Instance('"
 			+ this.index
-			+ "').datePickerGoPrevMonth()"));
+			+ "').datePickerGoPrevMonthAction()"));
 	bind($$("dp_next_month"),'click',new Function("Instance('"
 			+ this.index
-			+ "').datePickerGoNextMonth ()"));
+			+ "').datePickerGoNextMonthAction ()"));*/
 }
-CalendarView.prototype.clickHandle = function(e) {
+CalendarView.prototype.datePickerGoTodayAction = function(e) {
+	this.dummyDay=new Date();
+	this.refreshDatePickerView();
+	this.refreshCalendarWorkbenchView();
+	//重新绑定事件
+	/*bind($$("dp_prev_month"),'click',new Function("Instance('"
+			+ this.index
+			+ "').datePickerGoPrevMonthAction()"));
+	bind($$("dp_next_month"),'click',new Function("Instance('"
+			+ this.index
+			+ "').datePickerGoNextMonthAction ()"));*/
+}
+CalendarView.prototype.dpClickAction = function(e) {
 	// //console.log("进入clickhandle");
 	e = window.event || e;
 	var B;
@@ -642,7 +840,7 @@ CalendarView.prototype.clickHandle = function(e) {
 			// appointed td tr
 			this.preSelectedTr = e.parentNode;
 			this.preSelectedTd = e;
-			this.refreshCalendarEventView();
+			this.refreshCalendarWorkbenchView();
 		}
 			break;
 		default :
@@ -655,11 +853,8 @@ CalendarView.prototype.onMouseOverHandle = function(e) {
 CalendarView.prototype.onDblClickHandle = function(e) {
 
 };
-CalendarView.prototype.changeToDayView = function() {
-	this.viewMode = 0;
-	this.refreshCalendarEventView();
-};
-CalendarView.prototype.selectDateTd = function(it) {
+
+CalendarView.prototype.selectDateTdAction = function(it) {
 	var y = it.id.split("-")[2];
 	var m = it.id.split("-")[3];
 	var d = it.id.split("-")[4];
@@ -670,7 +865,7 @@ CalendarView.prototype.selectDateTd = function(it) {
 	day.setDate(d);
 	this.dummyDay = day;
 	this.selectDate(day);
-	this.refreshCalendarEventView();
+	this.refreshCalendarWorkbenchView();
 
 };
 CalendarView.prototype.selectDate = function(day) {
@@ -681,10 +876,11 @@ CalendarView.prototype.selectDate = function(day) {
 
 };
 
-CalendarView.prototype.saveCalendarEvent = function(event) {
+CalendarView.prototype.saveCalendarEventAction = function(event) {
 	
 	// 数据修改
 	var ce = this.getCalendarEvent(this.currentEventId);
+
 	ce.title = $$("calendarEventDialog_title").value;
 	if (ce.id == "newEvent") {
 
@@ -694,48 +890,42 @@ CalendarView.prototype.saveCalendarEvent = function(event) {
 		$$("event_newEvent").id = "event_" + ce.id;
 	}
 	
-	this.saveCalendarEventData(ce);
+	this.saveCalendarEventDataService(ce);
 
 //	this.valueStack["event_" + this.currentEventId] = ce;
 	// alert(ce.title);
 	// 界面修改
-	this.refreshCalendarEventBar(this.currentEventId);
+	this.refreshCalendarEventBarView(this.currentEventId);
 	this.closeCalendarEventDialog(this.currentEventId);
 	// ajax保存数据
 	
 };
-function isSuccessFully(data){
-	if(data.RESULT){
-		alert("保存成功");
-	}else{
-		alert("保存失败");
-	}
-}
-CalendarView.prototype.editCalendarEvent = function(it) {// alert(231);
+
+CalendarView.prototype.editCalendarEventAction = function(it) {// alert(231);
 
 	// 数据修改
 	var ce = this.getCalendarEvent(it.id);
 	$$("calendarEventDialog_title").value = ce.title;
 	this.showCalendarEventDialog(this.currentEventId);
 	// 显示编辑框
-	this.refreshCalendarEventDialog(this.currentEventId);
+	this.refreshCalendarEventDialogView(this.currentEventId);
 
 };
 
-CalendarView.prototype.deleteCalendarEvent = function(event) {
+CalendarView.prototype.deleteCalendarEventAction = function(event) {
 	// 数据的修改
 
-	this.deleteEventData(this.currentEventId);
+	this.deleteEventDataService(this.currentEventId);
 
 	// 界面的修改
 
-	this.deleteEventBar(this.currentEventId);
+	this.deleteEventBarAction(this.currentEventId);
 	this.closeCalendarEventDialog();
 };
 
 CalendarView.prototype.alert = function() {
 	var a = this.positionToTimesect(event.clientY, 200);
-	// alert("timeStart:"+a[0]+"timeENd:"+a[1]);
+	// alert("startTimeSV:"+a[0]+"endTimeSV:"+a[1]);
 };
 CalendarView.prototype.openCalendarEventDialog = function(it) {
 	// get the dl element's id
@@ -748,42 +938,109 @@ CalendarView.prototype.openCalendarEventDialog = function(it) {
 	 */
 	this.currentEventId = it.id.substr(6);
 	var ce = this.getCalendarEvent(this.currentEventId);
-	$$("calendarEventDialog_date").innerHTML = ce.day + " " + ce.timeStart + "~"
-			+ ce.timeEnd;
+	$$("calendarEventDialog_date").innerHTML = ce.day + " " + ce.startTimeSV + "~"
+			+ ce.endTimeSV;
 	$$("calendarEventDialog_title").value = ce.title;
 	// get event information from stack
 	// select the current event
 	// edit the content of calendarEventDialog2
-	this.showCalendarEventDialog(it.id);
+	this.showCalendarEventDialogView(it.id);
+};
+CalendarView.prototype.changeToDayView = function() {
+ if(this.viewMode==0)return;
+	this.viewMode = 0;
+	this.refreshCalendarWorkbenchView();return;
+	/*var eles= $$("wb-main-tr").getElementsByTagName("td");
+    var daystr="td_"+this.dummyDay.format("yyyy-MM-dd");
+	for(var i=1;i<eles.length;i++){
+        if(eles[i].id!=daystr){
+            eles[i].style.display="none";
+            $$("h_"+eles[i].id).style.display="none";
+            $$("m_"+eles[i].id).style.display="none";
+        }else{ eles[i].colSpan=7;
+             $$("h_"+eles[i].id).colSpan=7;
+             $$("m_"+eles[i].id).colSpan=7;
+        }
+	}*/
+
 };
 
-CalendarView.prototype.changeToMonthView = function() {
-	this.viewMode = 2;
-	this.refreshCalendarEventView();
-};
 CalendarView.prototype.changeToWeekView = function() {
-	this.viewMode = 1;
-	this.refreshCalendarEventView();
+
+	 if(this.viewMode==1)return;
+    	this.viewMode = 1;
+
+    	this.refreshCalendarWorkbenchView();
+    	console.log(this.viewMode);
+/*
+    	var eles= $$("wb-main-tr").getElementsByTagName("td");
+
+            var daystr="td_"+this.dummyDay.format("yyyy-MM-dd");
+
+        	for(var i=1;i<eles.length;i++){
+                if(eles[i].id!=daystr){
+                    eles[i].removeAttribute("style");
+                  $$("h_"+eles[i].id).removeAttribute("style");
+                    $$("m_"+eles[i].id).removeAttribute("style");
+                }else{
+                       $$("h_"+eles[i].id).removeAttribute("colspan");
+                      $$("m_"+eles[i].id).removeAttribute("colspan");
+                        eles[i].removeAttribute("colspan");
+                }
+        	}*/
+
 };
 
+CalendarView.prototype.changeToMonthAction = function() {console.log("enter change to monthview")
+console.log("viewMode:"+this.viewMode)
+ if(this.viewMode==2)return;
+    	this.viewMode = 2;
+	this.refreshCalendarWorkbenchView();return;
+
+};
 // 界面的刷新--------------------------------------------------------------------------------------------------------------------------
 //refreshDatePickerView
 CalendarView.prototype.refreshDatePickerView = function() {
-	$$("dp_div" ).innerHTML = this.getDatePickerStr();
+	$$("dp_div" ).innerHTML = this.getDatePickerView();
 	this.clear();
 	//this.init();
 };
-CalendarView.prototype.refreshCalendarEventView = function() {console.log("refreshCalendarEventView");
-	$$("div_CalendarEventView_" + this.index).innerHTML = this
-			.getCalendarScheduleStr();
+CalendarView.prototype.refreshCalendarWorkbenchView = function() {console.log("refreshCalendarWorkbenchView begin");
+
+	$$("div_CalendarEventView_" + this.index).innerHTML = this.getCalendarScheduleView();
+	  document.getElementsByClassName("ca-ty-ch-wrp")[0].getElementsByClassName("active")[0].removeAttribute("class","active");
+    	document.getElementsByClassName("ca-ty-ch-wrp")[0].childNodes[this.viewMode].setAttribute("class","active");
+this.loadEventsView();
+this.addEventListener();
+
+//添加+ "<div onclick=\"Instance('" + this.index
+                    				//+ "').createEventInMonthViewAction(event) \"  class=\"div-tg-time\"></div>"
+if(this.viewMode==2){
+var that =this;
+
+    var tds=$$("scrolltimedeventswk").getElementsByTagName("td");
+   // alert(tds.length)
+    for(var i=0;i<tds.length;i++){
+        var div=document.createElement("div");
+        div.addEventListener("onclick",function(event){that.createEventInMonthViewAction(event);})
+        div.className="div-tg-time";
+       // console.log(tds[i]);
+        tds[i].appendChild(div);
+        div.appendChild(tds[i].childNodes[0]);
+    }
+    }
+			if(this.viewMode==2)return;
 	document.getElementById("scrolltimedeventswk").style.height = window.innerHeight
 			- 120+"px";
+			//console.log(document.getElementsByClassName("ca-ty-ch-wrp")[0].childNodes);
+  	//document.getElementsByClassName("ca-ty-ch-wrp")[0].childNodes[this.viewMode].addClass("active");
+
 	//重新加载时间
-	this.loadEvents();
+
 };
 // data2view
 
-CalendarView.prototype.refreshCalendarEventBar = function(id) {
+CalendarView.prototype.refreshCalendarEventBarView = function(id) {
 
 	// 的到event从 堆栈中
 	// 如果id对应的HTML对象存在的话 更新内容 并 重新定位位置
@@ -793,7 +1050,7 @@ CalendarView.prototype.refreshCalendarEventBar = function(id) {
 			return;
 		var dts = $$("event_" + id).getElementsByTagName("dt");
 		if (dts != null && dts != "undefined" && dts.length && dts.length > 0) {
-			dts[0].innerHTML = ce.timeStart + "~" + ce.timeEnd;
+			dts[0].innerHTML = ce.startTimeSV + "~" + ce.endTimeSV;
 		}
 		var dds = $$("event_" + id).getElementsByTagName("DD");
 		if (dds != null && dds != "undefined" && dds.length && dds.length > 0) {
@@ -804,12 +1061,12 @@ CalendarView.prototype.refreshCalendarEventBar = function(id) {
 		var end_index = 0;
 		// 以下的计算和drag里的代码重复了
 		for (var i = 0; i < this.timeSect.length; i++) {
-			if (ce.timeStart >= this.timeSect[i]
-					&& (ce.timeStart < this.timeSect[i + 1] || i == (this.timeSect.length - 1))) {
+			if (ce.startTimeSV >= this.timeSect[i]
+					&& (ce.startTimeSV < this.timeSect[i + 1] || i == (this.timeSect.length - 1))) {
 				start_index = i;
 			}
-			if (ce.timeEnd > this.timeSect[i]
-					&& (ce.timeStart <= this.timeSect[i + 1] || i == (this.timeSect.length - 1))) {
+			if (ce.endTimeSV > this.timeSect[i]
+					&& (ce.startTimeSV <= this.timeSect[i + 1] || i == (this.timeSect.length - 1))) {
 				end_index = i;
 			}
 		}
@@ -822,22 +1079,22 @@ CalendarView.prototype.refreshCalendarEventBar = function(id) {
 	}
 
 };
-CalendarView.prototype.refreshCalendarEventDialog = function(id) {
+CalendarView.prototype.refreshCalendarEventDialogView = function(id) {
 	// 的到event从 堆栈中
 	var ce = this.getCalendarEvent(id);
 	
 	if (ce == null)// || (typeof event) == "undefined"
 		return;
 	
-	$$("calendarEventDialog_date").innerHTML = ce.day + " " + ce.timeStart + "~"
-			+ ce.timeEnd;
+	$$("calendarEventDialog_date").innerHTML = ce.day + " " + ce.startTimeSV + "~"
+			+ ce.endTimeSV;
 	$$("calendarEventDialog_title").value = ce.title;
 };
 // 界面的调整变化 在动作的驱动下 界面类动作
 // ------------------------------------------------------------------------------------------
-CalendarView.prototype.showCalendarEventDialog = function(id) {
+CalendarView.prototype.showCalendarEventDialogView = function(id) {
 	// 增加判断使他最低不得超过table2的父亲div的下底线和左右边界还有上边界
-	this.refreshCalendarEventDialog(id);
+	this.refreshCalendarEventDialogView(id);
 	$$("calendarEventDialog").style.display = "block";
 	// $$("bb").value= getInfo($$("event_"+id)).top;
 	// $$("cc").value= getInfo($$("event_"+id)).left;
@@ -876,17 +1133,17 @@ CalendarView.prototype.showCalendarEventDialog = function(id) {
 		}else{
 			$$("calendarEventDialog").style.top = top+"px";;
 		}
-	}
+	}console.log("over");
 };
 
-CalendarView.prototype.closeCalendarEventDialog = function() {
+CalendarView.prototype.closeCalendarEventDialog = function() {console.log("hide");
 	if (this.currentEventId == "newEvent") {
-		this.deleteEventBar("newEvent");
+		this.deleteEventBarAction("newEvent");
 	}
 	$$("calendarEventDialog").style.display = "none";
 	$$("mask").style.display = "none";
 };
-CalendarView.prototype.deleteEventBar = function(id) {
+CalendarView.prototype.deleteEventBarAction = function(id) {
 	if ($$("event_" + id)) {
 		$$("event_" + id).innerHTML = "";
 		try {
@@ -906,9 +1163,10 @@ CalendarView.prototype.clear = function() {
 };
 // 数据的修改
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-CalendarView.prototype.saveCalendarEventData = function(ce) {
+CalendarView.prototype.saveCalendarEventDataService = function(ce) {
 	this.valueStack["event_" + ce.id] = ce;
-	var jso=translateCE2Activity(ce);
+//	var jso=translateCE2Activity(ce);
+
 	// activityAjax.saveCalendarEvent(activity ,isSuccessFully);
 	//alert(jso.STARTDATE);
 	save(ce.id);
@@ -916,7 +1174,7 @@ CalendarView.prototype.saveCalendarEventData = function(ce) {
 };
 // 数据的删除
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-CalendarView.prototype.deleteEventData = function(id) {
+CalendarView.prototype.deleteEventDataService = function(id) {
 	if(id=="newEvent"){
 		delete this.valueStack["event_" + id];
 	}
@@ -928,6 +1186,10 @@ CalendarView.prototype.deleteEventData = function(id) {
 // 根据坐标求时间区间
 
 CalendarView.prototype.getCalendarEvent = function(id) {
+    id=id+"";
+    if(id.indexOf("event_")==0){
+        return this.valueStack[ id];
+    }
 	return this.valueStack["event_" + id];
 };
 
@@ -948,7 +1210,7 @@ CalendarView.prototype.getEventId = function() {
  * @returns {Array}
  */
 CalendarView.prototype.positionToTimesect = function(top, height) {
-	var start_index, end_index, timeStart, timeEnd;
+	var start_index, end_index, startTimeSV, endTimeSV;
 	var parentTable = $$("table2").childNodes[0].childNodes[1];
 	var DivTimeSects = parentTable.cells[0].getElementsByTagName("div");
 	if (DivTimeSects.length != this.timeSect.length) {
@@ -972,35 +1234,35 @@ CalendarView.prototype.positionToTimesect = function(top, height) {
 				+ " end_index:" + end_index);
 	}
 
-	timeStart = this.timeSect[start_index];
-	timeEnd = end_index >= _length ? "24:00" : this.timeSect[end_index + 1];
+	startTimeSV = this.timeSect[start_index];
+	endTimeSV = end_index >= _length ? "24:00" : this.timeSect[end_index + 1];
 	var a = new Array();
-	a[0] = timeStart;
-	a[1] = timeEnd;
+	a[0] = startTimeSV;
+	a[1] = endTimeSV;
 	return a;
 };
 /**
  * 根据时间换算出top 高度值
  */
-CalendarView.prototype.timeSectToPosition = function(timeStart, timeEnd, date) {
+CalendarView.prototype.timeSectToPosition = function(startTimeSV, endTimeSV, date) {
 	
 	var start_index, end_index, top, height;
 /*	for (var i = 0, _length = this.timeSect.length; i < _length; i++) {
-		if (this.timeSect[i] <= timeStart
-				&& (i >= (_length - 1) ? "24:00" : this.timeSect[i + 1]) > timeStart) {
+		if (this.timeSect[i] <= startTimeSV
+				&& (i >= (_length - 1) ? "24:00" : this.timeSect[i + 1]) > startTimeSV) {
 			start_index = i;
 		}
 		alert( this.timeSect[i >= (_length - 1) ? (_length - 1):(i + 1)  ]);//
-		if (this.timeSect[i] < timeEnd
-				&& this.timeSect[i >= (_length - 1) ?  (_length - 1):(i + 1) ]>timeEnd)// timeSect 00:00 01:00 02:00 23:00
+		if (this.timeSect[i] < endTimeSV
+				&& this.timeSect[i >= (_length - 1) ?  (_length - 1):(i + 1) ]>endTimeSV)// timeSect 00:00 01:00 02:00 23:00
 			end_index = i;
 	}
 	*/
 
 
-top =parseInt(timeStart.substr(0,2))*this.sectHeight;
-top+=parseInt(timeStart.substr(3,2))/60*this.sectHeight;
-heigth =parseInt(timeEnd.substr(0,2))*this.sectHeight-top+parseInt(timeEnd.substr(3,2))/60*this.sectHeight;
+top =parseInt(startTimeSV.substr(0,2))*this.sectHeight;
+top+=parseInt(startTimeSV.substr(3,2))/60*this.sectHeight;
+heigth =parseInt(endTimeSV.substr(0,2))*this.sectHeight-top+parseInt(endTimeSV.substr(3,2))/60*this.sectHeight;
 //	alert(top);
 	//var parentTable = $$("table2").childNodes[0].childNodes[1];
 	
@@ -1041,22 +1303,22 @@ CalendarView.prototype.drawClanderEventTo = function(ce, x, tY, ao, scrollTop) {
 	// 移动到了第几段位
 	var timesect_index = parseInt(y_distance*2 /this.hourHeight);
 	//有疑问 高度应该是小时相减*60再加上分钟的差别
-	ao.style.height = (timesect_index + 1) *this.hourHeight/2 - getTop(ce.timeStart, this.hourHeight)-2+"px";
+	ao.style.height = (timesect_index + 1) *this.hourHeight/2 - getTop(ce.startTimeSV, this.hourHeight)-2+"px";
 	// alert(count_timesect);
-	var timeEnd = this.timeCompute1(timesect_index + 1);
-	if(ce.timeEnd == timeEnd){
+	var endTimeSV = this.timeCompute1(timesect_index + 1);
+	if(ce.endTimeSV == endTimeSV){
 		return
 	}
 	
 	// ce.j=count_timesect;
-	this.refreshCalendarEventBar(ce.id);
-	ce.oritimeEnd = ce.timeEnd;
-	ce.timeEnd = timeEnd;
+	this.refreshCalendarEventBarView(ce.id);
+	ce.oriendTimeSV = ce.endTimeSV;
+	ce.endTimeSV = endTimeSV;
 	// 重置calendarEvent 数据
 	ce.endIndex = timesect_index + 1;
 	ce.height = ao.style.height+"px";
 	ce.length = ce.endIndex - ce.startIndex;
-	this.saveCalendarEventData(ce);
+	//this.saveCalendarEventDataService(ce);
 	return true;
 	
 	
@@ -1070,7 +1332,7 @@ CalendarView.prototype.drawClanderEventTo = function(ce, x, tY, ao, scrollTop) {
 	 * parentCell.top) { //如果没有移除格子外面就不需要change if(ce.j>j)return false;
 	 * 
 	 * ao .style.height= parentCell.bottom- Drag.getInfo( Drag.ao ).top;
-	 * ce.timeEnd = this.timeSect[j+1]; //ce.j=j;
+	 * ce.endTimeSV = this.timeSect[j+1]; //ce.j=j;
 	 * this.refreshCalendarEventBar(ce.id); return true;
 	 *  } }
 	 */
@@ -1125,13 +1387,13 @@ CalendarView.prototype.moveClanderEventTo = function(ce, x, tY, ao, scrollTop) {
 		
 		// 计算偏移量
 		var deviation = count_timesect - ce.j;
-		// 重新计算timestart 和 timeend
+		// 重新计算startTimeSV 和 endTimeSV
 		//计算原来的分割量
 	
-		var longs = getTimeLongsBetweenHHMM(ce.timeStart,ce.timeEnd);
+		var longs = getTimeLongsBetweenHHMM(ce.startTimeSV,ce.endTimeSV);
 	
-		ce.timeStart = this.timeCompute1(count_timesect);
-		ce.timeEnd =	add4HHMM(ce.timeStart ,longs);// this.timeCompute1(count_timesect+1);
+		ce.startTimeSV = this.timeCompute1(count_timesect);
+		ce.endTimeSV =	add4HHMM(ce.startTimeSV ,longs);// this.timeCompute1(count_timesect+1);
 	//	console.log("count_timesect:"+count_timesect);
 		ce.j = count_timesect;
 	}
@@ -1142,7 +1404,7 @@ CalendarView.prototype.moveClanderEventTo = function(ce, x, tY, ao, scrollTop) {
 	// 折算出 转换后的开始时间和结束时间。
 
 	// 更新外表
-	this.refreshCalendarEventBar(ce.id);
+	this.refreshCalendarEventBarView(ce.id);
 	// 重置calendarEvent 数据
 	ce.startIndex = mouseCurrentRow;
 	ce.endIndex = mouseCurrentRow + ce.length;
@@ -1151,7 +1413,7 @@ CalendarView.prototype.moveClanderEventTo = function(ce, x, tY, ao, scrollTop) {
 	// this.adjust();
 	this.adjust(mouseCurrentCell, ce);
 	//alert("保存数据");
-	this.saveCalendarEventData(ce);
+	//this.saveCalendarEventDataService(ce);
 };
 
 	/**
@@ -1165,8 +1427,8 @@ CalendarView.prototype.getPositionFromMousePosition = function(tY, scrollTop) {
 	var td=null;
 	var aDivTimeSect = tr1.cells[0].childNodes;
 	var j = 0;
-	var timeStart = "00:00";
-	var timeEnd = "00:00";// getElementsByTagName("div")
+	var startTimeSV = "00:00";
+	var endTimeSV = "00:00";// getElementsByTagName("div")
 	var pianyiliang;
 	for (j = 0; j < aDivTimeSect.length; j++) {
 		var td_info = Drag.getInfo(aDivTimeSect[j]);// 已经知道了是哪个div time
@@ -1179,24 +1441,24 @@ CalendarView.prototype.getPositionFromMousePosition = function(tY, scrollTop) {
 				pianyiliang = td_info.top
 						- Drag.getInfo(aDivTimeSect[0]).top;
 
-				timeEnd = (j + 1) == this.timeSect.length
+				endTimeSV = (j + 1) == this.timeSect.length
 						? "24:00"
 						: this.timeSect[j + 1];
-				timeStart = this.timeSect[j];
+				startTimeSV = this.timeSect[j];
 				j = 2 * j;
 			} else {
 				pianyiliang = ((td_info.bottom + td_info.top) / 2 - Drag
 						.getInfo(aDivTimeSect[0]).top);
-				timeEnd = (j + 1) == this.timeSect.length
+				endTimeSV = (j + 1) == this.timeSect.length
 						? "24:00"
 						: (this.timeSect[j + 1].substr(0, 3) + "30");
-				timeStart = this.timeSect[j].substr(0, 3) + "30";
+				startTimeSV = this.timeSect[j].substr(0, 3) + "30";
 				j = 2 * j + 1;
 			}
 			break;
 		}
 	}
-	return [timeEnd, timeStart, pianyiliang, j];// 偏移量 距离td的顶端的距离 j为第几格子 半小时一个格子
+	return [endTimeSV, startTimeSV, pianyiliang, j];// 偏移量 距离td的顶端的距离 j为第几格子 半小时一个格子
 
 };
 /**
@@ -1618,7 +1880,7 @@ CalendarView.prototype.selectDate = function(day) {
 
 };
 
-CalendarView.prototype.addEvent = function(ce) {
+CalendarView.prototype.addEventView = function(ce) {
 	// 生成dom节点
 	// dialogue附着
 
@@ -1626,33 +1888,37 @@ CalendarView.prototype.addEvent = function(ce) {
 	if (ce == null) {// console.log("ce is null");
 		ce = new calendarEvent();
 		var date = new Date();
-		ce.timeStart = getTimeStrFromDate(date);
-		ce.timeEnd = getTimeStrFromDate(date);
+		ce.startTimeSV = getTimeStrFromDate(date);
+		ce.endTimeSV = getTimeStrFromDate(date);
 		ce.id = "newEvent";
 
 		ce.day = getdayStrFromDate(date);
 		ce.title = "";
+		this.currentEventId = "newEvent";
 	}
-	timeStart = ce.timeStart;
-	// console.log("timeStart:"+timeStart);
-	timeEnd = ce.timeEnd;// getElementsByTagName("div")
+	startTimeSV = ce.startTimeSV;
+	// console.log("startTimeSV:"+startTimeSV);
+	endTimeSV = ce.endTimeSV;// getElementsByTagName("div")
 
-	this.currentEventId = "newEvent";
+
 	
 	
 	/*
 	 */
 	/**数据加工**/
-	ce.j = getTimeEndIndex(ce.timeEnd, 0);
+	ce.j = getTimeEndIndex(ce.endTimeSV, 0);
 	// 入栈
 	this.valueStack["event_" + ce.id] = ce;
 	var date = ce.day;	
 
-	
+
 	if (!$$("td_" + ce.day))
 		return;
 	ce.startIndex = ce.j;// console.log("startIndex"+ce.startIndex);
 	ce.endIndex = ce.j + 2;
+
+	if(this.viewMode!=2){
+
 	var tr1 = $$("table2").childNodes[0].childNodes[1];
 	// //console.log("table2childNodeschildNodes");
 	// //console.log($$("table2").childNodes[0].childNodes[1].childNodes[1]);
@@ -1665,6 +1931,7 @@ CalendarView.prototype.addEvent = function(ce) {
 	}
 	//alert(mouseCurrentCell);
 	ce.cellIndex = mouseCurrentColum;
+	}
 	//ce.endIndex=0;
 	//ce.top=data_arr[2]-18;
 	ce.left = 0;
@@ -1672,6 +1939,9 @@ CalendarView.prototype.addEvent = function(ce) {
 	//alert("开始："+ce.startIndex+"结束"+ce.endIndex);
 	/**模板渲染**/
 	var div_html = this.calendarEventRender(ce);
+if(this.viewMode==2){
+    $$("td_" + ce.day).childNodes[0].appendChild(div_html);
+}else
 	$$("td_" + ce.day).childNodes[0].appendChild(div_html);
 //	alert($$("event_" + ce.id));
 	/*var div_html=document.createElement("div");
@@ -1680,9 +1950,9 @@ CalendarView.prototype.addEvent = function(ce) {
 	div_html.id = "event_" + ce.id;
 	div_html.className = "calendarEventBar";
 	dl_html.innerHTML = "<dt >"
-			+ timeStart
+			+ startTimeSV
 			+ "~"
-			+ timeEnd
+			+ endTimeSV
 			+ "</dt> "
 			+ "<DD >"+(StringUtil.isNull(ce.title)?"&nbsp;":ce.title)+"</DD><div  onmouseup=\"Drag.dragEnd();\" onmousedown=\"Drag.drawStart(this);event.cancelBubble=true;\">_</div>";
 	$$("td_" + ce.day).childNodes[0].appendChild(div_html);
@@ -1697,11 +1967,11 @@ CalendarView.prototype.addEvent = function(ce) {
 	dl_html.style.height = "100%";
 	var index = this.index;// ?
 */	/**渲染结束**/
-	//dl_html.style.top = getTop(ce.timeStart,this.hourHeight);
+	//dl_html.style.top = getTop(ce.startTimeSV,this.hourHeight);
 	// console.log($$("td_"+ce.day));
 	/**后续事件**/
 	if(ce.id=="newEvent")
-	this.showCalendarEventDialog(ce.id);//this.currentEventId
+	this.showCalendarEventDialogView(ce.id);//this.currentEventId
 	
 /*	div_html.attachEvent("onmousedown", function(event){Drag.dragStart(div_html)},true);
 	index = this.index;
@@ -1717,11 +1987,54 @@ CalendarView.prototype.addEvent = function(ce) {
 				Drag.dragStart(dl_html);
 			},true);*/
 	// 维护calendareventdata
+	if(this.viewMode!=2)
 	this.adjust(mouseCurrentColum, ce);
 };
 
+CalendarView.prototype.calendarEventRenderWithOutStyle=function(ce){
+
+	var div_html=document.createElement("div");
+	div_html.id = "event_"+ce.id;//alert(ce.id);
+	div_html.className = "calendarEventBar";
+	var dl_html = document.createElement("dl");
+	div_html.appendChild(dl_html);
+	//dl_html.id = "event_newEvent";
+	//dl_html.className = "calendarEventBar";
+	dl_html.innerHTML = "<dt >"
+		+ ce.startTimeSV
+		+ "~"
+		+ ce.endTimeSV
+		+ "</dt> "
+		+ "<DD >"+(StringUtil.isNull(ce.title)?"&nbsp;":ce.title)+"</DD><div  onmouseup=\"Drag.dragEnd();\" onmousedown=\"Drag.drawStart(this);event.cancelBubble=true;\">_</div>";
+
+
+	if(this.viewMode!=2){
+	div_html.style.position = "absolute";
+	div_html.style.top = position[0]+"px";//-getInfo($$("table2")).top;
+//alert("postion[0]:"+ position[0]+"top:"+div_html.style.top );
+	div_html.style.height = position[1]+"px";
+	div_html.style.left =0+"px";
+	// console.log(dl_html.style.top);
+	dl_html.style.left = 0+"px";
+	dl_html.style.height = "100%";
+
+	}
+	// td.appendChild(newEvent);
+	var index = this.index;// ?
+	//this.showCalendarEventDialog(this.currentEventId);
+
+	dl_html.attachEvent("ondblclick", function() {
+		Instance(index).openCalendarEventDialog(div_html)
+	});
+	// onclick=\"Instance('" + this.index
+	// + "').editCalendarEvent(this.id)\"
+	div_html.attachEvent("onmousedown", function() {
+		Drag.dragStart(div_html);
+	});
+	return div_html;
+	};
 CalendarView.prototype. calendarEventRender=function(ce){
-	var position = this.timeSectToPosition(ce.timeStart,ce.timeEnd, ce.day);	
+	var position = this.timeSectToPosition(ce.startTimeSV,ce.endTimeSV, ce.day);
 	if(position==null)return;//说明该日期不在当前日历表中
 	var div_html=document.createElement("div");
 	div_html.id = "event_"+ce.id;//alert(ce.id);
@@ -1731,14 +2044,14 @@ CalendarView.prototype. calendarEventRender=function(ce){
 	//dl_html.id = "event_newEvent";
 	//dl_html.className = "calendarEventBar";
 	dl_html.innerHTML = "<dt >"
-		+ ce.timeStart
+		+ ce.startTimeSV
 		+ "~"
-		+ ce.timeEnd
+		+ ce.endTimeSV
 		+ "</dt> "
 		+ "<DD >"+(StringUtil.isNull(ce.title)?"&nbsp;":ce.title)+"</DD><div  onmouseup=\"Drag.dragEnd();\" onmousedown=\"Drag.drawStart(this);event.cancelBubble=true;\">_</div>";
 
 	
-	
+	if(this.viewMode!=2){
 	div_html.style.position = "absolute";
 	div_html.style.top = position[0]+"px";//-getInfo($$("table2")).top;
 //alert("postion[0]:"+ position[0]+"top:"+div_html.style.top );
@@ -1748,7 +2061,7 @@ CalendarView.prototype. calendarEventRender=function(ce){
 	dl_html.style.left = 0+"px";
 	dl_html.style.height = "100%";
 	
-	
+	}
 	// td.appendChild(newEvent);
 	var index = this.index;// ?
 	//this.showCalendarEventDialog(this.currentEventId);
@@ -1812,9 +2125,9 @@ CalendarView.prototype.init= function() {
 	//var endDate = global_weekdays[6].getTime();
 	//var endSzShift= global_weekdays[6].getTimezoneOffset();
 	
-this.loadEvents();
+this.loadEventsView();
 };
-CalendarView.prototype.loadEvents=function(){//alert("before loadevents");
+CalendarView.prototype.loadEventsView=function(){//alert("before loadevents");
 	var jso={};
 	//alert(global_weekdays[0]);
 	//alert(global_weekdays[0]);
@@ -1832,18 +2145,20 @@ CalendarView.prototype.loadEvents=function(){//alert("before loadevents");
 	}else if(this.viewMode==1){
 		jso.STARTDATE=parseInt(DateUtils.retainDay(DateUtils.copyDate(global_weekdays[0])).getTime()/60000);
 		//jso.STARTSZSHIFT=startSzShift;
-		jso.ENDDATE=parseInt((DateUtils.retainDay(DateUtils.copyDate(global_weekdays[6])).getTime()+24*60*60*1000)/60000);
+		jso.ENDDATE=parseInt((DateUtils.retainDay(DateUtils.copyDate(global_weekdays[6])).getTime()+7*24*60*60*1000)/60000);
 	}else{
-		jso.STARTDATE=parseInt(DateUtils.retainDay(DateUtils.copyDate(global_weekdays[0])).getTime()/60000);
+		jso.STARTDATE=parseInt(getFirstMonthDay(this.dummyDay).getTime()/60000);
 		//jso.STARTSZSHIFT=startSzShift;
-		jso.ENDDATE=parseInt((DateUtils.retainDay(DateUtils.copyDate(global_weekdays[6])).getTime()+24*60*60*1000)/60000);
+
+		jso.ENDDATE=parseInt((getLastMonthDay(this.dummyDay).getTime()+24*60*60*1000)/60000);
+		//console.log("startdate:"+jso.STARTDATE+" ENDDATE："+jso.ENDDATE);
 	}
 	
 	//jso.endSZSHIFT=startSzShift;alert(1)
 	/*$.post("http://127.0.0.1:8080/calendar/activity/getActivities",jso,function (data){
 		alert(data[AJAX_RESULT]);
 	});*/
-	Ajax.post(PATH+"/activity/getActivities.json",jso,this.showActivities.Apply(this));
+	Ajax.post(PATH+"/activity/getActivities.json",jso,this.loadEventsViewCallBack.Apply(this));
 };
 
 
@@ -1851,14 +2166,15 @@ CalendarView.prototype.loadEvents=function(){//alert("before loadevents");
  * 暂时事件
  * @param data
  */
-CalendarView.prototype.showActivities=function(data){//alert(this);//alert("before showActivities");
+CalendarView.prototype.loadEventsViewCallBack=function(data){//alert(this);//alert("before showActivities");
 	this.valueStack={};
+
 	if(data!=null && data.data!=null && data.data.length>0){
 		for(var i=0,length=data.data.length;i<length;i++){
 			if(data.data[i]){
 				var ce = changeJson2CE(data.data[i]);
-				//ca.displaySingleEvent(ce);
-				this.addEvent(ce);
+				//this.displaySingleEvent(ce);
+				this.addEventView(ce);
 			}
 		}
 	}
@@ -1875,12 +2191,12 @@ CalendarView.prototype.addEventListener= function() {
 	bind($$("dp_ym_th"),'click',new Function("Instance('"
 			+ this.index
 			+ "').hideMCalTitle()"));
-	bind($$("dp_prev_month"),'click',new Function("Instance('"
+	/*bind($$("dp_prev_month"),'click',new Function("Instance('"
 			+ this.index
-			+ "').datePickerGoPrevMonth()"));
+			+ "').datePickerGoPrevMonthAction()"));
 	bind($$("dp_next_month"),'click',new Function("Instance('"
 			+ this.index
-			+ "').datePickerGoNextMonth ()"));
+			+ "').datePickerGoNextMonthAction ()"));*/
 	bind($$("mycal_h2"),'click',new Function("Instance('"
 			+ this.index
 			+ "').showOrHideMCalTypes()"));
@@ -1894,11 +2210,78 @@ CalendarView.prototype.addEventListener= function() {
 		);
 		//divs[i].style.borderColor=color_list[i];
 	}
+    var container= $$("div_CalendarEventView_"+this.index);
+	var that =this;
+	//console.log("begin add mousemove on td");
+	if(container&&this.viewMode==2){
+	    var tds = container.getElementsByTagName("td");
+        console.log("find "+tds.length+" td");
+	    for(var i=0;i<tds.length;i++){
+            //console.log(" adding mousemove on td");
+	       // bind(tds[i],"mouseover",function(){console.log("hello");});
+	        tds[i].addEventListener("mouseover",function(){that.monthViewMouseMoveInAction(this)})
+	        // tds[i].addEventListener("mouseover",function(){console.log("hello");})
+	    }
+	}
+	//console.log("end add mousemove on td");
 
 	//$$("minical_canopy_"+this.index).add
 	//加载活动
 	
 };
+CalendarView.prototype.monthViewMouseMoveInAction= function(td) {
+ if(Drag.ao==null)return ;
+ 		if(!Drag.dragged&&!Drag.drawed    )return;
+ 		if(td!=Drag.ao.parentNode.parentNode){
+ 		td.childNodes[0].appendChild(Drag.ao);
+
+	    console.log("mousemoveover");
+	}
+};
+CalendarView.prototype.getDateFromMixStr=function(id){
+    var index=0;
+    var position=0;
+    while(index>=0){
+        position=index;
+        console.log(id.indexOf("_",index+1));
+           console.log(id.indexOf("_",index+1));
+        index=id.indexOf("_",index+1);
+    }
+    var date = parseDate(id.substr(position+1),"yyyy-MM-dd");
+    return date;
+};
+/**
+*according to parentnode td 's id changed the ce property and save in db
+*/
+CalendarView.prototype.saveChangedAction= function(ao) {
+//比对是否有更改
+    //if(this.viewMode!=2)return;
+    if(!ao)return;
+    var ce = this.getCalendarEvent(ao.id);
+    var tdNode = ao.parentNode.parentNode;
+
+    var date =this.getDateFromMixStr(ao.parentNode.parentNode.id);
+    if(!ce.data){
+    console.log(ce);
+    }
+    var ceDate =new Date(ce.data.startTime*60000);
+
+    if(date.getMonth()!= ceDate.getMonth() || date.getDate()!= ceDate.getDate()){
+        //ceDate.setDate(date.getDate());
+        //ceDate.setMonth(date.getMonth());
+        ce.day= date.format("yyyy-MM-dd");//endTime=ceDate.getTime()-ce.startTime+ce.endTime;
+        //ce.startTime= ceDate.getTime();
+        this.saveCalendarEventDataService(ce);
+        console.log("save");
+    }/*
+     if(Drag.ao==null)return ;
+    if(!Drag.dragged&&!Drag.drawed    )return;
+    if(td!=Drag.ao.parentNode){
+        td.appendChild(Drag.ao);
+        console.log("mousemoveover");
+    }*/
+};
+
 /**
  * 把calendarview 添加到指定的id容器中
  * @param id
@@ -1906,10 +2289,45 @@ CalendarView.prototype.addEventListener= function() {
 CalendarView.prototype.attachTo= function(id) {
 	
 	$$(id).innerHTML=this.render();
+	// document.getElementsByClassName("ca-ty-ch-wrp")[0].getElementsByClassName("active")[0].removeAttribute("class","active");
+    	document.getElementsByClassName("ca-ty-ch-wrp")[0].childNodes[this.viewMode].setAttribute("class","active");
+
 	document.getElementById("scrolltimedeventswk").style.height=document.body.clientHeight -100+"px";
 	//	document.getElementById("scrolltimedeventswk").scrollTo(0,300);
 };
+CalendarView.prototype.judgeIfSaveInDb= function(id) {
+    var ce = ca.getCalendarEvent(ceid);
+    if(ce.isdel==ce.data.isdel
+     &&ce.title!=ce.data.title
+     &&getTimes(ce.day,ce.startTimeSV)==ce.data.startTime
+      &&getTimes(ce.day,ce.endTimeSV)==ce.data.endTime
+     ){
 
+        return false;
+    }
+      console.log("need save in server");
+    return true;
+
+
+
+};
+
+function judgeIfNeed2Save(ceid) {
+    var ce = ca.getCalendarEvent(ceid);
+    if(ce.data && ce.isdel==ce.data.isdel
+     &&ce.title==ce.data.title
+     &&getTimes(ce.day,ce.startTimeSV)==ce.data.startTime
+      &&getTimes(ce.day,ce.endTimeSV)==ce.data.endTime
+     ){
+        console.log(ce.isdel +":");
+        return false;
+    }
+      console.log("need save in server");
+    return true;
+
+
+
+};
 //action of event 
 
 /*
@@ -1940,15 +2358,17 @@ function changeJson2CE(data){
 	
 	ce.title=data.title;
 	ce.day=new Date(data.startTime*60000).format("yyyy-MM-dd");
-	ce.timeStart=new Date(data.startTime*60000).format("HH:mm");
-	
-	ce.timeEnd=new Date(data.endTime*60000).format("HH:mm");
+	ce.startTimeSV=new Date(data.startTime*60000).format("HH:mm");
+
+	ce.endTimeSV=new Date(data.endTime*60000).format("HH:mm");
 	
 	console.log((data.startTime%(24*60)/60)+":"+(data.startTime%(60))  );
 	
 	ce.startTime=data.startTime%(24*60);
 	ce.endTime=data.endTime%(24*60);
-	
+	ce.isdel=data.isdel;
+	ce.data=data;
+	//{"r":0,"data":[{"isdel":false,"title":"123","id":201641653,"startTime":24347040,"endTime":24347100,"address":null,"userId":7,"description":null,"type":0,"privacy":0,"busyLevel":null}],"msg":null,"page":null,"right":true}
 	return ce;
 }
 /**
@@ -1960,8 +2380,8 @@ function translateCE2Activity(ce){
 	var activity =new Object();
 	activity.ID=ce.id;
 	activity.TITLE=ce.title;
-	activity. STARTTIME = getTimes(ce.day,ce.timeStart);
-	activity.ENDTIME = getTimes(ce.day,ce.timeEnd);
+	activity. STARTTIME = getTimes(ce.day,ce.startTimeSV);
+	activity.ENDTIME = getTimes(ce.day,ce.endTimeSV);
 	activity.ISDEL=ce.isdel;
 	return activity;
 }
@@ -1973,6 +2393,10 @@ var synStack={};
 
 function save(ceid){
 	var ce = ca.getCalendarEvent(ceid);
+	if(!judgeIfNeed2Save(ceid)){
+	    return;
+	}
+	//判断是否需要保存到数据库
 	synStack[ceid]=ce;
 	//ce.changeFlag=true;
 	ce.lastChangeTime=(new Date()).getTime();
@@ -1985,6 +2409,7 @@ function del(ceid){
 	ce.lastChangeTime=(new Date()).getTime();
 	
 }
+
 /**
  * 轮循保存数据
  */
@@ -1998,9 +2423,12 @@ function loopCheckAndSave(){
 			setTimeout("loopCheckAndSave()",1000);
 			return;
 		}
+		//TODO 校验数据正确行
 		arr.push(translateCE2Activity(synStack[key]));
+		ce.data=translateCE2Activity(synStack[key]);
 	}
 	if(arr.length>0){console.log(arr);
+	    console.log("begin ajax save");
 		Ajax.post(PATH+"/activity/saveActivitys.json",{'jsonstr':	JSON.stringify(arr) },saveHandler);
 	}else{
 		setTimeout("loopCheckAndSave()",1000);
@@ -2010,7 +2438,8 @@ function loopCheckAndSave(){
 
 }
 function saveHandler(data){
-	
+    //TODO 增加失败调用
+      console.log(" ajax save complete result:"+data.r);
 	synStack={};
 	setTimeout("loopCheckAndSave()",5000);
 }
@@ -2022,9 +2451,16 @@ function saveHandler(data){
 			//此时就应该删除掉缓存中的数据
 			sysStack[ceid]=undefined;
 			delete sysStack[ceid];
-			ca.saveCalendarEventData(ce);
+			ca.saveCalendarEventDataService(ce);
 		}else{//再等一秒
 			//让他到下轮循环中再进行修改好了
 		}
 	}*/
 setTimeout("loopCheckAndSave()",5000);
+function isSuccessFully(data){
+	if(data.RESULT){
+		alert("保存成功");
+	}else{
+		alert("保存失败");
+	}
+}

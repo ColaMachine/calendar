@@ -13,7 +13,12 @@ function bind(dom,event_name,function_name){
 				}else{
 					dom.addEventListener("click",function_name, false);
 				}
+
 				break;
+            case 'mousemover':
+
+                                dom.addEventListener("mousemover",function_name, false);
+
 		}
 		
 		 
@@ -101,8 +106,10 @@ function calendarEvent(id,title,day,startTime,endTime){
 	this.id=id||"";
 	this.day=day||"";//格式yyyy-MM-dd
 	this.title=title||"";//标题
-	this.startTime=startTime||"";//hh:mm
-	this.endTime=endTime||"";//hh:mm
+	this.startTimeSV=startTime||"";//hh:mm
+	this.startTime=0;
+	this.endTime=0;
+	this.endTimeSV="";//hh:mm
 	this.isdel=false;
 	this.lastChangeTime=new Date().getTime();
 	//叠排

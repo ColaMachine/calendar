@@ -3,7 +3,7 @@ Drag = {
 	drawed : false,
 	ao : null,
 	tdiv : null,
-	dragStart : function(it) {
+	dragStart : function(it) {console.log("dragstart");
 		/*Drag.ao = Event.srcElement ? Event.srcElement :arguments.callee.caller.arguments[0].target;
 		if ((Drag.ao.tagName == "DT") || (Drag.ao.tagName == "DD")) {
 			Drag.ao = Drag.ao.offsetParent;
@@ -77,6 +77,7 @@ Drag = {
 	draging : function() {// 重要:判断MOUSE的位置
 		if(Drag.ao==null)return ;
 		if(!Drag.dragged&&!Drag.drawed    )return;
+		if(ca.viewMode==2)return;
 		var tX = event.clientX;
 		//$$("cc").value=tX;
 
@@ -88,13 +89,15 @@ Drag = {
 		
 		//var ca = Instance("mz_6");
 		var scrollTop = 0;
+		if(ca.viewMode!=2){
 		if ($$("scrolltimedeventswk").scrollTop) {
 			scrollTop = $$("scrolltimedeventswk").scrollTop;
-		}                
+		}
+		}
 		var ce = ca.getCalendarEvent(event_id);
 	//$$("cc").value=tY;
 		if (Drag.drawed) {
-		
+
 		
 			if (Drag.ao.tagName == "SPAN") {
 				Drag.ao = Drag.ao.parentNode;
@@ -103,8 +106,8 @@ Drag = {
 				Drag.ao = Drag.ao.parentNode;
 			}
 			console.log("draw");
-	ca.drawClanderEventTo (ce, tX,tY,Drag.ao,scrollTop) ;
-		return;
+	        ca.drawClanderEventTo (ce, tX,tY,Drag.ao,scrollTop) ;
+		    return;
 		}
 
 		if (!Drag.dragged || Drag.ao == null)
@@ -138,11 +141,17 @@ Drag = {
 		 */
 	},
 	dragEnd : function() {//通用拖拉和移动
-		Drag.drawed = false;
-		Drag.dragged = false;
-		if (!Drag.dragged)
-			return;
-		
+        Drag.drawed = false;
+        Drag.dragged = false;
+	    console.log("drag end ");
+		/*if (!Drag.dragged)
+			return;*/
+        console.log("drag end save changedDrag.ao");
+
+        ca.saveChangedAction(Drag.ao);
+        Drag.ao=null;
+
+
 /*
 		//Drag.mm = Drag.repos(150, 15);
 		Drag.ao.style.borderWidth = "0px";
@@ -234,7 +243,7 @@ getInfo : function(o) {// 取得坐标
 			Drag.tdiv.filters.alpha.opacity = f;
 		}, aa / ab)
 	},
-	inint : function() {// 初始化
+	init : function() {// 初始化
 		//for ( var i = 1; i < parentTable.cells.length; i++) {
 			//var subTables = parentTable.cells[i].getElementsByTagName("dl");
 			//for ( var j = 0; j < subTables.length; j++) {
@@ -246,8 +255,8 @@ getInfo : function(o) {// 取得坐标
 //}
 // 创建10个事件
 
-document.onmousemove = Drag.draging;
-document.onmouseup = Drag.dragEnd;
+    document.onmousemove = Drag.draging;
+    document.onmouseup = Drag.dragEnd;
 }
 //end of Object Drag
 }
