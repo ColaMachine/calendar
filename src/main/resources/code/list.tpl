@@ -21,6 +21,7 @@ var ${abc}List={
     modal:false,
     mygrid:null,
     treeObj:null,
+    dqData:null,
     root:$("#${table.name}List"),
     init:function(){
         this.mygrid =this.root.find(".grid").jqGrid(this.gridParam);
@@ -30,7 +31,7 @@ var ${abc}List={
     addEventListener:function(){
         $(this.root).find(".addBtn").click(this.addInfo.Apply(this));
         $(this.root).find(".editBtn").click(this.editInfo.Apply(this));
-        $(this.root).find(".deleteBtn").click(this.deleteInfo.Apply(this));
+        $(this.root).find(".deleteBtn").click(this.multiDelete.Apply(this));
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
     gridParam:{
@@ -40,7 +41,7 @@ var ${abc}List={
         rowList:[10,20,30],
         multiselect : true,
         url : PATH+'/${abc}/list.json',
-         autowidth:true,
+        autowidth:true,
         grid:"#${table.name}Grid",
         pager:"#${table.name}Grid-Pager",
         jsonReader:jsonReader,
@@ -72,6 +73,9 @@ var ${abc}List={
         ],
         onSelectRow: function(id){ //alert("单击选中"+id);
         },
+        loadComplete:function(data){
+            dqData=data;
+        }
     },
     saveInfo:function(){
     },
@@ -86,22 +90,7 @@ var ${abc}List={
 
         this.mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
     },
-    deleteInfo:function (id){
-         //弹窗
-        zconfirm("确定删除数据:"+id,"删除",function(){
-            Ajax.post(PATH+"/${abc}/del.json?${table.pk.name}="+id,function(result){
-                result=ajaxResultHandler(result);
-                if(result.r==AJAX_SUCC){
-                    dialog.alert("删除成功，数据："+id,function(index){
-                    $("#grid").jqGrid("reloadGrid");
-                    dialog.close(index);
-                });
-                }else {
-                    dialog.error(result.msg,"提醒");
-                }
-            });
-        });
-    },
+
     viewInfo:function (id){
         dialog.window("/${abc}/view.htm?id="+id,this.modal);
     },
@@ -116,6 +105,22 @@ var ${abc}List={
             }
         })
     },
+    deleteInfo:function (id){
+         //弹窗
+        dialog.confirm("确定删除数据:"+id,"删除",function(){
+            Ajax.post(PATH+"/${abc}/del.json?${table.pk.name}="+id,function(result){
+                result=ajaxResultHandler(result);
+                if(result.r==AJAX_SUCC){
+                    dialog.alert("删除成功，数据："+id,function(index){
+                    $("#grid").jqGrid("reloadGrid");
+                    dialog.close(index);
+                });
+                }else {
+                    dialog.error(result.msg,"提醒");
+                }
+            });
+        });
+    },
     multiDelete:function (){
         //获取ids字符串
         var ids=this.mygrid.jqGrid("getGridParam","selarrrow");
@@ -123,18 +128,19 @@ var ${abc}List={
             dialog.alert("请勾选数据");
             return;
         }
-        var data= this.mygrid.jqGrid("getGridParam","data");
         for(var i=0;i<ids.length;i++){
-            ids[i]=data[ids[i]]["id"];
+            var data= this.mygrid.jqGrid("getRowData",ids[i]);
+            ids[i]=data["${table.pk.name}"];
         }
         //弹窗
-        dialog.confirm("确定删除数据:"+ids.join(","),function(){
-            Ajax.post(PATH+"/${abc}/mdel.json?ids="+ids.join(","),function(result){
+        var that=this;
+        var dialogid= dialog.confirm("确定删除数据:"+ids.join(","),function(){
+            Ajax.post(PATH+"/${abc}/mdel.json?",{ids:ids.join(",")},function(result){
                 result=ajaxResultHandler(result);
                 if(result.r==AJAX_SUCC){
-                    dialog.alert("删除成功，数据："+ids.join(","),function(index){
-                    this.mygrid.jqGrid("reloadGrid");
-                    dialog.close(index);
+                    dialogid=dialog.alert("删除成功，数据："+ids.join(","),function(index){
+                    that.mygrid.trigger("reloadGrid");
+                    dialog.close(dialogid);
                 });
                 }else {
                     dialog.error(result.msg);

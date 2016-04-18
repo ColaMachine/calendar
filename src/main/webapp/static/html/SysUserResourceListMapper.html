@@ -127,6 +127,7 @@ var sysUserResourceList={
                   grid:"#SysUserResourceMapperGrid",
                   pager:"#SysUserResourceMapperGrid-Pager",
                   jsonReader:jsonReader,
+                   autowidth:true,
                   colNames : [
                    "主键","用户名","密码","昵称","类型","状态","邮箱地址","手机号码","身份证号码","性别","出生年月","积分","地址","微信","qq","头像","备注","创建时间","更新时间" , '操作' ],
                   colModel : [
@@ -221,7 +222,7 @@ var sysUserResourceList={
                               name : 'operation',
                               width : 150,
                               formatter : function(value, grid, rows) {
-                                  return getViewHtml(rows.id,"sysUserResourceList")+getEditHtml(rows.id.,"sysUserResourceList")+getDelHtml(rows.id.,"sysUserResourceList");
+                                  return getViewHtml(rows.id,"sysUserResourceList")+getEditHtml(rows.id,"sysUserResourceList")+getDelHtml(rows.id,"sysUserResourceList");
                               }
                           }
                     ],

@@ -87,10 +87,10 @@ var ${abc}Edit={
         }
         jso.childids= childids.join(",");//alert(jso.childids);return;
         </#if>
-        showWait();
+        var dialogId=dialog.showWait();
         var that=this;
         Ajax.post(PATH+$("#${abc}EditForm").attr("action"),jso,function(data){
-            hideWait();
+            dialog.hideWait(dialogId);
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("${abc}/list.htm");

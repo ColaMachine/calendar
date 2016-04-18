@@ -1452,9 +1452,9 @@ $.fn.jqGrid = function( pin ) {
 			}
 			var self = $(ts), ir=0,v,i,j,f=[],cur,gi=ts.p.multiselect?1:0,si=ts.p.subGrid===true?1:0,addSubGridCell,ni=ts.p.rownumbers===true?1:0,arrayReader=orderedCols(gi+si+ni),objectReader=reader(frd),rowReader,len,drows,idn,rd={}, fpos, idr,rowData=[],cn=(ts.p.altRows === true) ? ts.p.altclass:"",cn1;
 			ts.p.page = intNum($.jgrid.getAccessor(data,dReader.page), ts.p.page);
-			alert(dReader.total);
-			alert(data.totalPage);
-			    alert(intNum($.jgrid.getAccessor(data,dReader.total), 1));
+			//alert(dReader.total);
+			//alert(data.totalPage);
+			  //  alert(intNum($.jgrid.getAccessor(data,dReader.total), 1));
 			ts.p.lastpage = intNum($.jgrid.getAccessor(data,dReader.total), 1);
 			ts.p.records = intNum($.jgrid.getAccessor(data,dReader.records));
 			ts.p.userData = $.jgrid.getAccessor(data,dReader.userdata) || {};

@@ -73,14 +73,14 @@ CalendarView.prototype.render = function() {
             + "<button onclick=\"Instance('"
             + this.index
             + "').datePickerGoTodayAction();event.cancelBubble=true;\">今天</button>"
-            + "</td>"
-			+ "<td class='ca-ty-ch-wrp' align=right>"
+             //+ "</td>"
+			+ "<div style='float:right' class='ca-ty-ch-wrp' align=right>"
 			+ "<a  id='ca-ty-day' onclick=\"Instance('"
 			+ this.index
 			+ "').changeToDayView()\">day</a><a id='ca-ty-week'  onclick=\"Instance('"
 			+ this.index + "').changeToWeekView()\">week</a>"
 			+ "<a id='ca-ty-month' onclick=\"Instance('" + this.index
-			+ "').changeToMonthAction()\">month</a>" + "</td>" + "</tr>"
+			+ "').changeToMonthAction()\">month</a>" + "</div>" +"</td>"+ "</tr>"
 			+ "<tr>" + "<td  style=\"padding-top:50px\">"
 			+ "<div id='dp_canopy_div' class='dp_canopy_div' style='display:none'><span class='h zippy-arrow2' unselectable='on'></span><span class='calHeaderSpace'>迷你日历</span></div>" 
 			+"<div  id='dp_div' class='dp_div'  >" 
@@ -1022,7 +1022,8 @@ var that =this;
    // alert(tds.length)
     for(var i=0;i<tds.length;i++){
         var div=document.createElement("div");
-        div.addEventListener("onclick",function(event){that.createEventInMonthViewAction(event);})
+        //div.addEventListener("onclick",)
+        bind(div,'click',function(event){that.createEventInMonthViewAction(event);});
         div.className="div-tg-time";
        // console.log(tds[i]);
         tds[i].appendChild(div);
@@ -2254,6 +2255,7 @@ CalendarView.prototype.getDateFromMixStr=function(id){
 *according to parentnode td 's id changed the ce property and save in db
 */
 CalendarView.prototype.saveChangedAction= function(ao) {
+
 //比对是否有更改
     //if(this.viewMode!=2)return;
     if(!ao)return;
@@ -2271,9 +2273,23 @@ CalendarView.prototype.saveChangedAction= function(ao) {
         //ceDate.setMonth(date.getMonth());
         ce.day= date.format("yyyy-MM-dd");//endTime=ceDate.getTime()-ce.startTime+ce.endTime;
         //ce.startTime= ceDate.getTime();
+        if(ce.id=="event_newEvent"){
+            alert("new Event should not enther saveChangeAction method ");
+            return;
+        }
         this.saveCalendarEventDataService(ce);
         console.log("save");
-    }/*
+    }
+    //判断是否更新了 开始时间和结束时间 judge whether drag to another time or draw to another time
+    if(ce.data && (ce.data.startTime !=ce.startTime || ce.data.endTime != ce.endTime)){
+            //ceDate.setDate(date.getDate());
+            //ceDate.setMonth(date.getMonth());
+            ce.day= date.format("yyyy-MM-dd");//endTime=ceDate.getTime()-ce.startTime+ce.endTime;
+            //ce.startTime= ceDate.getTime();
+            this.saveCalendarEventDataService(ce);
+            console.log("save");
+    }
+    /*
      if(Drag.ao==null)return ;
     if(!Drag.dragged&&!Drag.drawed    )return;
     if(td!=Drag.ao.parentNode){

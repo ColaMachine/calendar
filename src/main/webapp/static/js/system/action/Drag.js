@@ -147,7 +147,7 @@ Drag = {
 		/*if (!Drag.dragged)
 			return;*/
         console.log("drag end save changedDrag.ao");
-
+        if(Drag.ao!=null && Drag.ao.id!="event_newEvent")
         ca.saveChangedAction(Drag.ao);
         Drag.ao=null;
 

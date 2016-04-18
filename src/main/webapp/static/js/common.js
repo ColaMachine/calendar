@@ -209,7 +209,7 @@ var Ajax={
          	var param = options.inputData;
          	options.success = function(outputData) {//alert("success")
          		if(outputData.r=="504"){
-         			window.location=PATH+"/login";
+         			window.location=PATH+"/login.htm";
          		}
          		if (typeof callback == 'function') {
          			callback(outputData);
@@ -1121,14 +1121,14 @@ function clearErrorMsg(formid){
 
 function showWait(msg){
 	
-	showMask();
-	$(".wait").show();
-	var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+	//showMask();
+	//$(".wait").show();
+	return layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
 }
-function hideWait(){
-	hideWaitTrue();
+function hideWait(index){
+	//hideWaitTrue();
 	///setTimeout("hideWaitTrue()",100);
-	
+	layer.close(index);
 }
 function hideWaitTrue(){
 	$(".mask").hide()
@@ -1177,9 +1177,9 @@ function zdialogue(msg,title,src,fontcolor,fn){
 var dialog={
     alert:function(msg,fn){
         if(typeof fn != 'undefined'){
-            layer.alert(msg,fn);
+            return layer.alert(msg,fn);
         }else{
-          layer.alert(msg);
+          return layer.alert(msg);
         }
     },
     close:function(index){
@@ -1189,7 +1189,7 @@ var dialog={
         layer.close(index);
     },
     confirm:function(msg,fn){
-        layer.confirm(msg,fn);
+        return layer.confirm(msg,fn);
     },
     error:function(msg,fn){
         if(typeof fn != 'undefined'){
@@ -1198,7 +1198,18 @@ var dialog={
               layer.alert(msg);
             }
     },
+     showWait:function(msg){
 
+    	//showMask();
+    	//$(".wait").show();
+    	return layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+    },
+     hideWait:function(index){
+    	//hideWaitTrue();
+    	///setTimeout("hideWaitTrue()",100);
+    	layer.close(index);
+    }
+,
     window:function(url,flag){
         window.data={};
         //截取参数

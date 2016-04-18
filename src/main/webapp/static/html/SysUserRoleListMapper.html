@@ -127,6 +127,7 @@ var sysUserRoleList={
                   grid:"#SysUserRoleMapperGrid",
                   pager:"#SysUserRoleMapperGrid-Pager",
                   jsonReader:jsonReader,
+                   autowidth:true,
                   colNames : [
                    "主键","用户名","密码","昵称","类型","状态","邮箱地址","手机号码","身份证号码","性别","出生年月","积分","地址","微信","qq","头像","备注","创建时间","更新时间" , '操作' ],
                   colModel : [
@@ -221,7 +222,7 @@ var sysUserRoleList={
                               name : 'operation',
                               width : 150,
                               formatter : function(value, grid, rows) {
-                                  return getViewHtml(rows.id,"sysUserRoleList")+getEditHtml(rows.id.,"sysUserRoleList")+getDelHtml(rows.id.,"sysUserRoleList");
+                                  return getViewHtml(rows.id,"sysUserRoleList")+getEditHtml(rows.id,"sysUserRoleList")+getDelHtml(rows.id,"sysUserRoleList");
                               }
                           }
                     ],

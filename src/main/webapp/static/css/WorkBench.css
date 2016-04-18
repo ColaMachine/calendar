@@ -405,9 +405,12 @@ background-color: #3aaaaa;
 .wk_mv_table  td{
 border:1px solid #aaa;
 
-width:500px;
+width:140px;
 height:150px;
 position:relative;
 /*padding-top:25px;*/
 }
 .wk_mv_table  td:hover{ background-color: #C3D9FF }
+.wk_mv_table{
+width:1012px;
+}

@@ -112,10 +112,10 @@ var sysUserRoleEdit={
           //flag=false;
         }
         jso.childids= childids.join(",");//alert(jso.childids);return;
-        showWait();
+        var dialogId=dialog.showWait();
         var that=this;
         Ajax.post(PATH+$("#sysUserRoleEditForm").attr("action"),jso,function(data){
-            hideWait();
+            dialog.hideWait(dialogId);
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("sysUserRole/list.htm");

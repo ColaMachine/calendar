@@ -82,6 +82,7 @@ var sysRoleResourceList={
                   grid:"#SysRoleResourceMapperGrid",
                   pager:"#SysRoleResourceMapperGrid-Pager",
                   jsonReader:jsonReader,
+                   autowidth:true,
                   colNames : [
                    "主键","角色名","角色代码","排序","状态","备注","创建时间" , '操作' ],
                   colModel : [
@@ -125,7 +126,7 @@ var sysRoleResourceList={
                               name : 'operation',
                               width : 150,
                               formatter : function(value, grid, rows) {
-                                  return getViewHtml(rows.id,"sysRoleResourceList")+getEditHtml(rows.id.,"sysRoleResourceList")+getDelHtml(rows.id.,"sysRoleResourceList");
+                                  return getViewHtml(rows.id,"sysRoleResourceList")+getEditHtml(rows.id,"sysRoleResourceList")+getDelHtml(rows.id,"sysRoleResourceList");
                               }
                           }
                     ],

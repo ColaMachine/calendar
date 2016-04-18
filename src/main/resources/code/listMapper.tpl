@@ -80,7 +80,7 @@ var ${abc}List={
                               name : 'operation',
                               width : 150,
                               formatter : function(value, grid, rows) {
-                                  return getViewHtml(rows.${parentTable.pk.name},"${abc}List")+getEditHtml(rows.${parentTable.pk.name}.,"${abc}List")+getDelHtml(rows.${parentTable.pk.name}.,"${abc}List");
+                                  return getViewHtml(rows.${parentTable.pk.name},"${abc}List")+getEditHtml(rows.${parentTable.pk.name},"${abc}List")+getDelHtml(rows.${parentTable.pk.name},"${abc}List");
                               }
                           }
                     ],

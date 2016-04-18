@@ -811,11 +811,23 @@ return ymd;
                 if(type.startsWith("varchar")||type.startsWith("char")){
                     int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
                     String tagName="input";
+
                     if(length>50){
                         tagName="textarea";
                     }
-                    sb.append(tab3+String.format("<%s %s "+commonStr+"  maxlength=\"%d\"></%s>",
-                            tagName,tagName.equals("input")?" type=\"text\" ":"",length,tagName)).append(ctrl);
+                    if(zcol.getShowValue()!=null){
+                        sb.append(tab3+String.format("<select  "+commonStr+" >"
+                                ,zcol.getName(),zcol.getName())).append(ctrl);
+                        Map<Integer, String> map =zcol.getShowValue();
+                        sb.append(tab4+"<option value=''>-请选择-</option>").append(ctrl);
+                        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+                            sb.append(tab4+"<option value=" + entry.getKey() + ">" + entry.getValue()+"</option>").append(ctrl);
+                        }
+                        sb.append(tab3+"</select>").append(ctrl);
+                    }else {
+                        sb.append(tab3 + String.format("<%s %s " + commonStr + "  maxlength=\"%d\"></%s>",
+                                tagName, tagName.equals("input") ? " type=\"text\" " : "", length, tagName)).append(ctrl);
+                    }
                 }
                 if(type.startsWith("int")|| type.startsWith("bigint")|| type.startsWith("tinyint")){
                     //有一种checkbox 的选项
@@ -965,7 +977,7 @@ return ymd;
     }
     public static void main(String[] args) {
 
-        Generator.generate(new String[]{"Activity","SysResource","SysRole","SysUser","SysUserRole",
+        Generator.generate(new String[]{"SysResource","SysRole","SysUser","SysUserRole",
                 "SysRoleResource","SysUserResource"
                 });
        

@@ -48,6 +48,10 @@ public class Config {
      * 日志
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
+    public static  int a ;
+    public static  String b;
+    public static  Double c ;
+    public static  Integer d;
     /**
      * 系统日志配置
      */
