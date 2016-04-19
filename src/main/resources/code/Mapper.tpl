@@ -78,6 +78,11 @@ public interface ${Abc}Mapper {
     int countByBean(${Abc} record);*/
     
     int countByParams(HashMap map);
+
+    <#if distinctCheck??>
+        int countByOrParams(HashMap map);
+    </#if>
+
       
      <#if table.mapper??>
      <#if table.mapper.mapper==Abc>

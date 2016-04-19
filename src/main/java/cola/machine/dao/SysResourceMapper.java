@@ -76,5 +76,7 @@ public interface SysResourceMapper {
     int countByBean(SysResource record);*/
     
     int countByParams(HashMap map);
+
+
       
 }

@@ -15,7 +15,7 @@
 
 <!--<div class="body_title">| ${table.remark}编辑</div>
 <form id="editForm" class="form-horizontal" method="post" action="/${abc}/save.json" enctype="multipart/form-data">
- $viewhtml
+ ${viewhtml}
    <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
        <button type="button"   class="btn btn-default cancelBtn">返回</button>

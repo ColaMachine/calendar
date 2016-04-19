@@ -592,5 +592,66 @@ where id = #{id,jdbcType=BIGINT}
              and `updatetime` &lt;= #{updatetimeEnd}
         </if> 
   </select>
-
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from sys_user where 1=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="username != null and username != '' ">
+           or `username` = #{username}
+        </if>
+        <if test="password != null and password != '' ">
+           or `password` = #{password}
+        </if>
+        <if test="nkname != null and nkname != '' ">
+           or `nkname` = #{nkname}
+        </if>
+        <if test="type != null and type != '' ">
+           or `type` = #{type}
+        </if>
+        <if test="status != null and status != '' ">
+           or `status` = #{status}
+        </if>
+        <if test="email != null and email != '' ">
+           or `email` = #{email}
+        </if>
+        <if test="telno != null and telno != '' ">
+           or `telno` = #{telno}
+        </if>
+        <if test="idcard != null and idcard != '' ">
+           or `idcard` = #{idcard}
+        </if>
+        <if test="sex != null and sex != '' ">
+           or `sex` = #{sex}
+        </if>
+        <if test="birth != null and birth != '' ">
+           or `birth` = #{birth}
+        </if>
+        <if test="integral != null and integral != '' ">
+           or `integral` = #{integral}
+        </if>
+        <if test="address != null and address != '' ">
+           or `address` = #{address}
+        </if>
+        <if test="weichat != null and weichat != '' ">
+           or `weichat` = #{weichat}
+        </if>
+        <if test="qq != null and qq != '' ">
+           or `qq` = #{qq}
+        </if>
+        <if test="face != null and face != '' ">
+           or `face` = #{face}
+        </if>
+        <if test="remark != null and remark != '' ">
+           or `remark` = #{remark}
+        </if>
+        <if test="createtime != null and createtime != '' ">
+           or `createtime` = #{createtime}
+        </if>
+        <if test="updatetime != null and updatetime != '' ">
+           or `updatetime` = #{updatetime}
+        </if>
+  </select>
 </mapper>

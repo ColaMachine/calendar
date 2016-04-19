@@ -7,10 +7,12 @@
  */
 package cola.machine.util.code;
 
+import cola.machine.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ServiceFactory extends DefaultGenCodeFactory {
@@ -22,7 +24,33 @@ public class ServiceFactory extends DefaultGenCodeFactory {
         this.allTable = allTable;
         this.root=root;
     }
+    public void getConfilictJudge(String name){
+        int count =0;
+        StringBuffer sb = new StringBuffer();
+        ZTable table = allTable.get(name);
+        tabNo=2;
+        line(sb,"HashMap params =new HashMap();");
 
+
+        List<ZColum> colums =table.getCols();
+        for(int i=0;i<colums.size();i++){
+            ZColum col = colums.get(i);
+            if(col.isUq()){
+                count++;
+                line(sb,"params.put(\""+StringUtil.getabc(table.getName())+"\","+StringUtil.getabc(table.getName())+".get"+ StringUtil.getAbc(col.getName())+"());");
+            }
+        }
+        if(count>0){
+            line(sb,"int count = "+StringUtil.getabc(table.getName())+"Mapper.countByOrParams(params);");
+            line(sb,"if(count>0){");
+            lineForw(sb,"ResultUtil.getResult(302,\"字段唯一不能重复\");");
+            lineBack(sb,"}");
+            root.put("distinctCheck",sb.toString());
+        }else{
+            root.put("distinctCheck","");
+        }
+
+    }
     public void getService(String name) {
         logger.info("getService");
         this.table=allTable.get(name);

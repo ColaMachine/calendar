@@ -1,8 +1,8 @@
+
 <div id="ActivityList" class="rgt_body">
     <div class="body_title">| 日历事项</div>
         <div class="body_top" >
             <form class="form-inline app-search">
-
         <label for="id">主键</label>
             <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="15" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="主键"></input>
         <label for="title">名称</label>
@@ -26,86 +26,7 @@
         <label for="isdel">是否已删除</label>
             <input type="number" id="isdel" name="isdel"  class="form-control input-sm"  maxlength="1" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="是否已删除"></input>
 
- <!-- 
-        <div class="form-group">
-            <label for="exampleInputName2">主键</label>
-          
-            <input type="text" class="form-control" id="id" name="id" placeholder="主键">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">名称</label>
-          
-            <input type="text" class="form-control" id="title" name="title" placeholder="名称">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">开始时间</label>
-          
-            <input type="text" class="form-control" id="startTime" name="startTime" placeholder="开始时间">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">结束时间</label>
-          
-            <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束时间">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">地址</label>
-          
-            <input type="text" class="form-control" id="address" name="address" placeholder="地址">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">用户id</label>
-          
-            <input type="text" class="form-control" id="userId" name="userId" placeholder="用户id">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">详细描述</label>
-          
-            <input type="text" class="form-control" id="description" name="description" placeholder="详细描述">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">是否公开</label>
-          
-            <input type="text" class="form-control" id="privacy" name="privacy" placeholder="是否公开">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">是否紧急</label>
-          
-            <input type="text" class="form-control" id="busyLevel" name="busyLevel" placeholder="是否紧急">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">类型</label>
-          
-            <input type="text" class="form-control" id="type" name="type" placeholder="类型">
-           
-        </div>
-  
-        <div class="form-group">
-            <label for="exampleInputName2">是否已删除</label>
-          
-            <input type="text" class="form-control" id="isdel" name="isdel" placeholder="是否已删除">
-           
-        </div>
-  -->
-  
-                <button type="button" onclick="search()" class="btn btn-default">查询</button>
+                <button type="button"  class="btn btn-default searchBtn">查询</button>
             </form>
         <div >
             <button class="btn addBtn" >新增</button>
@@ -113,26 +34,8 @@
             <button class="btn exportBtn" >导出</button>
         </div>
     </div>
-    <div id="ActivityGrid" class="grid"></div>
-    <div id="ActivityGrid-pager" class="pager"></div>
-    <div class="modal" id="mymodal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">模态弹出窗标题</h4>
-                </div>
-                <div class="modal-body">
-                    <p>模态弹出窗主体内容</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">保存</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
+    <table id="ActivityGrid" class="grid"></table>
+    <div id="ActivityGrid-Pager" class="pager"></div>
 </div>
 <script>
 
@@ -153,77 +56,51 @@ var activityList={
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
     gridParam:{
-                  page:{
-                      curPage : 1,
-                      pageSize : 10
-                  },
-                  multiselect : true,
-                  url : PATH+'/activity/list.json',
-                  grid_selector:"#ActivityGrid",
-                  pager_selector:"#ActivityGrid-Pager",
-                  searchParams : {
-                      name : ''
-                  },
-                  colNames : [
-                   "主键","名称","开始时间","结束时间","地址","用户id","详细描述","是否公开","是否紧急","类型","是否已删除" , '操作' ],
-                  colModel : [
-                          {
-                              name : 'id',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'title',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'startTime',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'endTime',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'address',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'userId',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'description',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'privacy',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'busyLevel',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'type',
-                              width : 80,
-                          } ,
-                          {
-                              name : 'isdel',
-                              width : 80,
-                          } 
-                          ,
-                          {
-                              name : 'id',
-                              width : 150,
-                              formatter : function(value, grid, rows) {
-                                  return getViewHtml(value,"activityList")+getEditHtml(value,"activityList")+getDelHtml(value,"activityList");
-                              }
-                          }
-                    ],
-
-                    onSelectRow: function(id){ //alert("单击选中"+id);
-
-                    },
+        datatype: "json",
+        viewrecords: true, sortorder: "desc", caption:"",
+        rowNum:10,
+        rowList:[10,20,30],
+        multiselect : true,
+        url : PATH+'/activity/list.json',
+         autowidth:true,
+        grid:"#ActivityGrid",
+        pager:"#ActivityGrid-Pager",
+        jsonReader:jsonReader,
+        colNames : [
+        "主键","名称","开始时间","结束时间","地址","用户id","详细描述","是否公开","是否紧急","类型","是否已删除" , '操作' ],
+        colModel : [
+            {   name : 'id',width : 80,
+            } ,
+            {   name : 'title',width : 80,
+            } ,
+            {   name : 'startTime',width : 80,
+            } ,
+            {   name : 'endTime',width : 80,
+            } ,
+            {   name : 'address',width : 80,
+            } ,
+            {   name : 'userId',width : 80,
+            } ,
+            {   name : 'description',width : 80,
+            } ,
+            {   name : 'privacy',width : 80,
+            } ,
+            {   name : 'busyLevel',width : 80,
+            } ,
+            {   name : 'type',width : 80,
+            } ,
+            {   name : 'isdel',width : 80,
+            } 
+              ,
+            {   name : 'operation',
+                width : 150,
+                formatter : function(value, grid, rows) {
+                    return getViewHtml(rows.id,"activityList")+getEditHtml(rows.id,"activityList")+getDelHtml(rows.id,"activityList");
+                }
+            }
+        ],
+        onSelectRow: function(id){ //alert("单击选中"+id);
+        },
     },
     saveInfo:function(){
     },
@@ -235,11 +112,12 @@ var activityList={
     },
     searchInfo:function (){
         var jso = changeForm2Jso(".app-search");
-        this.mygrid.jqGrid("search",jso);
+
+        this.mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
     },
     deleteInfo:function (id){
          //弹窗
-         zconfirm("确定删除数据:"+id,"删除",function(){
+        zconfirm("确定删除数据:"+id,"删除",function(){
             Ajax.post(PATH+"/activity/del.json?id="+id,function(result){
                 result=ajaxResultHandler(result);
                 if(result.r==AJAX_SUCC){
@@ -256,11 +134,7 @@ var activityList={
     viewInfo:function (id){
         dialog.window("/activity/view.htm?id="+id,this.modal);
     },
-    search:function (){
-        var jso= changeForm2Jso(".app-search");
-        console.log(jso);
-        this.mygrid.search(jso);
-    },
+
     exportInfo:function (){
         var jso= changeForm2Jso(".app-search");
         Ajax.getJSON(PATH+"/activity/export.json",jso,function(data){

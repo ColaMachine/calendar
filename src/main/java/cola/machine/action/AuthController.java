@@ -13,6 +13,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import cola.machine.bean.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -211,6 +212,13 @@ public class AuthController {
     public Object delRole(HttpServletRequest request){
         String id=request.getParameter("id");
         return  authService.deleteRoleById(id);
+    }
+    @RequestMapping(value = "/menu/list.json")
+    @ResponseBody
+    public Object listMenu(HttpServletRequest request){
+        String id=request.getParameter("id");
+        SysUser user = (SysUser)request.getSession().getAttribute("user");
+        return  authService.listResourcesByUserid(user.getId());
     }
     /**
      * @return Object

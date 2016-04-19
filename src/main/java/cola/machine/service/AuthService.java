@@ -13,18 +13,12 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import cola.machine.bean.*;
+import cola.machine.dao.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import cola.machine.bean.Permission;
-import cola.machine.bean.Role;
-import cola.machine.bean.RolePer;
-import cola.machine.bean.UserRole;
-import cola.machine.dao.PermissionMapper;
-import cola.machine.dao.RoleMapper;
-import cola.machine.dao.RolePerMapper;
-import cola.machine.dao.UserRoleMapper;
 import cola.machine.util.CacheUtil;
 import cola.machine.util.ResultUtil;
 import cola.machine.util.StringUtil;
@@ -37,14 +31,19 @@ import core.action.ResultDTO;
 public class AuthService extends BaseService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(AuthService.class);
-	@Resource
+	//@Resource
 	private RoleMapper roleMapper;
-	@Resource
+	//@Resource
 	private PermissionMapper permissionMapper;
-@Resource
+//@Resource
 private RolePerMapper rolePerMapper;
-@Resource
+//@Resource
 private UserRoleMapper userRoleMapper;
+
+
+
+    @Resource
+    private SysAuthMapper authMapper;
 	/**
 	 * 说明:
 	 * 
@@ -68,7 +67,6 @@ private UserRoleMapper userRoleMapper;
 	 * 
 	 * @param id
 	 * @param roleName
-	 * @param remarks
 	 * @param permissions
 	 * @return
 	 * @return Object
@@ -211,7 +209,7 @@ private UserRoleMapper userRoleMapper;
      * @return List
      * @author 宋展辉 2015年10月26日 下午2:17:51
      */
-    public List<Role> listByUserId(Long userId) {
+    public List<Role> listRoleByUserId(Long userId) {
         List<Role> roles = roleMapper.selectAllByUserId(userId);
         return roles;
     }
@@ -408,12 +406,21 @@ private UserRoleMapper userRoleMapper;
 
 
     /**
-     * 根据用户id查询用户角色
+     * 根据用户id查询用户资源信息
      * @param userid 参数
-     * @return UserRoles
+     * @return SysResource
      * xhb
      */
     /*public UserRoles searchById(Long userid) {
         return centerRbacUserRolesMapper.selectByUserid(userid);
     }*/
+
+    /**
+     * 根据用户id查询用户资源信息
+     * @param userid
+     * @return
+     */
+    public List<SysResource> listResourcesByUserid(Long userid){
+       return  authMapper.selectResourceByUserId(userid);
+    }
 }

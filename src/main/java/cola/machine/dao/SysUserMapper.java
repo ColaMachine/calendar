@@ -76,5 +76,8 @@ public interface SysUserMapper {
     int countByBean(SysUser record);*/
     
     int countByParams(HashMap map);
+
+        int countByOrParams(HashMap map);
+
       
 }

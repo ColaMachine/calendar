@@ -535,7 +535,9 @@ return ymd;
     }
     public void genService() throws IOException, TemplateException {
         cola.machine.util.code.ServiceFactory factory= new  cola.machine.util.code.ServiceFactory(allTable, root);
+
         factory.getService(table.getName());
+        factory.getConfilictJudge(table.getName());
         logger.info("genService");
         if(table.getMapper()!=null&& table.getName().equals(table.getMapper().getParent())){
             ZTable childTable = allTable.get(table.getMapper().getMapper());
@@ -891,6 +893,15 @@ return ymd;
                     if(length>50){
                         tagName="textarea";
                     }
+                    if(zcol.getShowValue()!=null){
+                        sb.append(tab3+String.format("<span  name=\"%s\" id=\"%s\" datatype=\"map\" data=\"{"
+                                ,zcol.getName(),zcol.getName()));
+                        Map<String, String> map =zcol.getShowValue();
+                        for (Map.Entry<String, String> entry : map.entrySet()) {
+                            sb.append("'"+entry.getKey() + "':'" + entry.getValue()+"',");
+                        }
+                        sb.append("}\" class=\"form-control\" ></span>").append(ctrl);
+                    }else
                     sb.append(tab3+String.format("<span name=\"%s\" id=\"%s\"  class=\"form-control\"  ></span>",
                           zcol.getName(),zcol.getName(),length,tagName)).append(ctrl);
                 }

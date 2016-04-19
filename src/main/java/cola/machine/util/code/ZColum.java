@@ -13,7 +13,17 @@ public class ZColum {
 private String name;
 private boolean nn;
 private boolean pk;
-private boolean ai;
+    private boolean uq;
+
+    public boolean isUq() {
+        return uq;
+    }
+
+    public void setUq(boolean uq) {
+        this.uq = uq;
+    }
+
+    private boolean ai;
 public boolean isAi() {
     return ai;
 }

@@ -308,14 +308,17 @@ function fillJso2FormSpan(formId,jso){
 		var dom = $(formId).find("#"+key);
 		if(dom !=null ){
 			var val="";
+
 			if(dom.attr("datatype")=="date"&& /^\d*$/.test(jso[key])){
 				var format = dom.attr("format");
 				val =new Date(jso[key]).format(format);
-			}else if(dom.attr("datatype")=="map"&& /^\d*$/.test(jso[key])){
-				
+			}else if(dom.attr("datatype")=="map"/*&& /^\d*$/.test(jso[key])*/){
+
 				console.log(dom.attr("data"));
 				var map = eval("("+dom.attr("data")+")");
+
 				val=map[jso[key]];
+
 			}else{
 				val=jso[key];
 			}

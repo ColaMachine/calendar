@@ -49,7 +49,6 @@ public class SysUserRoleService extends BaseService {
     private SysRoleMapper sysRoleMapper;
     /**
      * 说明:list by page and params根据参数返回列表
-     * @param page
      * @return List<HashMap>
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
@@ -63,7 +62,6 @@ public class SysUserRoleService extends BaseService {
 
      /**
      * 说明:countByParams 根据参数提取个数
-     * @param page
      * @return int
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
@@ -88,6 +86,7 @@ public class SysUserRoleService extends BaseService {
             return result;
         }
          //逻辑业务判断判断
+       //判断是否有uq字段
        
        //判断是更新还是插入
         if (sysUserRole.getId()==null) {

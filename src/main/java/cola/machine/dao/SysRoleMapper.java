@@ -76,5 +76,8 @@ public interface SysRoleMapper {
     int countByBean(SysRole record);*/
     
     int countByParams(HashMap map);
+
+        int countByOrParams(HashMap map);
+
       
 }

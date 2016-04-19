@@ -42,7 +42,6 @@ public class SysUserService extends BaseService {
     private SysUserRoleMapper sysUserRoleMapper;
     /**
      * 说明:list by page and params根据参数返回列表
-     * @param page
      * @return List<HashMap>
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
@@ -56,7 +55,6 @@ public class SysUserService extends BaseService {
 
      /**
      * 说明:countByParams 根据参数提取个数
-     * @param page
      * @return int
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
@@ -81,7 +79,14 @@ public class SysUserService extends BaseService {
             return result;
         }
          //逻辑业务判断判断
-       
+       //判断是否有uq字段
+               HashMap params =new HashMap();
+        params.put("sysUser",sysUser.getTelno());
+        int count = sysUserMapper.countByOrParams(params);
+        if(count>0){
+            ResultUtil.getResult(302,"字段唯一不能重复");
+        }
+
        //判断是更新还是插入
         if (sysUser.getId()==null) {
                

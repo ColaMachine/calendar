@@ -76,6 +76,9 @@ public interface SysUserResourceMapper {
     int countByBean(SysUserResource record);*/
     
     int countByParams(HashMap map);
+
+        int countByOrParams(HashMap map);
+
       
     int deleteExtra(HashMap map);
 }
