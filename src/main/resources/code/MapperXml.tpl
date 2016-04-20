@@ -190,7 +190,7 @@ where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcT
  <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
     select
     count(1)
-    from ${table.tableName} where 1=1
+    from ${table.tableName} where 1!=1
     <#list table.cols as col>
         <if test="${col.name} != null and ${col.name} != '' ">
            or `${col.name}` = ${r'#{'}${col.name}}

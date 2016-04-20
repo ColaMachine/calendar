@@ -100,7 +100,7 @@ public class ${Abc}Service extends BaseService {
         }
          //逻辑业务判断判断
        //判断是否有uq字段
-       <#if distinctCheck??>123
+       <#if distinctCheck??>
        ${distinctCheck}
        </#if>
        //判断是更新还是插入

@@ -74,7 +74,14 @@ public class SysResourceService extends BaseService {
         }
          //逻辑业务判断判断
        //判断是否有uq字段
-       
+               HashMap params =new HashMap();
+        params.put("code",sysResource.getCode());
+        params.put("url",sysResource.getUrl());
+        int count = sysResourceMapper.countByOrParams(params);
+        if(StringUtil.isNull(sysResource.getId())&& count>0||count>1 ){
+            return ResultUtil.getResult(302,"字段唯一不能重复");
+        }
+
        //判断是更新还是插入
         if (sysResource.getId()==null) {
                

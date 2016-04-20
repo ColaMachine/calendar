@@ -37,15 +37,17 @@ public class ServiceFactory extends DefaultGenCodeFactory {
             ZColum col = colums.get(i);
             if(col.isUq()){
                 count++;
-                line(sb,"params.put(\""+StringUtil.getabc(table.getName())+"\","+StringUtil.getabc(table.getName())+".get"+ StringUtil.getAbc(col.getName())+"());");
+                line(sb,"params.put(\""+col.getName()+"\","+StringUtil.getabc(table.getName())+".get"+ StringUtil.getAbc(col.getName())+"());");
             }
         }
         if(count>0){
             line(sb,"int count = "+StringUtil.getabc(table.getName())+"Mapper.countByOrParams(params);");
-            line(sb,"if(count>0){");
-            lineForw(sb,"ResultUtil.getResult(302,\"字段唯一不能重复\");");
+            String nullValue ="null";
+            line(sb,"if(StringUtil.isNull("+StringUtil.getabc(table.getName())+".get"+StringUtil.getAbc(table.getPk().getName())+"())&& count>0||count>1 ){");
+            lineForw(sb,"return ResultUtil.getResult(302,\"字段唯一不能重复\");");
             lineBack(sb,"}");
             root.put("distinctCheck",sb.toString());
+            System.out.println(table.getName()+sb.toString());
         }else{
             root.put("distinctCheck","");
         }

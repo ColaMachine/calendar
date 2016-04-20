@@ -269,4 +269,7 @@ content:"下一页"
 }
 .ui-icon-seek-end:after{
 content:"最后页"
-}
+}.ui-jqgrid .ui-pg-input {
+     height: 20px;
+
+ }

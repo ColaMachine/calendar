@@ -77,7 +77,7 @@ public interface SysRoleMapper {
     
     int countByParams(HashMap map);
 
-        int countByOrParams(HashMap map);
+    int countByOrParams(HashMap map);
 
       
 }

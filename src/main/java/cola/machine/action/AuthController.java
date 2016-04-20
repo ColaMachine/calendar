@@ -108,7 +108,6 @@ public class AuthController {
     
 
     /**
-     * @param id 参数
      * @param request 发请求
      * @return Object
      */
@@ -126,7 +125,6 @@ public class AuthController {
         return "/static/html/viewRole.html";
     }
     /**
-     * @param id 参数
      * @param request 发请求
      * @return Object
      */
@@ -218,7 +216,7 @@ public class AuthController {
     public Object listMenu(HttpServletRequest request){
         String id=request.getParameter("id");
         SysUser user = (SysUser)request.getSession().getAttribute("user");
-        return  authService.listResourcesByUserid(user.getId());
+        return  ResultUtil.getResult(authService.listResourcesByUserid(user.getId()));
     }
     /**
      * @return Object

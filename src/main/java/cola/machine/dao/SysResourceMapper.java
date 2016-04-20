@@ -77,6 +77,7 @@ public interface SysResourceMapper {
     
     int countByParams(HashMap map);
 
+    int countByOrParams(HashMap map);
 
       
 }

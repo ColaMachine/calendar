@@ -20,9 +20,10 @@ includeCSS(["/static/css/bootstrap.min.css",
 "/static/css/form.css",
 "/static/css/col.css",
 "/static/css/font.css",
- "/static/css/grid.css",
+
   "/static/css/jqgrid.css",
   "/static/css/ui.jqgrid.css",
+   "/static/css/grid.css",
   "/static/css/head.css",
    "/static/css/global.css",
     "/static/css/widget.css",
@@ -52,7 +53,7 @@ includeJS(["/static/js/menu.js" ,
             "/static/js/jquery.ztree.core-3.5.js",
             "/static/js/jquery.ztree.excheck-3.5.js",
               "/static/js/layer.js",
-
+             "/static/js/location.js",
           ]);
 </script>
 
@@ -183,7 +184,7 @@ includeJS(["/static/js/menu.js" ,
 <script type="text/javascript" >
 Ajax.getJSON(PATH+"/auth/menu/list.json",null,function(result){
 var menuList =result.data;
-zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
+//zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 });
 var menuList=[
               {id:1,name:"日志管理",url:"",pid:0,icon:"fa fa-bank"},
@@ -193,15 +194,16 @@ var menuList=[
               {id:22,name:"访问日志B",url:PATH+"/log/listRequestLog",pid:2},
               {id:5,name:"用户管理",url:"",pid:0,icon:"fa fa-diamond"},
               {id:51,name:"用户管理",url:PATH+"/user/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:6,name:"角色管理",url:PATH+"/auth/role/list.htm",pid:5}, 
+              {id:6,name:"角色管理",url:PATH+"/auth/role/list.htm",pid:5},
               {id:7,name:"日历",url:PATH+"/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
                {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},
               {id:9,name:"手机登录页面",url:PATH+"/login/login.htm",icon:"fa fa-spinner",pid:8},
               {id:10,name:"上传图片",url:PATH+"/static/html/imageCompress.html",icon:"fa fa-bank",pid:8},
               {id:11,name:"列表",url:PATH+"/static/html/example/table.html",icon:"fa fa-spinner",pid:8},
+               {id:81,name:"地区选择",url:PATH+"/static/html/example/location.html",icon:"fa fa-spinner",pid:8},
               {id:12,name:"alert",url:PATH+"/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
-              {id:13,name:"短信",url:PATH+"/smsBatch/list.htm",icon:"fa fa-spinner",pid:0}, 
-              {id:14,name:"合作伙伴",url:PATH+"/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0}, 
+              {id:13,name:"短信",url:PATH+"/smsBatch/list.htm",icon:"fa fa-spinner",pid:0},
+              {id:14,name:"合作伙伴",url:PATH+"/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0},
               {id:15,name:"用户",url:PATH+"/sysUser/list.htm",icon:"fa fa-spinner",pid:5},
               {id:16,name:"角色",url:PATH+"/sysRole/list.htm",icon:"fa fa-spinner",pid:5},
               {id:17,name:"资源",url:PATH+"/sysResource/list.htm",icon:"fa fa-spinner",pid:5},

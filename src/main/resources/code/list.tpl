@@ -40,6 +40,7 @@ var ${abc}List={
         rowNum:10,
         rowList:[10,20,30],
         multiselect : true,
+        height:550,
         url : PATH+'/${abc}/list.json',
         autowidth:true,
         grid:"#${table.name}Grid",
@@ -106,14 +107,15 @@ var ${abc}List={
         })
     },
     deleteInfo:function (id){
+        var that =this;
          //弹窗
-        dialog.confirm("确定删除数据:"+id,"删除",function(){
-            Ajax.post(PATH+"/${abc}/del.json?${table.pk.name}="+id,function(result){
+        dialog.confirm("确定删除数据:"+id,function(){
+            Ajax.post(PATH+"/${abc}/del.json",{${table.pk.name}:id},function(result){
                 result=ajaxResultHandler(result);
                 if(result.r==AJAX_SUCC){
-                    dialog.alert("删除成功，数据："+id,function(index){
-                    $("#grid").jqGrid("reloadGrid");
-                    dialog.close(index);
+                    var did=dialog.alert("删除成功，数据："+id,function(index){
+                    that.mygrid.trigger("reloadGrid");
+                    dialog.close(did);
                 });
                 }else {
                     dialog.error(result.msg,"提醒");

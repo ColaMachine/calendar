@@ -81,10 +81,10 @@ public class SysUserService extends BaseService {
          //逻辑业务判断判断
        //判断是否有uq字段
                HashMap params =new HashMap();
-        params.put("sysUser",sysUser.getTelno());
+        params.put("telno",sysUser.getTelno());
         int count = sysUserMapper.countByOrParams(params);
-        if(count>0){
-            ResultUtil.getResult(302,"字段唯一不能重复");
+        if(StringUtil.isNull(sysUser.getId())&& count>0||count>1 ){
+            return ResultUtil.getResult(302,"字段唯一不能重复");
         }
 
        //判断是更新还是插入

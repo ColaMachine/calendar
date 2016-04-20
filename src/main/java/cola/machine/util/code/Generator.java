@@ -963,8 +963,8 @@ return ymd;
             for(int i=0;i<codes.length;i++){
                 gen.intTpl(codes[i]);
                 gen.genBean();
-                gen.genMapper();
                 gen.genService();
+                gen.genMapper();
                 gen.genController();
                 gen.genSql();
                 gen.genMapperXml();

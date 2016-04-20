@@ -18,6 +18,16 @@ public class StringUtil {
 		}
 		return false;
 	}
+	public static boolean  isNull(Object obj){
+		if(obj==null)
+			return true;
+
+		if(obj.getClass()==Integer.class||obj.getClass()==double.class||obj.getClass()==Float.class){
+
+			return  (int)obj==0;
+		}
+		return false;
+	}
 	public static boolean  isNotEmpty(String str){
 		
 		return !isEmpty(str);

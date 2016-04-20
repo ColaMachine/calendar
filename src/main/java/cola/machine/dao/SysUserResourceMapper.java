@@ -77,7 +77,7 @@ public interface SysUserResourceMapper {
     
     int countByParams(HashMap map);
 
-        int countByOrParams(HashMap map);
+    int countByOrParams(HashMap map);
 
       
     int deleteExtra(HashMap map);

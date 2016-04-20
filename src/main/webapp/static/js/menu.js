@@ -34,14 +34,15 @@ var zMenu={
 			var _this = this;
 			var menuWrap = document.getElementById(id);
 			$("#"+id).find('ul a').click(function(event){
-				
+
 				event.preventDefault();
 				//console.log($(".menu-wrap")[0].offsetWidth);
 				if($(".menu-wrap")[0].offsetWidth<100){
 					//return;
 				}
-				
-				if(isNull($(this).attr("href"))){
+
+				if(isNull($(this).attr("href")) ||$(this).attr("href")=="null" ){
+
 					var id=$(this).attr("id");
 					var ul="m_u_"+id.substr(4);
 					//console.log($(this).parent().length);

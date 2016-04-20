@@ -132,7 +132,7 @@ where id = #{id,jdbcType=BIGINT}
  <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
     select
     count(1)
-    from sys_user_role where 1=1
+    from sys_user_role where 1!=1
         <if test="id != null and id != '' ">
            or `id` = #{id}
         </if>

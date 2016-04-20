@@ -86,7 +86,7 @@ var sysRoleList={
             } ,
             {   name : 'status',width : 80,
                 formatter : function(value, grid, rows) {
-                  var map ={'2':'禁用','1':'正常',};
+                  var map ={'1':'正常','2':'禁用',};
                   return map[value];
                 }
             } ,
@@ -140,14 +140,15 @@ var sysRoleList={
         })
     },
     deleteInfo:function (id){
+        var that =this;
          //弹窗
-        dialog.confirm("确定删除数据:"+id,"删除",function(){
-            Ajax.post(PATH+"/sysRole/del.json?id="+id,function(result){
+        dialog.confirm("确定删除数据:"+id,function(){
+            Ajax.post(PATH+"/sysRole/del.json",{id:id},function(result){
                 result=ajaxResultHandler(result);
                 if(result.r==AJAX_SUCC){
-                    dialog.alert("删除成功，数据："+id,function(index){
-                    $("#grid").jqGrid("reloadGrid");
-                    dialog.close(index);
+                    var did=dialog.alert("删除成功，数据："+id,function(index){
+                    that.mygrid.trigger("reloadGrid");
+                    dialog.close(did);
                 });
                 }else {
                     dialog.error(result.msg,"提醒");

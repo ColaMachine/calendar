@@ -80,7 +80,7 @@ public interface ${Abc}Mapper {
     int countByParams(HashMap map);
 
     <#if distinctCheck??>
-        int countByOrParams(HashMap map);
+    int countByOrParams(HashMap map);
     </#if>
 
       
