@@ -329,7 +329,7 @@ function fillJso2FormSpan(formId,jso){
 	}
 }
 /**
- * 
+ * 判断是否为空
  */
 function isNull(str) {
 		if(typeof str != 'string'){

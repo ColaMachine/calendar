@@ -15,7 +15,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import cola.machine.dao.SysUserMapper;
+import cola.machine.bean.*;
+import cola.machine.dao.*;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -24,14 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import core.action.ResultDTO;
-import cola.machine.bean.Active;
-import cola.machine.bean.Pwdrst;
-import cola.machine.bean.SysUser;
 import cola.machine.common.msgbox.MsgReturn;
 import cola.machine.constants.SysConfig;
-import cola.machine.dao.ActiveMapper;
-import cola.machine.dao.PwdrstMapper;
-import cola.machine.dao.UserMapper;
 import cola.machine.util.MD5Utils;
 import cola.machine.util.MapUtil;
 import cola.machine.util.RegexUtil;
@@ -60,7 +55,8 @@ public class UserService extends SysUserService{
 	private ActiveMapper activeMapper;
 	@Autowired
 	private PwdrstMapper pwdrstMapper;
-
+	@Autowired
+	private SysRoleMapper roleMapper;
 
 
 	public SysUser getUserByUserName(String loginname) {
@@ -202,6 +198,18 @@ public class UserService extends SysUserService{
 				active.setActiveid(UUIDUtil.getUUID());
 				this.activeMapper.insertActive(active);
 
+
+				//TODO assign guest role
+				SysUserRole sysUserRole=new SysUserRole();
+				sysUserRole.setUid(user.getId());
+				HashMap params =new HashMap();
+				params.put("code","guest");
+				List<SysRole> sysUserRoles=  roleMapper.listByParams(params);
+				if(sysUserRoles==null || sysUserRoles.size()==0){
+					return ResultUtil.getResult("");
+				}
+				sysUserRole.setRoleid("guest");
+				sysUserRoleMapper.insert(sysUserRole);
 				// 发送激活邮件
 				MailSenderInfo mailInfo = new MailSenderInfo();
 				mailInfo.setMailServerHost("smtp.163.com");

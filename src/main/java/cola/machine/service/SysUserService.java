@@ -39,7 +39,7 @@ public class SysUserService extends BaseService {
     @Resource
     private SysUserMapper sysUserMapper;
     @Resource
-    private SysUserRoleMapper sysUserRoleMapper;
+    protected SysUserRoleMapper sysUserRoleMapper;
     /**
      * 说明:list by page and params根据参数返回列表
      * @return List<HashMap>
