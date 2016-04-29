@@ -3,7 +3,6 @@ package cola.machine.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.mchange.lang.StringUtils;
 
 public class StringUtil {
 	public static boolean  isEmpty(String str){

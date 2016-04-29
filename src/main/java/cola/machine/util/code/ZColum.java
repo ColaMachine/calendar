@@ -13,6 +13,17 @@ public class ZColum {
 private String name;
 private boolean nn;
 private boolean pk;
+
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
+    }
+
+    private boolean edit;
+
     private boolean uq;
 
     public boolean isUq() {

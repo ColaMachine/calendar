@@ -416,6 +416,7 @@ public class ValidCodeService {
             return ResultUtil.getResult(ResultUtil.fail, "系统代号配置不能为空");
         }
         String params = String.format("systemno=%s&sessionid=%s&code=%s", systemNo, sessionid, code);
+        String urlPrefix = Config.getInstance().getValidCode().getServerUrl();
         String jsonStr = HttpRequestUtil.sendGet(Config.getInstance().getValidCode().getServerUrl()+"/code/img/b/valid.json", params);
         ResultDTO result = JSON.parseObject(jsonStr, ResultDTO.class);
         return result;

@@ -58,7 +58,8 @@ public class UserService extends SysUserService{
 	@Autowired
 	private SysRoleMapper roleMapper;
 
-
+	@Autowired
+	private  SysUserRoleMapper sysUserRoleMapper;
 	public SysUser getUserByUserName(String loginname) {
 		SysUser user = userMapper.selectUserByUsername(loginname);
 		return user;
@@ -208,7 +209,7 @@ public class UserService extends SysUserService{
 				if(sysUserRoles==null || sysUserRoles.size()==0){
 					return ResultUtil.getResult("");
 				}
-				sysUserRole.setRoleid("guest");
+				sysUserRole.setRoleid(sysUserRoles.get(0).getId());
 				sysUserRoleMapper.insert(sysUserRole);
 				// 发送激活邮件
 				MailSenderInfo mailInfo = new MailSenderInfo();

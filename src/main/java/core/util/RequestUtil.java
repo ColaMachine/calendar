@@ -60,6 +60,12 @@ public class RequestUtil {
 		if(StringUtil.isBlank(curPage)||StringUtil.isBlank(pageSize) ){
 			return null;
 		}
+		if(StringUtil.isBlank(curPage)){
+			curPage ="1";
+		}
+		if(StringUtil.isBlank(pageSize)){
+			pageSize ="10";
+		}
 	    Page page =new Page();
 	    page.setCurPage(Integer.valueOf(curPage));
 	    page.setPageSize(Integer.valueOf(pageSize));

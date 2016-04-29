@@ -26,10 +26,6 @@ import cola.machine.util.UUIDUtil;
 import cola.machine.util.ValidateUtil;
 import cola.machine.util.StringUtil;
 import core.page.Page;
-import java.util.StringTokenizer;
-import cola.machine.bean.SysUserRole;
-import cola.machine.dao.SysUserRoleMapper;
-
 import core.action.ResultDTO;
 
 @Service("sysUserService")
@@ -38,8 +34,6 @@ public class SysUserService extends BaseService {
             .getLogger(SysUserService.class);
     @Resource
     private SysUserMapper sysUserMapper;
-    @Resource
-    protected SysUserRoleMapper sysUserRoleMapper;
     /**
      * 说明:list by page and params根据参数返回列表
      * @return List<HashMap>
@@ -94,75 +88,6 @@ public class SysUserService extends BaseService {
         } else {
              sysUserMapper.updateByPrimaryKey(sysUser);
         }
-        return ResultUtil.getSuccResult();
-    }
-     /*
-     * 说明:和关联关系一起保存
-     * @param SysUser
-     * @return
-     * @return Object
-     * @author dozen.zhang
-     * @date 2015年11月15日下午1:33:54
-     */
-    public ResultDTO saveWithChilds(SysUser sysUser,String childids) {
-        // 进行字段验证
-        ValidateUtil<SysUser> vu = new ValidateUtil<SysUser>();
-        ResultDTO result = vu.valid(sysUser);
-        if (result.getR() != 1) {
-            return result;
-        }
-         //逻辑业务判断判断
-       
-        //判断是更新还是插入
-        boolean addFlag =false;
-
-        if (sysUser.getId()==null) {
-               
-            sysUserMapper.insert(sysUser);
-            addFlag=true;
-        } else {
-             sysUserMapper.updateByPrimaryKey(sysUser);
-        }
-
-         /***删除掉不在关系中的数据****/
-        HashMap params =new HashMap();
-        params.put("uid", sysUser.getId());
-        List<SysUserRole> list = sysUserRoleMapper.listByParams(params);
-        for(SysUserRole sysUserRole : list){
-            String roleid = ""+sysUserRole.getRoleid();
-            if( !StringUtil.splitStrContains(childids,roleid)){
-                sysUserRoleMapper.deleteByPrimaryKey(sysUserRole.getId());
-            }
-        }
-        
-        if(!StringUtil.isBlank(childids)){
-            StringTokenizer st = new StringTokenizer(childids,",",false);
-            while( st.hasMoreElements() ){
-                String stNow=  st.nextToken(); 
-                //System.out.println(stNow);
-                //进行ids验证
-                if(!StringUtil.checkNumeric(stNow)){
-                    return ResultUtil.getResult(302,"子元素id格式不正确");
-                }
-                //查询是否有关联数据有的话就不用再插入了 如果是新增数据就不用判断了
-                if(!addFlag){
-                    params.clear();
-                    params.put("uid", sysUser.getId());
-                    params.put("roleid", stNow);
-                    int count = sysUserRoleMapper.countByParams(params);
-                    if(count>0){
-                        continue;
-                    }
-                    
-                }
-                SysUserRole sysUserRole=new SysUserRole();
-              
-                sysUserRole.setUid(sysUser.getId());
-                sysUserRole.setRoleid(Long.valueOf(stNow));
-                sysUserRoleMapper.insert( sysUserRole);
-            }
-        }
-
         return ResultUtil.getSuccResult();
     }
     /**

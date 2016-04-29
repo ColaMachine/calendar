@@ -70,7 +70,7 @@
         </if>  
     </#list>
     </set>
-    where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}
+    where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}
   </update>
   <update id="updateByPrimaryKey" parameterType="cola.machine.bean.${Abc}" >
     update ${table.tableName}
@@ -80,7 +80,7 @@
               `${col.name}`=${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>}<#if col_index<table.cols?size-1>,</#if>  
         </#if>
     </#list>
-where id = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}
+where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}
   </update>
   <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
     select 

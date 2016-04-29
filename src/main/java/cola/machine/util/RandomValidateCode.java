@@ -268,7 +268,7 @@ public class RandomValidateCode {
         }
         //System.out.println(randomString);
         g.dispose();
-        if(StringUtils.isBlank(filename)){
+        if(StringUtil.isBlank(filename)){
             filename = UUIDUtil.getUUID()+".jpg";
         }
 

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cola.machine.dao.ConfigurationMapper">
+  <resultMap id="BaseResultMap" type="cola.machine.bean.Configuration">
+      <id column="key" jdbcType="VARCHAR" property="key" />
+      <result column="valuate" jdbcType="VARCHAR" property="valuate" />
+      <result column="operator" jdbcType="VARCHAR" property="operator" />
+      <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    `key` ,`valuate` ,`operator` ,`createTime` 
+   
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Configuration
+    where key =   #{key,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from Configuration
+    where key = #{key,jdbcType=VARCHAR}
+  </delete>
+ <insert id="insert"    parameterType="cola.machine.bean.Configuration" >
+
+    insert into Configuration (  <include refid="Base_Column_List" />)
+    values (
+#{key,jdbcType=VARCHAR}
+,#{valuate,jdbcType=VARCHAR}
+,#{operator,jdbcType=VARCHAR}
+,#{createTime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="cola.machine.bean.Configuration" >
+    insert into Configuration
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="key != null" >  
+           `key`, 
+        </if>  
+        <if test="valuate != null" >  
+           `valuate`, 
+        </if>  
+        <if test="operator != null" >  
+           `operator`, 
+        </if>  
+        <if test="createTime != null" >  
+           `createTime`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="key != null" >  
+          #{key,jdbcType=VARCHAR},
+        </if>  
+        <if test="valuate != null" >  
+          #{valuate,jdbcType=VARCHAR},
+        </if>  
+        <if test="operator != null" >  
+          #{operator,jdbcType=VARCHAR},
+        </if>  
+        <if test="createTime != null" >  
+          #{createTime,jdbcType=TIMESTAMP},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cola.machine.bean.Configuration" >
+    update Configuration
+    <set >
+        <if test="key != null" >  
+             `key`=#{key,jdbcType=VARCHAR},
+        </if>  
+        <if test="valuate != null" >  
+             `valuate`=#{valuate,jdbcType=VARCHAR},
+        </if>  
+        <if test="operator != null" >  
+             `operator`=#{operator,jdbcType=VARCHAR},
+        </if>  
+        <if test="createTime != null" >  
+             `createTime`=#{createTime,jdbcType=TIMESTAMP},
+        </if>  
+    </set>
+    where id = #{key,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cola.machine.bean.Configuration" >
+    update Configuration
+    set 
+              `valuate`=#{valuate,jdbcType=VARCHAR},  
+              `operator`=#{operator,jdbcType=VARCHAR},  
+              `createTime`=#{createTime,jdbcType=TIMESTAMP}  
+where id = #{key,jdbcType=VARCHAR}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Configuration where 1=1
+        <if test="key != null and key != '' ">  
+           and `key` = #{key}
+        </if>  
+        <if test="keyLike != null and keyLike != '' ">  
+             and `key` like "%"#{keyLike}"%"
+        </if>   
+        <if test="valuate != null and valuate != '' ">  
+           and `valuate` = #{valuate}
+        </if>  
+        <if test="valuateLike != null and valuateLike != '' ">  
+             and `valuate` like "%"#{valuateLike}"%"
+        </if>   
+        <if test="operator != null and operator != '' ">  
+           and `operator` = #{operator}
+        </if>  
+        <if test="operatorLike != null and operatorLike != '' ">  
+             and `operator` like "%"#{operatorLike}"%"
+        </if>   
+        <if test="createTime != null and createTime != '' ">  
+           and `createTime` = #{createTime}
+        </if>  
+        <if test="createTimeBegin != null and createTimeBegin != '' ">  
+             and `createTime` &gt;= #{createTimeBegin}
+        </if>   
+         <if test="createTimeEnd != null and createTimeEnd != '' ">  
+             and `createTime` &lt;= #{createTimeEnd}
+        </if> 
+        <if test="createTimeBegin != null and createTimeBegin != '' ">  
+             and `createTime` &gt;= #{createTimeBegin}
+        </if>   
+         <if test="createTimeEnd != null and createTimeEnd != '' ">  
+             and `createTime` &lt;= #{createTimeEnd}
+        </if> 
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Configuration where 1=1
+        <if test="key != null and key != '' ">  
+           and `key` = #{key}
+        </if>  
+        <if test="keyLike != null and keyLike != '' ">  
+             and `key` like "%"#{keyLike}"%"
+        </if>   
+        <if test="valuate != null and valuate != '' ">  
+           and `valuate` = #{valuate}
+        </if>  
+        <if test="valuateLike != null and valuateLike != '' ">  
+             and `valuate` like "%"#{valuateLike}"%"
+        </if>   
+        <if test="operator != null and operator != '' ">  
+           and `operator` = #{operator}
+        </if>  
+        <if test="operatorLike != null and operatorLike != '' ">  
+             and `operator` like "%"#{operatorLike}"%"
+        </if>   
+        <if test="createTime != null and createTime != '' ">  
+           and `createTime` = #{createTime}
+        </if>  
+        <if test="createTimeBegin != null and createTimeBegin != '' ">  
+             and `createTime` &gt;= #{createTimeBegin}
+        </if>   
+         <if test="createTimeEnd != null and createTimeEnd != '' ">  
+             and `createTime` &lt;= #{createTimeEnd}
+        </if> 
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from Configuration where 1=1
+        <if test="key != null and key != '' ">  
+           and `key` = #{key}
+        </if>  
+        <if test="keyLike != null and keyLike != '' ">  
+             and `key` like "%"#{keyLike}"%"
+        </if>   
+        <if test="valuate != null and valuate != '' ">  
+           and `valuate` = #{valuate}
+        </if>  
+        <if test="valuateLike != null and valuateLike != '' ">  
+             and `valuate` like "%"#{valuateLike}"%"
+        </if>   
+        <if test="operator != null and operator != '' ">  
+           and `operator` = #{operator}
+        </if>  
+        <if test="operatorLike != null and operatorLike != '' ">  
+             and `operator` like "%"#{operatorLike}"%"
+        </if>   
+        <if test="createTime != null and createTime != '' ">  
+           and `createTime` = #{createTime}
+        </if>  
+        <if test="createTimeBegin != null and createTimeBegin != '' ">  
+             and `createTime` &gt;= #{createTimeBegin}
+        </if>   
+         <if test="createTimeEnd != null and createTimeEnd != '' ">  
+             and `createTime` &lt;= #{createTimeEnd}
+        </if> 
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from Configuration where 1!=1
+        <if test="key != null and key != '' ">
+           or `key` = #{key}
+        </if>
+        <if test="valuate != null and valuate != '' ">
+           or `valuate` = #{valuate}
+        </if>
+        <if test="operator != null and operator != '' ">
+           or `operator` = #{operator}
+        </if>
+        <if test="createTime != null and createTime != '' ">
+           or `createTime` = #{createTime}
+        </if>
+  </select>
+</mapper>

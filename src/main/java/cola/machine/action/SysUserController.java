@@ -41,10 +41,6 @@ import cola.machine.util.ValidateUtil;
 import core.util.RequestUtil;
 import core.action.ResultDTO;
 import cola.machine.util.DateUtil;
-import cola.machine.bean.SysUserRole;
-import cola.machine.service.SysUserRoleService;
-import cola.machine.bean.SysRole;
-import cola.machine.service.SysRoleService;
 @Controller
 @RequestMapping("/sysUser")
 public class SysUserController extends BaseController{
@@ -54,11 +50,6 @@ public class SysUserController extends BaseController{
     @Autowired
     private SysUserService sysUserService;
     
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
-
-     @Autowired
-    private SysRoleService sysRoleService;
     /**
      * 说明: 跳转到角色列表页面
      * 
@@ -488,13 +479,7 @@ public class SysUserController extends BaseController{
         if(!StringUtil.isBlank(id)){
             SysUser bean = sysUserService.selectByPrimaryKey(Long.valueOf(id));
             result.put("bean", bean);
-            HashMap<String,String> params =new HashMap<String,String>();
-            params.put("SysRole",id);
-            List<SysUserRole> childMaps =sysUserRoleService.listByParams(new HashMap<String,String>());
-            result.put("childMaps", childMaps);
         }
-        List<SysRole> childs =sysRoleService.listByParams(new HashMap<String,String>());
-        result.put("childs", childs);
         return this.getResult(result);
 
       /*  String id = request.getParameter("id");
@@ -732,9 +717,7 @@ public class SysUserController extends BaseController{
             return ResultUtil.getResult(302,validStr);
         }
 
-        String childids = request.getParameter("childids");
-        return sysUserService.saveWithChilds(sysUser,childids);
-
+        return sysUserService.save(sysUser);
        
     }
 

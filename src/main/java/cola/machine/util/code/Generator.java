@@ -800,7 +800,7 @@ return ymd;
             ZColum zcol =cols.get(i);
             String type =zcol.getType().toLowerCase();
             String commonStr= "id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\"  class=\"form-control input-sm\" ";
-            if(zcol.isPk()){
+            if(zcol.isPk() && !zcol.isEdit()){
                 sb.append(tab+"<input type=\"hidden\" "+commonStr+">").append(ctrl);
             }else{
                 sb.append(tab+"<div class=\"form-group\">").append(ctrl);
@@ -987,9 +987,10 @@ return ymd;
         }
     }
     public static void main(String[] args) {
-
-        Generator.generate(new String[]{"SysResource","SysRole","SysUser","SysUserRole",
-                "SysRoleResource","SysUserResource"
+//"SysResource","SysRole","SysUser","SysUserRole",
+      //  "SysRoleResource","SysUserResource"
+        //"SysUser","VideoNew","VideoHot","Collect"
+        Generator.generate(new String[]{"Configuration"
                 });
        
     }

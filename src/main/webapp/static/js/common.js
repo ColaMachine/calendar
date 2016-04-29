@@ -786,6 +786,38 @@ function getUnLockHtml(value,module) {
 	}
 	return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"unlockinfo("+strs.substr(1)+")\" >启用</a>";
 	}
+
+
+var gridHelper={
+		getAuditHtml:function(value,module) {
+			var strs= "";
+			for(var i=0;i<arguments.length;i++){
+				strs+="'"+arguments[i]+"',";
+			}
+			return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"auditInfo("+strs.substr(1)+")\" >审核</a>";
+		},
+		getEditHtml:function(value,module) {
+			var strs= "";
+			for(var i=0;i<arguments.length;i++){
+				strs+=",'"+arguments[i]+"'";
+			}
+			return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"editInfo("+strs.substr(1)+")\" >修改</a>";
+		},
+		getDelHtml:function(value,module) {
+			var strs= "";
+			for(var i=0;i<arguments.length;i++){
+				strs+=",'"+arguments[i]+"'";
+			}
+			return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"deleteInfo("+strs.substr(1)+")\" >删除</a>";
+		}
+		,getViewHtml:function(value,module) {
+			var strs= "";
+			for(var i=0;i<arguments.length;i++){
+				strs+=",'"+arguments[i]+"'";
+			}
+		    return "<a style='margin-left:2px' href=\"javascript:void(0)\" onclick=\""	+(module?module+".":"")+"viewInfo("+strs.substr(1)+")\" >查看</a>";
+		}
+}
 /*function getEditHtml1(value) {
 	return "<div title=\"\" style=\"float:left;cursor:pointer;\" class=\"ui-pg-div ui-inline-edit\" id=\"jEditButton_1\" onclick=\"editinfo('"
 			+ value

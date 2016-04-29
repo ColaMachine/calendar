@@ -273,3 +273,20 @@ content:"最后页"
      height: 20px;
 
  }
+
+ .ui-jqgrid tr.jqgrow td {
+ height: 2.5rem;
+ }
+ .ui-jqgrid tr.ui-row-ltr td {
+     border-right-width: 0px;
+ }
+
+ .ui-jqgrid .ui-jqgrid-htable th div {
+     height: 2.5rem;
+ }
+
+ .ui-jqgrid .ui-jqgrid-view {
+     font-size: 1rem;
+     color:gray;
+
+ }

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cola.machine.dao.VideoNewMapper">
+  <resultMap id="BaseResultMap" type="cola.machine.bean.VideoNew">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="vname" jdbcType="VARCHAR" property="vname" />
+      <result column="zbname" jdbcType="VARCHAR" property="zbname" />
+      <result column="viewnum" jdbcType="INTEGER" property="viewnum" />
+      <result column="url" jdbcType="VARCHAR" property="url" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    `id` ,`vname` ,`zbname` ,`viewnum` ,`url` 
+   
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from video_new
+    where id =   #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from video_new
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="cola.machine.bean.VideoNew" >
+
+    insert into video_new (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=BIGINT}
+,#{vname,jdbcType=VARCHAR}
+,#{zbname,jdbcType=VARCHAR}
+,#{viewnum,jdbcType=INTEGER}
+,#{url,jdbcType=VARCHAR}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="cola.machine.bean.VideoNew" >
+    insert into video_new
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="vname != null" >  
+           `vname`, 
+        </if>  
+        <if test="zbname != null" >  
+           `zbname`, 
+        </if>  
+        <if test="viewnum != null" >  
+           `viewnum`, 
+        </if>  
+        <if test="url != null" >  
+           `url`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=BIGINT},
+        </if>  
+        <if test="vname != null" >  
+          #{vname,jdbcType=VARCHAR},
+        </if>  
+        <if test="zbname != null" >  
+          #{zbname,jdbcType=VARCHAR},
+        </if>  
+        <if test="viewnum != null" >  
+          #{viewnum,jdbcType=INTEGER},
+        </if>  
+        <if test="url != null" >  
+          #{url,jdbcType=VARCHAR},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cola.machine.bean.VideoNew" >
+    update video_new
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=BIGINT},
+        </if>  
+        <if test="vname != null" >  
+             `vname`=#{vname,jdbcType=VARCHAR},
+        </if>  
+        <if test="zbname != null" >  
+             `zbname`=#{zbname,jdbcType=VARCHAR},
+        </if>  
+        <if test="viewnum != null" >  
+             `viewnum`=#{viewnum,jdbcType=INTEGER},
+        </if>  
+        <if test="url != null" >  
+             `url`=#{url,jdbcType=VARCHAR},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cola.machine.bean.VideoNew" >
+    update video_new
+    set 
+              `vname`=#{vname,jdbcType=VARCHAR},  
+              `zbname`=#{zbname,jdbcType=VARCHAR},  
+              `viewnum`=#{viewnum,jdbcType=INTEGER},  
+              `url`=#{url,jdbcType=VARCHAR}  
+where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from video_new where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="vname != null and vname != '' ">  
+           and `vname` = #{vname}
+        </if>  
+        <if test="vnameLike != null and vnameLike != '' ">  
+             and `vname` like "%"#{vnameLike}"%"
+        </if>   
+        <if test="zbname != null and zbname != '' ">  
+           and `zbname` = #{zbname}
+        </if>  
+        <if test="zbnameLike != null and zbnameLike != '' ">  
+             and `zbname` like "%"#{zbnameLike}"%"
+        </if>   
+        <if test="viewnum != null and viewnum != '' ">  
+           and `viewnum` = #{viewnum}
+        </if>  
+        <if test="url != null and url != '' ">  
+           and `url` = #{url}
+        </if>  
+        <if test="urlLike != null and urlLike != '' ">  
+             and `url` like "%"#{urlLike}"%"
+        </if>   
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from video_new where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="vname != null and vname != '' ">  
+           and `vname` = #{vname}
+        </if>  
+        <if test="vnameLike != null and vnameLike != '' ">  
+             and `vname` like "%"#{vnameLike}"%"
+        </if>   
+        <if test="zbname != null and zbname != '' ">  
+           and `zbname` = #{zbname}
+        </if>  
+        <if test="zbnameLike != null and zbnameLike != '' ">  
+             and `zbname` like "%"#{zbnameLike}"%"
+        </if>   
+        <if test="viewnum != null and viewnum != '' ">  
+           and `viewnum` = #{viewnum}
+        </if>  
+        <if test="url != null and url != '' ">  
+           and `url` = #{url}
+        </if>  
+        <if test="urlLike != null and urlLike != '' ">  
+             and `url` like "%"#{urlLike}"%"
+        </if>   
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from video_new where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="vname != null and vname != '' ">  
+           and `vname` = #{vname}
+        </if>  
+        <if test="vnameLike != null and vnameLike != '' ">  
+             and `vname` like "%"#{vnameLike}"%"
+        </if>   
+        <if test="zbname != null and zbname != '' ">  
+           and `zbname` = #{zbname}
+        </if>  
+        <if test="zbnameLike != null and zbnameLike != '' ">  
+             and `zbname` like "%"#{zbnameLike}"%"
+        </if>   
+        <if test="viewnum != null and viewnum != '' ">  
+           and `viewnum` = #{viewnum}
+        </if>  
+        <if test="url != null and url != '' ">  
+           and `url` = #{url}
+        </if>  
+        <if test="urlLike != null and urlLike != '' ">  
+             and `url` like "%"#{urlLike}"%"
+        </if>   
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from video_new where 1!=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="vname != null and vname != '' ">
+           or `vname` = #{vname}
+        </if>
+        <if test="zbname != null and zbname != '' ">
+           or `zbname` = #{zbname}
+        </if>
+        <if test="viewnum != null and viewnum != '' ">
+           or `viewnum` = #{viewnum}
+        </if>
+        <if test="url != null and url != '' ">
+           or `url` = #{url}
+        </if>
+  </select>
+</mapper>

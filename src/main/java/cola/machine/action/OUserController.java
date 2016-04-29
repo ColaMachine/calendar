@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import cola.machine.bean.SysUser;
 import cola.machine.util.*;
 import cola.machine.util.rules.*;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -293,7 +292,7 @@ public class OUserController extends BaseController {
     public String active(HttpServletRequest request) {
         String activeid = request.getParameter("activeid");
         ResultDTO result;
-        if (StringUtils.isNotBlank(activeid)) {
+        if (StringUtil.isNotEmpty(activeid)) {
             result = this.userService.updateUserActive(activeid);
         } else {
             request.setAttribute("msg", "激活url无效");

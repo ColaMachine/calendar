@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1″>
 <title>Insert title here</title>
-<script type="text/javascript" src="${path}/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="${path}/static/js/jquery.js"></script>
 <script type="text/javascript" src="${path}/static/js/common.js"></script>
 <script type="text/javascript" >
 var WEBCONTEXT="${path}";
@@ -185,8 +185,8 @@ includeJS(["/static/js/menu.js" ,
 Ajax.getJSON(PATH+"/auth/menu/list.json",null,function(result){
 var menuList =result.data;
     zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
-});
-/**var menuList=[
+});/*
+var menuList=[
               {id:1,name:"日志管理",url:"",pid:0,icon:"fa fa-bank"},
               {id:2,name:"访问日志",url:"",pid:1},
               {id:3,name:"异常日志",url:PATH+"/log/listRequestLog",pid:1},
@@ -214,9 +214,11 @@ var menuList =result.data;
                {id:22,name:"角色资源关联",url:PATH+"/sysRoleResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
                {id:23,name:"用户资源关联",url:PATH+"/sysUserResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
               {id:24,name:"短信验证码",url:PATH+"/smsRecord/list.htm",icon:"fa fa-spinner",pid:0},
+                   {id:25,name:"系统配置",url:PATH+"/configuration/list.htm",icon:"fa fa-spinner",pid:0},
+
               ]
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
-**/
 
+*/
 </script>
 </html>

@@ -273,19 +273,7 @@ public final class DateUtil {
 		date.setTime(datetime*60000);
 		System.out.println(DateUtil.formatToString(date,DateUtil.YYYY_MM_DD_HH_MM));
 	}
-	public static void main(String[] args) {
-        DateUtil.printTimestampby60(24355980);
-		System.out.println(24355980/24/60);
-		System.out.println(24355980/24/60);
-		System.out.println(24355980/24/60);
-		System.out.println(1260/60);
-		System.out.println(System.currentTimeMillis() );
-		TimeZone tz = TimeZone.getTimeZone("GMT-8:00");
-		Calendar ca = Calendar.getInstance();
-		ca.setTimeZone(tz);
-		System.out.println(ca.getTimeInMillis() );
-		System.out.println(new Date().getTime() );
-    }
+
 	/**
 	 * 计算两个日期之间相差的天数
 	 * @param smdate 较小的时间
@@ -322,6 +310,19 @@ public final class DateUtil {
 
 		return Integer.parseInt(String.valueOf(between_days));
 
+	}
+	public static void main(String[] args) {
+		DateUtil.printTimestampby60(24355980);
+		System.out.println(24355980/24/60);
+		System.out.println(24355980/24/60);
+		System.out.println(24355980/24/60);
+		System.out.println(1260/60);
+		System.out.println(System.currentTimeMillis() );
+		TimeZone tz = TimeZone.getTimeZone("GMT-8:00");
+		Calendar ca = Calendar.getInstance();
+		ca.setTimeZone(tz);
+		System.out.println(ca.getTimeInMillis() );
+		System.out.println(new Date().getTime() );
 	}
 }
 

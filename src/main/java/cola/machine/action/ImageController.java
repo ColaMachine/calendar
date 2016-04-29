@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
+import cola.machine.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -86,7 +86,7 @@ static final int[]phonesizes={
         // 校验文件类型是否正确
         long fileSize = image.getSize();
         String type = image.getContentType();
-        if (!StringUtils.isBlank(type)) {
+        if (!StringUtil.isBlank(type)) {
             if (type.equals("image/jpeg") || type.equals("image/png")
                     || type.equals("image/bmp")) {
             } else {

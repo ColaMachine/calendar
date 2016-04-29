@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import cola.machine.util.StringUtil;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -37,8 +37,8 @@ public class AjaxServlet extends HttpServlet {
 		try {
 			//String username = request.getParameter("USERNAME");
 			String url = request.getRequestURI();
-			String[] classMethodName = StringUtils.removeEnd(url.substring(1),
-					".ajax").split("/");
+			String[] classMethodName = url.substring(1).replace(".ajax","")
+					.split("/");
 			String s = classMethodName[(classMethodName.length - 1)];
 			classMethodName = s.split("\\.");
 			String methodName = classMethodName[(classMethodName.length - 1)];
@@ -49,7 +49,7 @@ public class AjaxServlet extends HttpServlet {
 			 */
 			// className = className ;
 			// methodName =methodName;
-			if (StringUtils.isBlank(methodName)) {
+			if (StringUtil.isBlank(methodName)) {
 				throw new RuntimeException("ERROR:Ajax methodName is empty");
 			}
 
@@ -70,7 +70,7 @@ public class AjaxServlet extends HttpServlet {
 			inputsc.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
 			inputMapper.setSerializationConfig(inputsc);
 			String i = strb.toString();
-			i = StringUtils.isBlank(i) ? "{}" : i;
+			i = StringUtil.isBlank(i) ? "{}" : i;
 			HashMap inputData = (HashMap) inputMapper.readValue(i,
 					HashMap.class);
 			inputData.put("REQUEST", request);
