@@ -7,9 +7,12 @@
       <result column="zbname" jdbcType="VARCHAR" property="zbname" />
       <result column="viewnum" jdbcType="INTEGER" property="viewnum" />
       <result column="url" jdbcType="VARCHAR" property="url" />
+      <result column="type" jdbcType="VARCHAR" property="type" />
+      <result column="img" jdbcType="VARCHAR" property="img" />
+      <result column="vkey" jdbcType="VARCHAR" property="vkey" />
   </resultMap>
   <sql id="Base_Column_List">
-    `id` ,`vname` ,`zbname` ,`viewnum` ,`url` 
+    `id` ,`vname` ,`zbname` ,`viewnum` ,`url` ,`type` ,`img` ,`vkey` 
    
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -31,6 +34,9 @@
 ,#{zbname,jdbcType=VARCHAR}
 ,#{viewnum,jdbcType=INTEGER}
 ,#{url,jdbcType=VARCHAR}
+,#{type,jdbcType=VARCHAR}
+,#{img,jdbcType=VARCHAR}
+,#{vkey,jdbcType=VARCHAR}
     )
   </insert>
    <insert id="insertSelective" parameterType="cola.machine.bean.VideoNew" >
@@ -51,6 +57,15 @@
         <if test="url != null" >  
            `url`, 
         </if>  
+        <if test="type != null" >  
+           `type`, 
+        </if>  
+        <if test="img != null" >  
+           `img`, 
+        </if>  
+        <if test="vkey != null" >  
+           `vkey`, 
+        </if>  
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
         <if test="id != null" >  
@@ -67,6 +82,15 @@
         </if>  
         <if test="url != null" >  
           #{url,jdbcType=VARCHAR},
+        </if>  
+        <if test="type != null" >  
+          #{type,jdbcType=VARCHAR},
+        </if>  
+        <if test="img != null" >  
+          #{img,jdbcType=VARCHAR},
+        </if>  
+        <if test="vkey != null" >  
+          #{vkey,jdbcType=VARCHAR},
         </if>  
     </trim>
   </insert>
@@ -88,6 +112,15 @@
         <if test="url != null" >  
              `url`=#{url,jdbcType=VARCHAR},
         </if>  
+        <if test="type != null" >  
+             `type`=#{type,jdbcType=VARCHAR},
+        </if>  
+        <if test="img != null" >  
+             `img`=#{img,jdbcType=VARCHAR},
+        </if>  
+        <if test="vkey != null" >  
+             `vkey`=#{vkey,jdbcType=VARCHAR},
+        </if>  
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -97,7 +130,10 @@
               `vname`=#{vname,jdbcType=VARCHAR},  
               `zbname`=#{zbname,jdbcType=VARCHAR},  
               `viewnum`=#{viewnum,jdbcType=INTEGER},  
-              `url`=#{url,jdbcType=VARCHAR}  
+              `url`=#{url,jdbcType=VARCHAR},  
+              `type`=#{type,jdbcType=VARCHAR},  
+              `img`=#{img,jdbcType=VARCHAR},  
+              `vkey`=#{vkey,jdbcType=VARCHAR}  
 where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
@@ -128,6 +164,24 @@ where id = #{id,jdbcType=BIGINT}
         <if test="urlLike != null and urlLike != '' ">  
              and `url` like "%"#{urlLike}"%"
         </if>   
+        <if test="type != null and type != '' ">  
+           and `type` = #{type}
+        </if>  
+        <if test="typeLike != null and typeLike != '' ">  
+             and `type` like "%"#{typeLike}"%"
+        </if>   
+        <if test="img != null and img != '' ">  
+           and `img` = #{img}
+        </if>  
+        <if test="imgLike != null and imgLike != '' ">  
+             and `img` like "%"#{imgLike}"%"
+        </if>   
+        <if test="vkey != null and vkey != '' ">  
+           and `vkey` = #{vkey}
+        </if>  
+        <if test="vkeyLike != null and vkeyLike != '' ">  
+             and `vkey` like "%"#{vkeyLike}"%"
+        </if>   
   </select>
    <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
     select 
@@ -156,6 +210,24 @@ where id = #{id,jdbcType=BIGINT}
         </if>  
         <if test="urlLike != null and urlLike != '' ">  
              and `url` like "%"#{urlLike}"%"
+        </if>   
+        <if test="type != null and type != '' ">  
+           and `type` = #{type}
+        </if>  
+        <if test="typeLike != null and typeLike != '' ">  
+             and `type` like "%"#{typeLike}"%"
+        </if>   
+        <if test="img != null and img != '' ">  
+           and `img` = #{img}
+        </if>  
+        <if test="imgLike != null and imgLike != '' ">  
+             and `img` like "%"#{imgLike}"%"
+        </if>   
+        <if test="vkey != null and vkey != '' ">  
+           and `vkey` = #{vkey}
+        </if>  
+        <if test="vkeyLike != null and vkeyLike != '' ">  
+             and `vkey` like "%"#{vkeyLike}"%"
         </if>   
   </select>
    <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
@@ -186,6 +258,24 @@ where id = #{id,jdbcType=BIGINT}
         <if test="urlLike != null and urlLike != '' ">  
              and `url` like "%"#{urlLike}"%"
         </if>   
+        <if test="type != null and type != '' ">  
+           and `type` = #{type}
+        </if>  
+        <if test="typeLike != null and typeLike != '' ">  
+             and `type` like "%"#{typeLike}"%"
+        </if>   
+        <if test="img != null and img != '' ">  
+           and `img` = #{img}
+        </if>  
+        <if test="imgLike != null and imgLike != '' ">  
+             and `img` like "%"#{imgLike}"%"
+        </if>   
+        <if test="vkey != null and vkey != '' ">  
+           and `vkey` = #{vkey}
+        </if>  
+        <if test="vkeyLike != null and vkeyLike != '' ">  
+             and `vkey` like "%"#{vkeyLike}"%"
+        </if>   
   </select>
  <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
     select
@@ -205,6 +295,15 @@ where id = #{id,jdbcType=BIGINT}
         </if>
         <if test="url != null and url != '' ">
            or `url` = #{url}
+        </if>
+        <if test="type != null and type != '' ">
+           or `type` = #{type}
+        </if>
+        <if test="img != null and img != '' ">
+           or `img` = #{img}
+        </if>
+        <if test="vkey != null and vkey != '' ">
+           or `vkey` = #{vkey}
         </if>
   </select>
 </mapper>

@@ -116,6 +116,30 @@ public class VideoNewController extends BaseController{
         if(!StringUtil.isBlank(urlLike)){
             params.put("urlLike",urlLike);
         }
+        String type = request.getParameter("type");
+        if(!StringUtil.isBlank(type)){
+            params.put("type",type);
+        }
+        String typeLike = request.getParameter("typeLike");
+        if(!StringUtil.isBlank(typeLike)){
+            params.put("typeLike",typeLike);
+        }
+        String img = request.getParameter("img");
+        if(!StringUtil.isBlank(img)){
+            params.put("img",img);
+        }
+        String imgLike = request.getParameter("imgLike");
+        if(!StringUtil.isBlank(imgLike)){
+            params.put("imgLike",imgLike);
+        }
+        String vkey = request.getParameter("vkey");
+        if(!StringUtil.isBlank(vkey)){
+            params.put("vkey",vkey);
+        }
+        String vkeyLike = request.getParameter("vkeyLike");
+        if(!StringUtil.isBlank(vkeyLike)){
+            params.put("vkeyLike",vkeyLike);
+        }
 
         params.put("page",page);
         List<VideoNew> videoNews = videoNewService.listByParams4Page(params);
@@ -163,6 +187,30 @@ public class VideoNewController extends BaseController{
         String urlLike = request.getParameter("urlLike");
         if(!StringUtil.isBlank(urlLike)){
             params.put("urlLike",urlLike);
+        }
+        String type = request.getParameter("type");
+        if(!StringUtil.isBlank(type)){
+            params.put("type",type);
+        }
+        String typeLike = request.getParameter("typeLike");
+        if(!StringUtil.isBlank(typeLike)){
+            params.put("typeLike",typeLike);
+        }
+        String img = request.getParameter("img");
+        if(!StringUtil.isBlank(img)){
+            params.put("img",img);
+        }
+        String imgLike = request.getParameter("imgLike");
+        if(!StringUtil.isBlank(imgLike)){
+            params.put("imgLike",imgLike);
+        }
+        String vkey = request.getParameter("vkey");
+        if(!StringUtil.isBlank(vkey)){
+            params.put("vkey",vkey);
+        }
+        String vkeyLike = request.getParameter("vkeyLike");
+        if(!StringUtil.isBlank(vkeyLike)){
+            params.put("vkeyLike",vkeyLike);
         }
 
         List<VideoNew> videoNews = videoNewService.listByParams(params);
@@ -242,6 +290,21 @@ public class VideoNewController extends BaseController{
         if(!StringUtil.isBlank(url)){
             videoNew.setUrl(String.valueOf(url)) ;
         }
+        
+        String type = request.getParameter("type");
+        if(!StringUtil.isBlank(type)){
+            videoNew.setType(String.valueOf(type)) ;
+        }
+        
+        String img = request.getParameter("img");
+        if(!StringUtil.isBlank(img)){
+            videoNew.setImg(String.valueOf(img)) ;
+        }
+        
+        String vkey = request.getParameter("vkey");
+        if(!StringUtil.isBlank(vkey)){
+            videoNew.setVkey(String.valueOf(vkey)) ;
+        }
         */
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
@@ -263,15 +326,30 @@ public class VideoNewController extends BaseController{
         if(!StringUtil.isBlank(url)){
             videoNew.setUrl(url);
         }
+        String type = request.getParameter("type");
+        if(!StringUtil.isBlank(type)){
+            videoNew.setType(type);
+        }
+        String img = request.getParameter("img");
+        if(!StringUtil.isBlank(img)){
+            videoNew.setImg(img);
+        }
+        String vkey = request.getParameter("vkey");
+        if(!StringUtil.isBlank(vkey)){
+            videoNew.setVkey(vkey);
+        }
 
         //valid
         ValidateUtil vu = new ValidateUtil();
         String validStr="";
         vu.add("id", id, "主键",  new Rule[]{new Digits(15,0)});
         vu.add("vname", vname, "视频名称",  new Rule[]{new Length(50),new NotEmpty()});
-        vu.add("zbname", zbname, "主播名称",  new Rule[]{new Length(20),new NotEmpty()});
+        vu.add("zbname", zbname, "主播名称",  new Rule[]{new Length(50),new NotEmpty()});
         vu.add("viewnum", viewnum, "视频类型",  new Rule[]{new Digits(10,0)});
         vu.add("url", url, "视屏url",  new Rule[]{new Length(300)});
+        vu.add("type", type, "视屏url",  new Rule[]{new Length(10)});
+        vu.add("img", img, "视频图片",  new Rule[]{new Length(100)});
+        vu.add("vkey", vkey, "视频主键",  new Rule[]{new Length(50)});
         validStr = vu.validateString();
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
@@ -371,6 +449,30 @@ public class VideoNewController extends BaseController{
         if(!StringUtil.isBlank(urlLike)){
             params.put("urlLike",urlLike);
         }
+        String type = request.getParameter("type");
+        if(!StringUtil.isBlank(type)){
+            params.put("type",type);
+        }
+        String typeLike = request.getParameter("typeLike");
+        if(!StringUtil.isBlank(typeLike)){
+            params.put("typeLike",typeLike);
+        }
+        String img = request.getParameter("img");
+        if(!StringUtil.isBlank(img)){
+            params.put("img",img);
+        }
+        String imgLike = request.getParameter("imgLike");
+        if(!StringUtil.isBlank(imgLike)){
+            params.put("imgLike",imgLike);
+        }
+        String vkey = request.getParameter("vkey");
+        if(!StringUtil.isBlank(vkey)){
+            params.put("vkey",vkey);
+        }
+        String vkeyLike = request.getParameter("vkeyLike");
+        if(!StringUtil.isBlank(vkeyLike)){
+            params.put("vkeyLike",vkeyLike);
+        }
 
         // 查询list集合
         List<VideoNew> list =videoNewService.listByParams(params);
@@ -395,6 +497,9 @@ public class VideoNewController extends BaseController{
         colTitle.put("zbname", "主播名称");
         colTitle.put("viewnum", "视频类型");
         colTitle.put("url", "视屏url");
+        colTitle.put("type", "视屏url");
+        colTitle.put("img", "视频图片");
+        colTitle.put("vkey", "视频主键");
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             VideoNew sm = list.get(i);
@@ -404,6 +509,9 @@ public class VideoNewController extends BaseController{
             map.put("zbname",  list.get(i).getZbname());
             map.put("viewnum",  list.get(i).getViewnum());
             map.put("url",  list.get(i).getUrl());
+            map.put("type",  list.get(i).getType());
+            map.put("img",  list.get(i).getImg());
+            map.put("vkey",  list.get(i).getVkey());
             finalList.add(map);
         }
         try {

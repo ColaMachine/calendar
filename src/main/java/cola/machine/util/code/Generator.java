@@ -990,7 +990,7 @@ return ymd;
 //"SysResource","SysRole","SysUser","SysUserRole",
       //  "SysRoleResource","SysUserResource"
         //"SysUser","VideoNew","VideoHot","Collect"
-        Generator.generate(new String[]{"Configuration"
+        Generator.generate(new String[]{"VideoNew"
                 });
        
     }

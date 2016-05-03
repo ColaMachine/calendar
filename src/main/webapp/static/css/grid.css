@@ -283,6 +283,8 @@ content:"最后页"
 
  .ui-jqgrid .ui-jqgrid-htable th div {
      height: 2.5rem;
+     /*line-height:2.5rem;*/
+     padding-top:0.6rem;
  }
 
  .ui-jqgrid .ui-jqgrid-view {

@@ -769,7 +769,7 @@ $.fn.jqGrid = function( pin ) {
 
 		var p = $.extend(true,{
 			url: "",
-			height: 150,
+			height: "",
 			page: 1,
 			rowNum: 20,
 			rowTotal : null,

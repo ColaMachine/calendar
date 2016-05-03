@@ -40,5 +40,23 @@ public class VideoNew {
         return url;
     }    public void setUrl(String url){
         this.url=url;
+    }/**视屏url**/
+    private String type;
+    public String getType(){
+        return type;
+    }    public void setType(String type){
+        this.type=type;
+    }/**视频图片**/
+    private String img;
+    public String getImg(){
+        return img;
+    }    public void setImg(String img){
+        this.img=img;
+    }/**视频主键**/
+    private String vkey;
+    public String getVkey(){
+        return vkey;
+    }    public void setVkey(String vkey){
+        this.vkey=vkey;
     }
 }

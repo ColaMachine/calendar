@@ -2,7 +2,6 @@ package cola.machine.util;
 
 
 import cola.machine.config.Config;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -162,7 +161,7 @@ public final class RedisUtil {
      * @return 
      */  
     public static void del(String key){  
-        if(StringUtils.isNotBlank(key)) {
+        if(StringUtil.isNotEmpty(key)) {
             Jedis jedis = null;
             boolean success =true;
             try {
@@ -190,7 +189,7 @@ public final class RedisUtil {
     public static Set<String> hkeys(String key) {
         Set<String> retValue = null;
         boolean success =true;
-        if (StringUtils.isNotBlank(key)) {
+        if (StringUtil.isNotEmpty(key)) {
             Jedis jedis =null;
             try {jedis= jedisPool.getResource();
                 Set<String> result = jedis.hkeys(key);
@@ -212,7 +211,7 @@ public final class RedisUtil {
     }
 
     public static void expire(String key, int seconds) {
-        if (StringUtils.isNotBlank(key)) {
+        if (StringUtil.isNotEmpty(key)) {
             Jedis jedis=null;
             boolean success =true;
             try { jedis= jedisPool.getResource();

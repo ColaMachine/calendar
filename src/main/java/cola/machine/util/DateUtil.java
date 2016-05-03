@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.apache.commons.lang.StringUtils;
+
 
 
 /**
@@ -227,7 +227,7 @@ public final class DateUtil {
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends Date> T parse(String dateString,String dateFormat,Class<T> targetResultType) {
-		if(StringUtils.isBlank(dateString))
+		if(StringUtil.isBlank(dateString))
 			return null;
 		DateFormat df = new SimpleDateFormat(dateFormat);
 		try {
