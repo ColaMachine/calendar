@@ -564,7 +564,12 @@ CalendarView.prototype.displayAllEvent = function(ces) {
 		this.displaySingleEvent(ce);
 	}
 };
-//action------------------------------------------
+//actions------------------------------------------
+// 大的动作
+// 可以拆分为多个连续性的一系列界面类动作---------------------------------------------------------------------------------------------
+CalendarView.prototype.editEventAction = function(e) {// 分解此方法
+
+};
 // 大的动作
 // 可以拆分为多个连续性的一系列界面类动作---------------------------------------------------------------------------------------------
 CalendarView.prototype.createEventInMonthViewAction = function(e) {// 分解此方法

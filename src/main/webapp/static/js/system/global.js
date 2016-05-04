@@ -340,12 +340,12 @@ var color_list=[
  ' rgb(164, 122, 226)',
   ];
 
-window.System =new Object();
+/*window.System =new Object();
 System._instances = {};
 window.Instance = function(hashCode) {//console.log("Instance" +System._instances[hashCode]);
 
 	return System._instances[hashCode];
-};
+};*/
 /*
 var DateTime={};
 DateTime.parseDateTime=function(str){

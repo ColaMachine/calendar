@@ -10,7 +10,7 @@
 |  included in all copies or substantial portions of the Software
 \*---------------------------------------------------------------------------*/
 
-window.System = function() {
+System = function() {
 	this.setHashCode();
 }// system函数的作用是调用setHashCode函数
 
@@ -98,6 +98,13 @@ System.load = function(namespace, path) {
 		if (System.supportsXmlHttp()) {
 			path = System._mapPath(namespace, path);
 			var x = System._xmlHttp;
+			/*var x = null;
+			if(window.XMLHttpRequest){
+                x = new XMLHttpRequest();
+            }else{
+                x = new ActiveXObject('Microsoft.XMLHTTP');
+            }
+            alert(path);*/
 			x.open("GET", path, false);
 			x.send(null);
 			if (x.readyState == 4) {
@@ -117,6 +124,16 @@ System.load = function(namespace, path) {
 	}
 	return "";
 };
+System._mapPath = function(namespace, path) {
+	if ("string" == typeof path && path.length > 3)
+		return path.toLowerCase();
+	var p = (System.path + "/" + namespace.replace(/\./g, "/") + ".js")
+			.toLowerCase();//替换.号为/并末尾加上.js
+	return p
+			+ (("undefined" == typeof path || path) ? "" : "?t="
+					+ Math.random());
+};
+
 System._eval = function(namespace, path) {//exec the sript and after 99ms delete the script
 	// alert("System._eval(\""+namespace+"\")=\r\n"+System._codebase[namespace]);
 	try {
@@ -137,19 +154,11 @@ System._eval = function(namespace, path) {//exec the sript and after 99ms delete
 	}
 	System._existences[namespace] = System._mapPath(namespace, path);
 };
+
 System._exist = function(namespace, path) {
 	if ("undefined" == typeof System._existences[namespace])
 		return false;
 	return System._existences[namespace] == System._mapPath(namespace, path);
-};
-System._mapPath = function(namespace, path) {
-	if ("string" == typeof path && path.length > 3)
-		return path.toLowerCase();
-	var p = (System.path + "/" + namespace.replace(/\./g, "/") + ".js")
-			.toLowerCase();//替换.号为/并末尾加上.js
-	return p
-			+ (("undefined" == typeof path || path) ? "" : "?t="
-					+ Math.random());
 };
 
 window.Using = function(namespace, path, rename) {//alert("namespace"+path);alert("path"+path)
@@ -203,7 +212,7 @@ window.Include = function(namespace, path) {
 	if ("undefined" == typeof path
 			&& "string" == typeof (System._codebase[namespace])) {
 		System._eval(namespace, path);
-	} else if (System.supportsXmlHttp()) {alert(path);
+	} else if (System.supportsXmlHttp()) {
 		if (code = System.load(namespace, path)) {
 			System._codebase[namespace] = code;
 			System._eval(namespace, path);

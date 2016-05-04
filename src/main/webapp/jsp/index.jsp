@@ -184,8 +184,8 @@ includeJS(["/static/js/menu.js" ,
 <script type="text/javascript" >
 Ajax.getJSON(PATH+"/auth/menu/list.json",null,function(result){
 var menuList =result.data;
-    zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
-});/*
+    //zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
+});
 var menuList=[
               {id:1,name:"日志管理",url:"",pid:0,icon:"fa fa-bank"},
               {id:2,name:"访问日志",url:"",pid:1},
@@ -215,10 +215,13 @@ var menuList=[
                {id:23,name:"用户资源关联",url:PATH+"/sysUserResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
               {id:24,name:"短信验证码",url:PATH+"/smsRecord/list.htm",icon:"fa fa-spinner",pid:0},
                    {id:25,name:"系统配置",url:PATH+"/configuration/list.htm",icon:"fa fa-spinner",pid:0},
+                    {id:26,name:"动物园管理",url:"",icon:"fa fa-spinner",pid:0},
+                     {id:27,name:"最新视频",url:PATH+"/videoNew/list.htm",icon:"fa fa-spinner",pid:26},
+                     {id:28,name:"最新视频",url:PATH+"/static/html/videoNew.html",icon:"fa fa-spinner",pid:26},
 
               ]
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 
-*/
+
 </script>
 </html>

@@ -11,7 +11,7 @@
 			type="text/css" media="all" />
 		<link id="css" rel="stylesheet" href="/static/css/WorkBench.css"
 			type="text/css" media="all" />
-
+		<script src="/static/js/jsframework.js" charset="utf-8"></script>
 		<!-- <script src="/static/js/system/data/calendar1.js" charset="utf-8">
 		</script><script src="/static/js/jsframework.js" charset="utf-8"></script>-->
        
@@ -32,6 +32,9 @@ includeJS(["/static/js/system/global.js",
 		<script src="/static/js/system/action/Drag.js" charset="utf-8"></script>
 		<script src="/static/js/DateUtils.js" charset="utf-8"></script>
 		<script src="/static/js/system/web/ui/webcontrols/calendarview1.js" charset="utf-8"></script>
+		<script src="/static/js/system/data/calendar1.js" charset="utf-8"></script>
+
+		<script src="/static/js/system/web/ui/webcontrols/MiniCalendar.js" charset="utf-8"></script>
 		<!--<script src="/static/js/system/web/ui/webcontrols/property.js" charset="utf-8"></script>-->
 <style type="text/css">
 table{border:0;margin:0;border-collapse:collapse;}
@@ -125,7 +128,39 @@ table td{padding:0;}
 		<!--topcontainerwk start-->
 		<div id="tt"></div>
 		<!-- scrolltimedevents end -->
-		<div id="tubiaodiv" class="tubiaodiv" ></div>
+		<div id="tubiaodiv" class="tubiaodiv" >123123</div>
+	<div id="editForm">123
+	<div class="editFormHead">
+		toubu
+	</div>
+		<form>
+			<div class="row">
+				<lable>
+					标题:
+				</lable>
+				<div><input type="text" /></div>
+				</div>
+			<div class="row">
+				<lable>
+					日期:
+				</lable>
+				<div><input type="text" onclick="MiniCalendar.redner(this)"/></div>
+			</div>
+			<div class="row">
+				<lable>
+					starttime:
+				</lable>
+				<input type="text" />
+				<lable>
+					endtime:
+				</lable>/
+				<input type="text" />
+			</div>
+		</form>
+		<div class="editFormFoot">
+			jiaobu
+			</div>
+	</div>
 	</BODY>
 	<script language="javascript">
 	

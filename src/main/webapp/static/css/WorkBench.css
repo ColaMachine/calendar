@@ -207,7 +207,7 @@ filter:alpha(opacity=30);*/ /* -moz-opacity:0.3;Moz + FF 透锟斤拷锟�0%*/
 	/*border:1px solid #0060C0;*/
 	background-color: #ffffff;
 	height: 80px;
-	z-index: 100;
+	z-index: 2000;
 	border: 1px solid #696;
 	padding: 8px;
 	text-align: center;
@@ -413,4 +413,16 @@ position:relative;
 .wk_mv_table  td:hover{ background-color: #C3D9FF }
 .wk_mv_table{
 width:1012px;
+}
+
+
+#editForm{
+position:absolute;
+top:50px;
+left:50px;
+height:500px;
+background-color:#fff;
+widht:500px;
+border:1px solid red;
+z-index:2000;
 }

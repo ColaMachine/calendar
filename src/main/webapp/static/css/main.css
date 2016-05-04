@@ -1,15 +1,16 @@
 ﻿@CHARSET "UTF-8";
 div,input,button,select,textarea{outline:none;}
 body {
-
+overflow-y:scroll;
 font: 12px/1.5 \5FAE\8F6F\96C5\9ED1,arial,sans-serif;
 font-size: 16px;
 line-height: 1.62;
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;
-	overflow:scroll;
+
 	background-color:#f0f0f0;
 }
+
 button{
 display: inline-block;
 	/* padding: 6px 12px; */
