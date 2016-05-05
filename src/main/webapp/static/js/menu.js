@@ -78,7 +78,7 @@ var zMenu = {
 				//查找当前所属的li状态是否是打开状态的
 				if ($(this).parent().hasClass('open')) { //console.log("rm open");
 					var that =this;
-					$("#" + ul).slideUp(1000, function() {$(that).parent().removeClass('open');});
+					$("#" + ul).slideUp(200, function() {$(that).parent().removeClass('open');});
 					//$(this).parent().find("ul").eq(0).slideUp(200,function(){});
 				} else { //console.log("add open");
 					//$(".mark").removeClass("mark");
@@ -90,7 +90,7 @@ var zMenu = {
 						var that =this;
 					//$(this).parent().siblings().filter('.open').removeClass('open');
 					//$(this).parent().find("ul").eq(0).slideDown(100);
-					$("#" + ul).slideDown(1000, function() {$( that).parent().addClass('open');});
+					$("#" + ul).slideDown(200, function() {$( that).parent().addClass('open');});
 					
 				}
 			} else {

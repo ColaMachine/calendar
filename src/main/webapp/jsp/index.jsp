@@ -62,7 +62,7 @@ includeJS(["/static/js/menu.js" ,
 <body>
 
 <div id="page" class="page" style="">
-	   <div class=" menu-wrap clearfix dark ">
+	   <div class=" menu-wrap clearfix  ">
         <div class="logo">
             <!-- <span class="logo-head">aWiFi</span> -->
             
@@ -182,10 +182,10 @@ includeJS(["/static/js/menu.js" ,
 
 
 <script type="text/javascript" >
-Ajax.getJSON(PATH+"/auth/menu/list.json",null,function(result){
+/*Ajax.getJSON(PATH+"/auth/menu/list.json",null,function(result){
 var menuList =result.data;
     //zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
-});
+});*/
 var menuList=[
               {id:1,name:"日志管理",url:"",pid:0,icon:"fa fa-bank"},
               {id:2,name:"访问日志",url:"",pid:1},

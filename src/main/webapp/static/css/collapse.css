@@ -43,29 +43,29 @@
 /***收缩动画****/
 .menu-wrap
 {
-	overflow:hidden;
+
 width:200px;
 position:relative;
-/* animation:showMenu 1s;
--moz-animation:showMenu 1s; 
--webkit-animation:showMenu 1s; 
--o-animation:showMenu 1s;  */
-transition:width 1s;
--moz-transition:width 1s; 
--webkit-transition:width 1s; 
--o-transition:width 1s; 
+/* animation:showMenu 0.5s;
+-moz-animation:showMenu 0.5s; 
+-webkit-animation:showMenu 0.5s; 
+-o-animation:showMenu 0.5s;  */
+transition:width 0.5s;
+-moz-transition:width 0.5s; 
+-webkit-transition:width 0.5s; 
+-o-transition:width 0.5s;
 }
 .main-wrap
 {
 margin-left:200px;
-transition:margin-left 1s;
--moz-transition:margin-left 1s; 
--webkit-transition:margin-left 1s; 
--o-transition:margin-left 1s; 
-/* animation:showMain 1s;
--moz-animation:showMain 1s;
--webkit-animation:showMain 1s; 
--o-animation:showMain 1s;  */
+transition:margin-left 0.5s;
+-moz-transition:margin-left 0.5s;
+-webkit-transition:margin-left 0.5s;
+-o-transition:margin-left 0.5s;
+/* animation:showMain 0.5s;
+-moz-animation:showMain 0.5s;
+-webkit-animation:showMain 0.5s; 
+-o-animation:showMain 0.5s;  */
 }
 @keyframes showMenu
 {
@@ -81,27 +81,27 @@ transition:margin-left 1s;
 {
 /* width:0px; */
 /* position:relative; */
-/* animation:hideMenu 1s;
--moz-animation:hideMenu 1s; 
--webkit-animation:hideMenu 1s; 
--o-animation:hideMenu 1s;  */
+/* animation:hideMenu 0.5s;
+-moz-animation:hideMenu 0.5s; 
+-webkit-animation:hideMenu 0.5s; 
+-o-animation:hideMenu 0.5s;  */
 }
 .collapse1 .menu-wrap
 {
 width:100px;
 position:relative;
-/* animation:hideMenu 1s;
--moz-animation:hideMenu 1s; 
--webkit-animation:hideMenu 1s; 
--o-animation:hideMenu 1s;  */
+/* animation:hideMenu 0.5s;
+-moz-animation:hideMenu 0.5s; 
+-webkit-animation:hideMenu 0.5s; 
+-o-animation:hideMenu 0.5s;  */
 }
 .collapse1 .main-wrap
 {
 margin-left:50px;
-/* animation:hideMain 1s;
--moz-animation:hideMain 1s; 
--webkit-animation:hideMain 1s; 
--o-animation:hideMain 1s;  */
+ animation:hideMain 0.5s;
+-moz-animation:hideMain 0.5s; 
+-webkit-animation:hideMain 0.5s; 
+-o-animation:hideMain 0.5s;
 }
 @keyframes hideMain
 {
@@ -147,16 +147,19 @@ Opera:
 -o-animation: myfirst 5s linear 2s infinite alternate;
 }
 .logo-desc{
-	 width:200px;
-    transition:width 1s; 
+	/* width:200px;*/
+    transition:width 0.5s;
+    text-align:center;
+    margin-left:0px;
    
 }
+
 .collapse1 .logo-desc{
 	/* width:0px; */
 }
 .logo-desc-text{
 	 display:inline-block;
-    transition:display 1s;
+    transition:display 0.5s;
 }
 .collapse1 .logo-desc-text{
 	/* display:none; */
@@ -166,12 +169,12 @@ Opera:
 
  .nav-text  {
    /*  opacity:0.5; */
-   display:inline-block;
+ /*  display:inline-block;*/
     width:200px;
-  /*     -webkit-transition: opacity 1s ease-in-out;
-    -moz-transition: opacity 1s ease-in-out;
-    -o-transition: opacity 1s ease-in-out; 
-    transition: opacity 1s ease-in-out;*/
+  /*     -webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    -o-transition: opacity 0.5s ease-in-out; 
+    transition: opacity 0.5s ease-in-out;*/
 }
 .collapse1 .nav-text {
 	width:0px;
@@ -206,7 +209,9 @@ margin-left:50px;
    /*  margin-left: 50px; */
 }
 .collapse1  .menu>ul.nav>li>a>.nav-text {
-    display: none;
+   /* display: none;*/
+   font-size:0.5rem;
+   margin-left:0px;
 }
 .collapse1 .menu>ul.nav>li>a>.nav-caret{
     display: none;
@@ -221,8 +226,8 @@ margin-left:50px;
    /*  display: none; */
 }
 .collapse1 .menu>ul.nav>li>ul>li .nav-text{
-    margin-left:5px;
-    padding-left:5px;
+ /*   margin-left:5px;
+    padding-left:5px;*/
 }
  .collapse1 .menu>ul.nav>li>ul {
     position: absolute;
@@ -231,8 +236,45 @@ margin-left:50px;
     diplay: block;
     width: 100px;
     z-index: 2000;
-    background-color:  #2E3E4E;
+  /*  background-color:  #2E3E4E;*/
 }
+ .nav .fa{
+font-size:1rem;
+transition:font-size 0.5s;
+-moz-transition:font-size 0.5s;
+-webkit-transition:font-size 0.5s;
+-o-transition:font-size 0.5s;
+}
+ .collapse1 .fa{
+    font-size:1.8rem;
+ }
+   .collapse1  ul ul .fa{
+  font-size:0.8rem;
+
+   }
+ .menu-wrap .menu li > a{
+/* min-height:2.25rem;
+ transition:min-height 0.5s;
+ -moz-transition:min-height 0.5s;
+ -webkit-transition:min-height 0.5s;
+ -o-transition:min-height 0.5s;*/
+ }
+.menu-wrap .menu .nav-icon{
+transition: margin-left 0.5s;
+ -moz-transition: margin-left 0.5s;
+ -webkit-transition: margin-left 0.5s;
+ -o-transition: margin-left 0.5s;
+ }
+ /** make icon don't get too colose with the left side **/
+ .collapse1  .menu-wrap .menu .nav-icon{
+ margin-left:5px;
+ }
+  /** becasuse the icon become bigger so height need higher **/
+.collapse1  .menu-wrap .menu li > a{
+    /*min-height:3.25rem;*/
+}
+
+
 /* @keyframes myfirst
 {
 0%   {width:200px;}
