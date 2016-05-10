@@ -2,6 +2,7 @@
 div,input,button,select,textarea,a{outline:none;}
 
 body {
+color:#222;
 overflow-y:scroll;
 font: 12px/1.5 \5FAE\8F6F\96C5\9ED1,arial,sans-serif;
 font-size: 16px;
@@ -18,7 +19,7 @@ line-height: 1.62;
 button{
 display: inline-block;
 	/* padding: 6px 12px; */
-	margin-bottom: 0px;
+	/*margin-bottom: 0px;
 	font-size: 12px;
 	font-weight: 400;
 	line-height: 1.42857;
@@ -32,11 +33,11 @@ display: inline-block;
 	background-image: none;
 	border: 1px solid #999999;
 	padding:0px 0px 0px 0px;
-	margin:2px 2px 0px 0px;	
+	margin:2px 2px 0px 0px;	*/
 }
 body a{outline:none;blr:expression(this.onFocus=this.blur());}
 
-li{ list-style: none; } 
+li{ list-style: none; }
 
 
 

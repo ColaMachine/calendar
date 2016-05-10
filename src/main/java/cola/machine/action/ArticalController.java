@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import cola.machine.bean.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -405,7 +406,8 @@ public class ArticalController extends BaseController{
                 artical.setUpdatetime(new Timestamp( DateUtil.parseToDate(updatetime, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
-
+        String pic = request.getParameter("pic");
+        artical.setPic(pic);
         //valid
         ValidateUtil vu = new ValidateUtil();
         String validStr="";
@@ -417,11 +419,15 @@ public class ArticalController extends BaseController{
         vu.add("remark", remark, "备注",  new Rule[]{new Length(200)});
         vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         vu.add("updatetime", updatetime, "更新时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
+        vu.add("pic", updatetime, "图片",  new Rule[]{new Length(20)});
         validStr = vu.validateString();
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
+        SysUser user =(SysUser)request.getSession().getAttribute("user");
 
+        artical.setCreator(user.getId());
+        //artical.setCreatorname(user.getUsername());
         return articalService.save(artical);
        
     }

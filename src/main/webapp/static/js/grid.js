@@ -1010,8 +1010,15 @@
 		 * throw ("jqGrid - No such method: " + pin); } var args =
 		 * $.makeArray(arguments).slice(1); return fn.apply(this,args); }
 		 */
+        var ts=this[0];
 
-		return this.each(function() {
+          if($(ts).is("table")){
+                        $(ts).replaceWith("<div id='"+(pin.grid || pin.grid_selector).replace("#","")+"' class='grid'></div>");
+                        return  $(pin.grid || pin.grid_selector).jqGrid(pin);
+
+                    }
+
+		//return this.each(function() {
 			if (this.grid) {
 				return;
 			}
@@ -1140,8 +1147,8 @@
 				minColWidth : 33
 			}, $.fn.jqGrid.defaults, pin || {});
 
-			var ts = this, grid = {
-				width_sum : 0,
+			//var ts = this, grid = {
+			//	width_sum : 0,
 			/*
 			 * curPage:1, pageSize:15, totalPage:1,
 			 */
@@ -1154,28 +1161,24 @@
 			 * page:{curPage:1,pageSize:15,totalPage:0,totalcount:0},
 			 */
 
-			};
+			//};
 
-			$(this).empty().attr("tabindex", "0");
-			this.p = p;
-            this.p.grid=this.p.grid|| this.p.grid_selector;
-            this.p.pager=this.p.pager|| this.p.pager_selector;
-            this.p.grid_selector=this.p.grid;
-            this.p.pager_selector=this.p.pager;
+			$(ts).empty().attr("tabindex", "0");
+
+            p.grid=p.grid|| p.grid_selector;
+            p.pager=p.pager|| p.pager_selector;
+            ts.p = p;
+           // p.grid_selector=p.grid;
+           // p.pager_selector=p.pager;
 			// $.extends();
-            if($(this).is("table")){
-                $(this).replaceWith("<div id='"+this.p.grid.replace("#","")+"' class='grid'></div>");
 
-
-                return  $(this.p.grid).jqGrid(pin);
-
-            }
 
 			// $(ts).data("grid",grid);
 			// this.grid=grid;
 			$(ts).jqGrid("initGrid");
-			// return grid;
-		});
+			console.log("jqgrid return dom tagName"+this.tagName)
+			return $(ts);
+		//});
 	};
 
 	$.jgrid
@@ -1404,6 +1407,9 @@
 					var data;
 					this.each(function() {
 						var $t = this;
+						console.log("getRowData");
+						console.log(this.p.data);
+						console.log("tagName:"+this.tagName);
 						if (this.p.data != null)
 							data= this.p.data[rowId];
 						else
@@ -1533,8 +1539,15 @@
 							return;
 							var dReader= this.p.jsonReader;
 						this.p.data = $.jgrid.getAccessor(result,dReader.root);
+                        console.log("this.p.data");
+                        console.log(this.p.data);
+                         console.log("this.id");
+                          console.log(this.id);
+                          console.log("tagname");
+                           console.log(this.tagName);
 
-
+                             console.log("this.p");
+                           console.log(this.p);
 						this.p.page = intNum($.jgrid.getAccessor(result,dReader.page), this.p.page);
 
                         this.p.lastpage = intNum($.jgrid.getAccessor(result,dReader.total), 1);

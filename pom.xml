@@ -13,38 +13,38 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<repositories>
-		<repository>
+		<!--<repository>
 			<id>Local Project Repository</id>
 			<url>file:\\${basedir}\lib\</url>
-		</repository>
+		</repository>-->
 		<repository>
 			<id>Main Maven Repository</id>
 			<url>http://repo.maven.apache.org/maven2/</url>
 		</repository>
-		<repository>
+		<!--<repository>
 			<id>Alfresco Maven Repository</id>
 			<url>https://maven.alfresco.com/nexus/content/groups/public/</url>
 		</repository>
 		<repository>
 			<id>awificore</id>
 			<url>http://192.168.10.129:8081/nexus/content/repositories/thirdparty</url>
-		</repository>
-		<repository>
+		</repository>-->
+	<!--	<repository>
 			<id>liferay-repository</id>
 			<name>Liferay's Maven repository</name>
 			<url>http://oss.sonatype.org/content/groups/public</url>
-		</repository>
-		<repository>
+		</repository>-->
+		<!--<repository>
 			<id>maven2-repository.dev.java.net</id>
 			<name>Java.net Repository for Maven</name>
 			<url>http://download.java.net/maven/2/</url>
 			<layout>default</layout>
-		</repository>
-		<repository>
+		</repository>-->
+		<!--<repository>
 			<id>codehaus Repository</id>
 			<url>http://repository.codehaus.org</url>
-		</repository>
-		<repository>
+		</repository>-->
+		<!--<repository>
 			<id>maven</id>
 			<name>Maven Repository Switchboard</name>
 			<layout>default</layout>
@@ -52,7 +52,7 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</repository>
+		</repository>-->
 		<!-- 阿里巴巴发布版本仓库 -->
 		<repository>
 			<id>alibaba-opensource</id>
@@ -400,32 +400,41 @@
 		<!-- <dependency> <groupId>com.awifi</groupId> <artifactId>awifi-core</artifactId>
 			<scope>system</scope> <systemPath>/home/colamachine/git/awifi-core/target/awifi-core.jar</systemPath>
 			<version>1.0.6</version> </dependency> -->
+		<!--<dependency>
+			<groupId>com.baidu</groupId>
+			<artifactId>ueditor</artifactId>
+			<version>1.1.2</version>
+
+		</dependency>-->
+		<!--mvn install:install-file  -Dfile=C:\Users\dozen.zhang\Documents\Tencent Files\371452875\FileRecv\ueditor-1.1.2.jar  -DgroupId=com.baidu.ueditor  -DartifactId=ueditor -Dversion=1.1.2 -Dpackaging=jar-->
+
 		<dependency>
 			<groupId>ueditor</groupId>
 			<artifactId>ueditor</artifactId>
 			<scope>system</scope>
-			<systemPath>/home/colamachine/workspace/calendar/src/main/webapp/WEB-INF/lib/ueditor-1.1.2.jar</systemPath>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ueditor-1.1.2.jar</systemPath>
 			<version>1.1.2</version>
 		</dependency>
+
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<scope>system</scope>
-			<systemPath>/home/colamachine/workspace/calendar/src/main/webapp/WEB-INF/lib/commons-codec-1.9.jar</systemPath>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/commons-codec-1.9.jar</systemPath>
 			<version>1.9</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<scope>system</scope>
-			<systemPath>/home/colamachine/workspace/calendar/src/main/webapp/WEB-INF/lib/commons-io-2.4.jar</systemPath>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/commons-io-2.4.jar</systemPath>
 			<version>1.9</version>
 		</dependency>
 		<dependency>
 			<groupId>json</groupId>
 			<artifactId>json</artifactId>
 			<scope>system</scope>
-			<systemPath>/home/colamachine/workspace/calendar/src/main/webapp/WEB-INF/lib/json.jar</systemPath>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/json.jar</systemPath>
 			<version>1.9</version>
 		</dependency>
 	</dependencies>

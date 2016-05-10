@@ -46,6 +46,24 @@ public class Artical {
         return remark;
     }    public void setRemark(String remark){
         this.remark=remark;
+    }/**创建人**/
+    private Long creator;
+    public Long getCreator(){
+        return creator;
+    }    public void setCreator(Long creator){
+        this.creator=creator;
+    }/**封面**/
+    private String pic;
+    public String getPic(){
+        return pic;
+    }    public void setPic(String pic){
+        this.pic=pic;
+    }/**创建人姓名**/
+    private String creatorname;
+    public String getCreatorname(){
+        return creatorname;
+    }    public void setCreatorname(String creatorname){
+        this.creatorname=creatorname;
     }/**创建时间**/
     private Timestamp createtime;
     public Timestamp getCreatetime(){

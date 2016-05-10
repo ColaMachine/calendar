@@ -77,9 +77,10 @@ public class ArticalService extends BaseService {
        
        //判断是更新还是插入
         if (artical.getId()==null) {
-               
             articalMapper.insert(artical);
+
         } else {
+
              articalMapper.updateByPrimaryKey(artical);
         }
         return ResultUtil.getSuccResult();

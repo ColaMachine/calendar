@@ -94,6 +94,7 @@ var zMenu = {
 					
 				}
 			} else {
+				$(".menu-wrap").find('.active').removeClass('active');
 				$(this).parent().parent().find('a').removeClass('active');
 				$(this).addClass('active');
 				_this.loadPage($(this).attr("href"));

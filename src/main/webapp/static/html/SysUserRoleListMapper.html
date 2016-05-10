@@ -97,7 +97,12 @@ var sysUserRoleList={
     treeObj:null,
     root:$("#SysUserRoleMapperList"),
     init:function(){
+      console.log( $(this.root).find(".grid").jqGrid(this.gridParam).tagName);
         this.mygrid = $(this.root).find(".grid").jqGrid(this.gridParam);
+           this.mygrid =$(this.root).find(".grid")[0];
+            console.log("in init method");
+            console.log(this.mygrid.tagName);
+              console.log(this.mygrid.tagName);
         this.addEventListener();
         this.initTree();
     },
@@ -230,7 +235,9 @@ var sysUserRoleList={
                     onSelectRow: function(id){ //alert("单击选中"+id);
                     var that =this;
                   //  var treeObj = $.fn.zTree.getZTreeObj("tree");
-                     var celldata =sysUserRoleList.mygrid.jqGrid('getRowData',id)["id"];
+                  console.log("int mapperList.htm"+sysUserRoleList.mygrid.tagName);
+                    console.log(sysUserRoleList.mygrid);
+                     var celldata =$(sysUserRoleList.mygrid).jqGrid('getRowData',id)["id"];
                      //清空原来的选项
                     sysUserRoleList.treeObj.checkAllNodes(false);
                       Ajax.getJSON(PATH+"/sysUserRole/listAll.json",{"uid":celldata},function(result){

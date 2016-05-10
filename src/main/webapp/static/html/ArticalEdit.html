@@ -25,6 +25,17 @@
             <textarea style="display:none" id="content" name="content"  class="form-control input-sm"   maxlength="4000"></textarea>
         </div>
     </div>
+
+    <div class="form-group">
+        <label for="face" class="col-sm-2 control-label">封面:</label>
+        <div class="col-sm-10">
+            <input id="faceImgFileInput" type="file" style="display:none">
+            <img class="row-10 img-upload" id="faceImg" style="width:150px;height:150px" src="/img/timg.jpeg" alt="请上传封面">
+
+
+            <input  id="pic" name="pic"  style="display:none" class="form-control input-sm"   maxlength="100"></input>
+        </div>
+    </div>
     <div class="form-group">
         <label for="type" class="col-sm-2 control-label">类型:</label>
         <div class="col-sm-10">
@@ -146,12 +157,24 @@ var articalEdit={
         this.form=$(this.formId);
         this.addEventListener();
         $("#articalEditForm").validate(this.validParam);
+         var imageUtil= new zImageUtil({imgDom:$("#faceImg")[0],fileInput:$("#faceImgFileInput")[0],postUrl:PATH+"/image/upload.json",maxWidth:633,maxHeight:300,
+        callback:function(result){
+        console.log("callback");
+                    console.log(result.data);
+                    alert("hi");
+                    $("#pic").val(result.data);
+                    alert( $("#pic").val());
+                }
+        });
         Ajax.getJSON("artical/view.json?id="+getParam("id"),null,function(data){
             if(data.r==AJAX_SUCC){
             if(data.data.bean){
                 fillJso2Form("#articalEditForm",data.data.bean);
 
                 ue.setContent(data.data.bean.content);
+
+                 if(!StringUtil.isBlank(data.data.bean.pic))
+                $("#faceImg").attr("src",PATH+"/"+data.data.bean.pic)
             }
             }else{
                 dialog.error("获取信息失败"+data.msg,function(index){

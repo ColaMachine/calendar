@@ -8,11 +8,14 @@
       <result column="type" jdbcType="INTEGER" property="type" />
       <result column="status" jdbcType="INTEGER" property="status" />
       <result column="remark" jdbcType="VARCHAR" property="remark" />
+      <result column="creator" jdbcType="BIGINT" property="creator" />
+      <result column="pic" jdbcType="VARCHAR" property="pic" />
+      <result column="creatorname" jdbcType="VARCHAR" property="creatorname" />
       <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
       <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
   </resultMap>
   <sql id="Base_Column_List">
-    `id` ,`title` ,`content` ,`type` ,`status` ,`remark` ,`createtime` ,`updatetime` 
+    `id` ,`title` ,`content` ,`type` ,`status` ,`remark` ,`creator` ,`pic` ,`creatorname` ,`createtime` ,`updatetime` 
    
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -35,6 +38,9 @@
 ,#{type,jdbcType=INTEGER}
 ,#{status,jdbcType=INTEGER}
 ,#{remark,jdbcType=VARCHAR}
+,#{creator,jdbcType=BIGINT}
+,#{pic,jdbcType=VARCHAR}
+,#{creatorname,jdbcType=VARCHAR}
 ,#{createtime,jdbcType=TIMESTAMP}
 ,#{updatetime,jdbcType=TIMESTAMP}
     )
@@ -59,6 +65,15 @@
         </if>  
         <if test="remark != null" >  
            `remark`, 
+        </if>  
+        <if test="creator != null" >  
+           `creator`, 
+        </if>  
+        <if test="pic != null" >  
+           `pic`, 
+        </if>  
+        <if test="creatorname != null" >  
+           `creatorname`, 
         </if>  
         <if test="createtime != null" >  
            `createtime`, 
@@ -85,6 +100,15 @@
         </if>  
         <if test="remark != null" >  
           #{remark,jdbcType=VARCHAR},
+        </if>  
+        <if test="creator != null" >  
+          #{creator,jdbcType=BIGINT},
+        </if>  
+        <if test="pic != null" >  
+          #{pic,jdbcType=VARCHAR},
+        </if>  
+        <if test="creatorname != null" >  
+          #{creatorname,jdbcType=VARCHAR},
         </if>  
         <if test="createtime != null" >  
           #{createtime,jdbcType=TIMESTAMP},
@@ -115,6 +139,15 @@
         <if test="remark != null" >  
              `remark`=#{remark,jdbcType=VARCHAR},
         </if>  
+        <if test="creator != null" >  
+             `creator`=#{creator,jdbcType=BIGINT},
+        </if>  
+        <if test="pic != null" >  
+             `pic`=#{pic,jdbcType=VARCHAR},
+        </if>  
+        <if test="creatorname != null" >  
+             `creatorname`=#{creatorname,jdbcType=VARCHAR},
+        </if>  
         <if test="createtime != null" >  
              `createtime`=#{createtime,jdbcType=TIMESTAMP},
         </if>  
@@ -132,6 +165,9 @@
               `type`=#{type,jdbcType=INTEGER},  
               `status`=#{status,jdbcType=INTEGER},  
               `remark`=#{remark,jdbcType=VARCHAR},  
+              `creator`=#{creator,jdbcType=BIGINT},  
+              `pic`=#{pic,jdbcType=VARCHAR},  
+              `creatorname`=#{creatorname,jdbcType=VARCHAR},  
               `createtime`=#{createtime,jdbcType=TIMESTAMP},  
               `updatetime`=#{updatetime,jdbcType=TIMESTAMP}  
 where id = #{id,jdbcType=BIGINT}
@@ -166,6 +202,21 @@ where id = #{id,jdbcType=BIGINT}
         </if>  
         <if test="remarkLike != null and remarkLike != '' ">  
              and `remark` like "%"#{remarkLike}"%"
+        </if>   
+        <if test="creator != null and creator != '' ">  
+           and `creator` = #{creator}
+        </if>  
+        <if test="pic != null and pic != '' ">  
+           and `pic` = #{pic}
+        </if>  
+        <if test="picLike != null and picLike != '' ">  
+             and `pic` like "%"#{picLike}"%"
+        </if>   
+        <if test="creatorname != null and creatorname != '' ">  
+           and `creatorname` = #{creatorname}
+        </if>  
+        <if test="creatornameLike != null and creatornameLike != '' ">  
+             and `creatorname` like "%"#{creatornameLike}"%"
         </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
@@ -229,6 +280,21 @@ where id = #{id,jdbcType=BIGINT}
         <if test="remarkLike != null and remarkLike != '' ">  
              and `remark` like "%"#{remarkLike}"%"
         </if>   
+        <if test="creator != null and creator != '' ">  
+           and `creator` = #{creator}
+        </if>  
+        <if test="pic != null and pic != '' ">  
+           and `pic` = #{pic}
+        </if>  
+        <if test="picLike != null and picLike != '' ">  
+             and `pic` like "%"#{picLike}"%"
+        </if>   
+        <if test="creatorname != null and creatorname != '' ">  
+           and `creatorname` = #{creatorname}
+        </if>  
+        <if test="creatornameLike != null and creatornameLike != '' ">  
+             and `creatorname` like "%"#{creatornameLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  
@@ -279,6 +345,21 @@ where id = #{id,jdbcType=BIGINT}
         <if test="remarkLike != null and remarkLike != '' ">  
              and `remark` like "%"#{remarkLike}"%"
         </if>   
+        <if test="creator != null and creator != '' ">  
+           and `creator` = #{creator}
+        </if>  
+        <if test="pic != null and pic != '' ">  
+           and `pic` = #{pic}
+        </if>  
+        <if test="picLike != null and picLike != '' ">  
+             and `pic` like "%"#{picLike}"%"
+        </if>   
+        <if test="creatorname != null and creatorname != '' ">  
+           and `creatorname` = #{creatorname}
+        </if>  
+        <if test="creatornameLike != null and creatornameLike != '' ">  
+             and `creatorname` like "%"#{creatornameLike}"%"
+        </if>   
         <if test="createtime != null and createtime != '' ">  
            and `createtime` = #{createtime}
         </if>  
@@ -319,6 +400,15 @@ where id = #{id,jdbcType=BIGINT}
         </if>
         <if test="remark != null and remark != '' ">
            or `remark` = #{remark}
+        </if>
+        <if test="creator != null and creator != '' ">
+           or `creator` = #{creator}
+        </if>
+        <if test="pic != null and pic != '' ">
+           or `pic` = #{pic}
+        </if>
+        <if test="creatorname != null and creatorname != '' ">
+           or `creatorname` = #{creatorname}
         </if>
         <if test="createtime != null and createtime != '' ">
            or `createtime` = #{createtime}
