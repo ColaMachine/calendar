@@ -57,9 +57,9 @@ public class RequestUtil {
 	public static Page getPage(HttpServletRequest request){
 	    String curPage = request.getParameter("curPage");
 	    String pageSize = request.getParameter("pageSize");
-		if(StringUtil.isBlank(curPage)||StringUtil.isBlank(pageSize) ){
+		/*if(StringUtil.isBlank(curPage)||StringUtil.isBlank(pageSize) ){
 			return null;
-		}
+		}*/
 		if(StringUtil.isBlank(curPage)){
 			curPage ="1";
 		}

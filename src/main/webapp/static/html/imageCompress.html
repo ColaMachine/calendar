@@ -140,6 +140,25 @@
 			this.maxWidth = jso.maxWidth;
 			this.postUrl = jso.postUrl;
 			this.callback = jso.callback;
+			this.fileInput=jso.fileInput;
+            var that =this;
+			 $(".carousel-edit-input ").change(function(){
+
+                console.log("imgDom:"+nowImg);
+                //var imageUtil= new zImageUtil({imgDom:nowImg,postUrl:"/calendar/image/upload.json",maxWidth:633,maxHeight:300,
+                callback:function(data){
+                    console.log(data);
+                    $("#face").attr("src",data);
+                    alert( $("#face").attr("src"));
+                }
+                });
+                that.fileChange(this);
+            });
+            $(this.imgDom).click(function(){
+
+
+                $(that.fileInput).trigger("click");
+            });
 		},
 	};
 	o.init(config);

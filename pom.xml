@@ -400,6 +400,34 @@
 		<!-- <dependency> <groupId>com.awifi</groupId> <artifactId>awifi-core</artifactId>
 			<scope>system</scope> <systemPath>/home/colamachine/git/awifi-core/target/awifi-core.jar</systemPath>
 			<version>1.0.6</version> </dependency> -->
+		<dependency>
+			<groupId>ueditor</groupId>
+			<artifactId>ueditor</artifactId>
+			<scope>system</scope>
+			<systemPath>/home/colamachine/workspace/calendar/src/main/webapp/WEB-INF/lib/ueditor-1.1.2.jar</systemPath>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<scope>system</scope>
+			<systemPath>/home/colamachine/workspace/calendar/src/main/webapp/WEB-INF/lib/commons-codec-1.9.jar</systemPath>
+			<version>1.9</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<scope>system</scope>
+			<systemPath>/home/colamachine/workspace/calendar/src/main/webapp/WEB-INF/lib/commons-io-2.4.jar</systemPath>
+			<version>1.9</version>
+		</dependency>
+		<dependency>
+			<groupId>json</groupId>
+			<artifactId>json</artifactId>
+			<scope>system</scope>
+			<systemPath>/home/colamachine/workspace/calendar/src/main/webapp/WEB-INF/lib/json.jar</systemPath>
+			<version>1.9</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<!-- <directory>src/main/webtarget</directory> -->

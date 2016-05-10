@@ -423,4 +423,7 @@ private UserRoleMapper userRoleMapper;
     public List<SysResource> listResourcesByUserid(Long userid){
        return  authMapper.selectResourceByUserId(userid);
     }
+    public List<SysResource> listMenuResourcesByUserid(Long userid){
+        return  authMapper.selectMenuResourceByUserId(userid);
+    }
 }

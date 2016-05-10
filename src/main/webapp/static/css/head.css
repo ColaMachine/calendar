@@ -1,13 +1,15 @@
 ﻿@CHARSET "UTF-8";
 
 .head-wrap {
-	padding: 0 1rem; position : fixed;
+	padding: 0 1rem;
+	position : fixed;
+	top:0px;
 	left: 0px;
 	right: 0px;
-	margin: inherit;
+	/*margin: inherit;*/
 	z-index: 1020;
-	position: fixed;
-top:0px;
+
+    max-height:3.25rem;
 	/* z-index: 1020;
     background-color: #eeeeee;
     min-height: 50px;
@@ -22,6 +24,9 @@ top:0px;
 	padding: 0px;
 	line-height: 3.5rem;
 	white-space: nowrap;
+	display: inline;
+    width: 200px;
+    margin-left: 200px;
 }
 
 .nav-link, .nav-tabs {

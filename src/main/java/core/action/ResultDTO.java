@@ -8,6 +8,16 @@ public class ResultDTO {
 	private Object data;
 	private String msg;
 	private Page page;
+
+	public Object getOther() {
+		return other;
+	}
+
+	public void setOther(Object other) {
+		this.other = other;
+	}
+
+	private Object other;
 	
 	public ResultDTO(Integer r, Object data, String msg){
 		this.r = r;

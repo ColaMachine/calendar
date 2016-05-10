@@ -1,19 +1,22 @@
 
-<div id="${Abc}List" class="rgt_body">
-    <div class="body_title">| ${table.remark}</div>
-        <div class="body_top" >
-            <form class="form-inline app-search">
-${searchhtml}
-                <button type="button"  class="btn btn-default searchBtn">查询</button>
-            </form>
-        <div >
-            <button class="btn addBtn" >新增</button>
-            <button class="btn deleteBtn">删除</button>
-            <button class="btn exportBtn" >导出</button>
-        </div>
-    </div>
+<div id="${Abc}List">
+    <div class="main-hd">| ${table.remark}</div>
+
+
+    <div class="main-bd">
+          <div class="body_top" >
+                    <form class="form-inline app-search">
+        ${searchhtml}
+                        <button type="button"  class="btn btn-default searchBtn">查询</button>
+                    </form>
+
+                    <button class="btn addBtn" >新增</button>
+                    <button class="btn deleteBtn">删除</button>
+                    <button class="btn exportBtn" >导出</button>
+                </div>
     <table id="${table.name}Grid" class="grid"></table>
     <div id="${table.name}Grid-Pager" class="pager"></div>
+    </div>
 </div>
 <script>
 
@@ -68,7 +71,7 @@ var ${abc}List={
             {   name : 'operation',
                 width : 150,
                 formatter : function(value, grid, rows) {
-                    return getViewHtml(rows.${table.pk.name},"${abc}List")+getEditHtml(rows.${table.pk.name},"${abc}List")+getDelHtml(rows.${table.pk.name},"${abc}List");
+                    return gridHelper.getViewHtml(rows.${table.pk.name},"${abc}List")+gridHelper.getEditHtml(rows.${table.pk.name},"${abc}List")+gridHelper.getDelHtml(rows.${table.pk.name},"${abc}List");
                 }
             }
         ],

@@ -18,5 +18,5 @@ public interface SysAuthMapper {
      * @date 2016年3月18日下午9:01:44
      */
     public List<SysResource> selectResourceByUserId(Long id);
-    
+    public List<SysResource> selectMenuResourceByUserId(Long id);
 }

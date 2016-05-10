@@ -1,5 +1,6 @@
 ﻿@CHARSET "UTF-8";
-div,input,button,select,textarea{outline:none;}
+div,input,button,select,textarea,a{outline:none;}
+
 body {
 overflow-y:scroll;
 font: 12px/1.5 \5FAE\8F6F\96C5\9ED1,arial,sans-serif;
@@ -10,7 +11,10 @@ line-height: 1.62;
 
 	background-color:#f0f0f0;
 }
-
+.page{
+ /*   margin-left:100px;
+    	border: 1px solid #e5e5e5;*/
+}
 button{
 display: inline-block;
 	/* padding: 6px 12px; */
@@ -37,6 +41,7 @@ li{ list-style: none; }
 
 
 .main-wrap {
+	background-color: #fff;
 	/*
 	display:none;
 	display:inline-block;
@@ -48,12 +53,13 @@ li{ list-style: none; }
 	/* border:1px solid red; */
 	
 }
-.body-wrapper{
-    padding:4.25rem 0.25rem 2.25rem 0.25rem ;
+.main{
+    padding:0rem 0.25rem 2.25rem 0.25rem ;
+    width:100%;
 }
 .main-content{
 	/* background-color:white; */
-	width:100%;
+
 	
 }
 .tabs-wrap {background-color:#eeeeee;
@@ -426,4 +432,34 @@ z-index:3;
 
 .mapper-grid-parent-wrap{
 overflow:scroll;
+}
+
+.main-hd{
+    padding-left:25px;
+    line-height:1.25rem;
+    font-size:1.25rem;
+    border-bottom:1px solid #e5e5e5;
+    margin-bottom:15px;
+}
+.main-hd .nav{
+
+    line-height:1.25rem;
+    font-size:0.85rem;
+
+}
+.modal-content {
+    -webkit-box-shadow: 0 0px 0px rgba(0,0,0,0);
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 0px solid #999;
+    border: 0px solid rgba(0,0,0,.2);
+    border-radius: 0px;
+    outline: 0;
+    -webkit-box-shadow: 0 0px 0px rgba(0,0,0,.5);
+    box-shadow: 0 0px 0px rgba(0,0,0,.5);
 }

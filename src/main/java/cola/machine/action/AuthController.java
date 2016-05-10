@@ -216,7 +216,7 @@ public class AuthController {
     public Object listMenu(HttpServletRequest request){
         String id=request.getParameter("id");
         SysUser user = (SysUser)request.getSession().getAttribute("user");
-        return  ResultUtil.getResult(authService.listResourcesByUserid(user.getId()));
+        return  ResultUtil.getResult(authService.listMenuResourcesByUserid(user.getId()));
     }
     /**
      * @return Object

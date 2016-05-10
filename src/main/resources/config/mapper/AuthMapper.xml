@@ -17,6 +17,9 @@
         select * from sys_resource sr where sr.id in (select rid from sys_role_resource where roleid in ( select roleid from sys_user_role where uid =#{userid}))
         union (select * from sys_resource sr1 where sr1.id  in (select rid from sys_user_resource where uid =#{userid}))
     </select>
-
+    <select id="selectMenuResourceByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from sys_resource sr where sr.type='menu' and sr.id in (select rid from sys_role_resource where roleid in ( select roleid from sys_user_role where uid =#{userid}))
+        union (select * from sys_resource sr1 where sr1.type='menu' and  sr1.id  in (select rid from sys_user_resource where uid =#{userid}))
+    </select>
 
 </mapper>

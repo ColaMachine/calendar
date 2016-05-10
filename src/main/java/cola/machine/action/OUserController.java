@@ -7,7 +7,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import cola.machine.bean.SysResource;
 import cola.machine.bean.SysUser;
+import cola.machine.service.AuthService;
 import cola.machine.util.*;
 import cola.machine.util.rules.*;
 import org.slf4j.Logger;
@@ -33,7 +35,8 @@ public class OUserController extends BaseController {
     private final Logger log = LoggerFactory.getLogger(OUserController.class);
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private AuthService authService;
     /*
      * @InitBinder // 此处的参数也可以是ServletRequestDataBinder类型 public void
      * initBinder(ServletRequestDataBinder binder) throws Exception { DateFormat
@@ -101,10 +104,19 @@ public class OUserController extends BaseController {
         if (!result.isRight()) {
             return result;
         }
+
         result = this.userService.loginValid(email, pwd);
         if (result.isRight()) {
             SysUser user = (SysUser) result.getData();
             request.getSession().setAttribute("user", user);
+            List<SysResource> resources = authService.listResourcesByUserid(user.getId());
+            List<String> resStr = new ArrayList<String>();
+            for(SysResource res:resources){
+                resStr.add(res.getCode());
+
+            }
+            request.getSession().setAttribute("resourceList", resStr);
+            request.getSession().setAttribute("resourceStr", StringUtil.join(",",resStr.toArray(new String[resStr.size()])));
             result.setData(null);
         }
 
