@@ -21,9 +21,9 @@ includeCSS(["/static/css/bootstrap.min.css",
 "/static/css/col.css",
 "/static/css/font.css",
 */
- /*"/static/css/jqgrid.css",*/
+ "/static/css/jqgrid.css",
   /*"/static/css/ui.jqgrid.css",*/
- "/static/css/grid.css",
+ /*"/static/css/grid.css",*/
   "/static/css/head.css",
    "/static/css/global.css",
    /* "/static/css/widget.css",
@@ -38,8 +38,8 @@ includeJS(["/static/js/menu.js" ,
          /*  "/static/js/validmsg.js",*/
            "/static/js/DateUtils.js",
           /* "/static/js/jquery-ui.min.js",*/
-          "/static/js/grid.js",
-            /*  "/static/js/jquery.jqGrid.js",*/
+          /*"/static/js/grid.js",*/
+              "/static/js/jquery.jqGrid.js",
             "/static/js/jquery.form.js",
             "/static/js/grid.locale-en.js",
             "/static/js/My97DatePicker/WdatePicker.js",

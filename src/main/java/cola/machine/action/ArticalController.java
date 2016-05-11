@@ -446,7 +446,10 @@ public class ArticalController extends BaseController{
             return ResultUtil.getResult(302,validStr);
         }
         SysUser user =(SysUser)request.getSession().getAttribute("user");
-
+        String html = artical.getContent()+artical.getTitle();
+        if(MGCUtil.contain(html)){
+            return ResultUtil.getResult(302,"含敏感词");
+        }
         artical.setCreator(user.getId());
         //artical.setCreatorname(user.getUsername());
 

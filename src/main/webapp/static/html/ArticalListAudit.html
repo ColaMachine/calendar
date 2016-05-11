@@ -66,31 +66,14 @@
 
             <a type="button"  class="btn btn-default searchBtn">查询</a>
         </form>
-        <div class="row">
-
-            <div class="col-lg-4">
-                <div class="input-group input-sm">
-                    <input type="text" class="form-control" placeholder="标题">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button"><i class="fa fa-search"></i>&nbsp;</button>
-      </span>
-                </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
-            <div class="col-md-3 col-md-offset-5">
-            <a   class="btn addBtn btn-success" ><i class="fa fa-plus"></i>新增新闻资讯</a>
-                </div>
-        </div><!-- /.row -->
-        <div  class="row">
-
-            <!--  <button class="btn deleteBtn">删除</button>
-              <button class="btn exportBtn" >导出</button>-->
-        </div>
-    <table id="ArticalGrid" class="grid"></table>
-    <div id="ArticalGrid-Pager" class="pager"></div>
+    </div>
+        <table id="ArticalGrid" class="grid"></table>
+        <div id="ArticalGrid-Pager" class="pager"></div>
         <div id="content-row" class="row"></div>
-    </div>
+
+
+
 </div>
-    </div>
 <script>
 
 var articalList={
@@ -102,7 +85,7 @@ var articalList={
     init:function(){
         this.mygrid =this.root.find(".grid").jqGrid(this.gridParam);
 
-        this.getData();
+
         this.addEventListener();
 
     },
@@ -148,7 +131,7 @@ $('#content-row').append(html);
         pager:"#ArticalGrid-Pager",
         jsonReader:jsonReader,
         colNames : [
-        "主键","标题","正文","类型","状态","备注","创建时间","更新时间" , '操作' ],
+        "编号","标题","正文","类型","状态","备注","创建时间","更新时间" , '操作' ],
         colModel : [
             {   name : 'id',width : 80,
             } ,

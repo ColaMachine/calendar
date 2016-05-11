@@ -112,7 +112,7 @@ public class ${Abc}Service extends BaseService {
             </#if>
             ${abc}Mapper.insert(${abc});
         } else {
-             ${abc}Mapper.updateByPrimaryKey(${abc});
+             ${abc}Mapper.updateByPrimaryKeySelective(${abc});
         }
         return ResultUtil.getSuccResult();
     }

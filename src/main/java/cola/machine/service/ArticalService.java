@@ -88,7 +88,7 @@ public class ArticalService extends BaseService {
 
 
 
-             articalMapper.updateByPrimaryKey(artical);
+             articalMapper.updateByPrimaryKeySelective(artical);
         }
         return ResultUtil.getSuccResult();
     }

@@ -1176,6 +1176,9 @@
 			// $(ts).data("grid",grid);
 			// this.grid=grid;
 			$(ts).jqGrid("initGrid");
+			$(ts).bind('reloadGrid', function(e,opts) {
+                  		$(ts).reloadGrid();
+                  		})
 			console.log("jqgrid return dom tagName"+this.tagName)
 			return $(ts);
 		//});
@@ -1193,10 +1196,14 @@
 					}
 					return $t.p[pName] !== undefined ? $t.p[pName] : null;
 				},
-				setGridParam : function(newParams) {
-					return this.each(function() {
+				setGridParam : function(newParams) {console.log("setGridParam new Params");console.log(newParams);
+				console.log(this.length);
+					return this.each(function() {console.log(this.grid  );console.log(typeof newParams );
 						if (this.grid && typeof newParams === 'object') {
 							$.extend(true, this.p, newParams);
+							console.log("after setGridParam new Params")
+							console.log(this.p.postData);
+//							alert(2)
 						}
 					});
 				},
@@ -1440,9 +1447,10 @@
 							ajaxResultHandler(data);
 							$($t).jqGrid("ajaxCallBack",data);
 						});*/
-						if(this.p.searchParams[this.p.prmNames.page]==null){
-							this.p.searchParams[this.p.prmNames.page]=1;
-							this.p.searchParams[this.p.prmNames.rows]=10;
+						console.log(this.p.postData);alert(1)
+						if(this.p.postData[this.p.prmNames.page]==null){
+							this.p.postData[this.p.prmNames.page]=1;
+							this.p.postData[this.p.prmNames.rows]=10;
 						}
 						 $.ajax({
 
@@ -1450,7 +1458,7 @@
 
 				             url: this.p.url,
 
-				             data:this.p.searchParams,
+				             data:this.p.postData,
 
 				             dataType: "json",
 				             error:function(XMLHttpRequest, textStatus, errorThrown){

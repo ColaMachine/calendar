@@ -407,7 +407,9 @@ color:red;
 .z-col-table{
 display:table;	
 }
-
+#content{
+ height:auto;
+}
 
 .center {
   width: auto;
@@ -437,10 +439,11 @@ overflow:scroll;
 
 .main-hd{
     padding-left:25px;
-    line-height:1.25rem;
+    line-height:3.25rem;
     font-size:1.25rem;
     border-bottom:1px solid #e5e5e5;
     margin-bottom:15px;
+
 }
 .main-hd .nav{
 
