@@ -3,11 +3,11 @@
     <div class="main-hd">
         <h3> 新闻咨询</h3>
 
-        <ul class="nav nav-tabs">
+      <!--  <ul class="nav nav-tabs">
             <li role="presentation" class="active"><a href="#">新建</a></li>
             <li role="presentation"><a href="#">审核通过</a></li>
             <li role="presentation"><a href="#">驳回</a></li>
-        </ul>
+        </ul>-->
 
     </div>
 
@@ -142,7 +142,7 @@ $('#content-row').append(html);
         rowList:[10,20,30],
         multiselect : true,
         height:550,
-        url : PATH+'/artical/list.json',
+        url : PATH+'/artical/list.json?status=1',
         autowidth:true,
         grid:"#ArticalGrid",
         pager:"#ArticalGrid-Pager",

@@ -374,7 +374,7 @@ public class ExpertController extends BaseController{
         String validStr="";
         vu.add("id", id, "主键",  new Rule[]{new Digits(15,0)});
         vu.add("username", username, "用户名",  new Rule[]{new Length(20),new NotEmpty()});
-        vu.add("face", face, "头像",  new Rule[]{new Length(100)});
+        vu.add("face", face, "头像",  new Rule[]{new Length(40)});
         vu.add("remark", remark, "备注",  new Rule[]{new Length(200)});
         vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         vu.add("updatetime", updatetime, "更新时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});

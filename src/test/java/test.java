@@ -31,7 +31,6 @@ public class test {
     }
     public static void main1(String args[]) throws Exception {
         setFinalStatic(Boolean.class.getField("FALSE"), true);
-
         System.out.format("Everything is %s", false); // "Everything is true"
     }
 

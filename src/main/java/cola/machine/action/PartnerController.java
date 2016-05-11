@@ -18,8 +18,6 @@ import java.util.LinkedHashMap;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import cola.machine.bean.SysUser;
-import cola.machine.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,23 +29,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import cola.machine.service.ArticalService;
-import cola.machine.bean.Artical;
+import cola.machine.service.PartnerService;
+import cola.machine.bean.Partner;
+import cola.machine.util.ResultUtil;
+import cola.machine.util.ValidateUtil;
 import cola.machine.util.rules.*;
 import core.page.Page;
 
+import cola.machine.util.StringUtil;
 import cola.machine.util.ValidateUtil;
 import core.util.RequestUtil;
 import core.action.ResultDTO;
-
+import cola.machine.util.DateUtil;
 @Controller
-@RequestMapping("/artical")
-public class ArticalController extends BaseController{
+@RequestMapping("/partner")
+public class PartnerController extends BaseController{
     /** 日志 **/
-    private Logger logger = LoggerFactory.getLogger(ArticalController.class);
+    private Logger logger = LoggerFactory.getLogger(PartnerController.class);
     /** 权限service **/
     @Autowired
-    private ArticalService articalService;
+    private PartnerService partnerService;
     
     /**
      * 说明: 跳转到角色列表页面
@@ -59,17 +60,12 @@ public class ArticalController extends BaseController{
      */
     @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
     public String list() {
-
-        return "/static/html/ArticalList.html";
+        return "/static/html/PartnerList.html";
     }
-    @RequestMapping(value = "/listAudit.htm", method = RequestMethod.GET)
-    public String listAuditing() {
 
-        return "/static/html/ArticalListAudit.html";
-    }
     @RequestMapping(value = "/listMapper.htm", method = RequestMethod.GET)
     public String listMapper() {
-        return "/static/html/ArticalListMapper.html";
+        return "/static/html/PartnerListMapper.html";
     }
 
     /**
@@ -92,29 +88,37 @@ public class ArticalController extends BaseController{
         if(!StringUtil.isBlank(id)){
             params.put("id",id);
         }
-        String title = request.getParameter("title");
-        if(!StringUtil.isBlank(title)){
-            params.put("title",title);
+        String name = request.getParameter("name");
+        if(!StringUtil.isBlank(name)){
+            params.put("name",name);
         }
-        String titleLike = request.getParameter("titleLike");
-        if(!StringUtil.isBlank(titleLike)){
-            params.put("titleLike",titleLike);
+        String nameLike = request.getParameter("nameLike");
+        if(!StringUtil.isBlank(nameLike)){
+            params.put("nameLike",nameLike);
         }
-        String content = request.getParameter("content");
-        if(!StringUtil.isBlank(content)){
-            params.put("content",content);
+        String brief = request.getParameter("brief");
+        if(!StringUtil.isBlank(brief)){
+            params.put("brief",brief);
         }
-        String contentLike = request.getParameter("contentLike");
-        if(!StringUtil.isBlank(contentLike)){
-            params.put("contentLike",contentLike);
+        String briefLike = request.getParameter("briefLike");
+        if(!StringUtil.isBlank(briefLike)){
+            params.put("briefLike",briefLike);
         }
-        String type = request.getParameter("type");
-        if(!StringUtil.isBlank(type)){
-            params.put("type",type);
+        String address = request.getParameter("address");
+        if(!StringUtil.isBlank(address)){
+            params.put("address",address);
         }
-        String status = request.getParameter("status");
-        if(!StringUtil.isBlank(status)){
-            params.put("status",status);
+        String addressLike = request.getParameter("addressLike");
+        if(!StringUtil.isBlank(addressLike)){
+            params.put("addressLike",addressLike);
+        }
+        String logo = request.getParameter("logo");
+        if(!StringUtil.isBlank(logo)){
+            params.put("logo",logo);
+        }
+        String logoLike = request.getParameter("logoLike");
+        if(!StringUtil.isBlank(logoLike)){
+            params.put("logoLike",logoLike);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
@@ -123,6 +127,18 @@ public class ArticalController extends BaseController{
         String remarkLike = request.getParameter("remarkLike");
         if(!StringUtil.isBlank(remarkLike)){
             params.put("remarkLike",remarkLike);
+        }
+        String creator = request.getParameter("creator");
+        if(!StringUtil.isBlank(creator)){
+            params.put("creator",creator);
+        }
+        String creatorname = request.getParameter("creatorname");
+        if(!StringUtil.isBlank(creatorname)){
+            params.put("creatorname",creatorname);
+        }
+        String creatornameLike = request.getParameter("creatornameLike");
+        if(!StringUtil.isBlank(creatornameLike)){
+            params.put("creatornameLike",creatornameLike);
         }
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
@@ -174,10 +190,8 @@ public class ArticalController extends BaseController{
         }
 
         params.put("page",page);
-        List<Artical> articals = articalService.listByParams4Page(params);
-        ResultDTO result=  ResultUtil.getResult(articals, page);
-
-        return result;
+        List<Partner> partners = partnerService.listByParams4Page(params);
+        return ResultUtil.getResult(partners, page);
     }
     
    /**
@@ -194,29 +208,37 @@ public class ArticalController extends BaseController{
         if(!StringUtil.isBlank(id)){
             params.put("id",id);
         }
-        String title = request.getParameter("title");
-        if(!StringUtil.isBlank(title)){
-            params.put("title",title);
+        String name = request.getParameter("name");
+        if(!StringUtil.isBlank(name)){
+            params.put("name",name);
         }
-        String titleLike = request.getParameter("titleLike");
-        if(!StringUtil.isBlank(titleLike)){
-            params.put("titleLike",titleLike);
+        String nameLike = request.getParameter("nameLike");
+        if(!StringUtil.isBlank(nameLike)){
+            params.put("nameLike",nameLike);
         }
-        String content = request.getParameter("content");
-        if(!StringUtil.isBlank(content)){
-            params.put("content",content);
+        String brief = request.getParameter("brief");
+        if(!StringUtil.isBlank(brief)){
+            params.put("brief",brief);
         }
-        String contentLike = request.getParameter("contentLike");
-        if(!StringUtil.isBlank(contentLike)){
-            params.put("contentLike",contentLike);
+        String briefLike = request.getParameter("briefLike");
+        if(!StringUtil.isBlank(briefLike)){
+            params.put("briefLike",briefLike);
         }
-        String type = request.getParameter("type");
-        if(!StringUtil.isBlank(type)){
-            params.put("type",type);
+        String address = request.getParameter("address");
+        if(!StringUtil.isBlank(address)){
+            params.put("address",address);
         }
-        String status = request.getParameter("status");
-        if(!StringUtil.isBlank(status)){
-            params.put("status",status);
+        String addressLike = request.getParameter("addressLike");
+        if(!StringUtil.isBlank(addressLike)){
+            params.put("addressLike",addressLike);
+        }
+        String logo = request.getParameter("logo");
+        if(!StringUtil.isBlank(logo)){
+            params.put("logo",logo);
+        }
+        String logoLike = request.getParameter("logoLike");
+        if(!StringUtil.isBlank(logoLike)){
+            params.put("logoLike",logoLike);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
@@ -225,6 +247,18 @@ public class ArticalController extends BaseController{
         String remarkLike = request.getParameter("remarkLike");
         if(!StringUtil.isBlank(remarkLike)){
             params.put("remarkLike",remarkLike);
+        }
+        String creator = request.getParameter("creator");
+        if(!StringUtil.isBlank(creator)){
+            params.put("creator",creator);
+        }
+        String creatorname = request.getParameter("creatorname");
+        if(!StringUtil.isBlank(creatorname)){
+            params.put("creatorname",creatorname);
+        }
+        String creatornameLike = request.getParameter("creatornameLike");
+        if(!StringUtil.isBlank(creatornameLike)){
+            params.put("creatornameLike",creatornameLike);
         }
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
@@ -275,8 +309,8 @@ public class ArticalController extends BaseController{
             }
         }
 
-        List<Artical> articals = articalService.listByParams(params);
-        return ResultUtil.getResult(articals);
+        List<Partner> partners = partnerService.listByParams(params);
+        return ResultUtil.getResult(partners);
     }
     
     /**
@@ -286,11 +320,11 @@ public class ArticalController extends BaseController{
     @RequestMapping(value = "/edit.htm")
     public Object edit( HttpServletRequest request) {
         // 查找所有的角色
-        return "/static/html/ArticalEdit.html";
+        return "/static/html/PartnerEdit.html";
     }
     @RequestMapping(value = "/view.htm")
     public Object viewPage( HttpServletRequest request) {
-        return "/static/html/ArticalView.html";
+        return "/static/html/PartnerView.html";
     }
    
     @RequestMapping(value = "/view.json")
@@ -299,13 +333,13 @@ public class ArticalController extends BaseController{
             String id = request.getParameter("id");
         HashMap<String,Object> result =new HashMap<String,Object>();
         if(!StringUtil.isBlank(id)){
-            Artical bean = articalService.selectByPrimaryKey(Long.valueOf(id));
+            Partner bean = partnerService.selectByPrimaryKey(Long.valueOf(id));
             result.put("bean", bean);
         }
         return this.getResult(result);
 
       /*  String id = request.getParameter("id");
-        Artical bean = articalService.selectByPrimaryKey(Long.valueOf(id));
+        Partner bean = partnerService.selectByPrimaryKey(Long.valueOf(id));
         HashMap<String,Object> result =new HashMap<String,Object>();
         result.put("bean", bean);
         return this.getResult(bean);*/
@@ -326,131 +360,126 @@ public class ArticalController extends BaseController{
     @RequestMapping(value = "/save.json")
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
-        Artical artical =new  Artical();
+        Partner partner =new  Partner();
         /*
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-            artical.setId(Long.valueOf(id)) ;
+            partner.setId(Long.valueOf(id)) ;
         }
         
-        String title = request.getParameter("title");
-        if(!StringUtil.isBlank(title)){
-            artical.setTitle(String.valueOf(title)) ;
+        String name = request.getParameter("name");
+        if(!StringUtil.isBlank(name)){
+            partner.setName(String.valueOf(name)) ;
         }
         
-        String content = request.getParameter("content");
-        if(!StringUtil.isBlank(content)){
-            artical.setContent(String.valueOf(content)) ;
+        String brief = request.getParameter("brief");
+        if(!StringUtil.isBlank(brief)){
+            partner.setBrief(String.valueOf(brief)) ;
         }
         
-        String type = request.getParameter("type");
-        if(!StringUtil.isBlank(type)){
-            artical.setType(Integer.valueOf(type)) ;
+        String address = request.getParameter("address");
+        if(!StringUtil.isBlank(address)){
+            partner.setAddress(String.valueOf(address)) ;
         }
         
-        String status = request.getParameter("status");
-        if(!StringUtil.isBlank(status)){
-            artical.setStatus(Integer.valueOf(status)) ;
+        String logo = request.getParameter("logo");
+        if(!StringUtil.isBlank(logo)){
+            partner.setLogo(String.valueOf(logo)) ;
         }
         
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
-            artical.setRemark(String.valueOf(remark)) ;
+            partner.setRemark(String.valueOf(remark)) ;
+        }
+        
+        String creator = request.getParameter("creator");
+        if(!StringUtil.isBlank(creator)){
+            partner.setCreator(Long.valueOf(creator)) ;
+        }
+        
+        String creatorname = request.getParameter("creatorname");
+        if(!StringUtil.isBlank(creatorname)){
+            partner.setCreatorname(String.valueOf(creatorname)) ;
         }
         
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
-            artical.setCreatetime(Timestamp.valueOf(createtime)) ;
+            partner.setCreatetime(Timestamp.valueOf(createtime)) ;
         }
         
         String updatetime = request.getParameter("updatetime");
         if(!StringUtil.isBlank(updatetime)){
-            artical.setUpdatetime(Timestamp.valueOf(updatetime)) ;
+            partner.setUpdatetime(Timestamp.valueOf(updatetime)) ;
         }
         */
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
-            artical.setId(Long.valueOf(id));
-            Artical articalOld = articalService.selectByPrimaryKey(artical.getId());
-            if(articalOld==null ||artical.getId()==null || articalOld.getId()==0){
-                return this.getResult(302,"原始数据不存在");
-            }else
-            if(articalOld.getStatus()==3){
-                return this.getResult(303,"已审核数据不允许修改");
-            }else  if(articalOld.getStatus()==4){
-                artical.setStatus(1);
-            }else  if(articalOld.getStatus()==1){
-                artical.setStatus(1);
-            }else{
-                return this.getResult(304,"状态异常");
-            }
-        }else{
-            artical.setStatus(1);
-            //新增
+            partner.setId(Long.valueOf(id));
         }
-        String title = request.getParameter("title");
-        if(!StringUtil.isBlank(title)){
-            artical.setTitle(title);
+        String name = request.getParameter("name");
+        if(!StringUtil.isBlank(name)){
+            partner.setName(name);
         }
-        String content = request.getParameter("content");
-        if(!StringUtil.isBlank(content)){
-            artical.setContent(content);
+        String brief = request.getParameter("brief");
+        if(!StringUtil.isBlank(brief)){
+            partner.setBrief(brief);
         }
-        String type = request.getParameter("type");
-        if(!StringUtil.isBlank(type)){
-            artical.setType(Integer.valueOf(type));
+        String address = request.getParameter("address");
+        if(!StringUtil.isBlank(address)){
+            partner.setAddress(address);
         }
-        String status = request.getParameter("status");
-        if(!StringUtil.isBlank(status)){
-            artical.setStatus(Integer.valueOf(status));
-            if(artical.getStatus()==3){
-                return this.getResult(301,"状态不正确");
-            }
+        String logo = request.getParameter("logo");
+        if(!StringUtil.isBlank(logo)){
+            partner.setLogo(logo);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
-            artical.setRemark(remark);
+            partner.setRemark(remark);
+        }
+        String creator = request.getParameter("creator");
+        if(!StringUtil.isBlank(creator)){
+            partner.setCreator(Long.valueOf(creator));
+        }
+        String creatorname = request.getParameter("creatorname");
+        if(!StringUtil.isBlank(creatorname)){
+            partner.setCreatorname(creatorname);
         }
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
             if(StringUtil.checkNumeric(createtime)){
-                artical.setCreatetime(Timestamp.valueOf(createtime));
+                partner.setCreatetime(Timestamp.valueOf(createtime));
             }else if(StringUtil.checkDateStr(createtime, "yyyy-MM-dd HH:mm:ss")){
-                artical.setCreatetime(new Timestamp( DateUtil.parseToDate(createtime, "yyyy-MM-dd HH:mm:ss").getTime()));
+                partner.setCreatetime(new Timestamp( DateUtil.parseToDate(createtime, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
         String updatetime = request.getParameter("updatetime");
         if(!StringUtil.isBlank(updatetime)){
             if(StringUtil.checkNumeric(updatetime)){
-                artical.setUpdatetime(Timestamp.valueOf(updatetime));
+                partner.setUpdatetime(Timestamp.valueOf(updatetime));
             }else if(StringUtil.checkDateStr(updatetime, "yyyy-MM-dd HH:mm:ss")){
-                artical.setUpdatetime(new Timestamp( DateUtil.parseToDate(updatetime, "yyyy-MM-dd HH:mm:ss").getTime()));
+                partner.setUpdatetime(new Timestamp( DateUtil.parseToDate(updatetime, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
-        String pic = request.getParameter("pic");
-        artical.setPic(pic);
+
         //valid
         ValidateUtil vu = new ValidateUtil();
         String validStr="";
         vu.add("id", id, "主键",  new Rule[]{new Digits(15,0)});
-        vu.add("title", title, "标题",  new Rule[]{new Length(40),new NotEmpty()});
-        vu.add("content", content, "正文",  new Rule[]{new Length(4000),new NotEmpty()});
-        vu.add("type", type, "类型",  new Rule[]{new Digits(11,0),new CheckBox(new String[]{"1","2","3"})});
-        vu.add("status", status, "状态",  new Rule[]{new Digits(11,0),new CheckBox(new String[]{"1","2","3","4","5"})});
+        vu.add("name", name, "名称",  new Rule[]{new Length(40),new NotEmpty()});
+        vu.add("brief", brief, "简介",  new Rule[]{new Length(500),new NotEmpty()});
+        vu.add("address", address, "地址",  new Rule[]{new Length(100),new NotEmpty()});
+        vu.add("logo", logo, "logo",  new Rule[]{new Length(50),new NotEmpty()});
         vu.add("remark", remark, "备注",  new Rule[]{new Length(200)});
+        vu.add("creator", creator, "创建人",  new Rule[]{new Digits(11,0),new NotEmpty()});
+        vu.add("creatorname", creatorname, "创建人姓名",  new Rule[]{new Length(20)});
         vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         vu.add("updatetime", updatetime, "更新时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
-        vu.add("pic", updatetime, "图片",  new Rule[]{new Length(20)});
         validStr = vu.validateString();
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
-        SysUser user =(SysUser)request.getSession().getAttribute("user");
 
-        artical.setCreator(user.getId());
-        //artical.setCreatorname(user.getUsername());
-
-        return articalService.save(artical);
+        return partnerService.save(partner);
        
     }
 
@@ -462,7 +491,7 @@ public class ArticalController extends BaseController{
             return this.getWrongResultFromCfg("err.param.notnull");
         }
         Long id = Long.valueOf(idStr);
-        articalService.delete(id);
+        partnerService.delete(id);
         return this.getResult(SUCC);
     }
      /**
@@ -499,7 +528,7 @@ public class ArticalController extends BaseController{
             }
             idAry[i]=Long.valueOf(idStrAry[i]);
         }
-       return  articalService.multilDelete(idAry);
+       return  partnerService.multilDelete(idAry);
     }
 
     /**
@@ -516,29 +545,37 @@ public class ArticalController extends BaseController{
         if(!StringUtil.isBlank(id)){
             params.put("id",id);
         }
-        String title = request.getParameter("title");
-        if(!StringUtil.isBlank(title)){
-            params.put("title",title);
+        String name = request.getParameter("name");
+        if(!StringUtil.isBlank(name)){
+            params.put("name",name);
         }
-        String titleLike = request.getParameter("titleLike");
-        if(!StringUtil.isBlank(titleLike)){
-            params.put("titleLike",titleLike);
+        String nameLike = request.getParameter("nameLike");
+        if(!StringUtil.isBlank(nameLike)){
+            params.put("nameLike",nameLike);
         }
-        String content = request.getParameter("content");
-        if(!StringUtil.isBlank(content)){
-            params.put("content",content);
+        String brief = request.getParameter("brief");
+        if(!StringUtil.isBlank(brief)){
+            params.put("brief",brief);
         }
-        String contentLike = request.getParameter("contentLike");
-        if(!StringUtil.isBlank(contentLike)){
-            params.put("contentLike",contentLike);
+        String briefLike = request.getParameter("briefLike");
+        if(!StringUtil.isBlank(briefLike)){
+            params.put("briefLike",briefLike);
         }
-        String type = request.getParameter("type");
-        if(!StringUtil.isBlank(type)){
-            params.put("type",type);
+        String address = request.getParameter("address");
+        if(!StringUtil.isBlank(address)){
+            params.put("address",address);
         }
-        String status = request.getParameter("status");
-        if(!StringUtil.isBlank(status)){
-            params.put("status",status);
+        String addressLike = request.getParameter("addressLike");
+        if(!StringUtil.isBlank(addressLike)){
+            params.put("addressLike",addressLike);
+        }
+        String logo = request.getParameter("logo");
+        if(!StringUtil.isBlank(logo)){
+            params.put("logo",logo);
+        }
+        String logoLike = request.getParameter("logoLike");
+        if(!StringUtil.isBlank(logoLike)){
+            params.put("logoLike",logoLike);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
@@ -547,6 +584,18 @@ public class ArticalController extends BaseController{
         String remarkLike = request.getParameter("remarkLike");
         if(!StringUtil.isBlank(remarkLike)){
             params.put("remarkLike",remarkLike);
+        }
+        String creator = request.getParameter("creator");
+        if(!StringUtil.isBlank(creator)){
+            params.put("creator",creator);
+        }
+        String creatorname = request.getParameter("creatorname");
+        if(!StringUtil.isBlank(creatorname)){
+            params.put("creatorname",creatorname);
+        }
+        String creatornameLike = request.getParameter("creatornameLike");
+        if(!StringUtil.isBlank(creatornameLike)){
+            params.put("creatornameLike",creatornameLike);
         }
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
@@ -598,7 +647,7 @@ public class ArticalController extends BaseController{
         }
 
         // 查询list集合
-        List<Artical> list =articalService.listByParams(params);
+        List<Partner> list =partnerService.listByParams(params);
         // 存放临时文件
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -616,23 +665,27 @@ public class ArticalController extends BaseController{
         // 得到导出Excle时清单的英中文map
         LinkedHashMap<String, String> colTitle = new LinkedHashMap<String, String>();
         colTitle.put("id", "主键");
-        colTitle.put("title", "标题");
-        colTitle.put("content", "正文");
-        colTitle.put("type", "类型");
-        colTitle.put("status", "状态");
+        colTitle.put("name", "名称");
+        colTitle.put("brief", "简介");
+        colTitle.put("address", "地址");
+        colTitle.put("logo", "logo");
         colTitle.put("remark", "备注");
+        colTitle.put("creator", "创建人");
+        colTitle.put("creatorname", "创建人姓名");
         colTitle.put("createtime", "创建时间");
         colTitle.put("updatetime", "更新时间");
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
-            Artical sm = list.get(i);
+            Partner sm = list.get(i);
             HashMap<String,Object> map = new HashMap<String,Object>();
             map.put("id",  list.get(i).getId());
-            map.put("title",  list.get(i).getTitle());
-            map.put("content",  list.get(i).getContent());
-            map.put("type",  list.get(i).getType());
-            map.put("status",  list.get(i).getStatus());
+            map.put("name",  list.get(i).getName());
+            map.put("brief",  list.get(i).getBrief());
+            map.put("address",  list.get(i).getAddress());
+            map.put("logo",  list.get(i).getLogo());
             map.put("remark",  list.get(i).getRemark());
+            map.put("creator",  list.get(i).getCreator());
+            map.put("creatorname",  list.get(i).getCreatorname());
             map.put("createtime",  list.get(i).getCreatetime());
             map.put("updatetime",  list.get(i).getUpdatetime());
             finalList.add(map);
@@ -652,64 +705,8 @@ public class ArticalController extends BaseController{
         return this.getResult(0, "数据为空，导出失败");
     
     }
-
     @RequestMapping(value = "/import.json")
     public void importExcel(){
         
-    }
-   @RequestMapping(value = "/preview.htm")
-    public String preview(){
-
-           return "/static/html/ArticalList.html";
-
-    }
-    @RequestMapping(value = "/audit.htm")
-    public String auditview(){
-
-        return "/static/html/ArticalAudit.html";
-
-    }
-
-    /**
-     * 审核
-     * @param request
-     * @return
-     * @author dozen.zhang
-     */
-    @RequestMapping(value = "/auditPost.json")
-    @ResponseBody
-    public Object auditPost(HttpServletRequest request) throws Exception{
-        AuthUtil.hasPermissionE(request, "Res_ArticalAuth");
-        String idStr = request.getParameter("id");
-        if(StringUtil.isBlank(idStr)){
-            return this.getResult(303,"参数不存在");
-        }
-
-        String statusStr =request.getParameter("status");
-        //String remark =request.getParameter("remark");
-        //valid
-        ValidateUtil vu = new ValidateUtil();
-        String validStr="";
-        vu.add("id", idStr, "主键",  new Rule[]{new Digits(15,0)});
-        vu.add("status", statusStr, "状态",  new Rule[]{new Digits(11,0),new CheckBox(new String[]{"1","2","3","4","5"})});
-        //vu.add("remark", remark, "备注",  new Rule[]{new Length(200)});
-        validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
-        Artical artical =new Artical();
-        artical=articalService.selectByPrimaryKey(Long.valueOf(idStr));
-        if(artical==null){
-            return this.getResult(302,"数据不存在");
-        }
-        if(artical.getStatus()!=1){
-            return this.getResult(301,"只有状态为新建的才能被审核");
-        }
-
-        //artical.setId(Long.valueOf(idStr));
-       // artical.setRemark(remark);
-        artical.setStatus(Integer.valueOf(statusStr));
-        artical.setUpdatetime(new Timestamp(new Date().getTime()));
-        return articalService.save(artical);
     }
 }

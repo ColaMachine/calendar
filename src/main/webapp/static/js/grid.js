@@ -1347,7 +1347,7 @@
 				goPre : function(event) {
 					var $t = event.data.t;
 
-					if ($t.p.page == 1)
+					if ($t.p.page <= 1)
 						return;
 					else
 						$t.p.page--;
@@ -1616,7 +1616,7 @@
 									for (var j = 0; j < this.p.colModel.length; j++) {
 										var colName = this.p.colModel[j].name;
 										var value = this.p.data[i][colName];
-										if (typeof (value) == 'undefined') {
+										if (typeof (value) == 'undefined' || value=='null' || value=='undefined') {
 											value = '';
 										}
 
@@ -1633,14 +1633,14 @@
 													+ this.p.colModel[j].width
 													/ this.p.width_sum
 													* 100
-													+ "%\">"
+													+ "%\"><span title ='"+this.p.colModel[j].formatter.call(this,value,this.p,this.p.data[i]).replace(/\'/g,"")+"'>"
 													+ this.p.colModel[j].formatter.call(this,value,this.p,this.p.data[i]);
-											+"</td>";
+											+"</span></td>";
 										} else
 											html += "<td width=\""
 													+ this.p.colModel[j].width
 													/ this.p.width_sum * 100
-													+ "%\">" + value + "</td>";
+													+ "%\"><span title='"+value+"'>" + value + "</span></td>";
 									}
 									html += "</tr>";
 
