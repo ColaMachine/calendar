@@ -11,6 +11,7 @@ import cola.machine.bean.SysResource;
 import cola.machine.bean.SysUser;
 import cola.machine.service.AuthService;
 import cola.machine.util.*;
+import cola.machine.util.log.ServiceMsg;
 import cola.machine.util.rules.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -356,7 +357,7 @@ public class OUserController extends BaseController {
         request.setAttribute("imgname", imgName);
         request.getSession().setAttribute("validatecode", code);
         // TODO 需增加回收机制 回收已经生成过的图片
-        return "/login/forgetpwd.jsp";
+        return "/static/html/zforgetpwd.html";
     }
 
     @RequestMapping(value = "/validatecode", method = RequestMethod.GET)
@@ -381,14 +382,20 @@ public class OUserController extends BaseController {
     public @ResponseBody ResultDTO sendPwdRstEmail(HttpServletRequest request) {
         // 生成图片
         // 得到验证码
-        String validatecode = (String) request.getSession().getAttribute("validatecode");
+//        String validatecode = (String) request.getSession().getAttribute("validatecode");
         // 验证验证码
-        String code = request.getParameter("code");
-        if (!validatecode.equals(code)) {
+//        String code = request.getParameter("code");
+        /*if (!validatecode.equals(code)) {
             return this.getWrongResultFromCfg("validatecode.wrong");
+        }*/
+
+        if(StringUtil.isEmail(request.getParameter("phone"))){
+            String email = request.getParameter("phone");
+            return userService.saveSendPwdrstEmail(email);
+        }else{
+            return this.getResult(301,"参数错误");
         }
-        String email = request.getParameter("email");
-        return userService.saveSendPwdrstEmail(email);
+
         // 发送邮件
         // return "/login/pwdreset.jsp";
     }
@@ -408,13 +415,26 @@ public class OUserController extends BaseController {
         return "/login/pwdreset.jsp";
     }
 
-    @RequestMapping(value = "/pwdrst/save.htm", method = RequestMethod.POST)
-    public String savePwdrst(HttpServletRequest request) {
+    @RequestMapping(value = "/pwdrst/save.json", method = RequestMethod.POST)
+    public @ResponseBody ResultDTO savePwdrst(HttpServletRequest request) {
+        String account=request.getParameter("account");
+        if(StringUtil.isBlank(account)){
+            return ResultUtil.getResult(301,"账号不能为空");
+        }
+        if(StringUtil.isEmail(account)){
+
+        }else if(StringUtil.isPhone(account)){
+
+        }else{
+            return ResultUtil.get(ServiceMsg.ACCOUNT_FORMAT_ERR);
+        }
         String pwd = request.getParameter("pwd");
         String code = request.getParameter("code");
-        ResultDTO result = userService.savePwdrst(pwd, code);
+
+
+        ResultDTO result = userService.savePwdrst(account,pwd, code);
         // 发送邮件
-        return "/login/pwdreset.jsp";
+        return result;
     }
 
     @RequestMapping(value = "/logout.htm", method = RequestMethod.GET)

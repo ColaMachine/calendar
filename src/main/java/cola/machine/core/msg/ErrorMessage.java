@@ -171,4 +171,6 @@ public class ErrorMessage {
     public static final String SYSTEM_EXCEPTION =                  "系统异常！异常编号：";
     public static final String INTERFACE_ERROR =                   "接口错误！";
 
+
+
 }

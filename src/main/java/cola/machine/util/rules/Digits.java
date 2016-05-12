@@ -1,6 +1,5 @@
 package cola.machine.util.rules;
 
-import org.apache.commons.lang.StringUtils;
 
 import cola.machine.util.StringUtil;
 

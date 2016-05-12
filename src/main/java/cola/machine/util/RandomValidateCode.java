@@ -18,11 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
+
 
 import cola.machine.config.Config;
 import cola.machine.constants.SysConfig;
 import cola.machine.mng.PathManager;
+import cola.machine.util.StringUtil;
 import sun.misc.BASE64Encoder;
 public class RandomValidateCode {
 
@@ -110,7 +111,7 @@ public class RandomValidateCode {
         }
         //System.out.println(randomString);
         g.dispose();
-       if(StringUtils.isBlank(filename)){
+       if(StringUtil.isBlank(filename)){
            filename = UUIDUtil.getUUID()+".jpg";
        }
        

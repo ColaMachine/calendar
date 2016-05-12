@@ -49,7 +49,7 @@
 
   	
   		<update id="resetPwd" parameterType="cola.machine.bean.SysUser">
-  		update sys_user set password = #{pwd}  where id = #{id}
+  		update sys_user set password = #{password}  where id = #{id}
   	</update>
 <!--  查询所有记录，查询多条记录即返回结果是一个集合的时候，resultType不是集合类型，而是集合所包含的类型	-->
   	<select id="selectAll" resultType="cola.machine.bean.SysUser">

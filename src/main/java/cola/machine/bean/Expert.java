@@ -28,6 +28,18 @@ public class Expert {
         return face;
     }    public void setFace(String face){
         this.face=face;
+    }/**职称**/
+    private String title;
+    public String getTitle(){
+        return title;
+    }    public void setTitle(String title){
+        this.title=title;
+    }/**百科地址**/
+    private String baike;
+    public String getBaike(){
+        return baike;
+    }    public void setBaike(String baike){
+        this.baike=baike;
     }/**备注**/
     private String remark;
     public String getRemark(){

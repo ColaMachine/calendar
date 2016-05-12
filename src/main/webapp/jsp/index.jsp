@@ -15,7 +15,7 @@ var PATH="${path}";
 includeCSS(["/static/css/bootstrap.min.css",
 "/static/css/font-awesome.css",
 "/static/css/main.css",
-"/static/css/menu2.css",
+"/static/css/menu.css",
 "/static/css/collapse.css",
 /*"/static/css/form.css",
 "/static/css/col.css",
@@ -76,7 +76,7 @@ includeJS(["/static/js/menu.js" ,
 	<div class="main-wrap">
 		<div  class="head-wrap navbar white">
 
-            <div class="navbar-item pull-left h5 ng-binding"  ng-bind="$state.current.data.title" id="pageTitle" >Widgets</div>
+            <div class="navbar-item pull-left h5 ng-binding"  ng-bind="$state.current.data.title" id="pageTitle" >后台管理系统</div>
             <!-- 				<div class="dropdown pull-left navbar-item "  style="vertical-align:middle">
               <button class="btn btn-default dropdown-toggle" type="button"
               id="dropdownMenu1" data-toggle="dropdown"

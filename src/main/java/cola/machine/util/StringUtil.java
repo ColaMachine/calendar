@@ -17,6 +17,7 @@ public class StringUtil {
 		}
 		return false;
 	}
+
 	public static boolean  isNull(Object obj){
 		if(obj==null)
 			return true;
@@ -38,7 +39,18 @@ public class StringUtil {
 		Matcher matcher = pattern.matcher(email);
 		return matcher.find();
 	}
-	
+	public static boolean isNumeric(String str){
+		if (str == null|| str.equals("")) {
+			return false;
+		}
+		int sz = str.length();
+		for (int i = 0; i < sz; i++) {
+			if (Character.isDigit(str.charAt(i)) == false) {
+				return false;
+			}
+		}
+		return true;
+	}
 	public static boolean checkNumeric(String str){
         if (str == null|| str.equals("")) {
             return false;

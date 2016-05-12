@@ -17,8 +17,10 @@ import javax.validation.ValidatorFactory;
 
 import cola.machine.bean.*;
 import cola.machine.dao.*;
+import cola.machine.util.log.ServiceMsg;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -217,7 +219,7 @@ public class UserService extends SysUserService{
 				mailInfo.setMailServerPort("25");
 				mailInfo.setValidate(true);
 				mailInfo.setUserName("likegadfly");
-				mailInfo.setPassword("21656886026774");// 您的邮箱密码
+				mailInfo.setPassword("wangyi216568");// 您的邮箱密码
 				mailInfo.setFromAddress("likegadfly@163.com");
 				mailInfo.setToAddress("371452875@qq.com");
 				mailInfo.setSubject("帐号激活");
@@ -248,9 +250,9 @@ public class UserService extends SysUserService{
 	public ResultDTO saveSendPwdrstEmail(String email) {
 
 		// 格式判断
-		ResultDTO result = RegexUtil.email(email);
-		if (result.getR() != 1) {
-			return result;
+
+		if (! StringUtil.isEmail(email)) {
+			return ResultUtil.getResult(301,"邮箱格式不正确");
 		}
 		// 数据判断
 		SysUser user = userMapper.selectUserByEmail(email);
@@ -275,15 +277,16 @@ public class UserService extends SysUserService{
 			pwdrstMapper.insertPwdrst(pwdrst);
 			// 发送邮件
 		}
+
 		// 发送激活邮件
 		MailSenderInfo mailInfo = new MailSenderInfo();
 		mailInfo.setMailServerHost("smtp.163.com");
 		mailInfo.setMailServerPort("25");
 		mailInfo.setValidate(true);
 		mailInfo.setUserName("likegadfly");
-		mailInfo.setPassword("216568wangyi");// 您的邮箱密码
+		mailInfo.setPassword("wangyi216568");// 您的邮箱密码
 		mailInfo.setFromAddress("likegadfly@163.com");
-		mailInfo.setToAddress("371452875@qq.com");
+		mailInfo.setToAddress(email);
 		mailInfo.setSubject("密码重置");
 		mailInfo.setContent("请点击下面的链接进行密码重置</br><a href=''>http://127.0.0.1:8080/calendar/active/"
 				+ pwdrst.getIdpwdrst() + "</a>");
@@ -294,11 +297,13 @@ public class UserService extends SysUserService{
 			sms.sendHtmlMail(mailInfo);// 发送html格式
 		} catch (MessagingException e) {
 			e.printStackTrace();
+			return ResultUtil.getResult(301,"发送邮件失败");
 		}
 
 		// 发送邮件
 		// 是否已经发送过重置邮件了
 		// 如果有没有用过的重置信息 重复利用
+
 
 		return ResultUtil.getSuccResult();
 	}
@@ -316,7 +321,7 @@ public class UserService extends SysUserService{
 	public ResultDTO updateUserActive(String activeid) {
 
 		Active active = this.activeMapper.selectActiveById(activeid);
-		if (active == null || StringUtils.isBlank(active.getActiveid())) {
+		if (active == null || StringUtil.isBlank(active.getActiveid())) {
 			return ResultUtil.getWrongResultFromCfg("active.url.not.valid");
 		}
 		if (active.isActived()) {
@@ -336,37 +341,57 @@ public class UserService extends SysUserService{
 		returnMap.put(SysConfig.AJAX_MSG, "激活成功");
 		return returnMap;*/
 	}
-
+	@Autowired
+	private ValidCodeService validCodeService;
 	/* (non-Javadoc)
 	 * @see cola.machine.service.UserService#savePwdrst(java.lang.String, java.lang.String)
 	 * @author colamachine
 	 */
-	public ResultDTO savePwdrst(String pwd, String code) {
+	public ResultDTO savePwdrst(String account,String pwd, String code) {
 		// 数据格式校验
 		ResultDTO msgBox = RegexUtil.pwd(pwd);
-		if (msgBox.getR() != 1) {
+		if (msgBox.getR() !=ResultUtil.succ) {
 			return msgBox;
 		}
-		if (StringUtils.isBlank(code)) {
+		if (StringUtil.isBlank(code)) {
 			return ResultUtil.getWrongResultFromCfg("pwd.reset.code.wrong");
+		}
+		Long userid=null;
+		if(StringUtil.isPhone(account)){
+			SysUser user = this.getUserByTelno(account);
+			if(user==null)
+				return  ResultUtil.get(ServiceMsg.USER_NOT_FOUND);
+			ResultDTO result = validCodeService.smsValidCode("calendar", account, code);
+			userid =user.getId();
+		}else if(StringUtil.isEmail(account)){
+
+			SysUser user = this.getUserByEmail(account);
+			if(user==null)
+				return  ResultUtil.getResult(ServiceMsg.USER_NOT_FOUND);
+			userid=user.getId();
+			// db校验
+			Pwdrst pwdrst = pwdrstMapper.selectPwdrstById(code);
+			if (pwdrst == null || pwdrst.getUserid()!= userid) {
+				return ResultUtil.getResult(ServiceMsg.VALIDCODE_MATCH_ERR);
+			}
+			if (pwdrst.isUsed()) {
+				return ResultUtil.getResult(ServiceMsg.VALIDCODE_USED);
+			}
+
+			pwdrst.setUsed(true);
+			pwdrstMapper.used(code);
+			 userid = pwdrst.getUserid();
+		}else{
+			return ResultUtil.getResult(ServiceMsg.ACCOUNT_FORMAT_ERR);
 		}
 
-		// db校验
-		Pwdrst pwdrst = pwdrstMapper.selectPwdrstById(code);
-		if (pwdrst == null) {
-			return ResultUtil.getWrongResultFromCfg("pwd.reset.code.wrong");
-		}
-		if (pwdrst.isUsed()) {
-			return ResultUtil.getWrongResultFromCfg( "pwd.reset.code.used");
-		}
-		pwdrst.setUsed(true);
-		pwdrstMapper.used(code);
-		Long userid = pwdrst.getUserid();
+
+
 		SysUser user = new SysUser();
 		user.setId(userid);
 		user.setPassword(MD5Utils.MD5Encode(pwd));
-		userMapper.restPwd(user);
-		return ResultUtil.getSuccResult( "pwd.reset.code.succ");
+		userMapper.resetPwd(user);
+		return ResultUtil.getSuccResult();
 	}
 
 	/**

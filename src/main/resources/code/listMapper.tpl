@@ -103,7 +103,7 @@ var ${abc}List={
     },
     saveInfo:function(){
         //首先查出父节点勾选信息
-        var selarrrow =this.mygrid.jqGrid("getGridParam","selarrrow");
+        var selarrrow =$(this.mygrid).jqGrid("getGridParam","selarrrow");
         if(selarrrow==null || selarrrow.length==0){
             selarrrow .push(this.mygrid.jqGrid('getGridParam','selrow'));
         }
@@ -121,7 +121,7 @@ var ${abc}List={
         console.log(selarrrow.join(","));
         var parentIdArray=new Array();
         for(var i=0;i<selarrrow.length;i++){
-            parentIdArray.push( this.mygrid.jqGrid("getRowData",selarrrow[i])["id"]);
+            parentIdArray.push( $(this.mygrid).jqGrid("getRowData",selarrrow[i])["id"]);
         }
 
         console.log(childids.join(","));
@@ -138,7 +138,7 @@ var ${abc}List={
     },
     searchInfo:function (){
         var jso = changeForm2Jso(".app-search");
-        this.mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
+        $(this.mygrid).jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
     },
     search:function (){
         var jso= changeForm2Jso(".app-search");

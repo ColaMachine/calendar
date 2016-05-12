@@ -1382,7 +1382,10 @@ StringUtil.isBlank=function(it){
 StringUtil.isPhone=function(it){
 return /^[1][3578][0-9]{9}$/.test(it);
 }
+StringUtil.isEmail=function(it){
 
+return /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/.test(it);
+}
 function getParam(key){
 	if(window.data)
 		return window.data[key]||"";

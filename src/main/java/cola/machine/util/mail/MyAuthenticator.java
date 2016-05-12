@@ -24,14 +24,14 @@ public class MyAuthenticator extends Authenticator{
      mailInfo.setMailServerPort("25");    
      mailInfo.setValidate(true);    
      mailInfo.setUserName("likegadfly");    
-     mailInfo.setPassword("21656886026774");//您的邮箱密码    
+     mailInfo.setPassword("wangyi216568");//您的邮箱密码
      mailInfo.setFromAddress("likegadfly@163.com");    
      mailInfo.setToAddress("371452875@qq.com");    
-     mailInfo.setSubject("设置邮箱标题 如http://www.guihua.org 中国桂花网");    
-     mailInfo.setContent("设置邮箱内容 如http://www.guihua.org 中国桂花网 是中国最大桂花网站==");    
+     mailInfo.setSubject("1设置邮箱标题 如http://www.guihua.org 中国桂花网");
+     mailInfo.setContent("1设置邮箱内容 如http://www.guihua.org 中国桂花网 是中国最大桂花网站==");
         //这个类主要来发送邮件   
      SimpleMailSender sms = new SimpleMailSender();   
-         sms.sendTextMail(mailInfo);//发送文体格式    
+         sms.sendTextMail(mailInfo);//发送文体格式
         try {
             sms.sendHtmlMail(mailInfo);//发送html格式
         } catch (MessagingException e) {

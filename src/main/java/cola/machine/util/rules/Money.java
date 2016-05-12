@@ -1,7 +1,7 @@
 package cola.machine.util.rules;
 
-import org.apache.commons.lang.StringUtils;
 
+import cola.machine.util.StringUtil;
 
 public class Money extends Rule {
 	
@@ -14,7 +14,7 @@ public class Money extends Rule {
 		if(this.getValue() == null || this.getValue().equals("")){
 			return true;
 		}else{
-			if (StringUtils.isNumeric(this.getValue())) {
+			if (StringUtil.isNumeric(this.getValue())) {
 				return true;
 			}
 			else {

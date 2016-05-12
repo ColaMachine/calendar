@@ -55,12 +55,18 @@ var loginForm={
         //注册按钮
         this.doms.submitBtn.click(this.submit.Apply(this) );
         this.doms.picCaptchaImg.click(this.getPicCaptcha.Apply(this));
+        this.doms.forgetLink.click(this.forgetLink.Apply(this));
+    },
+    forgetLink:function(){
+
+        forgetPwdForm.show();
     },
     //登录按扭提交
     submit:function(){
         if(!this.doms.form.valid()){
             return;
         }
+        var dialogId = dialog.showWait();
         var jso = changeForm2Jso("#login_form");
         //jso.password=$.md5(jso.password);
         //先禁用按钮
@@ -77,6 +83,7 @@ var loginForm={
             if (data[AJAX_RESULT] == AJAX_SUCC) {
                 window.location = PATH + "/index.htm";
             } else {
+            dialog.close(dialogId);
             dialog.alert(data.msg);
               /*  var ul = $("#login_form").find(".failure").find("ul");
                 ul.empty();
@@ -427,6 +434,183 @@ var smsValidForm={
 
 
 
+var forgetPwdForm={
+ ids:{
+            form:null,//form id
+            smsCaptchaInput:null,//短信验证码输入框id
+            smsCaptchaBtn:null,//短信验证码获取按钮
+            phone:null,//手机span
+            submitBtn:null,//提交按钮
+            pwd:null,
+            pwdrepeat:null,
+
+        },
+    doms:{
+
+    },
+    valid:{
+        rules : {
+            forgetPwdAccount : {
+                required : true,
+                /*  email : true,*/
+                rangelength : [ 1, 50 ],
+                isemailorphone : true
+            },
+            forgetPwdCaptcha : {
+                required : true,
+                rangelength : [ 3,32 ]
+            },
+            forgetPwdpwd : {
+                stringCheck : true,
+                required : true,
+                rangelength : [ 6, 15 ]
+            },
+            forgetPwdpwdrepeat : {
+                stringCheck : true,
+                required : true,
+                rangelength : [ 6, 15 ],
+                equalTo : "#forgetPwdpwd"
+            }
+
+
+        },
+        messages : {
+            forgetPwdAccount : {
+                required : "邮箱/手机号未填写",
+              /*  isemailorphone:true,*/
+                rangelength : "邮箱/手机号长度应在50字符以内",
+            },
+            forgetPwdCaptcha : {
+                required : "请填写短信验证码",
+                rangelength : "长度应在3~6个字符"
+            },
+
+            forgetPwdpwd : {
+                required : "密码未填写",
+                rangelength : "密码应由6~20个的数字或字母组成"
+            },
+            forgetPwdpwdrepeat : {
+                required : "密码未填写",
+                rangelength : "密码应由6~20个的数字或字母组成",
+                equalTo : "两次输入密码不同"
+            }
+
+
+        }
+    },
+    init:function(){
+
+        var cfg={
+            root:"#forgetPwdDiv",
+            form:"#forgetPwdForm",
+            smsCaptchaInput:"#forgetPwdCaptcha",
+            smsCaptchaBtn:"#forgetPwdCaptchaBtn",
+            phone:"#forgetPwdAccount",
+            submitBtn:"#forgetPwdSubmitBtn",
+            pwd:"#forgetPwdpwd",
+            pwdrepeat:"#forgetPwdpwdrepeat",
+
+        };
+
+        $.extend(this.ids,cfg);
+        this.doms.root=$(this.ids["root"]);
+        for(var i in this.ids){
+           var dom= this.doms.root.find(this.ids[i]);
+            if(dom.length==0){
+                console.log(this.ids[i] +" doesn't find ");
+            }else{
+                 this.doms[i]=dom;
+            }
+        }
+        $.extend(this.valid,BaseValidator);
+
+        this.doms.form.validate(this.valid);
+
+        this.doms.submitBtn.removeAttr("disabled");
+        this.addEventListener();
+
+
+    },
+
+    captchaCutdown:function(smsBtn){
+        var self =$(smsBtn);
+        self.attr('disabled', true);
+        self.text('发送中');
+        var time =  60;
+        var sI = setInterval(function() {
+            time = time - 1;
+            if (time > 0) {
+                self.text(time + '秒后重试');
+            } else {
+                window.clearInterval(sI);
+                self.text('重新获取');
+                self.removeAttr("disabled");
+            }
+        }, 1000);
+    },
+   submit:function(){
+
+    	var jso={};
+    	jso.code=this.doms.smsCaptchaInput.val();
+    	jso.account=this.doms.phone.val();
+    	jso.pwd=this.doms.pwd.val();
+    	if(StringUtil.isBlank(jso.code)|| jso.code.length<4){
+    	    dialog.alert("请输入验证码");
+    	    return;
+    	}
+        Ajax.post(PATH+"/pwdrst/save.json",jso,function(result){
+            if(result.r==AJAX_SUCC){
+                // window.location=PATH+"/index.htm";
+                 dialog.alert("密码重置成功!");
+            }else{
+                dialog.alert(result.msg);
+            }
+
+        });
+
+
+
+    },
+    setPhone:function(phone){
+        this.doms.phone.text(phone);
+    },
+    show:function(){
+        this.doms.root.modal("show");
+    },
+     hide:function(){
+            this.doms.root.modal("hide");
+        },
+    addEventListener:function(){
+
+        var _this=this;
+        // this.registerEnterBtn.removeAttr("disabled");
+        this.doms.submitBtn.click(this.submit.Apply(this));
+        this.doms.smsCaptchaBtn.click(function(){
+            _this.captchaCutdown(this);
+           // forgetpwd/save.json
+            if(StringUtil.isEmail(_this.doms.phone.val())){
+                 Ajax.post(PATH+"/forgetpwd/save.json",{"phone":_this.doms.phone.val()},function(result){
+                                    if(result.r==AJAX_SUCC){
+                                       dialog.alert("发送成功");
+                                    }else{
+                                        dialog.error(result.msg);
+                                    }
+                                });
+            }else if(StringUtil.isPhone(_this.doms.phone.val())){
+                  //发送短信
+                Ajax.getJSON(PATH+"/code/sms/request.json",{"phone":_this.doms.phone.val()},function(result){
+                    if(result.r==AJAX_SUCC){
+                       dialog.alert("发送成功");
+                    }else{
+                        dialog.error(result.msg);
+                    }
+                });
+            }
+
+        });
+    }
+};
+
 function doRegister() {
 	document.location = "register.html";
 }
@@ -510,6 +694,7 @@ $(document).ready(function() {
 	//registerValidator.init();
 	registerForm.init();
 	smsValidForm.init();
+	forgetPwdForm.init();
 //在这里面输入任何合法的js语句
 //页面层-自定义
 /*layer.open({

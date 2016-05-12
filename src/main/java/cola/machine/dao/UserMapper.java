@@ -23,7 +23,7 @@ public interface UserMapper {
 
     public int countUserByTelno(String telno);
 
-	public void restPwd(SysUser user);
+	public void resetPwd(SysUser user);
 
 	void updateStatus(SysUser user);
 }

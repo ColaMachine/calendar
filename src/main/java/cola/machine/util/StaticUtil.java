@@ -3,7 +3,7 @@ package cola.machine.util;
 
 import cola.machine.config.Config;
 import cola.machine.mng.PathManager;
-import org.apache.commons.lang.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;

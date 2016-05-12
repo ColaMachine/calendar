@@ -7,6 +7,8 @@
  */
 package cola.machine.util;
 
+import cola.machine.util.log.ServiceMsg;
+import org.apache.tools.ant.types.spi.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +50,9 @@ public class ResultUtil {
 	public static  ResultDTO getResult(Object data){
 		return getResult(succ, data, null,null);
 	}
-	
+	public static  ResultDTO getResult(ServiceMsg msg){
+		return get(msg);
+	}
 	
 	public static ResultDTO getSuccResult(){
 		return getResult(succ, null, null,null);
@@ -112,7 +116,12 @@ public class ResultUtil {
 		return getResult(Integer.valueOf(result), msg);
 		
 	}
-	
+	public static  ResultDTO get(ServiceMsg msg){
+
+
+		return getResult(msg.ordinal(),  msg.toString());
+
+	}
 	/**返回未登录错误
 	 * @return
 	 * @author zzw

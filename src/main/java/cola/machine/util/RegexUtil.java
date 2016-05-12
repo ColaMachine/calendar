@@ -1,6 +1,6 @@
 package cola.machine.util;
 
-import org.apache.commons.lang.StringUtils;
+
 
 import core.action.ResultDTO;
 import cola.machine.common.msgbox.MsgReturn;
@@ -22,7 +22,7 @@ public class RegexUtil {
 	 * @date 2015年5月20日下午5:00:33
 	 */
 	public static ResultDTO pwd(String pwd){
-		if(StringUtils.isBlank(pwd)  ){
+		if(StringUtil.isBlank(pwd)  ){
 			return ResultUtil.getWrongResultFromCfg("err.pwd.empty");
 		}else if(pwd.length() <6 || pwd.length()>15){
 			return ResultUtil.getWrongResultFromCfg("err.email.leng");
