@@ -51,8 +51,8 @@
                     </form>
 
                     <button class="btn addBtn" >新增</button>
-                    <button class="btn deleteBtn">删除</button>
-                    <button class="btn exportBtn" >导出</button>
+                   <!-- <button class="btn deleteBtn">删除</button>
+                    <button class="btn exportBtn" >导出</button>-->
                 </div>
     <table id="PartnerGrid" class="grid"></table>
     <div id="PartnerGrid-Pager" class="pager"></div>
@@ -83,7 +83,7 @@ var partnerList={
         rowNum:10,
         rowList:[10,20,30],
         multiselect : true,
-        height:550,
+
         url : PATH+'/partner/list.json',
         autowidth:true,
         grid:"#PartnerGrid",

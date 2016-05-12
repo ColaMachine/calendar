@@ -15,7 +15,7 @@ var PATH="${path}";
 includeCSS(["/static/css/bootstrap.min.css",
 "/static/css/font-awesome.css",
 "/static/css/main.css",
-"/static/css/menu.css",
+"/static/css/menu2.css",
 "/static/css/collapse.css",
 /*"/static/css/form.css",
 "/static/css/col.css",
@@ -47,7 +47,7 @@ includeJS(["/static/js/menu.js" ,
             "/static/js/additional-methods.js",
             "/static/js/index.js",
             "/static/js/window.js",
-        /*    "/static/js/bootstrap.min.js",*/
+           "/static/js/bootstrap.min.js",
             "/static/js/drag.js",
             "/static/js/dialog.js",
             "/static/js/jquery.ztree.core-3.5.js",
@@ -95,7 +95,7 @@ includeJS(["/static/js/menu.js" ,
                 <li class="nav-item dropdown pos-stc-xs"><a class="nav-link"
                     href="" data-toggle="dropdown">
                     <i class="fa fa-bell-o"></i>
-                        <span class="label label-sm up warn">3</span></a>
+                        <span class="label label-sm up warn">0</span></a>
                 </li>
 
                 <li class="nav-item dropdown">
@@ -103,7 +103,7 @@ includeJS(["/static/js/menu.js" ,
                         class="avatar w-32"><img src="img/a0.jpg"
                             alt="..."> <i class="on b-white bottom"></i></span></a>
                             <ul id="menu1" class="pull-right dropdown-menu" aria-labelledby="drop4">
-                                <li><a href="javascript:void(0)" id="logout">登出</a></li>
+                                <li><a href="/logout.htm" id="logout">登出</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="#">修改资料</a></li>
                             </ul>

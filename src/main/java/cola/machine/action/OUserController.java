@@ -420,7 +420,7 @@ public class OUserController extends BaseController {
     @RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
     public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
-        return "/static/html/login.html";
+        return "/static/html/zlogin.html";
     }
 
     @RequestMapping(value = "/user/edit.htm", method = RequestMethod.GET)

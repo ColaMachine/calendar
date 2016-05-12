@@ -161,9 +161,9 @@ var articalEdit={
         callback:function(result){
         console.log("callback");
                     console.log(result.data);
-                    alert("hi");
+
                     $("#pic").val(result.data);
-                    alert( $("#pic").val());
+
                 }
         });
         Ajax.getJSON("artical/view.json?id="+getParam("id"),null,function(data){

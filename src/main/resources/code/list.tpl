@@ -43,7 +43,7 @@ var ${abc}List={
         rowNum:10,
         rowList:[10,20,30],
         multiselect : true,
-        height:550,
+
         url : PATH+'/${abc}/list.json',
         autowidth:true,
         grid:"#${table.name}Grid",

@@ -48,7 +48,7 @@ li{ list-style: none; }
 	display:inline-block;
 	*/
 	
-	margin-left:190px;
+	margin-left:200px;
 
 	position: relative;
 	/* border:1px solid red; */
@@ -466,4 +466,13 @@ overflow:scroll;
     outline: 0;
     -webkit-box-shadow: 0 0px 0px rgba(0,0,0,.5);
     box-shadow: 0 0px 0px rgba(0,0,0,.5);
+}
+
+.body_top{
+    margin-top:15px;
+    margin-bottom:15px;
+}
+.app-search{
+    margin-bottom:15px;
+
 }

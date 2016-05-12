@@ -446,11 +446,20 @@ public class ArticalController extends BaseController{
             return ResultUtil.getResult(302,validStr);
         }
         SysUser user =(SysUser)request.getSession().getAttribute("user");
+
+        if(StringUtil.isBlank(id)){
+            artical.setCreator(user.getId());
+            artical.setCreatorname(user.getUsername());
+            artical.setCreatetime(new Timestamp(new Date().getTime()));
+        }
+
+        artical.setUpdatetime(new Timestamp(new Date().getTime()));
+
         String html = artical.getContent()+artical.getTitle();
         if(MGCUtil.contain(html)){
             return ResultUtil.getResult(302,"含敏感词");
         }
-        artical.setCreator(user.getId());
+       // artical.setCreator(user.getId());
         //artical.setCreatorname(user.getUsername());
 
         return articalService.save(artical);

@@ -80,7 +80,7 @@ public class PartnerService extends BaseService {
                
             partnerMapper.insert(partner);
         } else {
-             partnerMapper.updateByPrimaryKey(partner);
+             partnerMapper.updateByPrimaryKeySelective(partner);
         }
         return ResultUtil.getSuccResult();
     }

@@ -11,7 +11,7 @@ public class NotEmpty extends Rule{
 	@Override
 	public boolean valid() throws Exception{
 		if(this.getValue() == null || this.getValue().trim().equals("") ){
-				message = "err.param.notnull";
+				message = "不能为空";
 				return false;
 			}else {
 				return true;

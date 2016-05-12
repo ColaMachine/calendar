@@ -172,7 +172,7 @@ $('#content-row').append(html);
             {   name : 'operation',
                 width : 150,
                 formatter : function(value, grid, rows) {
-                    var str= getViewHtml(rows.id,"articalList")+getEditHtml(rows.id,"articalList")+getDelHtml(rows.id,"articalList");
+                    var str= "";
                    // alert(rows.status);
                     if(rows.status==1 && Auth.hasResource("Res_ArticalAuth")){
                         str +=gridHelper.getAuditHtml(rows.id,"articalList");

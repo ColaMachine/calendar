@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import cola.machine.bean.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -470,7 +471,7 @@ public class PartnerController extends BaseController{
         vu.add("address", address, "地址",  new Rule[]{new Length(100),new NotEmpty()});
         vu.add("logo", logo, "logo",  new Rule[]{new Length(50),new NotEmpty()});
         vu.add("remark", remark, "备注",  new Rule[]{new Length(200)});
-        vu.add("creator", creator, "创建人",  new Rule[]{new Digits(11,0),new NotEmpty()});
+        vu.add("creator", creator, "创建人",  new Rule[]{new Digits(11,0)});
         vu.add("creatorname", creatorname, "创建人姓名",  new Rule[]{new Length(20)});
         vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         vu.add("updatetime", updatetime, "更新时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
@@ -478,7 +479,14 @@ public class PartnerController extends BaseController{
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
+        SysUser user =(SysUser)request.getSession().getAttribute("user");
+        if(StringUtil.isBlank(id)){
+            partner.setCreator(user.getId());
+            partner.setCreatorname(user.getUsername());
+            partner.setCreatetime(new Timestamp(new Date().getTime()));
+        }
 
+        partner.setUpdatetime(new Timestamp(new Date().getTime()));
         return partnerService.save(partner);
        
     }
