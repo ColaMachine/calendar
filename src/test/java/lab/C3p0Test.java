@@ -45,6 +45,20 @@ public class C3p0Test {
             throw new RuntimeException("无法从数据源获取连接 ", e);
         }
     }
+    class A{
+        A(){
+
+        }
+        private  A(String s){
+            print(s);
+        }
+        private void  heieh(){
+            print("123123");
+        }
+    }
+    private void print(String s){
+
+    }
 
     public static void main(String[] args) throws SQLException {
         Connection con = null;
