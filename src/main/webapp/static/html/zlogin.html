@@ -174,7 +174,8 @@
 
 
 </div>
-<div class="modal fade" id="smsValidForm"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="smsValidDiv"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <form id="smsValidForm" >
     <div class="modal-dialog modal-dialog-small" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -209,6 +210,42 @@
     </div>
 </div>
 
+<div class="modal fade" id="emailValidDiv"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <form id="emailValidForm">
+    <div class="modal-dialog modal-dialog-small" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title center" id="modalTitle">验证邮箱</h4>
+                <h6 class="modal-title center" id="modalDescri">请输入你收到的邮箱验证码</h6>
+            </div>
+            <div class="modal-body">
+                <form id="registerEnterForm" style="" class="form-signin"
+                      action="<%=path %>/pwdrestPost" method="post">
+                    <div class="form-group">
+                        <label for="username" class="sr-only">邮箱地址</label>
+                        <span   id="phone"
+                                name="phone"  class="form-control"
+                        ></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="sr-only">邮箱验证码</label>
+                        <div class="input-group">
+                            <div style="position:relative;overflow:hidden">
+                                <input type="text" id="smsCaptcha" name="smsCaptcha" class="form-control" placeholder="邮箱验证码">
+                            </div>
+                            <a id="smsCaptchaBtn" class="input-group-addon bg-white ">发送验证码</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" id="smsValidBtn" class="btn btn-primary center">点击进入</button>
+            </div>
+        </div>
+    </div>
+        </form>
+</div>
 
 
 
@@ -229,7 +266,7 @@
 
 
                             <label for="forgetPwdAccount" class="sr-only">邮箱地址/手机号码</label>
-                            <input id="forgetPwdAccount" type="text" name="forgetPwdAccount" maxlength="50" value="371452875@qq.com"
+                            <input id="forgetPwdAccount" type="text" name="forgetPwdAccount" maxlength="50"
                                    class="form-control username" placeholder="邮件地址/手机号码" required autofocus/>
                         </div>
                         <!--  <div class="form-group">

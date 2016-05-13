@@ -17,17 +17,31 @@
 	http://www.springframework.org/schema/task 
 	http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-	<context:component-scan base-package="cola.machine.action" />
+
 	<mvc:view-controller path="/" view-name="index" />
 
-	  <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->  
+	<!--<aop:aspectj-autoproxy proxy-target-class="true"/>
+-->
+
+	<!-- 启用MVC注解 -->
+	<mvc:annotation-driven />
+	<context:component-scan base-package="cola.machine.dao" />
+	<context:component-scan base-package="cola.machine.service" />
+	<context:component-scan base-package="cola.machine.action" />
+
+	<context:component-scan base-package="core.log">
+	</context:component-scan>
+	<aop:aspectj-autoproxy />
+	<mvc:view-controller path="/" view-name="index" />
+
+	<!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
         <property name="defaultEncoding" value="UTF-8"/>  
         <!-- 指定所上传文件的总大小不能超过200KB。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->  
         <property name="maxUploadSize" value="20000000"/>  
     </bean>  
       <!-- 
-      
+
    	<task:scheduled-tasks>   
 	        <task:scheduled ref="taskJob" method="job1" cron="0 * * * * ?"/>   
 	</task:scheduled-tasks>  

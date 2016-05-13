@@ -68,7 +68,41 @@ public class ValidCodeController {
         JSONPObject object =new JSONPObject(callbackParam,result);
         return object;
     }
+    /**
+     * 第三方系统前端请求获取短信验证码
+     * @param request
+     * @return
+     * @author dozen.zhang
+     */
+    @RequestMapping(value = "/email/get.json")
+    @ResponseBody
+    public JSONPObject emailGet(HttpServletRequest request ,HttpServletResponse response){
+        ValidCodeConfig config = Config.getInstance().getValidCode();
+        String timeStamp = request.getParameter("timeStamp");
+        String appId =request.getParameter("appid");
+        String phone =request.getParameter("email");
+        String systemCode = request.getParameter("systemno");
+        //调用生成验证码服务 返回验证码 或者失败原因
+        ResultDTO result =
+                validCodeService.getEmailValidCode(systemCode,phone);
+        result.setData(null);
 
+
+
+       /* try {
+            response.setHeader("Content-Type", "application/javascript;charset=UTF-8");
+            String jsonp= new String(callbackParam+"("+JSON.toJSONString(result)+")))))");
+            response.getOutputStream().write(jsonp.getBytes("UTF-8"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }*/
+        //将result转成JSON串输出
+        // return result;
+        String callbackParam = request.getParameter("callback");
+        JSONPObject object =new JSONPObject(callbackParam,result);
+        return object;
+    }
     @RequestMapping(value = "/img/get.json")
     @ResponseBody
     public JSONPObject imgGet(HttpServletRequest request,HttpServletResponse response)throws Exception{
