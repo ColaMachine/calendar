@@ -46,8 +46,13 @@ public final class RedisUtil {
         try {
             JedisPoolConfig config = new JedisPoolConfig();
            // config.setMaxActive(MAX_ACTIVE);
-            config.setMaxTotal(200);
-            config.setMaxIdle(MAX_IDLE);
+            config.setMaxTotal(1);
+            config.setMaxIdle(1);
+
+            config.setMaxWaitMillis(1000);
+           // config.setSoftMinEvictableIdleTimeMillis();
+            config.setMinEvictableIdleTimeMillis(3000);
+            config.setSoftMinEvictableIdleTimeMillis(3000);
           //  config.setMaxWait(MAX_WAIT);
             config.setTestOnBorrow(TEST_ON_BORROW);
             jedisPool = new JedisPool(config, ADDR, PORT, TIMEOUT, AUTH);
@@ -144,6 +149,7 @@ public final class RedisUtil {
         try {
             jedis = jedisPool.getResource();
             jedis.setex(key,seconds,value);
+
         } catch (Exception e) {
             //释放redis对象
             jedisPool.returnBrokenResource(jedis);
@@ -358,5 +364,34 @@ public final class RedisUtil {
             }
         }
 
+    }
+    /*
+         * 释放redis对象。
+         */
+    public static void returnBrokenResource(Jedis resource) {
+        jedisPool.returnBrokenResource(resource);
+    }
+
+    public static void  main (String args[]){
+        int i=0;
+        while(true){
+            try {
+                System.out.println("begin");
+                Jedis jedis = RedisUtil.getJedis();
+                if (jedis != null) {
+                    jedis.set("1", i++ + "");
+                } else {
+                    System.out.println("jedis is null");
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            System.out.println(DateUtil.formatToString(new java.util.Date(),"yyyy-MM-dd hh:mm:ss"));
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

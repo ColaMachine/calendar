@@ -13,6 +13,7 @@ import cola.machine.service.AuthService;
 import cola.machine.util.*;
 import cola.machine.util.log.ServiceMsg;
 import cola.machine.util.rules.*;
+import core.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +46,15 @@ public class OUserController extends BaseController {
      * new CustomDateEditor(df, true); binder.registerCustfomEditor(Date.class,
      * dateEditor); }
      */
+  @Log(name="您访问了aop2方法")
     @RequestMapping(value = "/login.htm", method = RequestMethod.GET)
     public String loginGet(HttpServletRequest request) {
         // String s =request.getParameter("s");
         // s.substring(12);
         // logger.debug("s");
         // System.out.println(123);
+        //getJedis().set("1","2");
+        System.out.println("登录页面");
         return "/static/html/zlogin.html";
     }
 
@@ -232,7 +236,35 @@ public class OUserController extends BaseController {
         return result;
     }
 
-
+    /**
+     * 说明:激活邮件回跳页面
+     *
+     * @param request
+     * @return
+     * @author dozen.zhang
+     * @date 2015年5月14日上午11:35:09
+     */
+    @RequestMapping(value = "/validEmail.json", method = RequestMethod.GET)
+    public @ResponseBody ResultDTO active(HttpServletRequest request) {
+        String activeid = request.getParameter("activeid");
+        ResultDTO result;
+        if (StringUtil.isNotEmpty(activeid)) {
+            result = this.userService.updateUserActive(activeid);
+        } else {
+            request.setAttribute("msg", "激活url无效");
+            return "/error.jsp";
+        }
+        if (result.isRight()) {
+            // 把用户信息传入到session 中并让他登录到首页
+            SysUser user = (SysUser) result.getData();
+            request.getSession().setAttribute("user", user);
+        } else {
+            // 提示激活url无效
+            request.setAttribute("msg", result.getMsg());
+            return "/error.jsp";
+        }
+        return "/active/active.jsp";
+    }
     @RequestMapping(value = "/validPhone.json", method = RequestMethod.POST)
     public @ResponseBody ResultDTO validPhone( HttpServletRequest request) {
         // 新注册的用户激活状态为false

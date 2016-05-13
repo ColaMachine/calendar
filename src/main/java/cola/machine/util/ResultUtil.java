@@ -7,6 +7,7 @@
  */
 package cola.machine.util;
 
+import cola.machine.util.log.ServiceCode;
 import cola.machine.util.log.ServiceMsg;
 import org.apache.tools.ant.types.spi.Service;
 import org.slf4j.Logger;
@@ -155,4 +156,9 @@ public class ResultUtil {
 	public static  ResultDTO getResult(int result, Object data, String msg , Page page){
         return new ResultDTO(result, data, msg, page);
     }
+
+	public static ResultDTO getResult(ServiceCode serviceCode, int paramError, int i, ServiceMsg serviceCode_err) {
+		return getResult(serviceCode.ordinal()*100000+paramError*1000+i, null, serviceCode_err.toString(),null);
+
+	}
 }
