@@ -105,7 +105,7 @@ public class OUserController extends BaseController {
         if (!result.isRight()) {
             // return result;
         }
-        result = validCodeService.remoteValidImg(request.getRequestedSessionId(), imgCaptcha);
+        result = validCodeService.imgValidCode("calendar",request.getRequestedSessionId(), imgCaptcha);
         if (!result.isRight()) {
             return result;
         }

@@ -483,14 +483,14 @@ public class ValidCodeService {
      * 验证图片验证码
      *
      * @param systemCode
-     * @param phone
+     * @param sessionid
      * @param code
      * @return
      * @author dozen.zhang
      */
-    public ResultDTO imgValidCode(String systemCode, String phone, String code) {
+    public ResultDTO imgValidCode(String systemCode, String sessionid, String code) {
 
-        return this.validCode(systemCode, phone, code, false);
+        return this.validCode(systemCode, sessionid, code, false);
     }
 
     public static void main(String[] args) {

@@ -59,9 +59,9 @@ var loginForm={
     },
     forgetLink:function(){
 
-        //forgetPwdForm.show();
-        emailValidForm.setEmail("371452875@qq.com");
-        emailValidForm.show();
+        forgetPwdForm.show();
+        //emailValidForm.setEmail("371452875@qq.com");
+        //emailValidForm.show();
     },
     //登录按扭提交
     submit:function(){

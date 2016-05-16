@@ -108,7 +108,7 @@ function AjaxClass()
                     Result = XmlHttp.responseText;
                 }
                 XmlHttp = null;
-                alert(typeof Result)
+                //alert(typeof Result)
                 me.CallBack(Result);
             }
              else
@@ -225,7 +225,7 @@ var Ajax={
          		}
          		if (typeof callbackOnError == 'function') {
          			callbackOnError(errorThrown);
-         		} else {alert(typeof callbackOnError);
+         		} else {//alert(typeof callbackOnError);
          			alert('参数不是function');
          		}
          	};
@@ -364,14 +364,14 @@ function handlerAjaxReturnAndGoUrl(data, url) {
 	if (data.result) {
 		window.location = url;
 	} else {
-		alert(data.msg);
+		dialog.alert(data.msg);
 	}
 }
 function handlerAjaxReturnAndExeFun(data, fun) {
 	if (data.result) {
 		fun();
 	} else {
-		alert(data.msg);
+		dialog.alert(data.msg);
 	}
 }
 /**-------------地市县区多选框插件----------------------------------------------**/
@@ -518,11 +518,11 @@ var AreaBox = {
 		var _city = "";
 		var _county = "";
 		if (name == "全国" && $(this.container).find(".tag").length > 0) {
-			alert("你已经选择了地区,无法添加全国");
+			dialog.alert("你已经选择了地区,无法添加全国");
 			return;
 		}
 		if ($(this.container).find(".tag[name='全国']").length > 0) {
-			alert("你已经选择全国,无需添加其他地区");
+			dialog.alert("你已经选择全国,无需添加其他地区");
 			return;
 		}
 		// 添加的只是省
@@ -533,7 +533,7 @@ var AreaBox = {
 			_province = name.trim();
 
 			if (this.dataStore[_province]) {
-				alert("你已经选择了省份,不能再添加");
+				dialog.alert("你已经选择了省份,不能再添加");
 				return;
 			}
 		} else {// 添加的是省市
@@ -546,20 +546,20 @@ var AreaBox = {
 		
 		//选择的是省
 		if (this.dataStore[_province] && this.dataStore[_province]["all"]) {
-			alert("你已经选择了省份,不能再添加");
+			dialog.alert("你已经选择了省份,不能再添加");
 			return;
 		}
 		//有选择市
 		if (_city) {
 			if (this.dataStore[_province] && this.dataStore[_province][_city]
 					&& this.dataStore[_province][_city]["all"]) {
-				alert("你已经选择了省市,不能再添加");
+				dialog.alert("你已经选择了省市,不能再添加");
 				return;
 			}
 			if (!_county)
 			if (this.dataStore[_province] && this.dataStore[_province][_city]) {
 				for (k in this.dataStore[_province][_city]) {
-					alert("你已经选择了省市,不能再添加");
+					dialog.alert("你已经选择了省市,不能再添加");
 					return;
 				}
 			}
@@ -569,12 +569,12 @@ var AreaBox = {
 		if (_county) {
 			if (this.dataStore[_province] && this.dataStore[_province][_city]
 					&& this.dataStore[_province][_city]["all"]) {
-				alert("你已经选择了上级区域,不能再添加");
+				dialog.alert("你已经选择了上级区域,不能再添加");
 				return;
 			}
 			if (this.dataStore[_province] && this.dataStore[_province][_city]
 				&& this.dataStore[_province][_city][_county]) {
-					alert("你已经选择了该省市区,不能再添加");
+					dialog.alert("你已经选择了该省市区,不能再添加");
 					return;
 			}
 			
@@ -874,7 +874,7 @@ function hideMask() {
 }*/
 function showMsg(caption, contenttext) {
 	
-	aiwifi.alert(contenttext);
+	dialog.alert(contenttext);
 }
 
 function initProCitySel(jso) {
@@ -1113,12 +1113,12 @@ function ajaxResultHandler(result){
 	}
 	if(result.r!=1){
 		if(result.r==504  ){
-			alert(result.msg);
+			dialog.alert(result.msg);
 			window.location=WEBCONTEXT+"/login";
 			
 		}
 		if(result.r==505  ){
-			alert(result.msg);
+			dialog.alert(result.msg);
 		}
 		return result;
 	}
@@ -1488,7 +1488,7 @@ var BaseValidator={
 
             					},
             					invalidHandler : function(form) {
-            					alert(1);
+
             					}
 }
 
@@ -2179,38 +2179,3 @@ function zImageUtil(config) {
 	}
 
 })();
-$(document).ready(function(){return;
-Awifi_UI.captcha.init({
-	/**
-	 * 必选
-	 */
-	systemNo:'calendar',
-	mainContain: $("#login_form"), //容器 JQuery对象
-	/**
-	 * 以下可选
-	 */
-	/**
-	 * 请求地址
-	 */
-	url: {
-		smsCaptchaUrl: '/code/sms/get.json',
-		picCaptchaUrl:'/code/img/get.json',
-		sureUrl: '/code/valid.json'
-	},
-	/**
-	 * host
-	 */
-	host:'http://127.0.0.1:8080/',
-	/**
-	 *  参数
-	 */
-	params: {
-
-		appid: '1111',
-		timestamp: '1111111111111',
-		token: 'adcfgvftgf'
-	},
-	captchaType:'pic',// 'pic'表示图片验证码
-	captchaCutdownTime: 60 //验证码倒计时时间 默认60秒
-});
-})
