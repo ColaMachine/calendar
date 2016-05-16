@@ -1,6 +1,6 @@
 package core.redis.annotation;
 
-import org.apache.commons.lang.StringUtils;
+import cola.machine.util.StringUtil;
 import org.springframework.util.Assert;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ShardedJedis;
@@ -24,7 +24,7 @@ public abstract class JedisManageSupport {
      * 如果某个键不同单位之间也不会重复，可以使用这个方法生成redis的键
      */
     public final byte[] assemKey(String baseKey) {
-        Assert.isTrue(StringUtils.isNotBlank(baseKey), "参数不能为空");
+        Assert.isTrue(!StringUtil.isBlank(baseKey), "参数不能为空");
         return baseKey.getBytes();
     }
 

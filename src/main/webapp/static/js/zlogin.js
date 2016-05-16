@@ -852,15 +852,23 @@ var emailValidForm={
    submit:function(){
 
     	var jso={};
-    	jso.smsCaptcha=this.doms.smsCaptchaInput.val();
-    	jso.phone=this.doms.phone.text();
-    	if(StringUtil.isBlank(jso.smsCaptcha)|| jso.smsCaptcha.length<4){
+    	jso.code=this.doms.smsCaptchaInput.val();
+    	jso.email=this.doms.phone.text();
+
+    	if(StringUtil.isBlank(jso.code)|| jso.code.length<4){
     	    dialog.alert("请输入验证码");
     	    return;
     	}
-        Ajax.post(PATH+"/validPhone.json",jso,function(result){
+    	if(StringUtil.isBlank(jso.email) || !StringUtil.isEmail(jso.email)){
+            dialog.alert("邮件地址不能为空");
+            return;
+        }
+        Ajax.post(PATH+"/validEmail.json",jso,function(result){
             if(result.r==AJAX_SUCC){
-                 window.location=PATH+"/index.htm";
+                dialog.alert("邮件激活成功,点击自动登录",function(){
+                     window.location=PATH+"/index.htm";
+                });
+
             }else{
                 dialog.alert(result.msg);
             }

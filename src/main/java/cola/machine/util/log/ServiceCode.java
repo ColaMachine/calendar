@@ -7,6 +7,7 @@ public enum ServiceCode {
      *类名_方法名
      */
     ValidCodeService("验证码服务"),
+    USER_SERVICE("用户服务"),
     MERCHANT_QUERYCOUNT("统计商户总数"),
     MERCHANT_QUERYLIST("查询商户列表"),
     YUANQU_ESCAPE("园区逃生"),

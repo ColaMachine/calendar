@@ -1,0 +1,8 @@
+#!/bin/bash
+cd /home/colamachine/workspace/python/tutorial/tutorial
+scrapy crawl douyu
+scrapy crawl panda
+scrapy crawl zhanqi
+scrapy crawl longzhu
+scrapy crawl quanming
+python run.py

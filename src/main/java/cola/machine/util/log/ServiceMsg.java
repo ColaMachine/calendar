@@ -6,7 +6,7 @@ public enum ServiceMsg {
     /**
      *类名_方法名
      */
-
+    PARAM_ERR("参数错误"),
     SEND_FAIL("信息发送失败"),
     SMS_SEND_FAIL("短信发送失败"),
     SEND_TOO_MUCH_TIMES("发送次数过多"),
@@ -20,6 +20,7 @@ public enum ServiceMsg {
     ACCOUNT_FORMAT_ERR("账号格式错误"),
     VALIDCODE_MATCH_ERR("验证码匹配错误"),
     VALIDCODE_USED("验证码已使用"),
+    VALIDCODE_ERR("验证码无效"),
     MERCHANT_QUERYPACKAGELIST("查询套餐信息"),
     SERVICECODE_ERR("系统代号不正确"),
     UNKNOWN("系统繁忙");

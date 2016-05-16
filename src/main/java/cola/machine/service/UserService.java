@@ -16,7 +16,11 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import cola.machine.bean.*;
+import cola.machine.common.msgbox.ErrorMsg;
 import cola.machine.dao.*;
+import cola.machine.util.*;
+import cola.machine.util.log.LogUtil;
+import cola.machine.util.log.ServiceCode;
 import cola.machine.util.log.ServiceMsg;
 
 
@@ -28,13 +32,6 @@ import org.springframework.stereotype.Service;
 import core.action.ResultDTO;
 import cola.machine.common.msgbox.MsgReturn;
 import cola.machine.constants.SysConfig;
-import cola.machine.util.MD5Utils;
-import cola.machine.util.MapUtil;
-import cola.machine.util.RegexUtil;
-import cola.machine.util.ResultUtil;
-import cola.machine.util.StringUtil;
-import cola.machine.util.UUIDUtil;
-import cola.machine.util.ValidateUtil;
 import cola.machine.util.mail.MailSenderInfo;
 import cola.machine.util.mail.SimpleMailSender;
 
@@ -44,7 +41,7 @@ import cola.machine.util.mail.SimpleMailSender;
  */
 @Service("userService")
 public class UserService extends SysUserService{
-
+	ServiceCode serviceCode= ServiceCode.USER_SERVICE;
     private static final Logger logger = LoggerFactory
             .getLogger(UserService.class);
 	@Autowired
@@ -205,7 +202,7 @@ public class UserService extends SysUserService{
 				SysUserRole sysUserRole=new SysUserRole();
 				sysUserRole.setUid(user.getId());
 				HashMap params =new HashMap();
-				params.put("code","guest");
+				params.put("code","role_guest");
 				List<SysRole> sysUserRoles=  roleMapper.listByParams(params);
 				if(sysUserRoles==null || sysUserRoles.size()==0){
 					return ResultUtil.getResult("");
@@ -213,25 +210,11 @@ public class UserService extends SysUserService{
 				sysUserRole.setRoleid(sysUserRoles.get(0).getId());
 				sysUserRoleMapper.insert(sysUserRole);
 				// 发送激活邮件
-				MailSenderInfo mailInfo = new MailSenderInfo();
-				mailInfo.setMailServerHost("smtp.163.com");
-				mailInfo.setMailServerPort("25");
-				mailInfo.setValidate(true);
-				mailInfo.setUserName("likegadfly");
-				mailInfo.setPassword("wangyi216568");// 您的邮箱密码
-				mailInfo.setFromAddress("likegadfly@163.com");
-				mailInfo.setToAddress("371452875@qq.com");
-				mailInfo.setSubject("帐号激活");
-				//mailInfo.setContent("请点击下面的链接进行激活</br><a href=''>http://127.0.0.1:8080/calendar/active.htm?activeid="
-					//	+ active.getActiveid() + "</a>");
-				mailInfo.setContent("你的重置密码验证码:"+ active.getActiveid()+" 请复制至密码重置验证码处进行后续操作");
-				// 这个类主要来发送邮件
-				SimpleMailSender sms = new SimpleMailSender();
-				// sms.sendTextMail(mailInfo);//发送文体格式
 				try {
-					sms.sendHtmlMail(mailInfo);// 发送html格式
-				} catch (MessagingException e) {
-					e.printStackTrace();
+					EmailUtil.send(user.getEmail(), "你的邮件验证码:" + active.getActiveid() + "");
+				}catch (Exception e){
+					LogUtil.system(serviceCode,218,user.getEmail()+active.getActiveid(),e.getMessage()+" 发送邮件失败","");
+					return ResultUtil.getResult(serviceCode, ErrorMsg.THIRD_PART_ERROR, 219, ServiceMsg.SEND_FAIL);
 				}
 			}
 			return ResultUtil.getSuccResult();
@@ -278,23 +261,12 @@ public class UserService extends SysUserService{
 			// 发送邮件
 		}
 
-		// 发送激活邮件
-		MailSenderInfo mailInfo = new MailSenderInfo();
-		mailInfo.setMailServerHost("smtp.163.com");
-		mailInfo.setMailServerPort("25");
-		mailInfo.setValidate(true);
-		mailInfo.setUserName("likegadfly");
-		mailInfo.setPassword("wangyi216568");// 您的邮箱密码
-		mailInfo.setFromAddress("likegadfly@163.com");
-		mailInfo.setToAddress(email);
-		mailInfo.setSubject("密码重置");
-		mailInfo.setContent("请点击下面的链接进行密码重置</br><a href=''>http://127.0.0.1:8080/calendar/active/"
-				+ pwdrst.getIdpwdrst() + "</a>");
+
 		// 这个类主要来发送邮件
-		SimpleMailSender sms = new SimpleMailSender();
+
 		// sms.sendTextMail(mailInfo);//发送文体格式
 		try {
-			sms.sendHtmlMail(mailInfo);// 发送html格式
+			EmailUtil.send(email,pwdrst.getIdpwdrst());
 		} catch (MessagingException e) {
 			e.printStackTrace();
 			return ResultUtil.getResult(301,"发送邮件失败");
@@ -310,11 +282,11 @@ public class UserService extends SysUserService{
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * cola.machine.calendar.user.service.UserService#updateUserActive(java.
 	 * lang.String)
-	 * 
+	 *
 	 * @author colamachine 涉及两张表 user 表 和 active 表 user表有active 字段标记账户是否激活状态
 	 * active 表记录激活过程和激活码
 	 */
@@ -404,5 +376,35 @@ public class UserService extends SysUserService{
 		user.setStatus(status);
 		user.setId(userid);
 		userMapper.updateStatus(user);
+	}
+
+
+	public ResultDTO activeWithEmail(String email,String code){
+		if(StringUtil.isBlank(email)|| !StringUtil.isEmail(email) || StringUtil.isBlank(code)){
+			return ResultUtil.getResult(serviceCode,ErrorMsg.PARAM_ERROR,395,ServiceMsg.PARAM_ERR);
+		}
+
+		Active active = this.activeMapper.selectActiveById(code);
+
+		if (active == null || StringUtil.isBlank(active.getActiveid())) {
+			return ResultUtil.getResult(ServiceMsg.VALIDCODE_ERR);
+		}
+		if (active.isActived()) {
+			return ResultUtil.getResult(ServiceMsg.VALIDCODE_USED);
+		}
+
+
+		SysUser olduser =sysUserMapper.selectByPrimaryKey(active.getUserid());
+		if(!email.equals(olduser.getEmail())){
+			return ResultUtil.getResult(serviceCode,ErrorMsg.PARAM_ERROR,410,ServiceMsg.PARAM_ERR);
+		}
+		active.setActived(true);
+		active.setActivedtime(new Timestamp((new Date()).getTime()));
+		this.activeMapper.updateActive(active);
+		SysUser user = this.sysUserMapper.selectByPrimaryKey(active.getUserid());
+		user.setStatus(2);
+		this.sysUserMapper.updateByPrimaryKey(user);
+
+		return ResultUtil.getSuccResult();
 	}
 }

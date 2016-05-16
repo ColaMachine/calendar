@@ -244,26 +244,15 @@ public class OUserController extends BaseController {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:35:09
      */
-    @RequestMapping(value = "/validEmail.json", method = RequestMethod.GET)
-    public @ResponseBody ResultDTO active(HttpServletRequest request) {
-        String activeid = request.getParameter("activeid");
+    @RequestMapping(value = "/validEmail.json", method = RequestMethod.POST)
+    public @ResponseBody ResultDTO activeWithEmail(HttpServletRequest request) {
+        String code = request.getParameter("code");
+        String email = request.getParameter("email");
         ResultDTO result;
-        if (StringUtil.isNotEmpty(activeid)) {
-            result = this.userService.updateUserActive(activeid);
-        } else {
-            request.setAttribute("msg", "激活url无效");
-            return "/error.jsp";
-        }
-        if (result.isRight()) {
-            // 把用户信息传入到session 中并让他登录到首页
-            SysUser user = (SysUser) result.getData();
-            request.getSession().setAttribute("user", user);
-        } else {
-            // 提示激活url无效
-            request.setAttribute("msg", result.getMsg());
-            return "/error.jsp";
-        }
-        return "/active/active.jsp";
+
+        result = this.userService.activeWithEmail(email,code);
+
+        return result;
     }
     @RequestMapping(value = "/validPhone.json", method = RequestMethod.POST)
     public @ResponseBody ResultDTO validPhone( HttpServletRequest request) {

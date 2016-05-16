@@ -40,7 +40,7 @@ public class ValidCodeService {
      * @author dozen.zhang
      */
     public ResultDTO getSmsValidCode(String systemCode, String phone) {
-        int serviceCode = 1;
+
         try {
             // 验证systemcode
             ValidCodeConfig defaultConfig = Config.getInstance().getValidCode();
@@ -140,7 +140,7 @@ public class ValidCodeService {
     }
     /**
      * @param systemCode 系统名称
-     * @param phone 手机号码
+     * @param email 手机号码
      * @return ResutDTO{r:xx,msg:xxx,data:{code:xxx}}
      * @author dozen.zhang
      */
@@ -212,17 +212,20 @@ public class ValidCodeService {
             // 返回验证码
             HashMap map = new HashMap();
             map.put("code", finalCode);
-            emailUtil.sendEmail();
-            String rc = smsUtil.sendSms(finalCode, email, (short) 1);
+            try {
+                EmailUtil.send(email, finalCode);
+            }catch(Exception e){
+                LogUtil.system(serviceCode,218,email+finalCode,e.getMessage()+" 发送邮件失败","");
+                return ResultUtil.getResult(serviceCode, ErrorMsg.THIRD_PART_ERROR, 219, ServiceMsg.SEND_FAIL);
+            }
+
             SmsRecord record =new SmsRecord();
             record.setPhone(email);
             record.setContent(finalCode);
-            record.setStatus("fail".equals(rc)?(byte)1:(byte)2);
+            record.setStatus((byte)1);
             record.setSystemNo(systemCode);
             smsRecordService.save(record);
-            if ("fail".equals(rc)) {
-                return ResultUtil.getResult(serviceCode, ErrorMsg.THIRD_PART_ERROR, 314, ServiceMsg.SEND_FAIL);
-            }
+
             result = ResultUtil.getDataResult(map);
 
             if (result.isRight()) {
