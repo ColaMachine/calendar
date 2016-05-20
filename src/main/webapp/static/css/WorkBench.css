@@ -325,7 +325,7 @@ border-color: #ADADAD;
 }
 
 .horizontal-line-container2 {
-	z-index: -5;
+	/*z-index: -5;*/
 	width: 100%;
 	position: absolute;
 	/*border:1px solid red;*/

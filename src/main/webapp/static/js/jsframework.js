@@ -342,4 +342,4 @@ if (System.ie && !System.debug)
 	Include("System.Plugins.IE"); //IE UserData
 if (window.opera)
 	Include("System.Plugins.Opera"); //Opera support
-Include("System.Global");
+//Include("System.Global");

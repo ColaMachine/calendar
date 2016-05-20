@@ -14,7 +14,7 @@
 		<script src="/static/js/jsframework.js" charset="utf-8"></script>
 		<!-- <script src="/static/js/system/data/calendar1.js" charset="utf-8">
 		</script><script src="/static/js/jsframework.js" charset="utf-8"></script>-->
-       
+
      <!--  <script type="javascript">
             includeCSS(["/static/css/CalendarView.css",
 "/static/css/WorkBench.css"
@@ -25,16 +25,16 @@ includeJS(["/static/js/system/global.js",
             "/static/js/system/web/ui/webcontrols/property.js",
           ]);
         </script>-->
-       
+
         <script src="/static/js/jquery.min.js" charset="utf-8"></script>
 		<script src="/static/js/common.js" charset="utf-8"></script>
 		<script src="/static/js/system/global.js" charset="utf-8"></script>
 		<script src="/static/js/system/action/Drag.js" charset="utf-8"></script>
 		<script src="/static/js/DateUtils.js" charset="utf-8"></script>
 		<script src="/static/js/system/web/ui/webcontrols/calendarview1.js" charset="utf-8"></script>
-		<script src="/static/js/system/data/calendar1.js" charset="utf-8"></script>
+<!--		<script src="/static/js/system/data/calendar1.js" charset="utf-8"></script>
 
-		<script src="/static/js/system/web/ui/webcontrols/MiniCalendar.js" charset="utf-8"></script>
+		<script src="/static/js/system/web/ui/webcontrols/MiniCalendar.js" charset="utf-8"></script>-->
 		<!--<script src="/static/js/system/web/ui/webcontrols/property.js" charset="utf-8"></script>-->
 <style type="text/css">
 table{border:0;margin:0;border-collapse:collapse;}
@@ -55,7 +55,7 @@ table td{padding:0;}
 			<textarea id="codeInput"  rows="2" cols="50"></textarea>
 	<button type="button" onclick="writeNow()">Click Me!</button>
 		</div>
-		
+
 		<div style="position: absolute; top: 500;display:none">
 			<ul>
 				<li>只显示此日历</li>
@@ -81,7 +81,7 @@ table td{padding:0;}
 						</div>
 						<div class="ccp-rb-color goog-inline-block">
 						</div><br>
-						
+
 						<div class="ccp-rb-color goog-inline-block">
 						</div>
 						<div class="ccp-rb-color goog-inline-block">
@@ -94,7 +94,7 @@ table td{padding:0;}
 						</div>
 						<div class="ccp-rb-color goog-inline-block">
 						</div><br>
-						
+
 						<div class="ccp-rb-color goog-inline-block">
 						</div>
 						<div class="ccp-rb-color goog-inline-block">
@@ -107,7 +107,7 @@ table td{padding:0;}
 						</div>
 						<div class="ccp-rb-color goog-inline-block">
 						</div><br>
-						
+
 						<div class="ccp-rb-color goog-inline-block">
 						</div>
 						<div class="ccp-rb-color goog-inline-block">
@@ -123,13 +123,13 @@ table td{padding:0;}
 					</div>
 				</div>
 			</div>
-			
+
 		</div>
 		<!--topcontainerwk start-->
 		<div id="tt"></div>
 		<!-- scrolltimedevents end -->
 		<div id="tubiaodiv" class="tubiaodiv" >123123</div>
-	<div id="editForm">123
+	<div id="editForm" style="display:none">123
 	<div class="editFormHead">
 		toubu
 	</div>
@@ -163,7 +163,7 @@ table td{padding:0;}
 	</div>
 	</BODY>
 	<script language="javascript">
-	
+
 	//	var date=new Date(23320320*60000);
 	//	alert(date)
 	//	var startDateTime = Date.parse("2003-03-17T02:02:02");
@@ -200,7 +200,7 @@ table td{padding:0;}
 		var str=$("codeInput").value;
 		ca._eval(str);
 	}
-	
+
 	function disableMouseSelection(element) {
 		if (element.onselectstart !== undefined) {
 			element.onselectstart = function() {
@@ -235,30 +235,30 @@ console.log("hidedialogue");
 	d.deleteEventBarAction("newEvent");
 
 	}
-	  function findDimensions() 
-   {  
+	  function findDimensions()
+   {
    var winHeight=0;
-   var winWidth=0; 
- 
-   if (window.innerWidth)  
-   winWidth = window.innerWidth;  
-   else if ((document.body) && (document.body.clientWidth))  
-   winWidth = document.body.clientWidth;  
- 
-   if (window.innerHeight)  
-   winHeight = window.innerHeight;  
-   else if ((document.body) && (document.body.clientHeight))  
-   winHeight = document.body.clientHeight;  
-   if (document.documentElement  && document.documentElement.clientHeight && document.documentElement.clientWidth)  
-   {  
-   winHeight = document.documentElement.clientHeight;  
-   winWidth = document.documentElement.clientWidth;  
-   }  
-   
+   var winWidth=0;
+
+   if (window.innerWidth)
+   winWidth = window.innerWidth;
+   else if ((document.body) && (document.body.clientWidth))
+   winWidth = document.body.clientWidth;
+
+   if (window.innerHeight)
+   winHeight = window.innerHeight;
+   else if ((document.body) && (document.body.clientHeight))
+   winHeight = document.body.clientHeight;
+   if (document.documentElement  && document.documentElement.clientHeight && document.documentElement.clientWidth)
+   {
+   winHeight = document.documentElement.clientHeight;
+   winWidth = document.documentElement.clientWidth;
+   }
+
 	document.getElementById("aa").value= window.innerHeight;
 	//document.getElementById("scrolltimedeventswk").style.height= window.innerHeight-120;
-	
-   }   
+
+   }
    window.onload=function (){
 	//document.getElementById("scrolltimedeventswk").style.height= window.innerHeight-120;
    }
