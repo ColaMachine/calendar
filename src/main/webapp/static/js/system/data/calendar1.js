@@ -12,7 +12,7 @@ function $mz_3__id1372936633538$(){
 
 
 function Calendar(){System.call(this);this.index=this.hashcode;}
-alert(1);
+
 t=Calendar.Extends(System, "Calendar");
 t.count=0;
 t.getUniqueId=function(){return "ca"+(t.count++).toString(36);};

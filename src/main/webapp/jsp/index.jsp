@@ -15,7 +15,7 @@ var PATH="${path}";
 includeCSS(["/static/css/bootstrap.min.css",
 "/static/css/font-awesome.css",
 "/static/css/main.css",
-"/static/css/menu.css",
+"/static/css/menu2.css",
 "/static/css/collapse.css",
 /*"/static/css/form.css",
 "/static/css/col.css",

@@ -695,8 +695,8 @@ function checkCookie() {
  *
  **/
 
+window.onload=function(){
 
-$(document).ready(function() {
 	//$("#loginBtn").bind('click',function(){alert('tt!')});
 	//登录表单验证器初始化
 	loginForm.init();
@@ -721,12 +721,16 @@ $(document).ready(function() {
 
 	checkCookie();
 
+}
+/*
+$(document).ready(function() {
 
 
 
 	//show user name and password
 
 });
+*/
 
 
 
@@ -903,3 +907,34 @@ var emailValidForm={
         });
     }
 };
+/*
+
+jQuery=function( selector, context){
+   	return new jQuery.fn.init( selector, context );
+}
+
+
+jQuery.fn=jQuery.prototype={
+
+init:function(selector){
+if(selector[0]=='#'){
+    return document.getElementById(selector.replace("#"));
+}
+if(selector[0]=='.'){
+   return document.getElementsByClassName(selector.replace("."));
+}
+}
+}
+
+jQuery.extend=function(obj1,obj2){
+
+}
+jQuery.fn.init.prototype = jQuery.fn;
+jQuery.extend = jQuery.fn.extend = function(obj1,obj2){
+    for(var key in obj2){
+        obj1[key]=obj2[key];
+    }
+
+}
+
+$=jQuery;*/

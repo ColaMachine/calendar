@@ -46,9 +46,9 @@ CalendarView.prototype.render = function() {
 				+ "').changeToDayView()\">day</span>&nbsp;<span onclick=\"Instance('"
 				+ this.index + "').changeToWeekView()\">week</span>" +" &nbsp;<span onclick=\"Instance('"
 				+ this.index + "').changeToMonthView()\">month</span>"
-				+"</td>" 
+				+"</td>"
 			+"</tr>"
-			+ "<tr>" 
+			+ "<tr>"
 				+ "<td  style=\"padding-top:50px\">"
 					+ "<div  cellspacing=0 	cellpadding=0 id=\"div_CalendarView_"
 						+ this.index
@@ -57,7 +57,7 @@ CalendarView.prototype.render = function() {
 					+ "</div>"
 				+ "</td>"
 					+"<td id=div_CalendarEventView_" + this.index + ">"
-			+this.getCalendarScheduleStr() +  
+			+this.getCalendarScheduleStr() +
 					"</td>" +
 			"</tr>" + "</table>"+this.getCalendarEventDialogStr();//
 	return str;
@@ -73,7 +73,7 @@ CalendarView.prototype.getRowDraw = function() {
 		return str;
 };
 /*
- * 
+ *
  * 右侧布局
  */
 CalendarView.prototype.getCalendarScheduleStr = function() {
@@ -136,7 +136,7 @@ CalendarView.prototype.getCalendarScheduleStr = function() {
 			+ "<tr>"
 			+ "<td>"
 			+ "<DIV   class=\"wk-scrolltimedevents\" id=\"scrolltimedeventswk\" >"
-			
+
 			+ "<TABLE cellSpacing=0 cellPadding=0 closure_hashCode_tc9hoq=\"69\" id=\"table2\" class=\"table2\">"
 			+ "<TBODY>"
 			+"<tr >"
@@ -147,24 +147,24 @@ CalendarView.prototype.getCalendarScheduleStr = function() {
 			+"</td>"
 			+"</tr>"
 			+ "<TR>"
-			
-	
-			
+
+
+
 			+ "<TD  class=\"tg-times-pri\" width=\"75px;\">";
 
-		
+
 	for ( var i = 0; i < this.timeSect.length; i++) {
 		str += "<DIV class=\"tg-time-pri\" >"
 				+ this.timeSect[i] + "</DIV>";
 	}
 	str += "</TD>";
-	
+
 	for ( var i = 0; i < weekDays.length; i++) {
 		var css = "";
 	if(weekDays[i].getFullYear()==now.getFullYear()&&weekDays[i].getMonth()==now.getMonth()&&weekDays[i].getDate()==now.getDate() ){
 		css = " class=\"td-time-pri-today\"";
 	}else{
-		
+
 	}
 		str += "<TD  id=\"td_"
 				+ weekDays[i].getFullYear()
@@ -180,7 +180,7 @@ CalendarView.prototype.getCalendarScheduleStr = function() {
 			//str += "&nbsp";
 		}
 str += "<div onclick=\"Instance('"+ this.index + "').createEvent(event) \"  class=\"div-tg-time\"></div></TD>";
-		
+
 
 	}
 	str += "</tr></tbody></table></div></td></tr></table><b class=\"xb4\" style=\"width:1010px; \"></b><b class=\"xb3\" style=\"width:1007px; \"></b><b class=\"xb2\" style=\"width:1006px; \"></b><b class=\"xb1\" style=\"width:1002px; \"></b>";
@@ -207,8 +207,8 @@ CalendarView.prototype.getCalendarStr = function() {
 	var today_y = this.today.getFullYear()
 	var today_m = this.today.getMonth() + 1;
 	var today_d = this.today.getDate();
-	
-	
+
+
 	var y =  this.dummyDay.getFullYear();
 	var m = this.dummyDay.getMonth() + 1;
 	var b_thisMonth = false;
@@ -218,7 +218,7 @@ CalendarView.prototype.getCalendarStr = function() {
 	// var d=this.date.getDate();
 	var _weekFirstDay = CaculateWeekDay(y, m, 1);
 	var _days = CaculateMonthDays(y, m);
-	
+
 	if(m==1){
 		var pre_days = CaculateMonthDays(y-1, 12);
 
@@ -257,7 +257,7 @@ CalendarView.prototype.getCalendarStr = function() {
 		pre_year=y;
 	}
 	for ( var i = 1; i < _weekFirstDay; i++) {
-		
+
 
 		str += "<td id=\"calendar-mini-"+pre_year+"-"+pre_mon+"-"+(pre_days-_weekFirstDay+i+1)+"\" onclick=\"Instance('" + this.index
 				+ "').selectDateTd(this)\" class=\"othermonth\">"+(pre_days-_weekFirstDay+i+1)+"</td>";
@@ -284,17 +284,17 @@ CalendarView.prototype.getCalendarStr = function() {
 	var k=1;
 	if(m==12){m=1;y++;}else{m++;}
 	for ( var i = _weekLastDay + 1; i <= 7; i++) {
-		
+
 		str += "<td id=\"calendar-mini-"+y+"-"+m+"-"+ (k)+"\" class=\"othermonth\" onclick=\"Instance('" + this.index
 				+ "').selectDateTd(this)\">"+k+"</td>";k++;
 	}
 
 	str += "</tr>";
-	
+
 	if (_rows < 6) {
 	str += "<tr>";
 		for ( var i =0; i < 7; i++) {
-		
+
 		str += "<td id=\"calendar-mini-"+y+"-"+m+"-"+ (k++)+"\" class=\"othermonth\" onclick=\"Instance('" + this.index
 				+ "').selectDateTd(this) \">"+ (k-1)+"</td>";
 	}
@@ -383,7 +383,7 @@ CalendarView.prototype.createEvent = function(e) {//分解此方法 该造成add
 	e = window.event || e;
 	var B;
 	e = e.srcElement || e.target;
-	
+
 	// 先设置它的position absolute 获取当前的div
 	var div;
 	var td;
@@ -394,7 +394,7 @@ CalendarView.prototype.createEvent = function(e) {//分解此方法 该造成add
 		div = e.childNodes[0];
 		td =e;
 	}else
-		
+
 	{
 		return;
 	}
@@ -431,7 +431,7 @@ CalendarView.prototype.createEvent = function(e) {//分解此方法 该造成add
 	ce.title = "";
 	ce.timeStart = timeStart;
 	ce.timeEnd = timeEnd;
-	
+
 	ce.j=data_arr[3];
 	ce.day = td.id.substr(3);
 	// 入栈
@@ -440,7 +440,7 @@ CalendarView.prototype.createEvent = function(e) {//分解此方法 该造成add
 	dl_html.style.position = "absolute";
 	dl_html.style.top=data_arr[2];
 	div.appendChild(dl_html);
-	
+
 	// newEvent.style.top=div.style.top;
 	//getInfo(div).left;
 	dl_html.style.left =0;
@@ -450,7 +450,7 @@ CalendarView.prototype.createEvent = function(e) {//分解此方法 该造成add
 	var index = this.index;//?
 	this.showCalendarEventDialog(this.currentEventId);
 	dl_html.attachEvent("ondblclick", function() {
-		
+
 		Instance(index).openCalendarEventDialog(dl_html)
 	});
 		// onclick=\"Instance('" + this.index
@@ -458,21 +458,21 @@ CalendarView.prototype.createEvent = function(e) {//分解此方法 该造成add
 	dl_html.attachEvent("onmousedown", function(){Drag.dragStart(dl_html);});
 
 
-//维护calendareventdata 
+//维护calendareventdata
 ce.startIndex=data_arr[3];
 ce.endIndex=data_arr[3]+2;
 //ce.cellIndex=0;
 	var parentTable=$("table2").childNodes[0].childNodes[1];
-		
+
 	var mouseCurrentCell;
-		for (i = 1; i < parentTable.cells.length; i++) 
+		for (i = 1; i < parentTable.cells.length; i++)
 		{
-			
-			if (div==parentTable.cells[i].childNodes[0]) 
+
+			if (div==parentTable.cells[i].childNodes[0])
 			{
-			
+
 				mouseCurrentCell=i;
-				
+
 				break;
 			}
 		}
@@ -493,7 +493,7 @@ CalendarView.prototype.clickHandle = function(e) {
 	e = window.event || e;
 	var B;
 	e = e.srcElement || e.target;
-	
+
 	switch (e.tagName) {
 	case "TH":// 选择月份
 	{
@@ -566,8 +566,8 @@ CalendarView.prototype.selectDateTd = function(it) {
 	var y =it.id.split("-")[2];
 	var m =it.id.split("-")[3];
 	var d =it.id.split("-")[4];
-	
-	
+
+
 	var day =new Date();
 	day.setYear(y);
 	day.setMonth(m-1);
@@ -616,7 +616,7 @@ CalendarView.prototype.editCalendarEvent = function(it) {//alert(231);
 	this.showCalendarEventDialog(this.currentEventId);
 	//显示编辑框
 	this.refreshCalendarEventDialog(this.currentEventId);
-	
+
 };
 
 CalendarView.prototype.deleteCalendarEvent = function(event) {
@@ -683,7 +683,7 @@ CalendarView.prototype.refreshCalendarEventView = function() {
 //data2view
 
 CalendarView.prototype.refreshCalendarEventBar = function(id) {
-	
+
 	// 的到event从 堆栈中
 	// 如果id对应的HTML对象存在的话 更新内容 并 重新定位位置
 	if ($("event_" + id)) {
@@ -724,7 +724,7 @@ CalendarView.prototype.refreshCalendarEventBar = function(id) {
 CalendarView.prototype.refreshCalendarEventDialog = function(id) {
 	// 的到event从 堆栈中
 	var ce = this.getCalendarEvent(id);
-	
+
 	if (ce == null)// || (typeof event) == "undefined"
 		return;
 
@@ -752,17 +752,17 @@ if(id=="newEvent")id="event_newEvent";
 var eventBarInfo = getInfo($(id));
 	//$("calendarEventDialog").style.top = eventBarInfo.top-$("calendarEventDialog").offsetHeight-scrollTop;
 	$("calendarEventDialog").style.left =  eventBarInfo.left-70;
- 	
-	
+
+
 	var bottom =eventBarInfo.top-$("calendarEventDialog").offsetHeight-scrollTop;
 	var table2ParentInfo = getInfo($("scrolltimedeventswk"));
 	if((table2ParentInfo.bottom)<(getInfo($(id)).top-scrollTop)){
 		$("calendarEventDialog").style.top=table2ParentInfo.bottom-$("calendarEventDialog").offsetHeight;
 	}else{
 		$("calendarEventDialog").style.top = eventBarInfo.top-$("calendarEventDialog").offsetHeight-scrollTop;
-	
+
 	}
-	
+
 };
 
 CalendarView.prototype.closeCalendarEventDialog = function() {
@@ -870,7 +870,7 @@ CalendarView.prototype.timeSectToPosition = function(timeStart, timeEnd, date) {
 
 
 CalendarView.prototype.drawClanderEventTo = function(ce, x,tY,ao,scrollTop) {
-	
+
 	var parentTable=$("table2").childNodes[0].childNodes[1];
 	var aDivTimeSect = parentTable.cells[0].childNodes;
 	var j=1;
@@ -881,7 +881,7 @@ CalendarView.prototype.drawClanderEventTo = function(ce, x,tY,ao,scrollTop) {
 	ao.style.height = (timesect_index+1)*20.5-getTop(ce.timeStart,0);
 	//alert(count_timesect);
 	ce.timeEnd = this.timeCompute1(	timesect_index+1);
-		
+
 		//ce.j=count_timesect;
 	this.refreshCalendarEventBar(ce.id);
 
@@ -890,10 +890,10 @@ CalendarView.prototype.drawClanderEventTo = function(ce, x,tY,ao,scrollTop) {
 	ce.endIndex=timesect_index+1;
 	ce.height=ao.style.height;
 	ce.length=ce.endIndex-ce.startIndex;
-		
+
 			return true;
 		/*for (  j = 0; j < aDivTimeSect.length; j++) {
-			
+
 			var parentCell = Drag.getInfo(aDivTimeSect[j]);// 已经知道了是哪个div time
 														// sect
 
@@ -907,7 +907,7 @@ CalendarView.prototype.drawClanderEventTo = function(ce, x,tY,ao,scrollTop) {
 			//ce.j=j;
 			this.refreshCalendarEventBar(ce.id);
 			return true;
-			
+
 			}
 		}*/
 };
@@ -918,12 +918,12 @@ CalendarView.prototype.moveClanderEventTo = function(ce, x,tY,ao,scrollTop) {
 	var parentTable=$("table2").childNodes[0].childNodes[1];
 
 		var mouseCurrentCell;
-		for (  i = 1; i < parentTable.cells.length; i++) 
+		for (  i = 1; i < parentTable.cells.length; i++)
 		{
 			var parentCell = Drag.getInfo(parentTable.cells[i]);
-			if (x >= parentCell.left && x <= parentCell.right) 
+			if (x >= parentCell.left && x <= parentCell.right)
 				{
-			
+
 				mouseCurrentCell=i;
 				if(ce.i!=mouseCurrentCell)
 					{
@@ -947,7 +947,7 @@ CalendarView.prototype.moveClanderEventTo = function(ce, x,tY,ao,scrollTop) {
 
 if(ce.j!=count_timesect)
 	{
-	//获得当前鼠标y轴位置 再根据滚动条的当前位置 即可得出当前在哪个时间段 
+	//获得当前鼠标y轴位置 再根据滚动条的当前位置 即可得出当前在哪个时间段
 	var y_distance=tY+scrollTop-Drag.getInfo(aDivTimeSect[0]).top;
 	var count_timesect=parseInt(y_distance/20.5);
 	ao.style.top = count_timesect*20.5;
@@ -962,24 +962,24 @@ if(ce.j!=count_timesect)
 		ce.timeEnd =this.timeCompute(ce.timeEnd,deviation);
 		ce.j=count_timesect;
 	}
-	
+
 var aDivTimeSect1 = parentTable.cells[i].childNodes;
 
 aDivTimeSect1[0].appendChild(ao);
 	//折算出 转换后的开始时间和结束时间。
-	
-				
+
+
 	// 更新外表
 this.refreshCalendarEventBar(ce.id);
 //重置calendarEvent 数据
 	ce.startIndex=mouseCurrentRow;
 		ce.endIndex=mouseCurrentRow+ce.length;
 			ce.cellIndex=mouseCurrentCell;
-		
-	
+
+
 		;
 //this.adjust();
-	this.adjust(mouseCurrentCell,ce);	
+	this.adjust(mouseCurrentCell,ce);
 };
 
 
@@ -999,12 +999,12 @@ CalendarView.prototype.getPositionFromMousePosition = function(tY,scrollTop) {
 			if ((tY+scrollTop ) < parentCell.bottom
 					&& (tY+scrollTop) >= parentCell.top) {
 
-		
-				
-					
+
+
+
 				if((tY+scrollTop )<((parentCell.bottom+parentCell.top)/2)){
 					pianyiliang= parentCell.top-Drag.getInfo(aDivTimeSect[0]).top;
-							
+
 					timeEnd = (j + 1) == this.timeSect.length ? "24:00"
 										: this.timeSect[j + 1];
 					timeStart = this.timeSect[j];
@@ -1019,15 +1019,15 @@ CalendarView.prototype.getPositionFromMousePosition = function(tY,scrollTop) {
 				}
 				break;
 			}
-			}			
+			}
 		return [timeEnd,timeStart,pianyiliang,j];//偏移量 距离td的顶端的距离 j为第几格子 半小时一个格子
 
-		
+
 };
 
 CalendarView.prototype.timeCompute = function(time,timesect) {
 	//alert("0:"+time);
-	
+
 	var hour =parseInt(time.substr(0,2),10);
 	var minute=parseInt(time.substr(3,2),10);
 	var date =new Date();
@@ -1035,25 +1035,25 @@ CalendarView.prototype.timeCompute = function(time,timesect) {
 	date.setHours(hour,minute,0,0);
 	//alert("3:"+(minute+parseInt(timesect,10)*30));
 date.setMinutes(minute+parseInt(timesect,10)*30);
-	
+
 	hour = date.getHours();
 	//alert( "2:"+date.getHours());
 	minute=date.getMinutes();
-	
+
 	var str=( parseInt(hour,10)<10?("0"+hour):hour)+":"+(minute<10?("0"+minute):minute);
 
  return str;
 };
 CalendarView.prototype.timeCompute1 = function(timesect) {
-	
+
 	var date =new Date();
 
 	date.setHours(0,0,0,0);
 	date.setMinutes(parseInt(timesect,10)*30);
 	hour = date.getHours();
-	
+
 	minute=date.getMinutes();
-	
+
 
 	var str=( parseInt(hour,10)<10?("0"+hour):hour)+":"+(minute<10?("0"+minute):minute);
 
@@ -1061,11 +1061,11 @@ CalendarView.prototype.timeCompute1 = function(timesect) {
 };
 
 CalendarView.prototype.adjust = function(nowColumn,ce) {
-	
-	
-	
+
+
+
 	//bubbleSort
-	
+
 	var nowColumn=nowColumn;//当前列
 	var preColumn=nowColumn;//之前列
 	var currentEvent=ce;//当前拖曳或新增的块 内涵当前的日期 starttime endtime
@@ -1086,25 +1086,25 @@ CalendarView.prototype.adjust = function(nowColumn,ce) {
 			var leftEvents=eventArr;
 			var relatedEvents=new Array(currentEvent);
 			////console.log("currentEvent"+currentEvent+"relatedEvents.length"+relatedEvents.length);
-			
+
 			globalNewEvent=chongxinfenbu(globalNewEvent,relatedEvents,leftEvents);
 			//console.log("关联的event个数为"+globalNewEvent);*/
 			//如果联系的块只有单独一个就没必要进行算法
 			if(eventArr.length==1)return;
-			
+
 			this.VampireAlgorithm(eventArr);
 		}
 		//preColumn
 		{
-			
+
 		}
 	}else{
 		//nowColumn
 		{
-			
+
 		}
 	}
-	
+
 };
 /*吸血鬼算法，假设有N个未被感染的人类 ，而生态圈个数可以无限增长，我们先选取一个人类作为吸血鬼，然后遍历剩下的N-1个人类，
  * 任何和第一个吸血鬼接触的人类都会变成吸血鬼，而没有和之前定型的接触的都会成为新种群的吸血鬼的开拓者拥有独立的阶级标志0，
@@ -1122,9 +1122,9 @@ CalendarView.prototype.adjust = function(nowColumn,ce) {
 补充：
 如果一个
 
-堆叠算法 
+堆叠算法
 把所有的砖块先平铺摆开 这样的话呈现的是关于序号和 y轴高度的坐标图
-然后我们把1号砖列为基准 放置第二块砖 
+然后我们把1号砖列为基准 放置第二块砖
 如果第二块砖和第一块相加则
 */
 CalendarView.prototype.VampireAlgorithm = function(vampires){
@@ -1148,7 +1148,7 @@ CalendarView.prototype.VampireAlgorithm = function(vampires){
 		generation_arr[curr_generation]=new Array();
 		var temp = left_vampires.slice(0);var the_index_of_choose_arr=new Array();
 		for(var i=0;i<left_vampires.length;i++){ //保证对所有块进行遍历
-			
+
 			if(left_vampires[i]==null) continue;
 		var flag=true;//是否需要单独创建基地
 		for(var j=0;j<generation_arr[curr_generation].length;j++){//和这一层的所有基块做比较
@@ -1167,14 +1167,14 @@ CalendarView.prototype.VampireAlgorithm = function(vampires){
 				//left_vampires[i]=null;
 				the_index_of_choose_arr.push(i);
 		}
-		
-		
+
+
 		}
-		
+
 		//对 left_vampires重新整理
 	//	console.log("the_index_of_choose_arr"+the_index_of_choose_arr);
 	//console.log("left_vampires.length"+left_vampires.length);
-		
+
 		console.log("left_vampires.length"+left_vampires.length+"choose arr" +the_index_of_choose_arr);
 console.log(left_vampires);
 //console.log(left_vampires[1]);
@@ -1186,40 +1186,40 @@ console.log(left_vampires);
 			console.log(i+"splice number:"+(the_index_of_choose_arr[i]));
 			console.log(left_vampires);
 			//console.log("the_index_of_choose_arr"+the_index_of_choose_arr+"curr_generation"+curr_generation+"left_vampires.length"+left_vampires.length);
-		
+
 				left_vampires.splice(the_index_of_choose_arr[i],1);
 				console.log(left_vampires);
 			console.log("2222222222222222222222222222222222222222222222222");
-		
+
 		if(i==5) break;
 		}
-		
+
 			console.log("-------------------------------------------");
 		//console.log("hahaleft_vampires.length"+left_vampires.length);
 		//console.log("left_vampires.length"+left_vampires.length);
 		if(left_vampires.length==0||left_vampires==null)
 			break;
-			
+
 			console.log("curr_generation:"+curr_generation);
 		if(curr_generation==5)
 			break;
-		curr_generation++;	
+		curr_generation++;
 		//console.log("curr_generation++"+curr_generation);
 	}
 	//console.log("generation_arr.length"+generation_arr.length);//console.log(generation_arr.length);
-	//对generation 逆序遍历 
+	//对generation 逆序遍历
 	var temp_arr=generation_arr[curr_generation].slice(0);
 	if(curr_generation==0)return;	//console.log(generation_arr[1]);
 //console.log("curr_generation"+curr_generation);
 //console.log("generation_arr[0].length"+generation_arr[0].length);
 	//console.log("curr_generation"+curr_generation);
-	
+
 	//console.log(vampires);
 	for(var i=curr_generation;i>0;i--){
-		
+
 		//每次染色都要从vampires中删除它
 		var currentVampires= generation_arr[i];
-		
+
 		var parentVampires=generation_arr[i-1];
 		for(var j=0;j<currentVampires.length;j++){//console.log("currentVampires[j].MaxRepeatedCount"+currentVampires[j].MaxRepeatedCount);
 			if(i==curr_generation){//currentVampires[j].MaxRepeatedCount==0||currentVampires[j].MaxRepeatedCount==null
@@ -1244,37 +1244,37 @@ console.log(left_vampires);
 					$("event_"+vampires[i].id).style.width=parseInt(100/(vampires[i].MaxRepeatedCount+1)+20,10)+"%";
 				else
 					$("event_"+vampires[i].id).style.width="80%";
-				
-				
+
+
 		//计算left
 			$("event_"+vampires[i].id).style.zIndex=vampires[i].generation;
 			if(vampires[i].MaxRepeatedCount!=0)
-			{		
+			{
 			$("event_"+vampires[i].id).style.left=
 							(100-120/(vampires[i].MaxRepeatedCount+1))/(vampires[i].MaxRepeatedCount)*vampires[i].generation;
 				//console.log((100-120/(vampires[i].MaxRepeatedCount+1))/(vampires[i].MaxRepeatedCount)*vampires[i].generation);
 			}
-			//alert(calendarEvent.index);		
+			//alert(calendarEvent.index);
 			//$("event_"+calendarEvent.id).style.left=calendarEvent.index*10;
 			else
 					$("event_"+vampires[i].id).style.left=0;
-					
+
 		$("event_"+vampires[i].id).setAttribute("z-index",vampires[i].generation);
-				
+
 	}
-	
+
 }
 ;
 
 CalendarView.prototype.adjustNew = function() {
 	//现在的算法太复杂了，其实首先知道他现在移动到第几列了 那么最多他会影响两列 再分析这两列中有哪些被占用的块 对这些块进行分析效率要高的多
-	
-	
+
+
 	for(var currentCell=1;currentCell<=7;currentCell++){
 		//var tr=$("table2").childNodes[0].childNodes[1];
 		//var td=tr.cells[1];
 		//var div_container= td.childNodes[0];
-	
+
 		//var div_childs= div_container.childNodes;
 		var array = new Array(48);
 		//var array2 = new Array(48);
@@ -1283,8 +1283,8 @@ CalendarView.prototype.adjustNew = function() {
 			array[i]=0;
 			//array2[i]=0;
 		}
-	
-	
+
+
 	//不应该按照div_childs的顺序来排 应该按照 时间段来排 花的时间长
 	//计算width
 	/*var max_number_array=new Array();
@@ -1296,19 +1296,19 @@ CalendarView.prototype.adjustNew = function() {
 				if(array[j]>max_number){max_number=array[j];
 				max_number_array[j]=max_number;}
 			}//$("cc").value=parseInt(100/max_number,10)+"%";
-			
+
 		div_childs[i].style.width=parseInt(100/max_number+20,10)+"%";
-		
+
 		if(max_number==1){alet(1);
 					div_childs[i].style.width=100%;
 			}
-		
+
 	}*/
-		
+
 		//要重新计算left距离和index
 		//根据当前的列数得出当前的calendarevent 数组；
-		
-		
+
+
 		//通过原型遍历属性
 		//取出当列的所有日历事件
 		var calendarEventArray=new Array();
@@ -1321,7 +1321,7 @@ CalendarView.prototype.adjustNew = function() {
 				this.valueStack[pop].index=-1;
 				calendarEventArray[calendarEventArray.length]= this.valueStack[pop];
 			}
-			
+
 			//alert(calendarEventArray[calendarEventArray.length-1].length);
 			//alert(calendarEventArray[calendarEventArray.length-1]);
 		}
@@ -1354,12 +1354,12 @@ CalendarView.prototype.adjustNew = function() {
 						max_number_array[j]=max_number;
 					}
 				}//$("cc").value=parseInt(100/max_number,10)+"%";
-				
+
 				if(max_number!=1)
 				$("event_"+calendarEventArray[i].id).style.width=parseInt(100/max_number+20,10)+"%";
 				else
 				$("event_"+calendarEventArray[i].id).style.width="80%";
-				
+
 		}
 		//alert("相交程序判断");
 		//alert("valueStack长度为:"+calendarEventArray.length);
@@ -1370,7 +1370,7 @@ CalendarView.prototype.adjustNew = function() {
 			var calendarEvent=calendarEventArray[i];
 			//alert("开始："+calendarEvent.startIndex+"结束："+calendarEvent.endIndex);
 			calendarEvent.index=0;
-			
+
 
 			var max_number=-1;
 			var zuiduoxiangjiaojirownumber=0;
@@ -1388,7 +1388,7 @@ CalendarView.prototype.adjustNew = function() {
 				}
 
 			}
-			
+
 			for(var k=0;k<paiweiArray.length;k++)
 			{
 				if(paiweiArray[k]!=1)
@@ -1401,11 +1401,11 @@ CalendarView.prototype.adjustNew = function() {
 			if(max_number_array[zuiduoxiangjiaojirownumber]!=1)
 			$("event_"+calendarEvent.id).style.left=
 							(100-120/max_number_array[zuiduoxiangjiaojirownumber])/(max_number_array[zuiduoxiangjiaojirownumber]-1)*calendarEvent.index;
-				//alert(calendarEvent.index);		
+				//alert(calendarEvent.index);
 			//$("event_"+calendarEvent.id).style.left=calendarEvent.index*10;
 			else
 					$("event_"+calendarEvent.id).style.left=0;
-					
+
 		$("event_"+calendarEvent.id).setAttribute("z-index",calendarEvent.index);
 		////console.log(calendarEvent.title+"index:"+calendarEvent.index+"inline"+$("event_"+calendarEvent.id).style.zIndex+"css"+$("event_"+calendarEvent.id).getAttribute("z-index"));
 
@@ -1425,7 +1425,7 @@ CalendarView.prototype.selectDate = function(day) {
 CalendarView.prototype.addEvent = function(ce) {
 	//生成dom节点
 	//dialogue附着
-	
+
 	//得到当前鼠标位置
 	if(ce==null){//console.log("ce is null");
 		ce = new calendarEvent();
@@ -1433,14 +1433,14 @@ CalendarView.prototype.addEvent = function(ce) {
 		ce.timeStart=getTimeStrFromDate(date);
 		ce.timeEnd=getTimeStrFromDate(date);
 		ce.id="newEvent";
-	
+
 		ce.day=getdayStrFromDate(date);
 		ce.title = "";
 	}
 	 timeStart =  ce.timeStart;
 	//console.log("timeStart:"+timeStart);
 	 timeEnd = ce.timeEnd;//getElementsByTagName("div")
-	
+
 	this.currentEventId = "newEvent";
 	var dl_html = document.createElement("DL");
 	dl_html.id = "event_"+ce.id;
@@ -1451,8 +1451,8 @@ CalendarView.prototype.addEvent = function(ce) {
 			+ timeEnd
 			+ "</dt> "
 			+ "<DD >&nbsp;</DD><div  onmouseup=\"Drag.dragEnd();\" onmousedown=\"Drag.drawStart(this);event.cancelBubble=true;\">_</div>";
-	
-		
+
+
 	ce.j=getTimeEndIndex(ce.timeEnd,0);
 	// 入栈
 	this.valueStack["event_"+ce.id] = ce;
@@ -1463,7 +1463,7 @@ CalendarView.prototype.addEvent = function(ce) {
 	if(!$("td_"+ce.day)) return ;
 	//console.log($("td_"+ce.day));
 	$("td_"+ce.day).childNodes[0].appendChild(dl_html);
-	
+
 	dl_html.style.left =0;
 	dl_html.style.height =40;
 	var index = this.index;//?
@@ -1473,21 +1473,21 @@ CalendarView.prototype.addEvent = function(ce) {
 	});
 
 	dl_html.attachEvent("onmousedown", function(){Drag.dragStart(dl_html);});
-//维护calendareventdata 
+//维护calendareventdata
 	ce.startIndex=ce.j;//console.log("startIndex"+ce.startIndex);
 	ce.endIndex=ce.j+2;
 	var parentTable_tr=$("table2").childNodes[0].childNodes[1];
 		////console.log("table2childNodeschildNodes");
 		////console.log($("table2").childNodes[0].childNodes[1].childNodes[1]);
 	var mouseCurrentColum;
-		for (i = 1; i < parentTable_tr.cells.length; i++) 
+		for (i = 1; i < parentTable_tr.cells.length; i++)
 		{////console.log(ce.day);
-			if (ce.day==parentTable_tr.cells[i].id.substr(3)) 
+			if (ce.day==parentTable_tr.cells[i].id.substr(3))
 			{
-			
-			
+
+
 				mouseCurrentColum=i;
-				
+
 				break;
 			}
 		}
@@ -1501,7 +1501,7 @@ ce.length =2;////console.log("end");
 
 this.adjust(mouseCurrentColum,ce);
 };
-//action of event 
+//action of event
 
 /*
  CalendarView.prototype.closeEventDialog = function(){

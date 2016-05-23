@@ -1,7 +1,7 @@
 var Sys = {};
 function $$(str){
 	//var ele = document.getElementById(str);
-	
+
 	return document.getElementById(str);
 }
 function bind(dom,event_name,function_name){
@@ -9,7 +9,7 @@ function bind(dom,event_name,function_name){
 			case 'click':
 				if(Sys.ie){
 					dom.attachEvent("onclick", function_name);
-					
+
 				}else{
 					dom.addEventListener("click",function_name, false);
 				}
@@ -20,11 +20,11 @@ function bind(dom,event_name,function_name){
                                 dom.addEventListener("mousemover",function_name, false);
 
 		}
-		
-		 
+
+
 }
 function judgeBrowser(){
-	 
+
      var ua = navigator.userAgent.toLowerCase();
     // alert(ua);
     // alert(/firefox\/([\d.]+)/.test(ua));
@@ -38,14 +38,14 @@ function judgeBrowser(){
          Sys.opera = ua.match(/opera.([\d.]+)/)[1];
      else if (window.openDatabase)
          Sys.safari = ua.match(/version\/([\d.]+)/)[1];
-     
+
      //以下进行测试
     /* if(Sys.ie) alert('IE: '+Sys.ie);
      if(Sys.firefox) alert('Firefox: '+Sys.firefox);
      if(Sys.chrome) alert('Chrome: '+Sys.chrome);
      if(Sys.opera) alert('Opera: '+Sys.opera);
      if(Sys.safari) alert('Safari: '+Sys.safari);*/
-     
+
 }
 function isNull(str){
 	if(str==null||(str+'').replaceAll(" ","")==''||typeof(str)=='undefined'){
@@ -71,20 +71,20 @@ Function.prototype.Apply = function(thisObj)
 function getInfo(o){//取得坐标
 		if(isNull(o)){
 	     	alert("can't find it:"+o);
-	     	
+
      	}
 	   	var to=new Object();
 	   	to.left=to.right=to.top=to.bottom=0;
-	  	
+
 	   	var twidth=o.offsetWidth;
-	   	var theight=o.offsetHeight;	
+	   	var theight=o.offsetHeight;
 	   	while(o!=document.body && !isNull(o)){
 	   		if(isNull(o.offsetParent)){
 	     		alert("can't find it's parentNode1:"+o);
 	     	}
 	     	to.left+=o.offsetLeft;
 	     	to.top+=o.offsetTop;
-	     	
+
      		o=o.offsetParent;
 	   	}
      	to.right=to.left+twidth;
@@ -99,7 +99,7 @@ function isSuccessFully(str){
 
 
 /**
- *日历活动对象 
+ *日历活动对象
  */
 function calendarEvent(id,title,day,startTime,endTime){
 	//基础信息
@@ -133,7 +133,7 @@ function calendarEvent(id,title,day,startTime,endTime){
 	this.day=0;
 	this.month=0;
 	this.year=0;*/
-	
+
 	//this.dieshu=0;//这一行有多少叠数
 	return this;
 }
@@ -145,14 +145,14 @@ function showCalendar(it){
 	div.style.width=50;
 	div.style.height=100;
 	var arr=getInfo(it);
-	
+
 	div.style.top=arr.top+it.offsetHeight;*/
-	
+
 	Using("System.Web.UI.WebControls.SelectDate");
-	
+
 	var d = new SelectDate();
 	d.render(it.id);
-	
+
 	/*var span=document.createElement("span");
 	var calendar_dialogue_time_input=document.createElement("input");
 	calendar_dialogue_time_input.value=it.innerHTML;
@@ -160,10 +160,10 @@ function showCalendar(it){
 	span.appendChild(calendar_dialogue_time_input);
 	it.parentNode.appendChild(span);
 	*/
-	
+
 }
 function date2intArr(day){
-	
+
 }
 function getTimeStrFromDate(date){
 	var hour=date.getHours();
@@ -220,16 +220,16 @@ function chongxinfenbu(globalRelatedEvents,relatedEventsO,leftEventsO){
 	if(newRelatedEvents.length==0){
 		return globalRelatedEvents;
 	}else{
-		
+
 		//console.log("1关联的event个数为"+globalRelatedEvents.length);
 		globalRelatedEvents=	globalRelatedEvents.concat(newRelatedEvents);
 		//console.log("2关联的event个数为"+globalRelatedEvents.length);
 		chongxinfenbu(globalRelatedEvents,newRelatedEvents,newLeftArray);
 	}
-		
-			
+
+
 	return globalRelatedEvents;
-	
+
 }
 
 function getSect(){
@@ -237,7 +237,7 @@ function getSect(){
 	sectClass.generation=0;
 	sectClass.Childs=new Array();
 	sectClass.pushChilds=function(vampire){
-		
+
 		vampire.sect=this;
 		this.Childs.push(vampire);
 	};
@@ -248,7 +248,7 @@ function getSect(){
 			}
 		}
 		return null;
-		
+
 	};
 	sectClass.getRelatedGeneration=function(i,vampire){
 		for(var i=0;i<this.Childs.length;i++){
@@ -257,26 +257,26 @@ function getSect(){
 			}
 		}
 		return null;
-		
+
 	};
 	return sectClass;
-	
+
 }
 
 function bubbleSort(arr){
-	
+
 	for(var i=0;i<arr.length;i++){
 		console.log("arr[i].id:"+arr[i].id);
 		console.log($$("event_"+arr[i].id));
 		arr[i].top=parseInt($$("event_"+arr[i].id).offsetTop);
-		
+
 		arr[i].bottom=arr[i].top+parseInt($$("event_"+arr[i].id).offsetHeight);
 		arr[i].MaxRepeatedCount=0;
 		arr[i].generation=0;
 		//console.log("tttttttt:top:"+parseInt("259")+"top2:259");
 	//	console.log("title:"+arr[i].title+"-top:"+parseInt(getInfo($$("event_"+arr[i].id)).top)+"top2:"+getInfo($$("event_"+arr[i].id)).top);
 	}
-	
+
     var temp;//先定义缓存
     for(var i=0;i<arr.length-1;i++){//前面的泡
         for(var J=i+1;J<arr.length;J++){//后面的泡
@@ -315,23 +315,23 @@ var color_list=[
 'rgb(250, 87, 60)',
  'rgb(255, 117, 55)',
   'rgb(255, 173, 70)',
-  
+
   'rgb(66, 214, 146)',
   'rgb(22, 167, 101)',
   'rgb(123, 209, 72)',
-  
+
   'rgb(179, 220, 108)',
   'rgb(251, 233, 131)',
   'rgb(250, 209, 101)',
-  
-  
+
+
  ' rgb(146, 225, 192)',
   'rgb(159, 225, 231)',
  ' rgb(159, 198, 231)',
   'rgb(73, 134, 231)',
   'rgb(154, 156, 255)',
   'rgb(185, 154, 255)',
-  
+
   'rgb(194, 194, 194)',
   'rgb(202, 189, 191)',
   'rgb(204, 166, 172)',
@@ -349,14 +349,14 @@ window.Instance = function(hashCode) {//console.log("Instance" +System._instance
 /*
 var DateTime={};
 DateTime.parseDateTime=function(str){
-	
+
 }
 DateTime.toDateTimeStr=function(){
-	
+
 }
 
 function new_DateTime(times){
-	
+
 }*/
 var Tool={};
 Tool.isNull=function(it){
