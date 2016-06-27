@@ -34,7 +34,7 @@ public class Regex extends Rule{
 		if(value != null && !value.equals("")) {
 			Matcher matcher = this.pattern.matcher(value);
 			if(!matcher.matches()) {
-				message = "err.param.format";
+				message = "格式不正确";
 				return false;
 			} else {
 				return true;

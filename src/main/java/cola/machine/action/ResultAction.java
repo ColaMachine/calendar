@@ -11,12 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cola.machine.core.msg.ErrorMessage;
-import cola.machine.util.ResultUtil;
 import core.page.Page;
 import core.action.ResultDTO;
-import core.redis.annotation.JedisManageSupport;
 
-public class ResultAction extends JedisManageSupport {
+public class ResultAction {
     protected  int SUCC =0;
     protected  int FAIL =1;
 Logger logger=LoggerFactory.getLogger(this.getClass());

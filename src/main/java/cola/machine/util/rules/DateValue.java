@@ -21,7 +21,7 @@ public class DateValue extends Rule {
 		java.util.Date dtValue = DateUtil.parseToDateTry(this.getValue());
 		
 		if (dtValue == null) {
-			this.setMessage("err.param.date");
+			this.setMessage("请输入日期");
 			return false;
 		}
 		else {

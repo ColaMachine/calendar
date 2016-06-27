@@ -417,8 +417,14 @@ public class ImageUtil {
             // 数据太短，明显不合理
             return ResultUtil.getWrongResultFromCfg("err.upload.img.tooshort");
         } else {
+            if(imageData.startsWith("%2B")){
+                imageData=URLDecoder.decode(imageData, "UTF-8").substring(1);
+            }else if(imageData.startsWith("+")){
+                imageData=imageData.substring(1);
+            }
+            imageData=imageData.substring(imageData.indexOf("iVBO"));
             // 去除开头不合理的数据
-            imageData = URLDecoder.decode(imageData, "UTF-8");
+           // imageData = URLDecoder.decode(imageData, "UTF-8");
             // imageData = imageData.substring(30);
             // int position=imageData.indexOf(",");
             // imageData=imageData.substring(position+1);
@@ -459,12 +465,13 @@ public class ImageUtil {
         return decoder.decodeBuffer(imageData)*/;
 
         byte[] data = Base64Util.decodeBuffer(imageData);
-        /*for (int i = 0; i < data.length; ++i) {
+        for (int i = 0; i < data.length; ++i) {
             if (data[i] < 0) {
                 // 调整异常数据
+
                 data[i] += 256;
             }
-        }*/
+        }
         return data;
     }
 

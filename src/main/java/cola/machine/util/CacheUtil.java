@@ -1,5 +1,6 @@
 package cola.machine.util;
 
+import com.alibaba.fastjson.JSON;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -11,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import cola.machine.config.CacheConfig;
 import cola.machine.config.Config;
 
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 
 public class CacheUtil {
 
@@ -144,8 +145,8 @@ public class CacheUtil {
      *            参数
      */
     public void writeServerCache(String key, Object value) {
-        Gson gson = new Gson();
-        String json = gson.toJson(value);
+//        Gson gson = new Gson();
+        String json = JSON.toJSONString(value);
         RedisUtil.set(key, json);
 //        Jedis jedis = RedisUtil.getJedis();
 //        jedis.set(key, json);
@@ -158,8 +159,8 @@ public class CacheUtil {
      *            参数
      */
     public void writeServerCache(String key, Object value,int seconds) {
-        Gson gson = new Gson();
-        String json = gson.toJson(value);
+//        Gson gson = new Gson();
+        String json = JSON.toJSONString(value);
         RedisUtil.setex(key, json,seconds);
 //        Jedis jedis = RedisUtil.getJedis();
 //        jedis.set(key, json);
@@ -181,9 +182,9 @@ public class CacheUtil {
      */
     public Object readServerCache(String key, Class c) {
         String json = RedisUtil.get(key);
-        Gson gson = new Gson();
-        System.out.println(json);
-        Object object = gson.fromJson(json, c);
+//        Gson gson = new Gson();
+//        System.out.println(json);
+        Object object = JSON.parseObject(json, c);
         return object;
     }
 

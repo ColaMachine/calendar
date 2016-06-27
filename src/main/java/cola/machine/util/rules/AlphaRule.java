@@ -18,7 +18,7 @@ public class AlphaRule extends Rule {
 				return true;
 			}
 			else {
-				this.setMessage("err.param.numeric");
+				this.setMessage("请输入字母");
 				return false;
 			}
 		}

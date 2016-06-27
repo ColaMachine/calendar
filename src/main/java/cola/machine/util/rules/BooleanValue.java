@@ -15,7 +15,7 @@ public class BooleanValue extends Rule {
 			return true;
 		}
 		else {
-			this.setMessage("err.param.boolean");
+			this.setMessage("请选择");
 			return false;			
 		}
 	

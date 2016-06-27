@@ -86,6 +86,11 @@ public class LoginFilter implements Filter {
         // VIP Auto-generated method stub
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        String path = request.getServletPath();
+        if(StringUtil.isNotEmpty(path)&&!"/".equals(path)&&path!=null && !path.endsWith(".json") && !path.endsWith(".htm")){
+            filterChain.doFilter(request, response);
+            return;
+        }
         // 过滤器 判断是否登录
         HttpSession session = request.getSession();
         if (sessionKey == null) {
@@ -94,7 +99,7 @@ public class LoginFilter implements Filter {
         }
         //Object object = session.getAttribute(sessionKey);
         // 如果既不是放行url 也没有登录
-        if ((!checkRequestURIIntNotFilterList(request)) && session.getAttribute(sessionKey) == null) {
+        if (session.getAttribute(sessionKey) == null&&(!checkRequestURIIntNotFilterList(request))  ) {
             Gson gson = new Gson();
             ResultDTO result = ResultUtil.getNotLogging();
             // 如果是json 返回json结果

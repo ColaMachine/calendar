@@ -121,7 +121,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
                int length=Integer.valueOf(type.substring(type.indexOf("(")+1, type.indexOf(")")));
                rules.add(String.format("new Length(%d)", length));
                jsrules.add(String.format("maxlength:%d", length));
-               message.add(String.format("maxlength:\"%s不能多于%d个字符\"", zcol.getName(),length));
+               message.add(String.format("maxlength:\"%s不能多于%d个字符\"", zcol.getRemark(),length));
            }
            if(type.startsWith("int")||type.startsWith("bigint")||type.startsWith("tinyint")){
                Integer integer=GenCodeHelper.getIntFromKuoHao(type);

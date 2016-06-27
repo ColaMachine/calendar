@@ -10,8 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import cola.machine.bean.SysUser;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSON;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,12 +107,12 @@ public class ActivityController extends BaseController {
 	public @ResponseBody ResultDTO saveActivitys(HttpServletRequest request) {
 		
 		String jsonstr = request.getParameter("jsonstr");
-		JSONArray jsonArray = JSONArray.fromObject(jsonstr);
-		List<JSONObject> mapListJson = (List) jsonArray;
+		List<HashMap> mapListJson=JSON.parseArray(jsonstr,HashMap.class);
+
 		List<Activity> list = new ArrayList<Activity>();
 		SysUser user = (SysUser) request.getSession().getAttribute("user");
 		long userid = user.getId();
-		for (JSONObject object : mapListJson) {
+		for (HashMap object : mapListJson) {
 			log.debug("starttime" + object.get("STARTTIME") + "  endtime"
 					+ object.get("ENDTIME"));
 			int startTime = (int) object.get("STARTTIME");
@@ -128,8 +127,8 @@ public class ActivityController extends BaseController {
 				 id =Long.valueOf((String)object.get("ID")) ;
 			}
 			Activity activity = new Activity();
-			if (object.has("ISDEL")) {
-				activity.setIsdel(object.getBoolean("ISDEL"));
+			if (object.get("ISDEL")!=null) {
+				activity.setIsdel((Boolean)object.get("ISDEL"));
 			} else {
 				activity.setIsdel(false);
 			}

@@ -25,3 +25,6 @@ src/main/resources/config.cfg
 src/main/webapp/kaqmimage/
 src\main\webapp\static\upload
 src/main/webapp/static/upload/*
+src/main/webapp/static/jsx/node_modules/*
+src/main/webapp/static/jsx/*
+src/main/webapp/upload/

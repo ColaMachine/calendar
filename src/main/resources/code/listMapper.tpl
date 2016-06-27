@@ -88,13 +88,14 @@ var ${abc}List={
                     onSelectRow: function(id){ //alert("单击选中"+id);
                     var that =this;
                   //  var treeObj = $.fn.zTree.getZTreeObj("tree");
-                     var celldata =${abc}List.mygrid.jqGrid('getRowData',id)["${parentTable.pk.name}"];
+                     var celldata =$(${abc}List.mygrid).jqGrid('getRowData',id)["${parentTable.pk.name}"];
                      //清空原来的选项
                     ${abc}List.treeObj.checkAllNodes(false);
                       Ajax.getJSON(PATH+"/${table.name?uncap_first}/listAll.json",{"${table.mapper.parentid}":celldata},function(result){
                            if(result.data){
                                           for(var i=0;i<result.data.length;i++){
                                               var node = ${abc}List.treeObj.getNodeByParam("id",result.data[i].${table.mapper.childid});
+                                              if(node!=null)
                                               ${abc}List.treeObj.checkNode(node,true,true);
                                           }
                                       }

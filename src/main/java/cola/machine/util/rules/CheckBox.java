@@ -34,7 +34,7 @@ public class CheckBox extends Rule{
 		if(result){
 			return true;
 		}else {
-			this.setMessage("err.param.checkbox");
+			this.setMessage("请选择");
 			return false;
 		}
 	}

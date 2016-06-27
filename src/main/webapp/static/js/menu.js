@@ -88,8 +88,35 @@ var zMenu = {
 					//打开当前节点,关闭同级节点里的open元素.
 
 						var that =this;
-					//$(this).parent().siblings().filter('.open').removeClass('open');
-					//$(this).parent().find("ul").eq(0).slideDown(100);
+//					$(this).parent().siblings().filter('.open').removeClass('open');
+//					$(this).parent().find("ul").eq(0).slideDown(100);
+                   // var id=this.id;
+                    //如果找到任何open的节点不是自己的父类 就收缩起来
+
+                    $(".open").each(function(){
+                        if($(this).find("#"+$(that).attr("id")).length>0){
+
+                        }else{
+                        var _that=this;
+                             $(this).find("ul").eq(0).slideUp(200,function(){$(_that).removeClass('open');});
+                        }
+                          /*var flag=false;
+                          var parent=$(that).parent();
+                            while(parent){
+                                if($(that).parent()==$(this)){
+                                    flag=true;
+                                    break;
+                                }
+                                 parent=$(parent).parent();
+                            }
+                            var _that=this;
+                            if(!flag){
+                                  $(this).find("ul").eq(0).slideUp(200,function(){$(_that).removeClass('open');});
+                            }*/
+
+                    });
+
+
 					$("#" + ul).slideDown(200, function() {$( that).parent().addClass('open');});
 					
 				}
@@ -131,7 +158,14 @@ var zMenu = {
 		    $(".main-content").fadeIn('slow');}
 		  );return;*/
 		//	jLoading.start();
-		Ajax.get(url, null, function(data) {
+		if(url.substr(0,1)=="/"){
+		}else{
+		    url="/"+url;
+		}
+		Ajax.get(PATH+url, null, function(data) {
+            if(data.indexOf("504")!=-1){
+                window.location="/spcity/login.htm";return;
+            }
 			$('.main').html(data);
 			if (typeof fun == 'function') fun();
 		});

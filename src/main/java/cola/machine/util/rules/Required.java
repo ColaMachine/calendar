@@ -8,7 +8,7 @@ public class Required extends Rule{
 	
 	public boolean valid(){
 		if(this.getValue()==null || this.getValue().equals("")){
-			this.setMessage("err.param.nonull");
+			this.setMessage("不能为空");
 			return false;
 		}else {
 			return true;

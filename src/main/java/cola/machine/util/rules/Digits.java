@@ -23,7 +23,7 @@ public Digits(int integer,int fraction) {
 				return true;
 			}
 			else {
-				this.setMessage("err.param.float");
+				this.setMessage("请输入数字");
 				return false;
 			}
 		}

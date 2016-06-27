@@ -20,7 +20,7 @@ public class IDCardRule extends Rule {
 				return true;
 			}
 			else {
-				this.setMessage("err.param.format.email");
+				this.setMessage("请输入身份证号");
 				return false;
 			}
 		}

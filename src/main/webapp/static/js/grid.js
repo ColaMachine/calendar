@@ -1180,6 +1180,7 @@
                   		$(ts).reloadGrid();
                   		})
 			console.log("jqgrid return dom tagName"+this.tagName)
+			//alert($(ts).jqGrid);
 			return $(ts);
 		//});
 	};
@@ -1198,11 +1199,11 @@
 				},
 				setGridParam : function(newParams) {console.log("setGridParam new Params");console.log(newParams);
 				console.log(this.length);
-					return this.each(function() {console.log(this.grid  );console.log(typeof newParams );
-						if (this.grid && typeof newParams === 'object') {
+					return this.each(function() {//console.log(this.grid  );console.log(typeof newParams );
+						if (this.p && typeof newParams === 'object') {
 							$.extend(true, this.p, newParams);
-							console.log("after setGridParam new Params")
-							console.log(this.p.postData);
+							//console.log("after setGridParam new Params")
+							//console.log(this.p.postData);
 //							alert(2)
 						}
 					});
@@ -1307,6 +1308,8 @@
                         if(!this.p.searchParams){
                            this.p.searchParams={};
                         }
+                        this.p.postData.curPage =this.p.page;
+                        this.p.postData.pageSize=this.p.rowNum;
 						this.p.searchParams.curPage = this.p.page;
 						this.p.searchParams.pageSize = this.p.rowNum;
 						//alert(this.p.rowNum);
@@ -1375,7 +1378,11 @@
 									$t.p.selarrrow.push(index);
 								}
 							});
-
+                        if(status){
+                            if($t.p.onSelectAll){
+                                $t.p.onSelectAll.call(this);
+                            }
+                        }
 					});
 				},
 
@@ -1447,7 +1454,7 @@
 							ajaxResultHandler(data);
 							$($t).jqGrid("ajaxCallBack",data);
 						});*/
-						console.log(this.p.postData);alert(1)
+						console.log(this.p.postData);
 						if(this.p.postData[this.p.prmNames.page]==null){
 							this.p.postData[this.p.prmNames.page]=1;
 							this.p.postData[this.p.prmNames.rows]=10;
@@ -1547,7 +1554,7 @@
 							return;
 							var dReader= this.p.jsonReader;
 						this.p.data = $.jgrid.getAccessor(result,dReader.root);
-                        console.log("this.p.data");
+                       /* console.log("this.p.data");
                         console.log(this.p.data);
                          console.log("this.id");
                           console.log(this.id);
@@ -1555,7 +1562,7 @@
                            console.log(this.tagName);
 
                              console.log("this.p");
-                           console.log(this.p);
+                           console.log(this.p);*/
 						this.p.page = intNum($.jgrid.getAccessor(result,dReader.page), this.p.page);
 
                         this.p.lastpage = intNum($.jgrid.getAccessor(result,dReader.total), 1);
@@ -1624,7 +1631,7 @@
 									for (var j = 0; j < this.p.colModel.length; j++) {
 										var colName = this.p.colModel[j].name;
 										var value = this.p.data[i][colName];
-										if (typeof (value) == 'undefined' || value=='null' || value=='undefined') {
+										if (typeof (value) == 'undefined' ||value==null|| value=='null' || value=='undefined') {
 											value = '';
 										}
 
@@ -1637,11 +1644,16 @@
 													+ this.p.colNames[j]
 													+ "</td>";
 										} else if (typeof (this.p.colModel[j].formatter) != 'undefined') {
+
+										    var _content = this.p.colModel[j].formatter.call(this,value,this.p,this.p.data[i]);
+										    if(_content){
+										        _content=_content.replace(/\'/g,"").replace(/(<.*>)/g,"")
+										    }
 											html += "<td width=\""
 													+ this.p.colModel[j].width
 													/ this.p.width_sum
 													* 100
-													+ "%\"><span title ='"+this.p.colModel[j].formatter.call(this,value,this.p,this.p.data[i]).replace(/\'/g,"")+"'>"
+													+ "%\"><span title ='"+_content+"'>"
 													+ this.p.colModel[j].formatter.call(this,value,this.p,this.p.data[i]);
 											+"</span></td>";
 										} else
@@ -1717,7 +1729,13 @@
 								//一般是显示5个页数
 								//从 curPage -2 开始 到 curPage+2
 								var total = 1;
-								var pageHtml = "<nav class=\"nav\"> <ul class=\"pagination pagination-sm\"><li><a href=\"javascript:void(0)\" class=\"page_bg pre \" aria-label=\"Previous\">上一页</a>";
+								var pageHtml = "<nav class=\"nav\"> <ul class=\"pagination pagination-sm\"><li>";
+
+								if(page==1){
+                                pageHtml+="<span href=\"javascript:void(0)\" class=\"page_bg pre \" aria-label=\"Previous\">上一页</span>";
+								}else{
+								pageHtml+="<a href=\"javascript:void(0)\" class=\"page_bg pre \" aria-label=\"Previous\">上一页</a>";
+								}
 
 								var min = 0, max = totalPage;
 								var middel = page;
@@ -1769,8 +1787,13 @@
 										break;
 								}*/
 								//console.log(page);
-								pageHtml += "<li><a href=\"javascript:void(0)\" class=\"page_bg next\" aria-label=\"Next\">下一页</a></li><span>共"+totalPage+"页，"+this.p.records+"条信息</span></ul></nav>";
-
+								if(page==totalPage){
+                                pageHtml+="<li><span href=\"javascript:void(0)\" class=\"page_bg next\" aria-label=\"Next\">下一页</span>";
+                                }else{
+                                pageHtml+="<li><a href=\"javascript:void(0)\" class=\"page_bg next\" aria-label=\"Next\">下一页</a>";
+                                }
+								pageHtml += "</li><span>共"+totalPage+"页，"+this.p.records+"条信息</span></ul></nav>";
+                                $t.page=page;
 								$(this.p.pager).html(pageHtml);
 								$(this.p.pager).find(".pre")
 										.click({
@@ -1802,12 +1825,13 @@
 					this
 					.each(function() {
 						var ids=$(this).jqGrid("getGridParam","selarrrow");
-						var data = this.rows
-						for(var i=0,lenght=ids.length;i<length;i++){
-							ary.push(data[rowName]);
+						var data = this.p.data;
+						for(var i=0,length=ids.length;i<length;i++){
+							ary.push(data[ids[i]][rowName]);
 						}
 						return ary;
 					});
+					return ary;
 				},
 			});
 	//闭包结束

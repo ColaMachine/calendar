@@ -118,7 +118,7 @@ public final class StringEncryptUtil {
 	}
 	
 	public static void main(String[] args) {
-		String username_id = "石鹏皮皮@126.com_ff8080812f0b663d012f0c95d4990016";
+		String username_id = "石鹏皮皮@126.com";
 		try { 
 			String cookieValue = StringEncryptUtil.encrypt(username_id);
 			System.out.println(cookieValue);

@@ -84,7 +84,7 @@ var sysRoleResourceList={
                   jsonReader:jsonReader,
                    autowidth:true,
                   colNames : [
-                   "主键","角色名","角色代码","排序","状态","备注","创建时间" , '操作' ],
+                   "主键","角色名","角色代码","排序","状态","备注","创建时间" /*, '操作'*/ ],
                   colModel : [
                           {
                               name : 'id',
@@ -121,14 +121,14 @@ var sysRoleResourceList={
                                   return new Date(value).format("yyyy-MM-dd");
                               }
                           } 
-                          ,
+                         /* ,
                           {
                               name : 'operation',
                               width : 150,
                               formatter : function(value, grid, rows) {
                                   return getViewHtml(rows.id,"sysRoleResourceList")+getEditHtml(rows.id,"sysRoleResourceList")+getDelHtml(rows.id,"sysRoleResourceList");
                               }
-                          }
+                          }*/
                     ],
 
                     onSelectRow: function(id){ //alert("单击选中"+id);
@@ -141,6 +141,7 @@ var sysRoleResourceList={
                            if(result.data){
                                           for(var i=0;i<result.data.length;i++){
                                               var node = sysRoleResourceList.treeObj.getNodeByParam("id",result.data[i].rid);
+                                             if(node!=null)
                                               sysRoleResourceList.treeObj.checkNode(node,true,true);
                                           }
                                       }

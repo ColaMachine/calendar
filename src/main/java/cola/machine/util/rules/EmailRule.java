@@ -20,7 +20,7 @@ public class EmailRule extends Rule {
 				return true;
 			}
 			else {
-				this.setMessage("err.param.format.email");
+				this.setMessage("请输入邮箱地址");
 				return false;
 			}
 		}

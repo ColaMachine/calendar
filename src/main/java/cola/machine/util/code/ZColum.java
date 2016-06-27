@@ -12,7 +12,17 @@ import java.util.Map;
 public class ZColum {
 private String name;
 private boolean nn;
-private boolean pk;
+    private String references;
+
+    public String getReferences() {
+        return references;
+    }
+
+    public void setReferences(String references) {
+        this.references = references;
+    }
+
+    private boolean pk;
 
     public boolean isEdit() {
         return edit;

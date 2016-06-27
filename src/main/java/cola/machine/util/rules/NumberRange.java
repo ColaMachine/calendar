@@ -50,7 +50,7 @@ public class NumberRange extends Rule {
 			}else {
 				BigDecimal maxValue = new BigDecimal(max);
 				if(realValue.compareTo(minValue)==-1 || realValue.compareTo(maxValue)==1) {
-					message = "err.param.range." + min + "-" + max;
+					message = "数字应在范围" + min + "-" + max+"之内";
 					return false;
 				}else {
 					return true;

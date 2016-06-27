@@ -307,6 +307,11 @@
 			<version>1.9.4</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.typesafe</groupId>
+			<artifactId>config</artifactId>
+			<version>1.0.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.validation</groupId>

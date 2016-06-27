@@ -9,13 +9,14 @@ package cola.machine.share.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.RandomStringUtils;
+
+import cola.machine.util.StringUtil;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import ch.ethz.ssh2.crypto.digest.SHA1;
+
 
 
 
@@ -37,7 +38,7 @@ public class ShareController {
 		
 		request.setAttribute("appid", appid);
 		
-		String nonceStr = RandomStringUtils.random(16, "abcdefghijklmnopqrstuvwxyz");
+		String nonceStr = StringUtil.getRandomAlphaString(16);
 		
 		request.setAttribute("nonceStr", nonceStr);
 		

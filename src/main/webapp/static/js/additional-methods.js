@@ -310,23 +310,23 @@ $.validator.addMethod("dateYMD", function(value, element) {
 $.validator.addMethod("endDate",
 	       function(value, element) {
 	          var startDate = $('#startTime').val();//alert( new Date(Date.parse(startDate.replace("-", "/"))).getMonth());
-//	          
-//	          alert(startDate.replace("-", "/"));  
+//
+//	          alert(startDate.replace("-", "/"));
 //	           var  start =new Date(Date.parse(startDate.replace(/\-/g, "/")));
-//	      
+//
 //	         var  endDate =new Date(Date.parse(value.replace(/\-/g, "/")));
-//	         
+//
 //	         alert(start);
 //	         alert(endDate);
 	           return new Date(Date.parse(startDate.replace(/\-/g, "/"))) < new Date(Date.parse(value.replace(/\-/g, "/")));
-	           
+
 	       },
 	       "结束日期必须大于开始日期");
-	      
+
 $.validator.addMethod("nowDate",
 	       function(value, element) {
 	          var now =new Date();
-	          
+
 	          now.setHours(0, 0, 0, 0);
 	           return new Date() <= new Date(Date.parse(value.replace(/\-/g, "/")));
 	       },

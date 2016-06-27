@@ -273,23 +273,19 @@ public class RandomValidateCode {
             filename = UUIDUtil.getUUID()+".jpg";
         }
 
-        File file=PathManager.getInstance().getVcodePath().resolve(filename+".jpg").toFile();
- /*       File folder =new File(SysConfig.REALPATH+File.separator+SysConfig.VALIDATECODE_IMG_FOLDER);
-            File file =new File(SysConfig.REALPATH+File.separator+SysConfig.VALIDATECODE_IMG_FOLDER+"/"+filename+".jpg");
-            //File file =new File("g:/vc/"+filename+".jpg");*/
+        /*File file=PathManager.getInstance().getVcodePath().resolve(filename+".jpg").toFile();
         if(file.exists()){
             System.out.println("文件已经存在");
         }else{
             //如果要创建的多级目录不存在才需要创建。
             file.createNewFile();
-            // file.mkdirs();
-        }
+        }*/
         ByteArrayOutputStream  baos = new ByteArrayOutputStream();
         ImageIO.write(image, "JPEG",baos);//将内存中的图片通过流动形式输出到客户端
         byte[] bytes = baos.toByteArray();
         BASE64Encoder encoder = new sun.misc.BASE64Encoder();
         String  result = encoder.encodeBuffer(bytes).trim();
-        ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
+        //ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
         return new String[]{Config.getInstance().getImage().getVcodeDir()+"/"+filename+".jpg",str,result};
     }
 }

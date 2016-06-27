@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import cola.machine.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,13 @@ import org.springframework.http.MediaType;
 
 import cola.machine.service.SysUserService;
 import cola.machine.bean.SysUser;
-import cola.machine.util.ResultUtil;
-import cola.machine.util.ValidateUtil;
 import cola.machine.util.rules.*;
 import core.page.Page;
 
-import cola.machine.util.StringUtil;
 import cola.machine.util.ValidateUtil;
 import core.util.RequestUtil;
 import core.action.ResultDTO;
-import cola.machine.util.DateUtil;
+
 @Controller
 @RequestMapping("/sysUser")
 public class SysUserController extends BaseController{
@@ -505,102 +503,7 @@ public class SysUserController extends BaseController{
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
         SysUser sysUser =new  SysUser();
-        /*
-        String id = request.getParameter("id");
-        if(!StringUtil.isBlank(id)){
-            sysUser.setId(Long.valueOf(id)) ;
-        }
-        
-        String username = request.getParameter("username");
-        if(!StringUtil.isBlank(username)){
-            sysUser.setUsername(String.valueOf(username)) ;
-        }
-        
-        String password = request.getParameter("password");
-        if(!StringUtil.isBlank(password)){
-            sysUser.setPassword(String.valueOf(password)) ;
-        }
-        
-        String nkname = request.getParameter("nkname");
-        if(!StringUtil.isBlank(nkname)){
-            sysUser.setNkname(String.valueOf(nkname)) ;
-        }
-        
-        String type = request.getParameter("type");
-        if(!StringUtil.isBlank(type)){
-            sysUser.setType(Integer.valueOf(type)) ;
-        }
-        
-        String status = request.getParameter("status");
-        if(!StringUtil.isBlank(status)){
-            sysUser.setStatus(Integer.valueOf(status)) ;
-        }
-        
-        String email = request.getParameter("email");
-        if(!StringUtil.isBlank(email)){
-            sysUser.setEmail(String.valueOf(email)) ;
-        }
-        
-        String telno = request.getParameter("telno");
-        if(!StringUtil.isBlank(telno)){
-            sysUser.setTelno(String.valueOf(telno)) ;
-        }
-        
-        String idcard = request.getParameter("idcard");
-        if(!StringUtil.isBlank(idcard)){
-            sysUser.setIdcard(String.valueOf(idcard)) ;
-        }
-        
-        String sex = request.getParameter("sex");
-        if(!StringUtil.isBlank(sex)){
-            sysUser.setSex(Integer.valueOf(sex)) ;
-        }
-        
-        String birth = request.getParameter("birth");
-        if(!StringUtil.isBlank(birth)){
-            sysUser.setBirth(Date.valueOf(birth)) ;
-        }
-        
-        String integral = request.getParameter("integral");
-        if(!StringUtil.isBlank(integral)){
-            sysUser.setIntegral(Integer.valueOf(integral)) ;
-        }
-        
-        String address = request.getParameter("address");
-        if(!StringUtil.isBlank(address)){
-            sysUser.setAddress(String.valueOf(address)) ;
-        }
-        
-        String weichat = request.getParameter("weichat");
-        if(!StringUtil.isBlank(weichat)){
-            sysUser.setWeichat(String.valueOf(weichat)) ;
-        }
-        
-        String qq = request.getParameter("qq");
-        if(!StringUtil.isBlank(qq)){
-            sysUser.setQq(Long.valueOf(qq)) ;
-        }
-        
-        String face = request.getParameter("face");
-        if(!StringUtil.isBlank(face)){
-            sysUser.setFace(String.valueOf(face)) ;
-        }
-        
-        String remark = request.getParameter("remark");
-        if(!StringUtil.isBlank(remark)){
-            sysUser.setRemark(String.valueOf(remark)) ;
-        }
-        
-        String createtime = request.getParameter("createtime");
-        if(!StringUtil.isBlank(createtime)){
-            sysUser.setCreatetime(Timestamp.valueOf(createtime)) ;
-        }
-        
-        String updatetime = request.getParameter("updatetime");
-        if(!StringUtil.isBlank(updatetime)){
-            sysUser.setUpdatetime(Timestamp.valueOf(updatetime)) ;
-        }
-        */
+
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
             sysUser.setId(Long.valueOf(id));
@@ -713,6 +616,12 @@ public class SysUserController extends BaseController{
         vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         vu.add("updatetime", updatetime, "更新时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         validStr = vu.validateString();
+        if(StringUtil.isNotEmpty(sysUser.getPassword())){
+        try {
+            sysUser.setPassword(MD5Util.getStringMD5String(sysUser.getPassword()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }}
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }

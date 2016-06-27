@@ -17,7 +17,7 @@ String.prototype.trim= function(){
     // 用空字符串替代。  
     return this.replace(/(^\s*)|(\s*$)/g, "");  
 }
-var PATH="";
+
 
 function AjaxClass()
 {
@@ -53,6 +53,7 @@ function AjaxClass()
     this.Arg = "";
     this.dataType="";
     this.data=null;
+
     this.CallBack = function(){};
     this.Loading = function(){};
 
@@ -69,7 +70,8 @@ function AjaxClass()
         if(this.data){
             var arr=new Array();
                         for(var key in this.data){
-                            arr.push(key+"="+this.data[key]);
+                            arr.push(encodeURIComponent( key)+"="+encodeURIComponent(this.data[key]));
+
                         }
                         this.data= arr.join("&");
 
@@ -98,6 +100,7 @@ function AjaxClass()
                 XmlHttp.setRequestHeader("Content-Type","application/json");
 
             }
+            var that =this;
         XmlHttp.onreadystatechange = function()
         {
             if (XmlHttp.readyState==4)
@@ -106,9 +109,11 @@ function AjaxClass()
                 if (XmlHttp.status==200)
                 {
                     Result = XmlHttp.responseText;
+                    if(XmlHttp.getResponseHeader("Content-Type").indexOf("application/json")!=-1){
+                        Result=eval('('+Result+')');
+                    }
                 }
                 XmlHttp = null;
-                //alert(typeof Result)
                 me.CallBack(Result);
             }
              else
@@ -138,6 +143,7 @@ function AjaxClass()
         document.body.appendChild(obj);
     }
 }
+
 function ajax(options){
 
 
@@ -199,6 +205,11 @@ var Ajax={
  AjaxFun:function (url, inputData, callback, options, callbackOnError) {
          	var contextUrl = window.location.href;
          	options = options || {};
+         	if(url.indexOf("?")!=-1){
+         	    url+="&r="+Math.floor(Math.random() * ( 1000 + 1));
+         	}else{
+         	     url+="?r="+Math.floor(Math.random() * ( 1000 + 1));
+         	}
          	options.url =  url;
          	options.type = options.type||"POST";
          	options.data = inputData;
@@ -232,6 +243,8 @@ var Ajax={
          	delete options['inputData'];
          	//ajax(options);
          	$.ajax(options);
+
+
          }
 };
 /*function Get(url,data,callback){
@@ -276,6 +289,7 @@ function changeForm2JsoTemp(formId) {
 
 
 function changeForm2Jso(formId) {
+
 	var jso = {};
 	var arr = $( formId).serializeArray();
 	for (var i = 0; i < arr.length; i++) {
@@ -283,6 +297,7 @@ function changeForm2Jso(formId) {
 	}
 	return jso;
 }
+
 function fillJso2Form(formId,jso){
 	var arr = $(formId).serializeArray();
 	for (var i = 0; i < arr.length; i++) {
@@ -858,12 +873,13 @@ function getUnLockHtml1(value) {
 //var aiwifi = {};
 //aiwifi.alert = bootbox.alert;
 //aiwifi.confirm = bootbox.confirm;
-function showMask() {
+/*function showMask() {
 	$("#maskModal").modal('show');
 }
 function hideMask() {
-	$("#maskModal").modal('hide');
-}
+	document.getElementByClassId("maskModal").style.display=none;
+}*/
+
 
 /*function showMsg(caption, contenttext) {
 	$("#errormsg").remove();
@@ -1048,7 +1064,7 @@ function pageinit(){
 	$("*[data-toggle='modal']").each(function(){
 		if($(this).attr("data-target")){
 			$(this).on("click",function(){
-				showMask();
+				dialog.showMask();
 				$($(this).attr("data-target")).show();
 			});
 		}
@@ -1057,7 +1073,7 @@ function pageinit(){
 	
 	$("*[data-dismiss='modal']").each(function(){
 		$(this).on("click",function(){
-		hideMask();
+		dialog.hideMask();
 		$(this).closest(".modal").hide();
 		});
 		
@@ -1126,26 +1142,18 @@ function ajaxResultHandler(result){
 	return result;
 }
 
-function showMask(){
-	if($(".mask").length==0){
-		$("body").append($("<div class=\"mask\" > </div>"));
-	}
-	$(".mask").show()
-}
 
-function showModal(id,w,h){
-	if(typeof h !='undefined' && h!=null )
-	$(id).css("height",h);
-	if(typeof w !='undefined' && w!=null )
-	$(id).css("width",w);
-	$(id).show();
-	showMask();
-}
+
 
 
 function hideModal(id){
-	$(id).hide();
-	$(".mask").hide()
+	//$(id).hide();
+	 var modal = document.getElementById(id);
+        if(typeof id =="object")
+            modal=id;
+	modal.style.display="none";
+
+	dialog.hideMask();
 }
 
 function showErrorMsg(formid,msg){
@@ -1165,7 +1173,7 @@ function clearErrorMsg(formid){
 
 function showWait(msg){
 	
-	//showMask();
+	showMask();
 	//$(".wait").show();
 	return layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
 }
@@ -1181,7 +1189,7 @@ function hideWaitTrue(){
 
 
 function zWidgetBase(){
-	showMask();
+	dialog.showMask();
 	if($(".widget").length>0){
 		
 	}else{
@@ -1218,6 +1226,23 @@ function zdialogue(msg,title,src,fontcolor,fn){
 	if (typeof(fn) != "undefined") 
 	$(html).find(".zbutton_wrap").find("a").click(fn);
 }*/
+var layer={
+alert:function(msg,fn){
+    zalert(msg,"",fn);
+},
+confirm:function(msg,fn){
+    zconfirm(msg,"",fn);
+},
+load:function(){
+    dialog.showMask();
+},
+close:function(){
+   dialog.hideMask();
+   dialog.hideWidget();
+
+}
+}
+
 var dialog={
     alert:function(msg,fn){
         if(typeof fn != 'undefined'){
@@ -1225,6 +1250,23 @@ var dialog={
         }else{
           return layer.alert(msg);
         }
+    },
+     showModal:function(id,w,h){
+        var modal = document.getElementById(id);
+        if(typeof id =="object")
+            modal=id;
+    	if(typeof h !='undefined' && h!=null )
+    	    modal.style.height=h;
+    	if(typeof w !='undefined' && w!=null )
+    	    modal.style.width=w;
+    	modal.style.display="block";
+
+    	modal.find(".close").onclick=function(){
+    	    hideModal(modal);
+    	}
+    	modal.setAttribute("class",(modal.getAttribute("class")||"")+" in");
+    	//alert($(id).style.display);
+    	dialog.showMask();
     },
     close:function(index){
         layer.close(index);
@@ -1243,17 +1285,44 @@ var dialog={
             }
     },
      showWait:function(msg){
-
-    	//showMask();
-    	//$(".wait").show();
+    	//this.showMask();
+    	//$(".wait").style.display="block";
     	return layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
     },
-     hideWait:function(index){
+    hideMask:function () {
+        var mask=   document.getElementsByClassName("mask");
+        if(mask.length>0){
+            mask[0].style.display="none";
+        }
+    },
+    hideWidget: function (){
+        var widget=   document.getElementsByClassName("widget");
+        if(widget.length>0){
+            widget[0].style.display="none";
+        }
+    },
+    showMask:function(){
+        var mask = document.getElementsByClassName("mask");
+
+        if(mask.length==0){
+
+            var div =document.createElement("div");
+            div.setAttribute("class","mask");
+            document.body.appendChild(div);
+        }
+        mask[0].style.display="block";
+        mask[0].onclick=function(){
+           dialog.hideWidget();
+           dialog.hideMask();
+        }
+    //$(".mask").show()
+    },
+    hideWait:function(index){
     	//hideWaitTrue();
     	///setTimeout("hideWaitTrue()",100);
+        dialog.hideMask();
     	layer.close(index);
-    }
-,
+    },
     window:function(url,flag){
         window.data={};
         //截取参数
@@ -1274,7 +1343,7 @@ var dialog={
         //  jLoading.start();
         $.ajax({
             type: 'GET',
-            url: url,
+            url: PATH+url,
             dataType: 'html',
             success: function(data){
                 //jLoading.close();
@@ -1295,39 +1364,64 @@ var dialog={
     }
 }
 function zdialogue(jso){
-	showMask()
+	dialog.showMask()
 	if(StringUtil.isBlank(jso.title)){
 		jso.title="提示";
 	}
-	var html=$("<div class=\"zwidget_wrap \">"+
-	"<div class=\"zwidget_header\"><span>"+jso.title+"</span> <a class='zclose'  onclick=\"$(this).parent().parent().hide();$('.mask').hide()\"><i class=' fa fa-close'></i></a></div>"+
-	"<div class=\"zbody \">"+
-	"<div class=\"zinfo-icon\"><i  class='"+jso.icon+"'></i></div>"+//<img src=\""+jso.src+"\"/>
-	"<div class=\"zinfo\" style=\"color:"+jso.fontcolor+"\">"+jso.msg+"</div>"+
-	"</div><div class='zfooter' ><div class=\"zbutton_wrap row\">"+
-	(jso.type== "confirm"?"<button type=\"button\" class=\"col-xs-5 pull-left btn btn-primary\" >确定</button><button type=\"button\" class=\"col-xs-5 pull-right btn btn-default\" >取消</button>":
-		"<button class='col-xs-12 btn btn-primary' >确定</button>")+
+	var html="<div class=\"zwidget_wrap \">"+
+	"<div class=\"zwidget_hd\"><span>"+jso.title+"</span> <a class='zclose'  onclick=\"this.parentNode.parentNode.style.display='none';document.getElementsByClassName('mask')[0].style.display='none'\">X</a></div>"+//<i class=' fa fa-close'>X</i>
+	"<div class=\"zwidget_bd \">"+
+/*	"<div class=\"zinfo-icon\"><i  class='"+jso.icon+"'></i></div>"+*///<img src=\""+jso.src+"\"/>
+	"<div class=\"zinfo\" style=\"color:"+jso.fontcolor+"\">"+jso.msg+"</div></div>"+
+	"<div class='zwidget_ft' ><div class=\"zbutton_wrap \">"+
+	(jso.type== "confirm"?"<button type=\"button\" class=\"sure btn btn-primary\" >确定</button><button type=\"button\" class=\"cancel btn btn-default\" >取消</button>":
+		"<button class='sure btn btn-primary' >确定</button>")+
 	"</div></div>"+
-	"</div>");
-	if($(".widget").length>0){
-		$(".widget").html(html);
+	"</div>";
+	var widget =null;
+	var widgets= document.getElementsByClassName("widget");
+	if(widgets.length>0){
+
+	    widget= widgets[0];
+		widget.innerHTML=html;
+		widget.style.display="block";
 	}else{
-		$("body").append(html);
+
+	   widget=document.createElement("div");
+	    widget.setAttribute("class","widget");
+	    widget.innerHTML=html;
+	      document.body.appendChild(widget);
+		//$("body").append(html);
 	}
-	
+	var sure = widget.getElementsByClassName("sure");
+	var mask =document.getElementsByClassName("mask");
 	if (typeof(jso.okfn) != "undefined") {
-		$(html).find(".zbutton_wrap").find(".btn-primary").click(jso.okfn);
+	    sure[0].onclick=function(){jso.okfn.call(this);widget.style.display="none";mask[0].style.display="none";};
+	   //  widget.getElementsByClassName("sure")[0].onclick=function(){jso.okfn.call(this);widget.style.display="none";};
+		//$(html).find(".zbutton_wrap").find(".btn-primary").click(jso.okfn);
+	}else{
+	     sure[0].onclick=function(){widget.style.display="none";mask[0].style.display="none";};
 	}
-		
-	$(html).find(".btn").click(function(){$(html).fadeOut();$(".mask").fadeOut()});
-	
-	if (typeof(jso.cancelfn) != "undefined") {
+    var cancel = widget.getElementsByClassName("cancel");
+        //$(html).find(".zbutton_wrap").find(".btn-primary").click(jso.okfn);
+    if(cancel.length>0){
+            if (typeof(jso.cancelfn) != "undefined") {
+                cancel[0].onclick=function(){jso.cancelfn.call(this);widget.style.display="none";mask[0].style.display="none";};
+            }else{
+                 cancel[0].onclick=function(){widget.style.display="none";mask[0].style.display="none";};
+            }
+    }
+   //widget.getElementsByClassName("btn")[0].onclick=function(){dialog.hideMask();widget.style.display="none"};
+   // widget.getElementsByClassName("zclose")[0].onclick=function(){dialog.hideMask();widget.style.display="none"};
+	//$(html).find(".btn").click(function(){$(html).fadeOut();$(".mask").fadeOut()});
+
+	/*if (typeof(jso.cancelfn) != "undefined") {
 		$(html).find(".zbutton_wrap").find(".btn-default").click(jso.okfn);
 		$(html).find(".zwidget_header").find(".zclose").click(jso.cancelfn);
 		$(html).find(".zwidget_header").find(".zclose").click(function(){$(html).fadeOut();$(".mask").fadeOut()});
 	}else{
 		$(html).find(".zwidget_header").find(".zclose").click(function(){$(html).fadeOut();$(".mask").fadeOut()});
-	}
+	}*/
 }
 /*
 function zalert(msg,title,fn){
@@ -1344,7 +1438,7 @@ function zalert(msg,title,fn){
 	"</div>"+
 	"</div>");
 	$(".widget").html(html);
-	if (typeof(fn) != "undefined") 
+	if (typeof(fn) != "undefined")
 	$(html).find(".zbutton_wrap").find("a").click(fn);
 }*/
 function zerror(msg,title,fn){
@@ -1462,141 +1556,404 @@ var setting = {
                }
            }
        };
+var globalValidator={
+messages:{},
+methods:{},
+}
+function validator(form,cfg){
 
+
+
+var _validator= {
+    cfg :{},
+    messages:{
+    },
+    optional: function( element ) {
+        if(this.cfg.rules[element.name].required)
+            return false;
+        return true;
+    },
+    getLength: function( value, element ) {
+    			switch ( element.nodeName.toLowerCase() ) {
+    			case "select":
+    				return $( "option:selected", element ).length;
+    			case "input":
+    				if (  element.type=="checkbox") {
+    					return this.findByName( element.name ).filter( ":checked" ).length;
+    				}
+    			}
+    			return value.length;
+    		},
+    methods:{
+// http://jqueryvalidation.org/required-method/
+        required: function( value, element, param ) {
+
+            if ( element.tagName.toLowerCase() === "select" ) {
+                // could be an array for select-multiple or a string, both are fine this way
+                var index=element.selectedIndex ;
+                return index > 0;
+            }
+            /*if ( this.checkable( element ) ) {
+                return this.getLength( value, element ) > 0;
+            }*/
+
+            return  value.trim().length > 0;
+        },
+
+
+    // http://jqueryvalidation.org/email-method/
+        email: function( value, element ) {
+            // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+            // Retrieved 2014-01-14
+            // If you have a problem with this implementation, report a bug against the above spec
+            // Or use custom methods to implement your own email validation
+            return this.optional( element ) || /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test( value );
+        },
+
+        // http://jqueryvalidation.org/url-method/
+        url: function( value, element ) {
+            // contributed by Scott Gonzalez: http://projects.scottsplayground.com/iri/
+            return this.optional( element ) || /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test( value );
+        },
+
+        // http://jqueryvalidation.org/date-method/
+        date: function( value, element ) {
+            return this.optional( element ) || !/Invalid|NaN/.test( new Date( value ).toString() );
+        },
+
+        // http://jqueryvalidation.org/dateISO-method/
+        dateISO: function( value, element ) {
+            return this.optional( element ) || /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.test( value );
+        },
+
+        // http://jqueryvalidation.org/number-method/
+        number: function( value, element ) {
+            return this.optional( element ) || /^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test( value );
+        },
+
+        // http://jqueryvalidation.org/digits-method/
+        digits: function( value, element ) {
+            return this.optional( element ) || /^\d+$/.test( value );
+        },
+
+        // http://jqueryvalidation.org/creditcard-method/
+        // based on http://en.wikipedia.org/wiki/Luhn/
+        creditcard: function( value, element ) {
+            if ( this.optional( element ) ) {
+                return "dependency-mismatch";
+            }
+            // accept only spaces, digits and dashes
+            if ( /[^0-9 \-]+/.test( value ) ) {
+                return false;
+            }
+            var nCheck = 0,
+                nDigit = 0,
+                bEven = false,
+                n, cDigit;
+
+            value = value.replace( /\D/g, "" );
+
+            // Basing min and max length on
+            // http://developer.ean.com/general_info/Valid_Credit_Card_Types
+            if ( value.length < 13 || value.length > 19 ) {
+                return false;
+            }
+
+            for ( n = value.length - 1; n >= 0; n--) {
+                cDigit = value.charAt( n );
+                nDigit = parseInt( cDigit, 10 );
+                if ( bEven ) {
+                    if ( ( nDigit *= 2 ) > 9 ) {
+                        nDigit -= 9;
+                    }
+                }
+                nCheck += nDigit;
+                bEven = !bEven;
+            }
+
+            return ( nCheck % 10 ) === 0;
+        },
+
+    		// http://jqueryvalidation.org/minlength-method/
+        minlength: function( value, element, param ) {
+            var length = $.isArray( value ) ? value.length : this.getLength( value, element );
+            return this.optional( element ) || length >= param;
+        },
+
+        // http://jqueryvalidation.org/maxlength-method/
+        maxlength: function( value, element, param ) {
+            var length = $.isArray( value ) ? value.length : this.getLength( value, element );
+            return this.optional( element ) || length <= param;
+        },
+
+        // http://jqueryvalidation.org/rangelength-method/
+        rangelength: function( value, element, param ) {
+            var length =  value instanceof Array ? value.length : this.getLength( value, element );
+            return this.optional( element ) || ( length >= param[ 0 ] && length <= param[ 1 ] );
+        },
+
+        // http://jqueryvalidation.org/min-method/
+        min: function( value, element, param ) {
+            return this.optional( element ) || value >= param;
+        },
+
+        // http://jqueryvalidation.org/max-method/
+        max: function( value, element, param ) {
+            return this.optional( element ) || value <= param;
+        },
+
+        // http://jqueryvalidation.org/range-method/
+        range: function( value, element, param ) {
+            return this.optional( element ) || ( value >= param[ 0 ] && value <= param[ 1 ] );
+        },
+
+        // http://jqueryvalidation.org/equalTo-method/
+        equalTo: function( value, element, param ) {
+            // bind to the blur event of the target in order to revalidate whenever the target field is updated
+            // TODO find a way to bind the event just once, avoiding the unbind-rebind overhead
+            var target = $( param );
+           /* if ( this.settings.onfocusout ) {
+                target.unbind( ".validate-equalTo" ).bind( "blur.validate-equalTo", function() {
+                    $( element ).valid();
+                });
+            }*/
+            return value === target.value;
+        },
+
+        // http://jqueryvalidation.org/remote-method/
+        remote: function( value, element, param ) {
+            if ( this.optional( element ) ) {
+                return "dependency-mismatch";
+            }
+
+            var previous = this.previousValue( element ),
+                validator, data;
+
+            if (!this.settings.messages[ element.name ] ) {
+                this.settings.messages[ element.name ] = {};
+            }
+            previous.originalMessage = this.settings.messages[ element.name ].remote;
+            this.settings.messages[ element.name ].remote = previous.message;
+
+            param = typeof param === "string" && { url: param } || param;
+
+            if ( previous.old === value ) {
+                return previous.valid;
+            }
+
+            previous.old = value;
+            validator = this;
+            this.startRequest( element );
+            data = {};
+            data[ element.name ] = value;
+            $.ajax( $.extend( true, {
+                url: param,
+                mode: "abort",
+                port: "validate" + element.name,
+                dataType: "json",
+                data: data,
+                context: validator.currentForm,
+                success: function( response ) {
+                    var valid = response === true || response === "true",
+                        errors, message, submitted;
+
+                    validator.settings.messages[ element.name ].remote = previous.originalMessage;
+                    if ( valid ) {
+                        submitted = validator.formSubmitted;
+                        validator.prepareElement( element );
+                        validator.formSubmitted = submitted;
+                        validator.successList.push( element );
+                        delete validator.invalid[ element.name ];
+                        validator.showErrors();
+                    } else {
+                        errors = {};
+                        message = response || validator.defaultMessage( element, "remote" );
+                        errors[ element.name ] = previous.message = $.isFunction( message ) ? message( value ) : message;
+                        validator.invalid[ element.name ] = true;
+                        validator.showErrors( errors );
+                    }
+                    previous.valid = valid;
+                    validator.stopRequest( element, valid );
+                }
+            }, param ) );
+            return "pending";
+        }
+
+    },
+    validator:function (form,cfg){
+        this.cfg=cfg;
+        var that =this;
+        for(var inputName in cfg.rules){
+            var input = getChildByName(form,inputName);
+            if(input ){
+                //input ;
+                //var rules= cfg.rules[inputName];
+                input.onblur=function(){
+                    for(var ruleName in cfg.rules[this.name]){console.log(ruleName);
+                        if(that.methods[ruleName]){
+                           var bool= that. methods[ruleName].call(that,getVal(this),this,cfg.rules[this.name][ruleName]);
+                           if(bool){
+                              var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
+                              for(var i=0;i<errorElement.length;i++){
+                                  if(errorElement[i].getAttribute("for")==this.name){
+                                        errorElement[i].parentNode.removeChild(errorElement[i]);
+                                  }
+                              }
+                                //消除提示框
+                           }else{
+                                //var div ="<div class='"+that.cfg.erroClass+"'>"+that.cfg.messages[ruleName]+"</div>";
+                                var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
+                                for(var i=0;i<errorElement.length;i++){
+                                    if(errorElement[i].getAttribute("for")==this.name){
+                                          errorElement[i].parentNode.removeChild(errorElement[i]);
+                                    }
+                                }
+
+                                var div =document.createElement(that.cfg.errorElement);
+                                var className = that.cfg["errorClass"];
+                                div.setAttribute("class",className);
+                                 div.setAttribute("for",this.name);
+                              //  div.attributes["for"]=inputName;
+
+                                var msg = that.cfg.messages[this.name][ruleName];
+                                if(!msg){
+                                    msg=that.messages[ruleName];
+                                }
+                                 div.innerText=msg;
+                                 that.cfg.errorPlacement.call(that,div,this);
+                                //显示错误提示框
+
+                                break;
+                           }
+                        };//input
+                    }
+                }
+            }
+        }
+           return this;
+    },
+      valid:function (form){
+
+            var that =this;
+            for(var inputName in this.cfg.rules){
+                var input = getChildByName(form,inputName);
+                if(input ){
+                    //input ;
+                    //var rules= cfg.rules[inputName];
+                        for(var ruleName in this.cfg.rules[input.name]){
+                            if(that.methods[ruleName]){
+                               var bool= that. methods[ruleName].call(that,getVal(input),input,this.cfg.rules[input.name][ruleName]);
+                               if(bool){
+                                  var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
+                                  for(var i=0;i<errorElement.length;i++){
+                                      if(errorElement[i].getAttribute("for")==input.name){
+                                            errorElement[i].parentNode.removeChild(errorElement[i]);
+                                      }
+                                  }
+                                    //消除提示框
+                               }else{
+                                    //var div ="<div class='"+that.cfg.erroClass+"'>"+that.cfg.messages[ruleName]+"</div>";
+                                    var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
+                                    for(var i=0;i<errorElement.length;i++){
+                                        if(errorElement[i].getAttribute("for")==input.name){
+                                              errorElement[i].parentNode.removeChild(errorElement[i]);
+                                        }
+                                    }
+
+                                    var div =document.createElement(that.cfg.errorElement);
+                                    var className = that.cfg["errorClass"];
+                                    div.setAttribute("class",className);
+                                     div.setAttribute("for",input.name);
+                                  //  div.attributes["for"]=inputName;
+
+                                    var msg = that.cfg.messages[input.name][ruleName];
+                                    if(!msg){
+                                        msg=that.messages[ruleName];
+                                    }
+                                     div.innerText=msg;
+                                     that.cfg.errorPlacement.call(that,div,input);
+                                    //显示错误提示框
+
+                                   return false;
+                               }
+                            };//input
+                        }
+                }
+                return true;
+            }
+
+        },
+    addMethod:function(name,fn,message){
+        this.methods[name]=fn;
+        this.messages[name]=message;
+    }
+}
+_validator.addMethod("isemailorphone", function(value, element) {/*console.log(element);*/
+	return this.optional(element) ||  /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(value)
+	||/^[1][345678][0-9]{9}$/.test(value);
+	}, "请输入有效的邮箱地址或者手机号");
+_validator.addMethod("regex",function( value, element, param ) {
+	var re=new RegExp(param);
+    return this.optional(element) ||re.test(value);
+},"格式不正确");
+_validator.addMethod("phone",function( value, element, param ) {
+	var re=new RegExp("^[1][3578][0-9]{9}$");
+    return this.optional(element) ||re.test(value);
+},"手机格式不正确");
+_validator.addMethod("ymd",function( value, element, param ) {
+	param=param.replace(/[yMdHms]/g,"\\d");
+	var re=new RegExp(param);
+	 return this.optional(element) ||re.test(value);
+},"格式不正确");
+_validator.addMethod("alpha",function( value, element, param ) {
+	var re= /^[A-Za-z]+$/;
+    return this.optional(element) ||re.test(value);
+},"格式不正确");
+_validator.addMethod("idcard",function( value, element, param ) {
+	var re= /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
+	 return this.optional(element) ||re.test(value);
+},"身份证格式不正确");
+return _validator.validator(form,cfg);
+}
 var BaseValidator={
 	errorElement : 'div',
-            					errorClass : 'help-block-left-animation',
-            					focusInvalid : true,
+    errorClass : 'help-block-left-animation',
+    focusInvalid : true,
+    highlight : function(element) {
+        /*$(element).closest('.form-signin').removeClass(
+                'has-info').addClass('has-error');*/
+    },
 
-                                highlight : function(element) {
-            						/*$(element).closest('.form-signin').removeClass(
-            								'has-info').addClass('has-error');*/
-            					},
+    success : function(e) {
+       /* $(e).closest('.form-signin').removeClass('has-error')
+                .addClass('has-info');*/
+        $(e).remove();
+    },
 
-            					success : function(e) {
-            						$(e).closest('.form-signin').removeClass('has-error')
-            								.addClass('has-info');
-            						$(e).remove();
-            					},
+    errorPlacement : function(error, element) {
+       // $(element).closest('.form-group').append(error);
+      // console.log(element.parentNode.getAttribute("class"));
+      var form_group=element;
+      for(var i=0;i<10;i++){
+        form_group=form_group.parentNode;
+        if(form_group.getAttribute("class") && form_group.getAttribute("class").indexOf("form-group")!=-1){
+        form_group.appendChild(error);
+        break;
+        }
+      }
 
-            					errorPlacement : function(error, element) {
-            						error.insertAfter(element);
-            					},
+        //error.insertAfter(element);
+    },
 
-            					submitHandler : function(form) {
-            						register();
+    submitHandler : function(form) {
+      //  register();
 
-            					},
-            					invalidHandler : function(form) {
+    },
+    invalidHandler : function(form) {
 
-            					}
+    }
 }
 
-function zImageUtil(config) {
-	var o = {
-		imgDom: null, //回显的image的id
-		maxHeight: null, //预设的最大高度
-		maxWidth: null, //预设的最大宽度
-		inputDom:null,
-		postUrl: null, //提交的url"/calendar/image/upload.json"
-		preShow: true,
-		callback: null,
-
-		fileChange: function(e) {//
-			var f = e.files[0]; //一次只上传1个文件，其实可以上传多个的
-			var FR = new FileReader();//创建fileReader
-			var _this = this;
-
-			FR.onload = function(f) {//fr  readAsDataURL 的时候触发方法
-
-				_this.compressImg(this.result, 300, function(data) { //压缩完成后执行的callback
-					console.log("压缩完成后执行的callback");
-					//document.getElementById('imgData').value = data;//写到form元素待提交服务器
-					//document.getElementById('myImg').src = data;//压缩结果验证
-					if (_this.preShow) {
-						console.log("img pre show");
-						_this.imgDom.src = data;
-						console.log(_this.imgDom);
-
-					}
-					console.log("begin send img");
-					var json = {};
-					// json.imageName= "myImage.png";
-					data = data.substring(22);
-					// alert(data)
-					json.imageData = encodeURIComponent(data);
-					console.log("begin post");
-
-					Ajax.post(_this.postUrl,
-						json,
-						function(data) {
-							if (data.r == 1) {
-								_this.imgDom.src = "/" + data.data;
-								$(_this).parent().find("#picurl")
-								console.log("imgUrl:" + data.data);
-							} else {
-								//	                        		zalert(data.msg);
-							}
-							if (_this.callback != null)
-								_this.callback(data);
-						}
-					);
-				});
-			};
-			FR.readAsDataURL(f); //先注册onload，再读取文件内容，否则读取内容是空的
-		},
-		compressImg: function(imgData, maxHeight, onCompress) {
-			var _this = this;
-			if (!imgData)
-				return;
-			onCompress = onCompress || function() {};
-			maxHeight = maxHeight || this.maxHeight; //默认最大高度200px
-			var canvas = document.createElement('canvas');
-			var img = new Image();
-			console.log("maxHeight:" + maxHeight);
-			img.onload = function() {
-				if (img.height > maxHeight) { //按最大高度等比缩放
-					img.width *= maxHeight / img.height;
-					img.height = maxHeight;
-				}
-				canvas.width = img.width;
-				canvas.height = img.height;
-				var ctx = canvas.getContext("2d");
-
-				ctx.clearRect(0, 0, canvas.width, canvas.height); // canvas清屏
-
-				//重置canvans宽高 canvas.width = img.width; canvas.height = img.height;
-				console.log("width:" + img.width + "height:" + img.height);
-				ctx.drawImage(img, 0, 0, img.width, img.height); // 将图像绘制到canvas上
-				console.log("begin compress img");
-				onCompress(canvas.toDataURL("image/png")); //必须等压缩完才读取canvas值，否则canvas内容是黑帆布
-			};
-			// 记住必须先绑定事件，才能设置src属性，否则img没内容可以画到canvas
-			console.log("begin origin data load:");
-			img.src = imgData;
-
-		},
-		init: function(jso) {
-		var _this =this;
-			this.imgDom = jso.imgDom;
-			this.maxHeight = jso.maxHeight;
-			this.maxWidth = jso.maxWidth;
-			this.postUrl = jso.postUrl;
-			this.callback = jso.callback;
-			this.inputDom=jso.inputDom;
-			var _this =this;
-			$(this.imgDom).click(function(){
-                $(_this.inputDom).trigger("click");
-			})
-
-				$(this.inputDom).change(function(){
-            			    _this.fileChange(_this.inputDom);
-                })
-		},
-	};
-	o.init(config);
-	return o;
-}
   function intNum(val,defval) {
 			val = parseInt(val,10);
 			if (isNaN(val)) { return defval || 0;}
@@ -1644,7 +2001,8 @@ function zImageUtil(config) {
 					console.log("begin send img");
 					var json = {};
 					// json.imageName= "myImage.png";
-					data = data.substring(22);
+					data ="+"+ data;//.substring(22);
+					//alert(data.substring(0,100));
 					// alert(data)
 					json.imageData = encodeURIComponent(data);
 					console.log("begin post");
@@ -1653,7 +2011,7 @@ function zImageUtil(config) {
 						json,
 						function(data) {
 							if (data.r == 1) {
-								_this.imgDom.src = "/" + data.data;
+								_this.imgDom.src = PATH+"/" + data.data;
 								$(_this).parent().find("#picurl")
 								console.log("imgUrl:" + data.data);
 							} else {
@@ -1725,457 +2083,137 @@ function zImageUtil(config) {
 
 
 
+function extend(obj1,obj2){
+    for (i in obj2)
+    		obj1[i] = obj2[i];
+}
+function trim(str){
+     return str.replace(/(^\s*)|(\s*$)/g,'');
+}
 
-(function() {
-	var Awifi_UI = function() {
-		this.name = 'Awifi_UI';
-		this.version = '1.0';
-	}
-	this.Awifi_UI = new Awifi_UI();
-	Awifi_UI = this.Awifi_UI;
+function getVal(str){
+    var element =null;
+    if(typeof str =="string"){
+         element = document.getElementById(id);
 
-	Awifi_UI.captcha = {
-		systemNo:'',
-		host: '',
-		//包含组件的div
-		mainContain: '',
-		//模板
-		captchaTpl: '<div class="ui-row-90 awui-text-center" style="min-height: 28px"><span class="awui-red" id="error"></span></div><div class=awui-row-90><input class=awui-main-input id=username placeholder="请输入手机号" maxlength=11></div><div class=awui-row-90 id=captchaDiv><div class="awui-row-47 awui-left"><input class="awui-row-47 awui-main-input" placeholder=请输入验证码 id=picCaptcha maxlength=4></div><div class="awui-row-47 awui-right"><button type="button" class="awui-back-gray awui-gray awui-half-btn awui-text-center" id=smsCaptchaGet>获取验证码</button></div></div><div class="awui-row-90 awui-login-btngroup"><button class="awui-back-orange awui-white awui-half-btn awui-text-center" id=sure>确认</button></div>',
-		captchaPicTpl: '<div class="ui-row-90 awui-text-center" style="min-height: 28px"><span class="awui-red" id="error"></span></div><div class=awui-row-90><input class=awui-main-input id=username placeholder="请输入手机号" maxlength=11></div><div class=awui-row-90 id=captchaDiv><div class="awui-row-47 awui-left"><input class="awui-row-47 awui-main-input" placeholder=请输入验证码 id=picCaptcha maxlength=4></div><div class="awui-row-47 awui-right awui-text-center"><img src=img/forget.png id=picCaptchaGet class="awui-captchaPic"></div></div><div class="awui-row-90 awui-login-btngroup"><button class="awui-back-orange awui-white awui-half-btn awui-text-center" id=sure>确认</button></div>',
-		//请求地址
-		url: {
-			smsCaptchaUrl: '',
-			picCaptchaUrl: '',
-			sureUrl: ''
-		},
-		//计数
-		captchaCutdownTime: 60,
-		//参数
-		params: {
-			appid: '',
-			timestamp: '',
-			token: ''
-		},
-		captchaType: '',
-		$main:null ,
-		$username:null,
-		$smsCaptcha:null,
-		$picCaptcha:null,
-		$loginBtn:null,
-		$error:null,
-		/**
-		 * 初始化
-		 * @param {Object} config
-		 */
-		init: function(config) {
-			if (!config) {
-				console.log("配置缺失");
-				return false;
-			}
-			//JQuery对象
-			if (config.mainContain.length>0) {//alert($("#login_form").length)
-				this.mainContain = config.mainContain;
-				console.log("mainContain:" + this.mainContain);
-			} else {
-				console.log("配置参数缺失,请指定mainContain（组件dom容器）");
-				return false;
-			}
+    }else if(typeof str =="object"){
+        element=str;
+    }
+       if(element.tagName.toLowerCase=="select"){
+                var  myselect=element.selectedIndex;
+                return element.options[index].value;
+        }
+            return element.value;
+}
+function getChildByName(parentNode,name){
 
-			//portal参数
-			if (config.params) {
-				this.params = config.params;
-			}
+    if(parentNode){
+    if(!parentNode.childNodes)
+         return null;
+    }else{
+        console.log("parentNode is null:"+name);
+        return null;
+    }
+    for(var i =0;i<parentNode.childNodes.length;i++){
+        if(parentNode.childNodes[i].name==name){
+            return parentNode.childNodes[i];
+        }else{
+            var element=getChildByName(parentNode.childNodes[i],name);
+            if(element){
+                return element;
+            }
+        }
+    }
+    return null;
 
-			if (config.systemNo) {
-				this.systemNo = config.systemNo;
-			}
+}
+function getChild(parentNode,name){
+    if(!parentNode.childNodes)
+    return null;
+    for(var i =0;i<parentNode.childNodes.length;i++){
+        var _name =name;
+        var attr="";
+        if(name[0]=="#"){
+           attr=parentNode.childNodes[i].id;
+           _name=name.substr(1);
+        }else if(name[0]=="."){
+             attr=parentNode.childNodes[i].className;
+              _name=name.substr(1);
+        }else{
+            attr=parentNode.childNodes[i].id;
+
+        }
+        if(attr==_name){
+            return parentNode.childNodes[i];
+        }else{
+            var element=getChild(parentNode.childNodes[i],name);
+            if(element){
+                return element;
+            }
+        }
+    }
+    return null;
+
+}
 
 
-			//请求host
-			if (config.host) {
-				this.host = config.host;
-			}
-			//url
-			if (config.url) {
-				this.url = config.url;
-			}
-			//验证码类型
-			if (config.captchaType) {
-				this.captchaType = config.captchaType;
-			}
-			//验证码倒计时
-			this.captchaCutdownTime = typeof(config.captchaCutdownTime) == 'undefined' ? this.captchaCutdownTime : config.captchaCutdownTime;
+zzw=function( selector, context){
+   	return  zzw.fn.init( selector, context );
+}
 
-			if (this.captchaType == 'pic') {
-				//this.mainContain.html(this.captchaPicTpl);
-				//this.picCaptchaClick();
-				//this.getCpatchaClick();
-			} else {
-				//this.mainContain.html(this.captchaTpl);
-				//this.getCaptcha();
-			}
 
-			this.$main = this.mainContain;
-			if(this.mainContain.length==0){
-				console.log("mainContain not exist");
-			}
-			var $main=this.$main;
-			if($main.length==0){
-				console.log("$main not exist");
-			}
-			this. $username = $main.find('.username');
-			this.$smsCaptcha = $main.find('#smsCaptcha');
-			this.$picCaptcha = $main.find('#picCaptcha');
-			this.$loginBtn = $main.find('#loginBtn');
-			this. $error = $main.find("#error");
-			this.$picCaptchaGet=$main.find("#picCaptchaGet");
-			this.$smsCaptchaGet=$main.find("#smsCaptchaGet");
-			this.addEventListener();
-		},
+zzw.fn=zzw.prototype={
 
-		initValid:function(){
+init:function(selector,context){
+    if(typeof selector=="object"){
+     selector.find=find;
+        return selector;
+    }
+    if(selector[0]=='#'){
+        var dom = document.getElementById(selector.replace("#",''));
+        if(dom){
+            dom.find=find;
+        }
+        return dom;
+    }
+    if(selector[0]=='.'){
+        var dom = document.getElementById(selector.replace(".",''));
+                if(dom){
+                    dom.find=find;
+                    return dom;
+                }
+                return dom;
+    }
 
-		},
-		/**
-		 * 获取验证码
-		 */
-		initSmsCaptcha: function() {
-			var that = this;
-			var checker = that.checker;
-			var $username =this.$username;
-			var $error =this.$error;
 
-			/*this.$smsCaptchaGet.on('click', function() {
-				if ($(this).attr("disabled")) {
-					return;
-				}
-				var username = $username.val() || '';
-				if (checker.checkUserName(username)) {
-					$error.text("请输入正确的帐号");
-					return false;
-				}
+}
+}
 
-				var appid = params.appid || '';
-				var timestamp = params.timestamp || '';
-				var token = params.token || '';
-				var data = {
-					phone: username,
-					appid: appid,
-					timestamp: timestamp,
-					token: token
-				};
-				that.getCaptchaAjax(data);
-			});*/
-		},
-		picCaptchaClick: function() {
-			console.log("picCaptchaClick");
-			//TODO
-			var that = this;
-			var params = that.params;
-			var phone =  new Date().getTime();
-			var appid = params.appid || '';
-			var timestamp = params.timestamp || '';
-			var token = params.token || '';
-			var data = {
-				systemno: this.systemNo,
-				/*appid: appid,
-				timestamp: timestamp,*/
-				sessionid: that.$main.find("#sessionid").val()
-			};
-			that.getPicCaptchaAjax(data);
-		},
-		smsCaptchaClick: function() {//TODO
-			var that = this;
-			var params = that.params;
-			var phone = this.$username.val();
-			var appid = params.appid || '';
-			var timestamp = params.timestamp || '';
-			var token = params.token || '';
-			var data = {
-				phone: phone,
-				appid: appid,
-				timestamp: timestamp,
-				token: token,
-				systemno:this.systemNo
+zzw.extend=function(obj1,obj2){
 
-			};
-			if(this.checker.isBlank(phone)){
-				this.alert("请先填写手机号");
-				return;
-			}
-			that.captchaCutdown(this.$smsCaptchaGet);
-			that.getSmsCaptchaAjax(data);
-		},
-		alert:function(str){
-			this.$error.text(str);
-		},
-		/**
-		 * 绑定事件
-		 */
-		addEventListener: function() {
-			var that = this;
-			var checker = this.checker;
-			var params = this.params;
-			if(this.$picCaptchaGet.length>0){
-				this.$picCaptchaGet.on('click', function() {
-					that.picCaptchaClick();
-				});
-				//显示验证码
-				this.$picCaptchaGet.trigger("click");
-			}else{
-				console.log("$pciCaptchaGet not exist");
-			}
-			if(this.$smsCaptchaGet.length>0){
-				this.$smsCaptchaGet.on('click', function() {
-					that.smsCaptchaClick();
-				});
-			}else{
-				console.log("$smsCaptchaGet not exist");
-			}
+}
+zzw.fn.init.prototype = zzw.fn;
+zzw.extend = zzw.fn.extend = function(obj1,obj2){
+    for(var key in obj2){
+        obj1[key]=obj2[key];
+    }
 
-			/*this.$loginBtn.on('click', function() {
-
-				var username, captcha;
-				username = that.$username.val() || '';
-				captcha = that.$smsCaptcha.val() || '';
-
-				//6位验证码验证
-
-				if(that.$smsCaptcha.length>0){
-					if(that.checker.checkCaptcha(captcha)){
-
-					}
-
-				}
-
-				if (that.checker.checkCaptcha(captcha) || that.checker.checkUserName(username)) {
-					that.alert("请输入正确的帐号或验证码");
-					return false;
-				}
-
-				var data = {
-					phone: username,
-					code: captcha,
-					appid: appid,
-					timestamp: timestamp,
-					token: token
-				};
-				that.sureAjax(data);
-			});*/
-		},
-
-		/**
-		 * 短信验证码请求
-		 * @param {Object} data
-		 */
-		getPicCaptchaAjax: function(data) {
-			var that = this;
-			var type = this.captchaType;
-			var url;
-			url = this.url.picCaptchaUrl || '';
-			url = this.host + url;
-			$.ajax({
-				url: url,
-				data: data,
-				type:'GET',
-				dataType: 'JSONP',
-				jsonp: 'callback',
-				jsonpCallback:'getName',
-				contentType: "application/x-www-form-urlencoded; charset=utf-8",
-				header: {
-					'cache-control': 'no-cache'
-				},
-				success: function(data, textStatus, jqXHR) {
-					if (data.r == 0 && that.$picCaptcha) {
-						//that.$picCaptchaGet.prop("src",that.host+"/"+data.data.img);
-						//that.$picCaptchaGet.find("img").prop("src",that.host+"/"+data.data.img+"?r="+Math.random());
-						that.$picCaptchaGet.find("img").prop("src","data:image/png;base64,"+data.data.imgdata);
-						//暂存token
-						var $sessionid= that.$main.find("#sessionid");
-						if($sessionid.length==0){
-							$sessionid=$("<input type='hidden' id='sessionid' name='sessionid' />");
-							that.$main.append($sessionid);
-
-						}
-						$sessionid.val(data.data.sessionid);
-					}
-				},
-				error: function(XHR, textStatus, errorThrown) {}
-			});
-		},
-		/**
-		 * 验证码请求
-		 * @param {Object} data
-		 */
-		getSmsCaptchaAjax: function(data) {
-			var that = this;
-			var type = this.captchaType;
-			var url;
-			url = this.url.smsCaptchaUrl || '';
-			url = this.host + url;
-			$.ajax({
-				url: url,
-				data: data,
-				dataType: 'JSONP',
-				type:'GET',
-				jsonp: 'callback',
-				jsonpCallback:'getName',
-				contentType: "application/x-www-form-urlencoded; charset=utf-8",
-				header: {
-					'cache-control': 'no-cache'
-				},
-				success: function(data, textStatus, jqXHR) {
-					if (data.r == 0 ) {
-
-					}else{
-						that.alert(data.msg);
-						console.log(data);
-					}
-
-				},
-				error: function(XHR, textStatus, errorThrown) {}
-			});
-		},
-		/*sureAjax: function(data) {
-			var that = this;
-			that.awui_loading.show();
-			var url = this.url.sureUrl || '';
-			url = this.host + url;
-			$.ajax({
-				url: url,
-				data: data,
-				dataType: 'JSONP',
-				jsonp: 'callback',
-				header: {
-					'cache-control': 'no-cache'
-				},
-				success: function(datas) {
-					console.log(datas);
-				},
-				error: function(XHR, textStatus, errorThrown) {},
-				complete: function(XHR, textStatus) {
-					that.awui_loading.hide();
-				}
-			});
-		},*/
-		/**
-		 * 倒计时 传入按钮
-		 * @param {Object} self
-		 */
-		captchaCutdown: function(self) {
-			self.attr('disabled', true);
-			self.text('发送中');
-			var time = this.captchaCutdownTime || 60;
-			var sI = setInterval(function() {
-				time = time - 1;
-				if (time > 0) {
-					self.text(time + '秒后重试');
-				} else {
-					window.clearInterval(sI);
-					self.text('重新获取');
-					self.removeAttr("disabled");
-				}
-			}, 1000);
-		},
-
-		/**
-		 * 参数验证
-		 */
-		checker: {
-			isBlank:function(it){
-				if(it==null || typeof it=='undefinded' || it==''){
-					return true;
-				}
-				return null;
-			},
-			checkUserName: function(str) {
-				var re = /^1\d{10}$/
-				if (!re.test(str)) {
-					return true;
-				}
-			},
-			checkPassword: function(str) {
-				var re = /^[0-9 | A-Z | a-z]{6,20}$/;
-				if (!re.test(str)) {
-					return true;
-				}
-			},
-			checkCaptcha: function(str) {
-				var re = /^[0-9]{4}$/;
-				if (!re.test(str)) {
-					return true;
-				}
-			},
-			checkAuthCaptcha: function(str) {
-				var re = /^[0-9]{6}$/;
-				if (!re.test(str)) {
-					return true;
-				}
-			}
-		},
-		/**
-		 * 获取uri参数
-		 * @param {Object} name
-		 */
-		getParam: function(name) {
-			if (!name) {
-				return '';
-			}
-			var search = document.location.search;
-			var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
-			var matcher = pattern.exec(search);
-			var items = null;
-			if (null != matcher) {
-				try {
-					items = decodeURIComponent(decodeURIComponent(matcher[1]));
-				} catch (e) {
-					try {
-						items = decodeURIComponent(matcher[1]);
-					} catch (e) {
-						items = matcher[1];
-					}
-				}
-			}
-			return items;
-		},
-		/**
-		 * 加载状态
-		 */
-		awui_loading: {
-			loadingHtml: '<div class="loading" id="awui_loading" style="{{height}}">' +
-				'<div class="loading-warp" style="{{style}}">' +
-				'<div class="loading-content"><span class="loading-circle loading-circle-one"></span></div>' +
-				'<div class="loading-content"><span class="loading-circle loading-circle-two"></span></div>' +
-				'<div class="loading-content"><span class="loading-circle loading-circle-three"></span></div>' +
-				'</div>' +
-				'</div>',
-			topPx: 0,
-			heightPx: 0,
-			getHeight: function() {
-				return document.body.clientHeight + 60;
-			},
-			init: function() {
-				var self = this;
-				self.topPx = window.screen.availHeight / 2 + window.scrollY;
-				self.heightPx = self.getHeight();
-			},
-			show: function(height) {
-				var self = this;
-				self.init();
-				height = height || self.heightPx;
-				var leftPx = document.body.scrollWidth / 2 - 70 / 2;
-				var html = this.loadingHtml.replace('{{style}}', 'margin-top:' + self.topPx + 'px;left:' + leftPx + 'px').replace('{{height}}', 'height:' + self.heightPx + 'px');
-				$('body').css({
-					'overflow': 'hidden'
-				}).append(html);
-			},
-			hide: function() {
-				$('#awui_loading').remove();
-				$('body').css({
-					'overflow': ''
-				})
-			}
-		}
-	}
-
-})();
+}
+function find(selector){
+     if(selector[0]=='#'){
+            var dom = getChild(this,selector);
+            if(dom){
+                dom.find=find;
+            }
+            return dom;
+        }
+        if(selector[0]=='.'){
+         var dom =getChild(this,selector);
+         if(dom){
+                         dom.find=find;
+                          return dom;
+                     }
+           return dom;
+        }
+}
+$$=zzw;

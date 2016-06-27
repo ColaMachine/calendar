@@ -1,6 +1,6 @@
 
 <div id="ExpertList">
-    <div class="main-hd">| 专家</div>
+    <div class="main-hd">专家</div>
 
 
 
@@ -18,7 +18,7 @@
                 <label for="baike">百科地址</label>
                 <input type="text" id="baikeLike" name="baikeLike"  class="form-control input-sm"   maxlength="40" placeholder="百科地址" ></input>
 
-                <label for="remark">备注</label>
+               <!-- <label for="remark">备注</label>
                 <input type="text" id="remarkLike" name="remarkLike"  class="form-control input-sm"   maxlength="200" placeholder="备注" ></input>
                 <label for="createtime">创建时间</label>
                 <div class="input-group">
@@ -44,11 +44,12 @@
                 <div class="input-group">
                     <input type="text" id="updatetimeEnd" name="updatetimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间结束" ></input>
                     <label class="input-group-addon" for="updatetimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
-
+-->
                 <button type="button"  class="btn btn-default searchBtn">查询</button>
             </form>
             <div >
-                <button class="btn addBtn" >新增</button>
+
+                <a class="btn addBtn btn-success"><i class="fa fa-plus"></i>新增</a>
                 <!--<button class="btn deleteBtn">删除</button>
                 <button class="btn exportBtn" >导出</button>-->
             </div>
@@ -81,7 +82,7 @@ var expertList={
         viewrecords: true, sortorder: "desc", caption:"",
         rowNum:10,
         rowList:[10,20,30],
-        multiselect : true,
+        multiselect : false,
         url : PATH+'/expert/list.json',
         autowidth:true,
         grid:"#ExpertGrid",
@@ -107,12 +108,20 @@ var expertList={
             } ,
             {   name : 'createtime',width : 80,
                 formatter : function(value, grid, rows) {
-                  return new Date(value).format("yyyy-MM-dd");
+                  if(value){
+                        return new Date(value).format("yyyy-MM-dd");
+                    }else{
+                        return "";
+                    }
                 }
             } ,
             {   name : 'updatetime',width : 80,
                 formatter : function(value, grid, rows) {
-                  return new Date(value).format("yyyy-MM-dd");
+                 if(value){
+                        return new Date(value).format("yyyy-MM-dd");
+                    }else{
+                        return "";
+                    }
                 }
             } 
               ,

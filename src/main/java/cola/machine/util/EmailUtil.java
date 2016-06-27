@@ -1,14 +1,9 @@
 package cola.machine.util;
 
-import cola.machine.bean.Active;
-import cola.machine.bean.SysRole;
-import cola.machine.bean.SysUserRole;
 import cola.machine.util.mail.MailSenderInfo;
 import cola.machine.util.mail.SimpleMailSender;
 
 import javax.mail.MessagingException;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by dozen.zhang on 2016/5/13.

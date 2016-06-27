@@ -24,9 +24,8 @@
             <label for="type">类型</label>
             <select id="type" name="type"  class="form-control input-sm"  >
                 <option value=''>-请选择-</option>
-                <option value=1>合作伙伴</option>
-                <option value=2>产业峰会</option>
-                <option value=3>案例分析</option>
+                <option value=1>新闻资讯</option>
+
             </select>
             <label for="status">状态</label>
             <select id="status" name="status"  class="form-control input-sm"  >
@@ -37,33 +36,33 @@
                 <option value=4>驳回</option>
                 <option value=5>删除</option>
             </select>
-            <label for="remark">备注</label>
-            <input type="text" id="remarkLike" name="remarkLike"  class="form-control input-sm"   maxlength="200" placeholder="备注" ></input>
-            <label for="createtime">创建时间</label>
-            <div class="input-group">
-                <input type="text" id="createtime" name="createtime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
-                <label class="input-group-addon" for="createtime" ><i class="fa fa-calendar"></i></label>        </div>
-            <label for="createtimeBegin">创建时间开始</label>
-            <div class="input-group">
-                <input type="text" id="createtimeBegin" name="createtimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间开始" ></input>
-                <label class="input-group-addon" for="createtimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
-            <label for="createtimeEnd">创建时间结束</label>
-            <div class="input-group">
-                <input type="text" id="createtimeEnd" name="createtimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间结束" ></input>
-                <label class="input-group-addon" for="createtimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
-            <label for="updatetime">更新时间</label>
-            <div class="input-group">
-                <input type="text" id="updatetime" name="updatetime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间" ></input>
-                <label class="input-group-addon" for="updatetime" ><i class="fa fa-calendar"></i></label>        </div>
-            <label for="updatetimeBegin">更新时间开始</label>
-            <div class="input-group">
-                <input type="text" id="updatetimeBegin" name="updatetimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间开始" ></input>
-                <label class="input-group-addon" for="updatetimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
-            <label for="updatetimeEnd">更新时间结束</label>
-            <div class="input-group">
-                <input type="text" id="updatetimeEnd" name="updatetimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间结束" ></input>
-                <label class="input-group-addon" for="updatetimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
-
+            <!--    <label for="remark">备注</label>
+                <input type="text" id="remarkLike" name="remarkLike"  class="form-control input-sm"   maxlength="200" placeholder="备注" ></input>
+                <label for="createtime">创建时间</label>
+                <div class="input-group">
+                    <input type="text" id="createtime" name="createtime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间" ></input>
+                    <label class="input-group-addon" for="createtime" ><i class="fa fa-calendar"></i></label>        </div>
+                <label for="createtimeBegin">创建时间开始</label>
+                <div class="input-group">
+                    <input type="text" id="createtimeBegin" name="createtimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间开始" ></input>
+                    <label class="input-group-addon" for="createtimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
+                <label for="createtimeEnd">创建时间结束</label>
+                <div class="input-group">
+                    <input type="text" id="createtimeEnd" name="createtimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="创建时间结束" ></input>
+                    <label class="input-group-addon" for="createtimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
+                <label for="updatetime">更新时间</label>
+                <div class="input-group">
+                    <input type="text" id="updatetime" name="updatetime"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间" ></input>
+                    <label class="input-group-addon" for="updatetime" ><i class="fa fa-calendar"></i></label>        </div>
+                <label for="updatetimeBegin">更新时间开始</label>
+                <div class="input-group">
+                    <input type="text" id="updatetimeBegin" name="updatetimeBegin"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间开始" ></input>
+                    <label class="input-group-addon" for="updatetimeBegin" ><i class="fa fa-calendar"></i></label>        </div>
+                <label for="updatetimeEnd">更新时间结束</label>
+                <div class="input-group">
+                    <input type="text" id="updatetimeEnd" name="updatetimeEnd"  class="form-control input-sm"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  datatype="date" format="yyyy-MM-dd HH:mm:ss"  placeholder="更新时间结束" ></input>
+                    <label class="input-group-addon" for="updatetimeEnd" ><i class="fa fa-calendar"></i></label>        </div>
+    -->
             <a type="button"  class="btn btn-default searchBtn">查询</a>
         </form>
        <!-- <div class="row">
@@ -138,7 +137,7 @@ $('#content-row').append(html);
         viewrecords: true, sortorder: "desc", caption:"",
         rowNum:10,
         rowList:[10,20,30],
-        multiselect : true,
+        multiselect : false,
         url : PATH+'/artical/list.json',
         autowidth:true,
         grid:"#ArticalGrid",
@@ -160,7 +159,7 @@ $('#content-row').append(html);
             } ,
             {   name : 'type',width : 80,
                 formatter : function(value, grid, rows) {
-                  var map ={'3':'案例分析','2':'产业峰会','1':'合作伙伴',};
+                  var map ={'1':'新闻资讯',};
                   return map[value];
                 }
             } ,

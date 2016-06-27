@@ -18,7 +18,7 @@ public class Money extends Rule {
 				return true;
 			}
 			else {
-				this.setMessage("err.param.numeric");
+				this.setMessage("请输入有效金额");
 				return false;
 			}
 		}

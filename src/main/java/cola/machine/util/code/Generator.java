@@ -990,7 +990,8 @@ return ymd;
 //"SysResource","SysRole","SysUser","SysUserRole",
       //  "SysRoleResource","SysUserResource"
         //"SysUser","VideoNew","VideoHot","Collect"
-        Generator.generate(new String[]{"OperHis"/*"Artical",*//*"Partner"*/
+        //"Expert"/*"Artical",*//*"Partner"*/
+        Generator.generate(new String[]{"Expert","ExpertDetail"
                 });
        
     }

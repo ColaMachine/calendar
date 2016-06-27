@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 
 import cola.machine.bean.SysResource;
 import cola.machine.bean.SysUser;
@@ -13,7 +14,6 @@ import cola.machine.service.AuthService;
 import cola.machine.util.*;
 import cola.machine.util.log.ServiceMsg;
 import cola.machine.util.rules.*;
-import core.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cola.machine.constants.SysConfig;
 import cola.machine.service.UserService;
 import cola.machine.service.ValidCodeService;
-import cola.machine.web.listener.MySessionContext;
 import core.action.ResultDTO;
 
 @Controller
@@ -46,7 +45,7 @@ public class OUserController extends BaseController {
      * new CustomDateEditor(df, true); binder.registerCustfomEditor(Date.class,
      * dateEditor); }
      */
-  @Log(name="您访问了aop2方法")
+/*  @Log(name="您访问了aop2方法")*/
     @RequestMapping(value = "/login.htm", method = RequestMethod.GET)
     public String loginGet(HttpServletRequest request) {
         // String s =request.getParameter("s");
@@ -54,11 +53,13 @@ public class OUserController extends BaseController {
         // logger.debug("s");
         // System.out.println(123);
         //getJedis().set("1","2");
+        request.setAttribute("path", SysConfig.PATH);
+
         System.out.println("登录页面");
-        return "/static/html/zlogin.html";
+        return "/jsp/login.jsp";
     }
 
-    @RequestMapping(value = "/user/listTree.json", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/user/listTree.json", method = RequestMethod.GET)
     public @ResponseBody ResultDTO listAllUsers() {
         List userList = new ArrayList();
         Iterator iter = MySessionContext.getMyMap().keySet().iterator();
@@ -76,7 +77,7 @@ public class OUserController extends BaseController {
             }
         }
         return ResultUtil.getDataResult(userList);
-    }
+    }*/
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index3(HttpServletRequest request) {
@@ -139,7 +140,7 @@ public class OUserController extends BaseController {
      */
     @RequestMapping(value = "/register.htm", method = RequestMethod.GET)
     public String registerGet(HttpServletRequest request) {
-        return "static/html/zregisterByEmail.html";
+        request.setAttribute("path", SysConfig.PATH);return "/jsp/register.jsp";
     }
 
 
@@ -461,7 +462,7 @@ public class OUserController extends BaseController {
     @RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
     public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
-        return "/static/html/zlogin.html";
+        return "/jsp/login.jsp";
     }
 
     @RequestMapping(value = "/user/edit.htm", method = RequestMethod.GET)

@@ -6,6 +6,7 @@ import cola.machine.bean.SmsHistory;
 import cola.machine.bean.SmsRecord;
 import cola.machine.common.msgbox.ErrorMsg;
 import cola.machine.config.Config;
+import cola.machine.config.SystemConfig;
 import cola.machine.config.SystemValidCodeConfig;
 import cola.machine.config.ValidCodeConfig;
 import cola.machine.util.*;
@@ -64,8 +65,11 @@ public class ValidCodeService {
             // String mapValue = (String)
             // CacheUtil.getInstance().readCache(systemCode + phone,
             // String.class);
-            String json = RedisUtil.get(systemCode + phone);
-            SmsHistory history = JSON.parseObject(json, SmsHistory.class);
+          /*  String json = *//*RedisUtil.get(systemCode + phone);*//*
+                    (String)  CacheUtil.getInstance().readCache(systemCode + phone,
+                            SmsHistory.class);*/
+            SmsHistory history =  (SmsHistory)CacheUtil.getInstance().readCache(systemCode + phone,
+                    SmsHistory.class);
 
             // 验证指定时间内只能发送一次
             Long nowTime = new Date().getTime();
@@ -97,12 +101,8 @@ public class ValidCodeService {
             // 发送验证码
             Random random = new Random();
             int vcLen = systemConfig.getSmsLength();
-            String finalCode = "";
-            if (systemConfig.getSmsCharType() == 1) {
-                finalCode = StringUtil.getRandomDigitString(vcLen);
-            } else {
-                finalCode = StringUtil.getRandomAlphaString(vcLen);
-            }
+            String finalCode = getCode(systemConfig.getSmsCharType(),vcLen);
+
 
             // 返回验证码
             HashMap map = new HashMap();
@@ -126,8 +126,8 @@ public class ValidCodeService {
                 history.setLast(nowTime);
                 history.setCode(finalCode);
                 String insertJson = JSON.toJSONString(history);
-                RedisUtil.set(systemCode + phone, insertJson);
-                // CacheUtil.getInstance().writeCache(systemCode + phone,
+//                RedisUtil.set(systemCode + phone, insertJson);
+                 CacheUtil.getInstance().writeCache(systemCode + phone,history);
                 // finalCode + "-" +
                 // nowTime,Integer.valueOf(systemConfig.getSmsLiveTime()));
             }
@@ -169,8 +169,7 @@ public class ValidCodeService {
             // String mapValue = (String)
             // CacheUtil.getInstance().readCache(systemCode + phone,
             // String.class);
-            String json = RedisUtil.get(systemCode + email);
-            SmsHistory history = JSON.parseObject(json, SmsHistory.class);
+            SmsHistory history = (SmsHistory) CacheUtil.getInstance().readCache(systemCode + email,SmsHistory.class);
 
             // 验证指定时间内只能发送一次
             Long nowTime = new Date().getTime();
@@ -202,12 +201,7 @@ public class ValidCodeService {
             // 发送验证码
             Random random = new Random();
             int vcLen = systemConfig.getSmsLength();
-            String finalCode = "";
-            if (systemConfig.getSmsCharType() == 1) {
-                finalCode = StringUtil.getRandomDigitString(vcLen);
-            } else {
-                finalCode = StringUtil.getRandomAlphaString(vcLen);
-            }
+            String finalCode = getCode(systemConfig.getSmsCharType(),vcLen);
 
             // 返回验证码
             HashMap map = new HashMap();
@@ -233,9 +227,9 @@ public class ValidCodeService {
                 history.getTimes().offer(nowTime);
                 history.setLast(nowTime);
                 history.setCode(finalCode);
-                String insertJson = JSON.toJSONString(history);
-                RedisUtil.set(systemCode + email, insertJson);
-                // CacheUtil.getInstance().writeCache(systemCode + phone,
+//                String insertJson = JSON.toJSONString(history);
+//                RedisUtil.set(systemCode + email, insertJson);
+                 CacheUtil.getInstance().writeCache(systemCode + email,history);
                 // finalCode + "-" +
                 // nowTime,Integer.valueOf(systemConfig.getSmsLiveTime()));
             }
@@ -304,8 +298,10 @@ public class ValidCodeService {
         // 验证字符
         if (type == 1 && !StringUtil.checkNumeric(code)) {
             return ResultUtil.getResult(serviceCode, ErrorMsg.PARAM_ERROR, 305, "验证码错误");
-        } else if (type == 2 && !StringUtil.checkAlphaNumeric(code)) {
+        } else if (type == 2 && !StringUtil.checkAlpha(code)) {
             return ResultUtil.getResult(serviceCode, ErrorMsg.PARAM_ERROR, 306, "验证码错误");
+        }else if(type ==3 && !StringUtil.checkAlphaNumeric(code)){
+            return ResultUtil.getResult(serviceCode, ErrorMsg.PARAM_ERROR, 312, "验证码错误");
         }
 
         // 获取缓存中的数据
@@ -330,7 +326,7 @@ public class ValidCodeService {
         // 验证码是否过期
         Long nowTime = new Date().getTime();
             if ((timeStamp + liveTime) < nowTime) {
-                return ResultUtil.getResult(serviceCode, ErrorMsg.SYSTEM_ERROR, 309, "请重新获取短信验证码");
+                return ResultUtil.getResult(serviceCode, ErrorMsg.SYSTEM_ERROR, 309, "请重新获取验证码");
             }
         // 验证短信验证码是否相同 忽略大小写
         if (code.equalsIgnoreCase(realCode.toLowerCase())) {
@@ -396,9 +392,10 @@ public class ValidCodeService {
             sessionid = uuid.toString();
         } else {
             // 取缓存中业务+手机号 的value
-            String json = RedisUtil.get(systemCode + sessionid);
+          //  String json =
+           // (String) CacheUtil.getInstance().readCache(systemCode + sessionid, String.class);
             //TODO json maybe null
-             history = JSON.parseObject(json, SmsHistory.class);
+             history = (SmsHistory) CacheUtil.getInstance().readCache(systemCode + sessionid, SmsHistory.class);
             //String mapValue = (String) CacheUtil.getInstance().readCache(systemCode + sessionid, String.class);
             // 验证指定时间内只能发送一次 防止攻击
             if (history != null&&!StringUtil.isBlank(history.getCode())) {
@@ -433,12 +430,8 @@ public class ValidCodeService {
         }
         // 生成验证码
         int vcLen = systemConfig.getImgLength();
-        String finalCode = "";
-        if (systemConfig.getImgCharType() == 1) {
-            finalCode = StringUtil.getRandomDigitString(vcLen);
-        } else {
-            finalCode = StringUtil.getRandomAlphaString(vcLen);
-        }
+        String finalCode = getCode(systemConfig.getSmsCharType(),vcLen);
+
         // 发送验证码
 
         RandomValidateCode rvc = new RandomValidateCode();
@@ -447,7 +440,7 @@ public class ValidCodeService {
             codeAry = rvc.getImgRandcode(finalCode, systemCode + sessionid);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.getResult(serviceCode, ErrorMsg.SYSTEM_ERROR, 304, "验证码生成错误");
+            return ResultUtil.getResult(serviceCode, ErrorMsg.SYSTEM_ERROR, 460, "验证码生成错误");
         }
 
         finalCode = codeAry[1];
@@ -473,7 +466,7 @@ public class ValidCodeService {
                 CacheUtil.getInstance().writeCache(systemCode + sessionid,history, systemConfig.getImgLiveTime() / 1000);
             } catch (Exception e) {
                 e.printStackTrace();
-                return ResultUtil.getResult(serviceCode, ErrorMsg.SYSTEM_ERROR, 304, "缓存失败");
+                return ResultUtil.getResult(serviceCode, ErrorMsg.SYSTEM_ERROR, 486, "缓存失败");
             }
         }//redis.clients.jedis.exceptions.JedisConnectionException
         return result;
@@ -558,5 +551,15 @@ public class ValidCodeService {
         return result;
         // TODO Auto-generated method stub
     }
+    public String getCode(int type,int vcLen){
+
+            if (type == 1) {
+                return  StringUtil.getRandomDigitString(vcLen);
+            } else if (type== 2){
+                return StringUtil.getRandomAlphaString(vcLen);
+            }else{
+                return StringUtil.getRandomAlphaDigitString(vcLen);
+            }
+        }
 
 }

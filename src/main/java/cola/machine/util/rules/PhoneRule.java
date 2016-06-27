@@ -18,7 +18,7 @@ public class PhoneRule extends Rule {
 				return true;
 			}
 			else {
-				this.setMessage("err.param.numeric");
+				this.setMessage("请输入正确的手机号码");
 				return false;
 			}
 		}

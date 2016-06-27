@@ -18,7 +18,7 @@ public class Numeric extends Rule {
 				return true;
 			}
 			else {
-				this.setMessage("err.param.numeric");
+				this.setMessage("请输入数字");
 				return false;
 			}
 		}
