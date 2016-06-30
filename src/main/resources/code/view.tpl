@@ -1,15 +1,19 @@
- <div id="${Abc}View" class="modal-content">
-    <form id="editForm" class="form-horizontal" method="post" action="/${abc}/save.json" enctype="multipart/form-data">
-        <div class="modal-header">
+<div id="${Abc}View" class="ibox float-e-margins">
+    <form id="${Abc}ViewForm" class="form-horizontal" >
+      <!--  <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
             <h4 class="modal-title">${table.remark}查看</h4>
-        </div>
-        <div class="modal-body">
+        </div>-->
+        <div class="ibox-content">
             ${viewhtml}
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2">
+                  <button type="button" class="btn btn-white cancelBtn">取消</button>
+                </div>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button type="button"   class="btn btn-default cancelBtn">取消</button>
-        </div>
+
     </form>
 </div><!-- /.modal-content -->
 
@@ -30,22 +34,31 @@ var ${abc}View={
     root:$("#${table.name}View"),
     init:function(){
     var that = this;
-        this.addEventListener();
+    this.addEventListener();
         //获取传入参数
-            if(!StringUtil.isBlank(getParam("id"))){
-                Ajax.getJSON("${abc}/view.json?id="+getParam("id"),null,function(data){
-                    if(data.r==AJAX_SUCC){
-                        fillJso2FormSpan("#${Abc}View",data.data.bean);
-                    }else{
-                        dialog.error("获取信息失败"+data.msg,function(index){
-                            that.cancel();
-                            dialog.close(index);
-                        });
-                    }
+        if(!StringUtil.isBlank(getParam("id"))){
+            Ajax.getJSON("${abc}/view.json?id="+getParam("id"),null,function(data){
+                if(data.r==AJAX_SUCC){
+                    fillJso2FormSpan("#${Abc}View",data.data.bean);
+                    <#if editimgjs??>
+                    $("#${editimgjs}").attr("src",data.data.bean.${editimgjs});
+                    </#if>
+                }else{
+                    dialog.error("获取信息失败"+data.msg,function(index){
+                        that.cancel();
+                        dialog.close(index);
+                    });
+                }
 
-                });
+            });
 
-            }
+        }
+    },
+    loadData:function(){
+        <#if reference??>
+        ${reference}
+        });
+        </#if>
     },
     cancel:function(){
         if(${abc}View.modal){

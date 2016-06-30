@@ -1247,9 +1247,9 @@
 									this.p.width_sum += this.p.colModel[i].width;
 
 								}
-								var gridHeadhtml = "<div><table class='table'> <thead> <tr>  ";
+								var gridHeadhtml = "<div><table class='table '> <thead> <tr>  ";
 								if(this.p.multiselect){
-									gridHeadhtml += "<th style=\"width:5%;\" ><input type='checkbox' class='cbox' id='cb_"+this.id+"' name='cb_"+this.id+"' > </th>";
+									gridHeadhtml += "<th style=\"width:5%;text-align:center\" ><input type='checkbox' class='cbox' id='cb_"+this.id+"' name='cb_"+this.id+"' > </th>";
 								}
 								for (var i = 0; i < this.p.colNames.length; i++) {
 
@@ -1617,7 +1617,7 @@
 					this
 							.each(function() {
 								var $t = this;
-								var html = "<div><table class='table'>";
+								var html = "<div><table class='table table-striped table-bordered table-hover dataTables-example dataTable'>";
 								if(this.p.data.length==0){
 								html += "<thead><div style='text-align:center;'>暂无数据</div></thead>";
 								}

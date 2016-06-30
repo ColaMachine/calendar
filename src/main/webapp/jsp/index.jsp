@@ -16,7 +16,12 @@
 <script type="text/javascript" src="${path}/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="${path}/static/js/common.js"></script>
 <script type="text/javascript" src="${path}/static/js/menu.js"></script>
-	<script type="text/javascript" src="${path}/static/js/react.js"></script>
+	<!--<script type="text/javascript" src="${path}/static/js/react.js"></script>-->
+
+	<script type="text/javascript" charset="utf-8" src="${path}/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${path}/ueditor/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="${path}/ueditor/lang/zh-cn/zh-cn.js"></script>
+
 <%
 String path = request.getContextPath();
 
@@ -93,20 +98,20 @@ includeJS(["/static/js/menu.js" ,
                         <a id="collapse" class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                         <form role="search" class="navbar-form-custom" action="search_results.html">
                             <div class="form-group">
-                                <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                                <input type="text" placeholder="查询..." class="form-control" name="top-search" id="top-search">
                             </div>
                         </form>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
+                            <span class="m-r-sm text-muted welcome-message">欢迎来到后台管理系统.</span>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                                <i class="fa fa-envelope"></i>  <span class="label label-warning">0</span>
                             </a>
                             <ul class="dropdown-menu dropdown-messages">
-                                <li>
+                               <!-- <li>
                                     <div class="dropdown-messages-box">
                                         <a href="profile.html" class="pull-left">
                                             <img alt="image" class="img-circle" src="img/a7.jpg">
@@ -144,11 +149,11 @@ includeJS(["/static/js/menu.js" ,
                                         </div>
                                     </div>
                                 </li>
-                                <li class="divider"></li>
+                                <li class="divider"></li>-->
                                 <li>
                                     <div class="text-center link-block">
                                         <a href="mailbox.html">
-                                            <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                            <i class="fa fa-envelope"></i> <strong>暂无消息</strong>
                                         </a>
                                     </div>
                                 </li>
@@ -156,14 +161,14 @@ includeJS(["/static/js/menu.js" ,
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                                <i class="fa fa-bell"></i>  <span class="label label-primary">0</span>
                             </a>
                             <ul class="dropdown-menu dropdown-alerts">
                                 <li>
                                     <a href="mailbox.html">
                                         <div>
-                                            <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                            <span class="pull-right text-muted small">4 minutes ago</span>
+                                            <i class="fa fa-envelope fa-fw"></i> 你 有  0 条消息
+                                            <span class="pull-right text-muted small">0 分钟之前</span>
                                         </div>
                                     </a>
                                 </li>
@@ -171,8 +176,8 @@ includeJS(["/static/js/menu.js" ,
                                 <li>
                                     <a href="profile.html">
                                         <div>
-                                            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                            <span class="pull-right text-muted small">12 minutes ago</span>
+                                            <i class="fa fa-twitter fa-fw"></i> 0 个关注
+                                            <span class="pull-right text-muted small">0 分钟之前</span>
                                         </div>
                                     </a>
                                 </li>
@@ -180,16 +185,16 @@ includeJS(["/static/js/menu.js" ,
                                 <li>
                                     <a href="grid_options.html">
                                         <div>
-                                            <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                            <span class="pull-right text-muted small">4 minutes ago</span>
+                                            <i class="fa fa-upload fa-fw"></i> 系统重启
+                                            <span class="pull-right text-muted small">很久之前</span>
                                         </div>
                                     </a>
                                 </li>
                                 <li class="divider"></li>
                                 <li>
                                     <div class="text-center link-block">
-                                        <a href="notifications.html">
-                                            <strong>See All Alerts</strong>
+                                        <a href="#">
+                                            <strong>查看所有消息</strong>
                                             <i class="fa fa-angle-right"></i>
                                         </a>
                                     </div>
@@ -200,7 +205,7 @@ includeJS(["/static/js/menu.js" ,
 
                         <li>
                             <a id="loginOut">
-                                <i class="fa fa-sign-out"></i> Log out
+                                <i class="fa fa-sign-out"></i> 退出
                             </a>
                         </li>
                     </ul>
@@ -209,17 +214,17 @@ includeJS(["/static/js/menu.js" ,
                 </div>
 <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>Flot Charts</h2>
+                    <h2 id="page-title">主页</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="index.html">Home</a>
+                            <a href="index.htm">主页</a>
                         </li>
                         <li>
-                            <a>Graphs</a>
+                            <a id="page-title-2"></a>
                         </li>
-                        <li class="active">
+                       <!-- <li class="active">
                             <strong>Flot Charts</strong>
-                        </li>
+                        </li>-->
                     </ol>
                 </div>
                 <div class="col-lg-2">
@@ -232,11 +237,11 @@ includeJS(["/static/js/menu.js" ,
                             10GB of <strong>250GB</strong> Free.
                         </div>
                         <div>
-                            <strong>Copyright</strong> Example Company © 2014-2015
+                            <strong>Copyright</strong> crop © 2014-2020
                         </div>
                     </div>
 
-    <div id="main " class="page-bd  main" >
+    <div id="main " class="page-bd  main clearfix wrapper wrapper-content animated fadeInRight" >
 
 	</div>
 	
@@ -260,7 +265,7 @@ var menuList =result.data;
     String resourceStr = (String)s.getAttribute("resourceStr");
 %>
 
-    //zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
+    zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 });
 var resources="<%=resourceStr%>";
 var menuList=[
@@ -313,8 +318,16 @@ var menuList=[
 
               ]
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
-
-
+$(document).ready(function(){if($(".page-wrap").height()<$(window).height())
+    $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
+})
+$(document).scroll(function(){if($(".page-wrap").height()<$(window).height())
+    $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
+})
+$(document).resize(function(){
+if($(".page-wrap").height()<$(window).height())
+    $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
+})
 </script>
 <script type="text/javascript" src="${path}/static/js/head.js"></script>
 </html>

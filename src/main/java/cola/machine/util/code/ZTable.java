@@ -53,7 +53,17 @@ public void init(){
     for( ZColum col : cols){
         if(col.isPk()){
             pk=col;
-                    break;
+                    //break;
+        }
+        if(col.isList()){
+            col.setList(true);
+        }else{
+            col.setList(false);
+        }
+        if(col.isEdit()){
+            col.setEdit(true);
+        }else{
+            col.setEdit(false);
         }
     }
 }
@@ -96,6 +106,10 @@ public static class Handler implements JsonSerializer<ZTable>, JsonDeserializer<
         ZTable talbe =new ZTable();
         JsonObject jsonObject = json.getAsJsonObject();
         talbe = context.deserialize(json, ZTable.class);
+        if(jsonObject.get("list")==null){
+
+        }
+
 //        List<ZColum> zcolums= jsonObject.get("column").;
         return talbe;
     }

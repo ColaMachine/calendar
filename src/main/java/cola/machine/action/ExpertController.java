@@ -100,10 +100,25 @@ public class ExpertController extends BaseController{
         if(!StringUtil.isBlank(face)){
             params.put("face",face);
         }
-
         String faceLike = request.getParameter("faceLike");
         if(!StringUtil.isBlank(faceLike)){
             params.put("faceLike",faceLike);
+        }
+        String title = request.getParameter("title");
+        if(!StringUtil.isBlank(title)){
+            params.put("title",title);
+        }
+        String titleLike = request.getParameter("titleLike");
+        if(!StringUtil.isBlank(titleLike)){
+            params.put("titleLike",titleLike);
+        }
+        String baike = request.getParameter("baike");
+        if(!StringUtil.isBlank(baike)){
+            params.put("baike",baike);
+        }
+        String baikeLike = request.getParameter("baikeLike");
+        if(!StringUtil.isBlank(baikeLike)){
+            params.put("baikeLike",baikeLike);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
@@ -196,6 +211,22 @@ public class ExpertController extends BaseController{
         String faceLike = request.getParameter("faceLike");
         if(!StringUtil.isBlank(faceLike)){
             params.put("faceLike",faceLike);
+        }
+        String title = request.getParameter("title");
+        if(!StringUtil.isBlank(title)){
+            params.put("title",title);
+        }
+        String titleLike = request.getParameter("titleLike");
+        if(!StringUtil.isBlank(titleLike)){
+            params.put("titleLike",titleLike);
+        }
+        String baike = request.getParameter("baike");
+        if(!StringUtil.isBlank(baike)){
+            params.put("baike",baike);
+        }
+        String baikeLike = request.getParameter("baikeLike");
+        if(!StringUtil.isBlank(baikeLike)){
+            params.put("baikeLike",baikeLike);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
@@ -322,6 +353,16 @@ public class ExpertController extends BaseController{
             expert.setFace(String.valueOf(face)) ;
         }
         
+        String title = request.getParameter("title");
+        if(!StringUtil.isBlank(title)){
+            expert.setTitle(String.valueOf(title)) ;
+        }
+        
+        String baike = request.getParameter("baike");
+        if(!StringUtil.isBlank(baike)){
+            expert.setBaike(String.valueOf(baike)) ;
+        }
+        
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
             expert.setRemark(String.valueOf(remark)) ;
@@ -381,7 +422,7 @@ public class ExpertController extends BaseController{
         //valid
         ValidateUtil vu = new ValidateUtil();
         String validStr="";
-        vu.add("id", id, "主键",  new Rule[]{new Digits(15,0)});
+        vu.add("id", id, "编号",  new Rule[]{new Digits(15,0)});
         vu.add("username", username, "用户名",  new Rule[]{new Length(20),new NotEmpty()});
         vu.add("face", face, "头像",  new Rule[]{new Length(40)});
         vu.add("title", title, "职称",  new Rule[]{new Length(40)});
@@ -428,7 +469,7 @@ public class ExpertController extends BaseController{
             ValidateUtil vu = new ValidateUtil();
             String validStr="";
             String id = idStrAry[i];
-                    vu.add("id", id, "主键",  new Rule[]{});
+                    vu.add("id", id, "编号",  new Rule[]{});
 
             try{
                 validStr=vu.validateString();
@@ -475,6 +516,22 @@ public class ExpertController extends BaseController{
         String faceLike = request.getParameter("faceLike");
         if(!StringUtil.isBlank(faceLike)){
             params.put("faceLike",faceLike);
+        }
+        String title = request.getParameter("title");
+        if(!StringUtil.isBlank(title)){
+            params.put("title",title);
+        }
+        String titleLike = request.getParameter("titleLike");
+        if(!StringUtil.isBlank(titleLike)){
+            params.put("titleLike",titleLike);
+        }
+        String baike = request.getParameter("baike");
+        if(!StringUtil.isBlank(baike)){
+            params.put("baike",baike);
+        }
+        String baikeLike = request.getParameter("baikeLike");
+        if(!StringUtil.isBlank(baikeLike)){
+            params.put("baikeLike",baikeLike);
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
@@ -551,9 +608,11 @@ public class ExpertController extends BaseController{
                 + ".xlsx";
         // 得到导出Excle时清单的英中文map
         LinkedHashMap<String, String> colTitle = new LinkedHashMap<String, String>();
-        colTitle.put("id", "主键");
+        colTitle.put("id", "编号");
         colTitle.put("username", "用户名");
         colTitle.put("face", "头像");
+        colTitle.put("title", "职称");
+        colTitle.put("baike", "百科地址");
         colTitle.put("remark", "备注");
         colTitle.put("createtime", "创建时间");
         colTitle.put("updatetime", "更新时间");
@@ -564,6 +623,8 @@ public class ExpertController extends BaseController{
             map.put("id",  list.get(i).getId());
             map.put("username",  list.get(i).getUsername());
             map.put("face",  list.get(i).getFace());
+            map.put("title",  list.get(i).getTitle());
+            map.put("baike",  list.get(i).getBaike());
             map.put("remark",  list.get(i).getRemark());
             map.put("createtime",  list.get(i).getCreatetime());
             map.put("updatetime",  list.get(i).getUpdatetime());

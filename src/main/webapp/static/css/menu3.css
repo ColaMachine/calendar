@@ -24,10 +24,10 @@
 	right: 11px;
 }
 /*********************************Box-model 盒子模型**/
-div ,ul,li,a {
+/*div ,ul,li,a {
     margin: 0px 0px 0px 0px;
   	padding: 0px 0px 0px 0px;
-}
+}*/
 /**覆盖 bootstrap**/
 .menu-wrap .nav li a {
 

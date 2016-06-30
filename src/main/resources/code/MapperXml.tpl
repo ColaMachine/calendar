@@ -5,16 +5,64 @@
    <#list table.cols as col>
       <<#if col.pk==true>id<#else>result</#if> column="${col.name}" jdbcType="<@jdbcType>${col.type}</@jdbcType>" property="${col.name}" />
    </#list>
+    <#if reference??>
+    <#list table.cols as col>
+    <#if col.references??>
+    <#assign refName = col.references?substring(0,col.references?index_of("."))>
+    <#assign refTableName = allTables[refName]['tableName']>
+    <#assign firstDo = col.references?index_of(".")>
+    <#assign secondeDo = col.references?index_of(".",firstDo+1)>
+    <#assign refKey = col.references?substring(firstDo+1,secondeDo)>
+    <#assign refKeyName = col.references?substring(secondeDo+1)>
+    <#assign refAliasName =refTableName>
+    <result column="${refTableName}_${refKeyName}" jdbcType="VARCHAR" property="${refTableName}_${refKeyName}" />
+    </#if>
+    </#list>
+   </#if>
   </resultMap>
   <sql id="Base_Column_List">
-    <#list table.cols as col><#if col_index==0>`${col.name}`<#else>,`${col.name}`</#if> </#list>
-   
+    <#list table.cols as col><#if col_index==0>${table.tableName}.`${col.name}`<#else>,${table.tableName}.`${col.name}`</#if> </#list>
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.<@javaType>${table.pk.type}</@javaType>" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
+      <#if reference??>
+           <#list table.cols as col>
+              <#if col.references??>
+                <#assign refName = col.references?substring(0,col.references?index_of("."))>
+                <#assign refTableName = allTables[refName]['tableName']>
+                <#assign firstDo = col.references?index_of(".")>
+                <#assign secondeDo = col.references?index_of(".",firstDo+1)>
+                <#assign refKey = col.references?substring(firstDo+1,secondeDo)>
+                <#assign refKeyName = col.references?substring(secondeDo+1)>
+                <#assign refAliasName =refTableName>
+                <#if refAliasName==table.tableName>
+                    <#assign refAliasName =refAliasName+'1'>
+                </#if>
+                ,${refAliasName}.${refKeyName} as ${refName}_${refKeyName}
+              </#if>
+           </#list>
+        </#if>
     from ${table.tableName}
-    where ${table.pk.name} =   ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}
+    <#if reference??>
+          <#list table.cols as col>
+             <#if col.references??>
+                <#assign refName = col.references?substring(0,col.references?index_of("."))>
+                <#assign refTableName = allTables[refName]['tableName']>
+                <#assign firstDo = col.references?index_of(".")>
+                <#assign secondeDo = col.references?index_of(".",firstDo+1)>
+                <#assign refKey = col.references?substring(firstDo+1,secondeDo)>
+                <#assign refKeyName = col.references?substring(secondeDo+1)>
+                <#assign refAliasName =refTableName>
+                <#if refAliasName==table.tableName>
+                    <#assign refAliasName =refAliasName+'1'>
+                </#if>
+               left join ${refTableName} ${refAliasName}
+                 on ${table.tableName}.${col.name} = ${refAliasName}.${refKey}
+             </#if>
+          </#list>
+       </#if>
+    where ${table.tableName}.${table.pk.name} =   ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.<@javaType>${table.pk.type}</@javaType>">
     delete from ${table.tableName}
@@ -125,31 +173,69 @@ where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk
    <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from ${table.tableName} where 1=1
+    <#if reference??>
+       <#list table.cols as col>
+         <#if col.references??>
+           <#assign refName = col.references?substring(0,col.references?index_of("."))>
+           <#assign refTableName = allTables[refName]['tableName']>
+           <#assign firstDo = col.references?index_of(".")>
+           <#assign secondeDo = col.references?index_of(".",firstDo+1)>
+           <#assign refKey = col.references?substring(firstDo+1,secondeDo)>
+           <#assign refKeyName = col.references?substring(secondeDo+1)>
+           <#assign refAliasName =refTableName>
+           <#if refAliasName==table.tableName>
+               <#assign refAliasName =refAliasName+'1'>
+           </#if>
+           ,${refAliasName}.${refKeyName} as ${refName}_${refKeyName}
+         </#if>
+      </#list>
+    </#if>
+    from ${table.tableName}
+
+<#if reference??>
+    <#list table.cols as col>
+      <#if col.references??>
+    <#assign refName = col.references?substring(0,col.references?index_of("."))>
+    <#assign refTableName = allTables[refName]['tableName']>
+    <#assign firstDo = col.references?index_of(".")>
+    <#assign secondeDo = col.references?index_of(".",firstDo+1)>
+    <#assign refKey = col.references?substring(firstDo+1,secondeDo)>
+    <#assign refKeyName = col.references?substring(secondeDo+1)>
+    <#assign refAliasName =refTableName>
+    <#if refAliasName==table.tableName>
+      <#assign refAliasName =refAliasName+'1'>
+  </#if>
+    left join ${refTableName} ${refAliasName}
+      on ${table.tableName}.${col.name} = ${refAliasName}.${refKey}
+  </#if>
+</#list>
+
+        </#if>
+    where 1=1
     <#list table.cols as col>
         <if test="${col.name} != null and ${col.name} != '' ">  
-           and `${col.name}` = ${r'#{'}${col.name}}
+           and ${table.tableName}.`${col.name}` = ${r'#{'}${col.name}}
         </if>  
            <#if col.type?length gt 6>
         <#if col.type[0..6]?lower_case=='varchar'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
+             and ${table.tableName}.`${col.name}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
          <#if col.type?length gt 3>
         <#if col.type[0..3]?lower_case=='char'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
+             and ${table.tableName}.`${col.name}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
         <#if col.type=='timestamp'>
         <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
-             and `${col.name}` &gt;= ${r'#{'}${col.name}Begin}
+             and ${table.tableName}.`${col.name}` &gt;= ${r'#{'}${col.name}Begin}
         </if>   
          <if test="${col.name}End != null and ${col.name}End != '' ">  
-             and `${col.name}` &lt;= ${r'#{'}${col.name}End}
+             and ${table.tableName}.`${col.name}` &lt;= ${r'#{'}${col.name}End}
         </if> 
         </#if>
     </#list>
@@ -160,28 +246,28 @@ where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk
     from ${table.tableName} where 1=1
     <#list table.cols as col>
         <if test="${col.name} != null and ${col.name} != '' ">  
-           and `${col.name}` = ${r'#{'}${col.name}}
+           and ${table.tableName}.`${col.name}` = ${r'#{'}${col.name}}
         </if>  
            <#if col.type?length gt 6>
         <#if col.type[0..6]?lower_case=='varchar'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
+             and ${table.tableName}.`${col.name}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
          <#if col.type?length gt 3>
         <#if col.type[0..3]?lower_case=='char'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
+             and ${table.tableName}.`${col.name}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
          <#if col.type=='timestamp'>
         <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
-             and `${col.name}` &gt;= ${r'#{'}${col.name}Begin}
+             and ${table.tableName}.`${col.name}` &gt;= ${r'#{'}${col.name}Begin}
         </if>   
          <if test="${col.name}End != null and ${col.name}End != '' ">  
-             and `${col.name}` &lt;= ${r'#{'}${col.name}End}
+             and ${table.tableName}.`${col.name}` &lt;= ${r'#{'}${col.name}End}
         </if> 
         </#if>
     </#list>

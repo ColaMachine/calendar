@@ -1,20 +1,20 @@
 
-<div id="${Abc}List">
-    <div class="main-hd">| ${table.remark}</div>
+<div id="${Abc}List" class="col-lg-12 ibox float-e-margins">
+   <!-- <div class="main-hd ibox-title">| ${table.remark}</div>-->
 
 
-    <div class="main-bd">
+    <div class="main-bd ibox-content">
         <div class="body_top" >
             <form class="form-inline app-search">
             ${searchhtml}
             <button type="button"  class="btn btn-default searchBtn">查询</button>
             </form>
 
-            <button class="btn addBtn" >新增</button>
-            <button class="btn deleteBtn">删除</button>
-            <button class="btn exportBtn" >导出</button>
+            <button class="btn btn-primary addBtn" ><i class="fa fa-plus"></i>新增</button>
+            <!--<button class="btn btn-primary deleteBtn"><i class="fa fa-plus"></i>删除</button>-->
+            <!--<button class="btn btn-primary exportBtn"><i class="fa fa-plus"></i>导出</button>-->
         </div>
-        <table id="${table.name}Grid" class="grid"></table>
+        <table id="${table.name}Grid" class="grid table"></table>
         <div id="${table.name}Grid-Pager" class="pager"></div>
     </div>
 </div>
@@ -26,8 +26,17 @@ var ${abc}List={
     dqData:null,
     root:$("#${table.name}List"),
     init:function(){
+
+        setTitle("${table.remark}");
         this.mygrid =this.root.find(".grid").jqGrid(this.gridParam);
         this.addEventListener();
+        this.loadData();
+    },
+    loadData:function(){
+        <#if reference??>
+        ${reference}
+        });
+        </#if>
     },
     addEventListener:function(){
         $(this.root).find(".addBtn").click(this.addInfo.Apply(this));
@@ -40,17 +49,28 @@ var ${abc}List={
         viewrecords: true, sortorder: "desc", caption:"",
         rowNum:10,
         rowList:[10,20,30],
-        multiselect : true,
+        multiselect : false,
         url : PATH+'/${abc}/list.json',
         autowidth:true,
         grid:"#${table.name}Grid",
         pager:"#${table.name}Grid-Pager",
         jsonReader:jsonReader,
         colNames : [
-        <#list table.cols as col><#if col_index!=0>,</#if>"${col.remark}"</#list> , '操作' ],
+        <#list table.cols as col><#if col.list><#if col_index!=0>,</#if>"${col.remark}"</#if></#list> , '操作' ],
         colModel : [
                <#list table.cols as col>
-            {   name : '${col.name}',width : 80,
+               <#if col.list>
+            {   name : '<#if col.references??><#assign refName = col.references?substring(0,col.references?index_of("."))>
+           <#assign refTableName = allTables[refName]['tableName']>
+           <#assign firstDo = col.references?index_of(".")>
+           <#assign secondeDo = col.references?index_of(".",firstDo+1)>
+           <#assign refKey = col.references?substring(firstDo+1,secondeDo)>
+           <#assign refKeyName = col.references?substring(secondeDo+1)>
+           <#assign refAliasName =refTableName>
+           <#if refAliasName==table.tableName>
+               <#assign refAliasName =refAliasName+'1'>
+           </#if>
+${(refName+"_"+refKeyName)?uncap_first}<#else>${col.name}</#if>',width : 80,
                 <#if col.showValue?exists>
                 formatter : function(value, grid, rows) {
                   var map ={<#list col.showValue?keys as key>'${key}':'${col.showValue[key]}',</#list>};
@@ -65,9 +85,10 @@ var ${abc}List={
                         return "";
                     }
                 }</#if>
-            } <#if col_index<table.cols?size-1>,</#if>
+            } ,
+            </#if>
                </#list>
-              ,
+
             {   name : 'operation',
                 width : 150,
                 formatter : function(value, grid, rows) {
@@ -81,6 +102,7 @@ var ${abc}List={
             dqData=data;
         }
     },
+
     saveInfo:function(){
     },
     addInfo:function (){

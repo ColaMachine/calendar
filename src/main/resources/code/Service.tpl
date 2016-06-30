@@ -7,7 +7,8 @@
  */
 
 package cola.machine.service;
-
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,10 +110,19 @@ public class ${Abc}Service extends BaseService {
                 ${abc}.set${table.pk.name[0]?upper_case}${table.pk.name[1..]}(UUIDUtil.getUUID());
             <#else>
             </#if>
+            <#list table.cols as col>
+                  <#if col.name == 'createTime'>
             ${abc}.setCreatetime(new Timestamp(new Date().getTime()));
+                  </#if>
+          </#list>
+
             ${abc}Mapper.insert(${abc});
         } else {
+         <#list table.cols as col>
+              <#if col.name == 'updatetime'>
             ${abc}.setUpdatetime(new Timestamp(new Date().getTime()));
+              </#if>
+          </#list>
             ${abc}Mapper.updateByPrimaryKeySelective(${abc});
         }
         return ResultUtil.getSuccResult();

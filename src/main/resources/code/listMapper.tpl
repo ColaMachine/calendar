@@ -1,21 +1,23 @@
-<div id="${table.name}MapperList" class="rgt_body ">
-    <div class="body_title">| ${table.remark}</div>
+<div id="${table.name}MapperList" class="col-lg-12 ibox float-e-margins ">
+    <!--<div class="body_title">| ${table.remark}</div>-->
+    <div class="main-bd ibox-content clearfix" >
         <div class="body_top" >
             <form class="form-inline app-search">
 ${parentsearchhtml}
                 <button type="button" class="btn btn-default searchBtn">查询</button>
             </form>
-        <div >
-             <button class="btn saveBtn" >保存</button>
+
+             <button class="btn btn-success saveBtn" ><i class="fa fa-floppy-o" aria-hidden="true"></i>保存</button>
+        </div>
+
+        <div class="col-sm-8 mapper-grid-parent-wrap" >
+        <table id="${table.name}MapperGrid" class="grid"></table>
+        <div id="${table.name}MapperGrid-Pager" class="pager"></div>
+        </div>
+        <div class="col-sm-4 mapper-grid-child-wrap">
+                <ul id="treeDemo" class="ztree"></ul>
         </div>
     </div>
-     <div class="col-sm-6 mapper-grid-parent-wrap" >
-    <table id="${table.name}MapperGrid" class="grid"></table>
-    <div id="${table.name}MapperGrid-Pager" class="pager"></div>
-    </div>
-     <div class="col-sm-6 mapper-grid-child-wrap">
-            <ul id="treeDemo" class="ztree"></ul>
-        </div>
 </div>
 <script>
 var ${abc}List={
@@ -56,9 +58,10 @@ var ${abc}List={
                   jsonReader:jsonReader,
                    autowidth:true,
                   colNames : [
-                   <#list parentTable.cols as col><#if col_index!=0>,</#if>"${col.remark}"</#list> , '操作' ],
+                   <#list parentTable.cols as col><#if col.list>"${col.remark}",</#if></#list> ],
                   colModel : [
                            <#list parentTable.cols as col>
+                           <#if col.list>
                           {
                               name : '${col.name}',
                               width : 80,
@@ -73,16 +76,11 @@ var ${abc}List={
                                   return new Date(value).format("yyyy-MM-dd");
                               }
                               </#if>
-                          } <#if col_index<parentTable.cols?size-1>,</#if>
+                          } ,
+                          </#if>
                            </#list>
-                          ,
-                          {
-                              name : 'operation',
-                              width : 150,
-                              formatter : function(value, grid, rows) {
-                                  return getViewHtml(rows.${parentTable.pk.name},"${abc}List")+getEditHtml(rows.${parentTable.pk.name},"${abc}List")+getDelHtml(rows.${parentTable.pk.name},"${abc}List");
-                              }
-                          }
+
+
                     ],
 
                     onSelectRow: function(id){ //alert("单击选中"+id);

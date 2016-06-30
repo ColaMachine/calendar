@@ -7,15 +7,39 @@
  */
 package cola.machine.util.code;
 
+import com.google.gson.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import java.lang.reflect.Type;
 import java.util.Map;
 
 public class ZColum {
 private String name;
 private boolean nn;
     private String references;
+    private String file;
+
+
+    public boolean isList() {
+        return list;
+    }
+
+    public void setList(boolean list) {
+        this.list = list;
+    }
+
+    private boolean list;
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
 
     public String getReferences() {
         return references;
+
     }
 
     public void setReferences(String references) {
@@ -113,4 +137,66 @@ public String getJavaType(){
     type:varchar(40),
     cn_name:"id",
     valid:"Length(min=1,max=40 ,message='图片名称不能超过40个')",*/
+
+
+    public static class Handler implements JsonSerializer<ZColum>, JsonDeserializer<ZColum> {
+
+
+        /**
+         * @param json 参数
+         * @param typeOfT 参数
+         * @param context 上下文
+         * @return RedisConfig
+         * @throws JsonParseException 抛出异常
+         */
+        public ZColum deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            Gson gson =new Gson();
+
+            ZColum col = gson.fromJson(json,ZColum.class);
+            JsonObject jsonObject = json.getAsJsonObject();
+           /* col = context.deserialize(json, ZColum.class);
+            col.setList(jsonObject.get("list")==null?true: Boolean.valueOf(jsonObject.get("list").getAsBoolean()));
+            col.setAi(jsonObject.get("ai")==null?true: Boolean.valueOf(jsonObject.get("ai").getAsBoolean()));
+            col.setDef(jsonObject.get("ai").getAsString());
+           col.setEdit(jsonObject.get("edit")==null?true: Boolean.valueOf(jsonObject.get("edit").getAsBoolean()));
+            col.setFile(jsonObject.get("file").getAsString());
+            col.setName(jsonObject.get("name").getAsString());
+            col.setNn(jsonObject.get("nn")==null?true: Boolean.valueOf(jsonObject.get("nn").getAsBoolean()));
+            col.setPk(jsonObject.get("pk")==null?true: Boolean.valueOf(jsonObject.get("pk").getAsBoolean()));
+            col.setReferences(jsonObject.get("name").getAsString());
+            col.setRemark(jsonObject.get("name").getAsString());
+            col.setShowValue(jsonObject.get("showValue")..getAsString());
+            col.setType(jsonObject.get("name").getAsString());
+            col.setUq(jsonObject.get("uq")==null?true: Boolean.valueOf(jsonObject.get("uq").getAsBoolean()));
+            col.setValid(jsonObject.get("valid").getAsString());*/
+            if(jsonObject.get("list")==null){
+                col.setList(true);
+            }
+            if(jsonObject.get("edit")==null){
+                col.setEdit(true);
+            }
+
+            //System.out.println(json);
+//        List<ZColum> zcolums= jsonObject.get("column").;
+            return col;
+        }
+
+
+        /**
+         * @param src 参数
+         * @param typeOfT 参数
+         * @param context 上下文
+         * @return JsonElement 抛出异常
+         */
+        public JsonElement serialize(ZColum src, Type typeOfT, JsonSerializationContext context) {
+            // JsonObject result =new JsonObject();
+            // result = context.serialize(src);
+            return context.serialize(src);
+        }
+
+
+
+
+    }
 }
