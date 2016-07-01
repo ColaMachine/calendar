@@ -1122,7 +1122,8 @@ return ymd;
       //  "SysRoleResource","SysUserResource"
         //"SysUser","VideoNew","VideoHot","Collect"
         //"Expert"/*"Artical",*//*"Partner"*/
-        Generator.generate(new String[]{"Artical","SysUser","SysRole","SysResource","SysUserRole","SysUserResource","SysRoleResource","Expert","ExpertDetail","ExpertArtical","Partner","PartnerDetail"
+        Generator.generate(new String[]{/*"Artical","SysUser","SysRole","SysResource","SysUserRole","SysUserResource","SysRoleResource","Expert","ExpertDetail","ExpertArtical","Partner","PartnerDetail"*/
+                "SysLog"
                 });
        
     }

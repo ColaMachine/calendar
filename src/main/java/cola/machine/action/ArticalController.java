@@ -365,77 +365,59 @@ public class ArticalController extends BaseController{
         if(!StringUtil.isBlank(id)){
             artical.setId(Long.valueOf(id)) ;
         }
-        
+
         String title = request.getParameter("title");
         if(!StringUtil.isBlank(title)){
             artical.setTitle(String.valueOf(title)) ;
         }
-        
+
         String content = request.getParameter("content");
         if(!StringUtil.isBlank(content)){
             artical.setContent(String.valueOf(content)) ;
         }
-        
+
         String type = request.getParameter("type");
         if(!StringUtil.isBlank(type)){
             artical.setType(Integer.valueOf(type)) ;
         }
-        
+
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
             artical.setStatus(Integer.valueOf(status)) ;
         }
-        
+
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
             artical.setRemark(String.valueOf(remark)) ;
         }
-        
+
         String creator = request.getParameter("creator");
         if(!StringUtil.isBlank(creator)){
             artical.setCreator(Long.valueOf(creator)) ;
         }
-        
+
         String pic = request.getParameter("pic");
         if(!StringUtil.isBlank(pic)){
             artical.setPic(String.valueOf(pic)) ;
         }
-        
+
         String creatorname = request.getParameter("creatorname");
         if(!StringUtil.isBlank(creatorname)){
             artical.setCreatorname(String.valueOf(creatorname)) ;
         }
-        
+
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
             artical.setCreatetime(Timestamp.valueOf(createtime)) ;
         }
-        
+
         String updatetime = request.getParameter("updatetime");
         if(!StringUtil.isBlank(updatetime)){
             artical.setUpdatetime(Timestamp.valueOf(updatetime)) ;
         }
         */
         String id = request.getParameter("id");
-        if(!StringUtil.isBlank(id)){
-            artical.setId(Long.valueOf(id));
-            Artical articalOld = articalService.selectByPrimaryKey(artical.getId());
-            if(articalOld==null ||artical.getId()==null || articalOld.getId()==0){
-                return this.getResult(302,"原始数据不存在");
-            }else
-            if(articalOld.getStatus()==3){
-                return this.getResult(303,"已审核数据不允许修改");
-            }else  if(articalOld.getStatus()==4){
-                artical.setStatus(1);
-            }else  if(articalOld.getStatus()==1){
-                artical.setStatus(1);
-            }else{
-                return this.getResult(304,"状态异常");
-            }
-        }else{
-            artical.setStatus(1);
-            //新增
-        }
+
         String title = request.getParameter("title");
         if(!StringUtil.isBlank(title)){
             artical.setTitle(title);
@@ -451,9 +433,7 @@ public class ArticalController extends BaseController{
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
             artical.setStatus(Integer.valueOf(status));
-            if(artical.getStatus()==3){
-                return this.getResult(301,"状态不正确");
-            }
+
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
@@ -487,17 +467,35 @@ public class ArticalController extends BaseController{
                 artical.setUpdatetime(new Timestamp( DateUtil.parseToDate(updatetime, "yyyy-MM-dd HH:mm:ss").getTime()));
             }
         }
-
+        if(!StringUtil.isBlank(id)){
+            artical.setId(Long.valueOf(id));
+            Artical articalOld = articalService.selectByPrimaryKey(artical.getId());
+            if(articalOld==null ||artical.getId()==null || articalOld.getId()==0){
+                return this.getResult(302,"原始数据不存在");
+            }else
+            if(articalOld.getStatus()==3){
+                return this.getResult(303,"已审核数据不允许修改");
+            }else  if(articalOld.getStatus()==4){
+                artical.setStatus(1);
+            }else  if(articalOld.getStatus()==1){
+                artical.setStatus(1);
+            }else{
+                return this.getResult(304,"状态异常");
+            }
+        }else{
+            artical.setStatus(1);
+            //新增
+        }
         //valid
         ValidateUtil vu = new ValidateUtil();
         String validStr="";
         vu.add("id", id, "主键",  new Rule[]{new Digits(15,0)});
         vu.add("title", title, "标题",  new Rule[]{new Length(40),new NotEmpty()});
         vu.add("content", content, "正文",  new Rule[]{new Length(50000),new NotEmpty()});
-        vu.add("type", type, "类型",  new Rule[]{new Digits(11,0),new CheckBox(new String[]{"1"})});
+        vu.add("type", type, "类型",  new Rule[]{new NotEmpty(),new Digits(11,0),new CheckBox(new String[]{"1","2"})});
         vu.add("status", status, "状态",  new Rule[]{new Digits(11,0),new CheckBox(new String[]{"1","2","3","4","5"})});
         vu.add("remark", remark, "备注",  new Rule[]{new Length(200)});
-        vu.add("creator", creator, "创建人",  new Rule[]{new Digits(11,0),new NotEmpty()});
+        vu.add("creator", creator, "创建人",  new Rule[]{new Digits(11,0)});
         vu.add("pic", pic, "封面",  new Rule[]{new Length(40)});
         vu.add("creatorname", creatorname, "创建人姓名",  new Rule[]{new Length(20)});
         vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
