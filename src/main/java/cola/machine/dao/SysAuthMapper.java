@@ -4,7 +4,8 @@ import java.util.List;
 import java.sql.Timestamp;
 import java.util.Map;
 
-import cola.machine.bean.SysResource;
+ import cola.machine.bean.SysPermission;
+ import cola.machine.bean.SysResource;
 import cola.machine.bean.SysUser;
 
 public interface SysAuthMapper {
@@ -19,4 +20,6 @@ public interface SysAuthMapper {
      */
     public List<SysResource> selectResourceByUserId(Long id);
     public List<SysResource> selectMenuResourceByUserId(Long id);
+    public List<SysPermission> selectPermissionByUserId(Long id);
+    //public List<SysPermission> selectMenuResourceByUserId(Long id);
 }

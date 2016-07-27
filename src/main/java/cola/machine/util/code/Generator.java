@@ -1122,10 +1122,12 @@ return ymd;
       //  "SysRoleResource","SysUserResource"
         //"SysUser","VideoNew","VideoHot","Collect"
         //"Expert"/*"Artical",*//*"Partner"*/
-        Generator.generate(new String[]{/*"Artical","SysUser","SysRole","SysResource","SysUserRole","SysUserResource","SysRoleResource","Expert","ExpertDetail","ExpertArtical","Partner","PartnerDetail"*/
-                "SysLog"
-                });
-       
+     //   Generator.generate(new String[]{"SysMenu",/*"Artical",*/"SysUser","SysRole","SysPermission","SysUserRole","SysUserPermission","SysRolePermission"/*,"Expert","ExpertDetail","ExpertArtical","Partner","PartnerDetail"*/
+               /* "SysLog"*/
+             //   });
+
+        //Generator.generate(new String[]{"WiiDeviceExtend" });
+        Generator.generate(new String[]{"SysConfig" });
     }
 
   

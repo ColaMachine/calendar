@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cola.machine.dao.SysConfigMapper">
+  <resultMap id="BaseResultMap" type="cola.machine.bean.SysConfig">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="key" jdbcType="VARCHAR" property="key" />
+      <result column="valuate" jdbcType="VARCHAR" property="valuate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    SysConfig.`id` ,SysConfig.`key` ,SysConfig.`valuate` 
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SysConfig
+    where SysConfig.id =   #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from SysConfig
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="cola.machine.bean.SysConfig" >
+
+    insert into SysConfig (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=INTEGER}
+,#{key,jdbcType=VARCHAR}
+,#{valuate,jdbcType=VARCHAR}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="cola.machine.bean.SysConfig" >
+    insert into SysConfig
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="key != null" >  
+           `key`, 
+        </if>  
+        <if test="valuate != null" >  
+           `valuate`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=INTEGER},
+        </if>  
+        <if test="key != null" >  
+          #{key,jdbcType=VARCHAR},
+        </if>  
+        <if test="valuate != null" >  
+          #{valuate,jdbcType=VARCHAR},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cola.machine.bean.SysConfig" >
+    update SysConfig
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=INTEGER},
+        </if>  
+        <if test="key != null" >  
+             `key`=#{key,jdbcType=VARCHAR},
+        </if>  
+        <if test="valuate != null" >  
+             `valuate`=#{valuate,jdbcType=VARCHAR},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cola.machine.bean.SysConfig" >
+    update SysConfig
+    set 
+              `key`=#{key,jdbcType=VARCHAR},  
+              `valuate`=#{valuate,jdbcType=VARCHAR}  
+where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SysConfig where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="key != null and key != '' ">  
+           and `key` = #{key}
+        </if>  
+        <if test="keyLike != null and keyLike != '' ">  
+             and `key` like "%"#{keyLike}"%"
+        </if>   
+        <if test="valuate != null and valuate != '' ">  
+           and `valuate` = #{valuate}
+        </if>  
+        <if test="valuateLike != null and valuateLike != '' ">  
+             and `valuate` like "%"#{valuateLike}"%"
+        </if>   
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SysConfig
+
+    where 1=1
+        <if test="id != null and id != '' ">  
+           and SysConfig.`id` = #{id}
+        </if>  
+        <if test="key != null and key != '' ">  
+           and SysConfig.`key` = #{key}
+        </if>  
+        <if test="keyLike != null and keyLike != '' ">  
+             and SysConfig.`key` like "%"#{keyLike}"%"
+        </if>   
+        <if test="valuate != null and valuate != '' ">  
+           and SysConfig.`valuate` = #{valuate}
+        </if>  
+        <if test="valuateLike != null and valuateLike != '' ">  
+             and SysConfig.`valuate` like "%"#{valuateLike}"%"
+        </if>   
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from SysConfig where 1=1
+        <if test="id != null and id != '' ">  
+           and SysConfig.`id` = #{id}
+        </if>  
+        <if test="key != null and key != '' ">  
+           and SysConfig.`key` = #{key}
+        </if>  
+        <if test="keyLike != null and keyLike != '' ">  
+             and SysConfig.`key` like "%"#{keyLike}"%"
+        </if>   
+        <if test="valuate != null and valuate != '' ">  
+           and SysConfig.`valuate` = #{valuate}
+        </if>  
+        <if test="valuateLike != null and valuateLike != '' ">  
+             and SysConfig.`valuate` like "%"#{valuateLike}"%"
+        </if>   
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from SysConfig where 1!=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="key != null and key != '' ">
+           or `key` = #{key}
+        </if>
+        <if test="valuate != null and valuate != '' ">
+           or `valuate` = #{valuate}
+        </if>
+  </select>
+</mapper>

@@ -61,7 +61,7 @@ includeJS(["/static/js/menu.js" ,
             "/static/js/My97DatePicker/WdatePicker.js",
             "/static/js/jquery.validate.js",
             "/static/js/additional-methods.js",
-            "/static/js/index.js",
+           /* "/static/js/index.js",*/
             "/static/js/window.js",
            "/static/js/bootstrap.min.js",
             "/static/js/drag.js",
@@ -260,12 +260,12 @@ includeJS(["/static/js/menu.js" ,
 
 <script type="text/javascript" >
 Ajax.getJSON(PATH+"/auth/menu/list.json",null,function(result){
-var menuList =result.data;
-<% HttpSession s= request.getSession();
-    String resourceStr = (String)s.getAttribute("resourceStr");
-%>
+    var menuList =result.data;
+    <% HttpSession s= request.getSession();
+        String resourceStr = (String)s.getAttribute("resourceStr");
+    %>
 
-    zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
+   // zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 });
 var resources="<%=resourceStr%>";
 var menuList=[
@@ -278,6 +278,7 @@ var menuList=[
               {id:21,name:"访问日志A",url:PATH+"/log/listRequestLog",pid:2},
               {id:22,name:"访问日志B",url:PATH+"/log/listRequestLog",pid:2},*/
               {id:5,name:"用户管理",url:"",pid:0,icon:"fa fa-diamond"},
+
                 {id:51,name:"level51",url:"",pid:5,icon:"fa fa-diamond"},
                  {id:511,name:"level511",url:"",pid:51,icon:"fa fa-diamond"},
                   {id:5111,name:"level5111",url:"",pid:511,icon:"fa fa-diamond"},
@@ -301,6 +302,9 @@ var menuList=[
               {id:15,name:"用户",url:PATH+"/sysUser/list.htm",icon:"fa fa-spinner",pid:5},
               {id:16,name:"角色",url:PATH+"/sysRole/list.htm",icon:"fa fa-spinner",pid:5},
               {id:17,name:"资源",url:PATH+"/sysResource/list.htm",icon:"fa fa-spinner",pid:5},
+               {id:50017,name:"permission",url:PATH+"/sysPermission/list.htm",icon:"fa fa-spinner",pid:5},
+                {id:50018,name:"menu",url:PATH+"/sysMenu/list.htm",icon:"fa fa-spinner",pid:5},
+                {id:50018,name:"rolePermission",url:PATH+"/sysRolePermission/listMapper.htm",icon:"fa fa-spinner",pid:5},
               /*{id:18,name:"用户角色",url:PATH+"/sysUserRole/list.htm",icon:"fa fa-spinner",pid:5},
               {id:19,name:"角色资源",url:PATH+"/sysRoleResource/list.htm",icon:"fa fa-spinner",pid:5},
               {id:20,name:"用户资源",url:PATH+"/sysUserResource/list.htm",icon:"fa fa-spinner",pid:5},*/
@@ -308,7 +312,7 @@ var menuList=[
                {id:22,name:"角色资源关联",url:PATH+"/sysRoleResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
                {id:23,name:"用户资源关联",url:PATH+"/sysUserResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
              /* {id:24,name:"短信验证码",url:PATH+"/smsRecord/list.htm",icon:"fa fa-spinner",pid:0},*/
-                   {id:25,name:"系统配置",url:PATH+"/configuration/list.htm",icon:"fa fa-spinner",pid:0},
+                   {id:25,name:"系统配置",url:PATH+"/sysConfig/list.htm",icon:"fa fa-spinner",pid:0},
                     {id:26,name:"动物园管理",url:"",icon:"fa fa-spinner",pid:0},
                      {id:27,name:"最新视频",url:PATH+"/videoNew/list.htm",icon:"fa fa-spinner",pid:26},
                      {id:28,name:"最新视频",url:PATH+"/static/html/videoNew.html",icon:"fa fa-spinner",pid:26},

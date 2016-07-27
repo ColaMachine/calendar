@@ -8,12 +8,18 @@
 package cola.machine.action;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import cola.machine.bean.SysMenu;
+import cola.machine.bean.SysPermission;
 import cola.machine.bean.SysUser;
+import cola.machine.service.SysMenuService;
+import cola.machine.util.PermissionUtil;
+import cola.machine.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +49,16 @@ public class AuthController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private SysMenuService sysMenuService;
 
     @RequestMapping(value = "/menu/list.json")
     @ResponseBody
     public Object listMenu(HttpServletRequest request){
         String id=request.getParameter("id");
         SysUser user = (SysUser)request.getSession().getAttribute("user");
-        return  ResultUtil.getResult(authService.listMenuResourcesByUserid(user.getId()));
+        return  ResultUtil.getResult(authService.listMenusByUserid(user.getId()));
     }
+
 
 }

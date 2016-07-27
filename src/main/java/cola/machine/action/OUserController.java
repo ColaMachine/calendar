@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.*;
 
+import cola.machine.bean.SysMenu;
 import cola.machine.bean.SysResource;
 import cola.machine.bean.SysUser;
 import cola.machine.service.AuthService;
@@ -115,14 +116,12 @@ public class OUserController extends BaseController {
         if (result.isRight()) {
             SysUser user = (SysUser) result.getData();
             request.getSession().setAttribute("user", user);
-            List<SysResource> resources = authService.listResourcesByUserid(user.getId());
+           // List<SysResource> resources = authService.listResourcesByUserid(user.getId());
+          /*  List<SysMenu> menus = authService.listMenusByUserid(user.getId());
             List<String> resStr = new ArrayList<String>();
-            for(SysResource res:resources){
-                resStr.add(res.getCode());
 
-            }
             request.getSession().setAttribute("resourceList", resStr);
-            request.getSession().setAttribute("resourceStr", StringUtil.join(",",resStr.toArray(new String[resStr.size()])));
+            request.getSession().setAttribute("resourceStr", StringUtil.join(",",resStr.toArray(new String[resStr.size()])));*/
             result.setData(null);
         }
 

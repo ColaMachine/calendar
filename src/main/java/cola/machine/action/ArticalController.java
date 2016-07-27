@@ -433,7 +433,9 @@ public class ArticalController extends BaseController{
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
             artical.setStatus(Integer.valueOf(status));
-
+            if(artical.getStatus()==3){
+                return this.getResult(301,"状态不正确");
+            }
         }
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){

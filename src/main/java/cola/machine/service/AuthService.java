@@ -7,23 +7,17 @@
  */
 package cola.machine.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
 import cola.machine.bean.*;
 import cola.machine.dao.*;
+import cola.machine.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import cola.machine.util.CacheUtil;
-import cola.machine.util.ResultUtil;
-import cola.machine.util.StringUtil;
-import cola.machine.util.UUIDUtil;
-import cola.machine.util.ValidateUtil;
 import core.page.Page;
 import core.action.ResultDTO;
 
@@ -33,7 +27,8 @@ public class AuthService extends BaseService {
 			.getLogger(AuthService.class);
 
 
-
+    @Resource
+    private SysMenuService sysMenuService;
     @Resource
     private SysAuthMapper authMapper;
 
@@ -42,10 +37,50 @@ public class AuthService extends BaseService {
      * @param userid
      * @return
      */
-    public List<SysResource> listResourcesByUserid(Long userid){
+   /* public List<SysResource> listResourcesByUserid(Long userid){
        return  authMapper.selectResourceByUserId(userid);
     }
     public List<SysResource> listMenuResourcesByUserid(Long userid){
         return  authMapper.selectMenuResourceByUserId(userid);
+    }*/
+    public List<SysPermission> listPermissionByUserid(Long userid){
+        return  authMapper.selectPermissionByUserId(userid);
+    }
+
+    /**
+     * 根据userid 获取当前的权限菜单
+     * @param userid
+     * @return
+     */
+    public List<SysMenu> listMenusByUserid(Long userid){
+        List<SysPermission> permissions = this.listPermissionByUserid(userid);
+        HashSet<String > set =new HashSet<String>();
+        for(SysPermission sysPermission:permissions){
+            set.add(sysPermission.getCode());
+
+        }
+        List<SysMenu> menus = sysMenuService.listByParams(new HashMap());
+        Object [] permissionAry =set.toArray();
+        String[] permissionStrAry = new String[set.size()];
+
+        Iterator it = set.iterator();
+        int j =0;
+        while(it.hasNext()){
+            permissionStrAry[j]=(String)it.next();
+            j++;
+        }
+        for(int i=menus.size()-1;i>=0;i--){
+            SysMenu sysMenu = menus.get(i);
+            String permissionStr = sysMenu.getPermission();
+
+            if(StringUtil.isBlank(sysMenu.getUrl())){
+                continue;
+            }
+            if(!PermissionUtil.hasPermission(sysMenu.getPermission(),permissionStrAry)){
+                menus.remove(i);
+            }
+
+        }
+        return menus;
     }
 }

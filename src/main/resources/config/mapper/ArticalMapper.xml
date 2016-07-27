@@ -313,7 +313,8 @@ where id = #{id,jdbcType=BIGINT}
         </if>   
          <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
              and artical.`updatetime` &lt;= #{updatetimeEnd}
-        </if> 
+        </if>
+       order by createtime desc
   </select>
    <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
     select 

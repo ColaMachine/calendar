@@ -1,0 +1,132 @@
+ <div class="ibox float-e-margins">
+    <form id="sysConfigEditForm" class="form-horizontal" method="post" action="/sysConfig/save.json" enctype="multipart/form-data">
+        <!--<div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">系统配置表编辑</h4>
+        </div>-->
+        <div class="ibox-content">
+                <input type="hidden" id="id" name="id"  class="form-control input-sm" >
+    <div class="form-group">
+        <label for="key" class="col-sm-2 control-label">名称:</label>
+        <div class="col-sm-10">
+            <input  type="text"  id="key" name="key"  class="form-control input-sm"   maxlength="50"  ></input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="valuate" class="col-sm-2 control-label">对应值:</label>
+        <div class="col-sm-10">
+            <input  type="text"  id="valuate" name="valuate"  class="form-control input-sm"   maxlength="50"  ></input>
+        </div>
+    </div>
+
+       <div class="hr-line-dashed"></div>
+        <div class="form-group">
+           <div class="col-sm-4 col-sm-offset-2">
+               <button type="button"  class="btn btn-primary saveBtn">保存</button>
+               <button type="button" class="btn btn-white cancelBtn">取消</button>
+           </div>
+        </div>
+        </div>
+
+    </form>
+</div><!-- /.modal-content -->
+        
+<script type="text/javascript">
+
+
+
+var sysConfigEdit={
+    form:null,
+    modal:false,
+    formId:"#sysConfigEditForm",
+    validParam:{
+        rules: {
+                   id:{
+            digits:true
+        },
+        key:{
+            maxlength:50
+        },
+        valuate:{
+            maxlength:50,required:true
+        },
+
+        },
+        messages:{
+                   id:{
+            digits:"必须输入整数"
+        },
+        key:{
+            maxlength:"名称不能多于50个字符"
+        },
+        valuate:{
+            maxlength:"对应值不能多于50个字符"
+        },
+
+        }
+    },
+    addEventListener:function(){
+        this.form.find(".saveBtn").click(this.saveInfo.Apply(this));
+        this.form.find(".cancelBtn").click(this.cancel.Apply(this));
+    },
+    init:function(){
+        this.form=$(this.formId);
+        this.addEventListener();
+        $("#sysConfigEditForm").validate(this.validParam);
+        var that =this;
+
+            that.loadData();
+
+    },
+    loadData:function(){
+        var that =this;
+        Ajax.getJSON(PATH+"/sysConfig/view.json?id="+getParam("id"),null,function(data){
+            if(data.r==AJAX_SUCC){
+                if(data.data.bean){
+                    fillJso2Form("#sysConfigEditForm",data.data.bean);
+                }
+            }else{
+                dialog.error("获取信息失败"+data.msg,function(index){
+                    goPage("sysConfig/list.htm");
+                    dialog.close(index);
+                });
+            }
+        });
+    },
+
+    saveInfo:function(){
+        if (!$("#sysConfigEditForm").valid())
+            return;
+        var jso = changeForm2Jso("#sysConfigEditForm");
+        var dialogId=dialog.showWait();
+        var that=this;
+        Ajax.post(PATH+$("#sysConfigEditForm").attr("action"),jso,function(data){
+            dialog.hideWait(dialogId);
+            if(data.r==0){
+                dialog.alert(data.msg||"保存成功",function(index){
+                    //goPage("sysConfig/list.htm");
+                     sysConfigEdit.cancel();
+                    if(this.modal){
+                        $("#sysConfigGrid").jqGrid("reloadGrid");
+                    }
+                    dialog.close(index);
+                });
+            }else{
+                dialog.error(data.msg);
+            }
+        },'json');
+    },
+    cancel:function(){
+        if(this.modal){
+            $("#mymodal").modal("toggle");
+        }else{
+            goPage("sysConfig/list.htm");
+        }
+    }
+}
+$(document).ready(function() {
+    //获取传入参数
+    sysConfigEdit.init();
+
+});
+</script>

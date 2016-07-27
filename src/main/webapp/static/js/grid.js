@@ -1660,7 +1660,7 @@
 											html += "<td width=\""
 													+ this.p.colModel[j].width
 													/ this.p.width_sum * 100
-													+ "%\"><span title='"+value+"'>" + value + "</span></td>";
+													+ "%\"><span title='"+value+"'>" + (value?(value.length>20?value.substr(0,20):value):value) + "</span></td>";
 									}
 									html += "</tr>";
 

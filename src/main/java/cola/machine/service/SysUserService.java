@@ -15,17 +15,13 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import cola.machine.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import cola.machine.bean.SysUser;
 import cola.machine.dao.SysUserMapper;
-import cola.machine.util.CacheUtil;
-import cola.machine.util.ResultUtil;
-import cola.machine.util.UUIDUtil;
-import cola.machine.util.ValidateUtil;
-import cola.machine.util.StringUtil;
 import core.page.Page;
 import core.action.ResultDTO;
 
@@ -75,13 +71,20 @@ public class SysUserService extends BaseService {
         }*/
          //逻辑业务判断判断
        //判断是否有uq字段
-               HashMap params =new HashMap();
+        HashMap params =new HashMap();
         params.put("telno",sysUser.getTelno());
         int count = sysUserMapper.countByOrParams(params);
         if(StringUtil.isNull(sysUser.getId())&& count>0||count>1 ){
             return ResultUtil.getResult(302,"字段唯一不能重复");
         }
 
+        if(StringUtil.isNotEmpty(sysUser.getPassword()) && sysUser.getPassword().length()!=32){
+            try {
+                sysUser.setPassword(MD5Util.getStringMD5String(sysUser.getPassword()));
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
        //判断是更新还是插入
         if (sysUser.getId()==null) {
 
