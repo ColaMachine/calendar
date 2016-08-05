@@ -247,7 +247,7 @@ includeJS(jsAry);
                         </div>
                     </div>
 
-    <div id="main " class="  main"  style="width:100%;height:100%;">
+    <div id="main " class="  main wrapper wrapper-content animated fadeInRight "  style="width:100%;height:100%;">
 
 	</div>
 

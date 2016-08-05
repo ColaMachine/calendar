@@ -25,6 +25,7 @@ var ${abc}List={
     treeObj:null,
     dqData:null,
     root:$("#${table.name}List"),
+   tmpl:
     init:function(){
 
         setTitle("${table.remark}");
