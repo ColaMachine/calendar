@@ -38,23 +38,27 @@
 </head>
 
 <body class="gray-bg">
-
+ <canvas style="position:absolute;top:300px;left:0px;width:100%;height:400px;" id="canvas"></canvas>
+                		<script type="text/javascript" src="static/js/clock/digit.js"></script>
+                		<script type="text/javascript" src="static/js/clock/cutdown.js" ></script>
     <div class="loginColumns animated fadeInDown">
         <div class="row">
 
             <div class="col-md-6">
                 <h2 class="font-bold">欢迎来到 Welcome to </h2>
-                <h1 style="font-size:130px;color: #e6e6e6;font-weight: 800;    letter-spacing: -10px;">海绵＋</h1>
+                <h1 style="font-size:80px;color: #e6e6e6;font-weight: 800;    letter-spacing: -10px;">装维＋</h1>
                 <p>
-                    <span style="font-weight:bold">海绵城市</span>，是新一代城市雨洪管理概念，是指城市在适应环境变化和应对雨水带来的自然灾害等方面具有良好的“弹性”，也可称之为“水弹性城市”。
+                    <span style="font-weight:bold">营销装维平台</span>，是新一代营销装维平台
                 </p>
                 <p>
+
+
                 </p>
  <p>
-国际通用术语为“低影响开发雨水系统构建”。  下雨时吸水、蓄水、渗水、净水，需要时将蓄存的水“释放”并加以利用。
+
  </p>
                 <p>
-                    <small>The Sponge City</small>
+                    <small></small>
                 </p>
 
             </div>
@@ -76,7 +80,7 @@
                                         src="" alt="点击刷新验证码"/></span>
                             </div>
                         </div>
-                        <button id="loginBtn" type="submit" class="btn btn-primary block full-width m-b">登录</button>
+                        <button id="loginBtn" type="button" class="btn btn-primary block full-width m-b">登录</button>
 
 
                           <div class="checkbox i-checks"><label> <input id="rememberme" type="checkbox"><i></i> 记住我 </label></div>
@@ -177,7 +181,6 @@
             });
         });
     </script>
-
 
 
 </body>

@@ -30,11 +30,13 @@
 </div>-->
 <script type="text/javascript">
 var ${abc}View={
-    modal:false,
+    modal:true,
+    windowIndex:null,
     root:$("#${table.name}View"),
     init:function(){
-    var that = this;
-    this.addEventListener();
+        this.windowIndex=dialog.windowIndex;
+        var that = this;
+        this.addEventListener();
         //获取传入参数
         if(!StringUtil.isBlank(getParam("id"))){
             Ajax.getJSON("${abc}/view.json?id="+getParam("id"),null,function(data){

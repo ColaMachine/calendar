@@ -10,8 +10,10 @@
             <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="10" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="编号"></input>
         <label for="key">名称</label>
             <input type="text" id="keyLike" name="keyLike"  class="form-control input-sm"   maxlength="50" placeholder="名称" ></input>
-        <label for="valuate">对应值</label>
-            <input type="text" id="valuateLike" name="valuateLike"  class="form-control input-sm"   maxlength="50" placeholder="对应值" ></input>
+        <label for="value">对应值</label>
+            <input type="text" id="valueLike" name="valueLike"  class="form-control input-sm"   maxlength="50" placeholder="对应值" ></input>
+        <label for="remark">说明</label>
+            <input type="text" id="remarkLike" name="remarkLike"  class="form-control input-sm"   maxlength="250" placeholder="说明" ></input>
 
             <button type="button"  class="btn btn-default searchBtn">查询</button>
             </form>
@@ -26,7 +28,7 @@
 </div>
 <script>
 var sysConfigList={
-    modal:false,
+    modal:true,
     mygrid:null,
     treeObj:null,
     dqData:null,
@@ -42,7 +44,7 @@ var sysConfigList={
     },
     addEventListener:function(){
         $(this.root).find(".addBtn").click(this.addInfo.Apply(this));
-        $(this.root).find(".editBtn").click(this.editInfo.Apply(this));
+          $(this.root).find(".editBtn").click(this.editSelectInfo.Apply(this));
         $(this.root).find(".deleteBtn").click(this.multiDelete.Apply(this));
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
@@ -58,7 +60,7 @@ var sysConfigList={
         pager:"#SysConfigGrid-Pager",
         jsonReader:jsonReader,
         colNames : [
-        "编号","名称","对应值" , '操作' ],
+        "编号","名称","对应值","说明" , '操作' ],
         colModel : [
             {   name : 'id',width : 80,
 
@@ -66,7 +68,10 @@ var sysConfigList={
             {   name : 'key',width : 80,
 
             } ,
-            {   name : 'valuate',width : 80,
+            {   name : 'value',width : 80,
+
+            } ,
+            {   name : 'remark',width : 80,
 
             } ,
 
@@ -88,6 +93,16 @@ var sysConfigList={
     },
     addInfo:function (){
         dialog.window('/sysConfig/edit.htm',this.modal);
+    },
+    editSelectInfo:function(){
+        var rowid =this.mygrid.jqGrid("getGridParam","selrow");
+        var rowData = this.mygrid.jqGrid('getRowData',rowid);
+        var id = rowData["id"];
+        if(StringUtil.isBlank(id)){
+            dialog.alert("请选中一行数据");
+        }else{
+            dialog.window("/sysConfig/edit.htm?id="+id,this.modal);
+        }
     },
     editInfo:function (id){
         dialog.window("/sysConfig/edit.htm?id="+id,this.modal);

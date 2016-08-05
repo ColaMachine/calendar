@@ -67,7 +67,8 @@
 
 var sysPermissionEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#sysPermissionEditForm",
     validParam:{
         rules: {
@@ -95,7 +96,7 @@ var sysPermissionEdit={
 
         },
         messages:{
-        id:{
+                   id:{
             digits:"必须输入整数"
         },
         pid:{
@@ -124,6 +125,7 @@ var sysPermissionEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#sysPermissionEditForm").validate(this.validParam);
@@ -153,6 +155,7 @@ var sysPermissionEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         if (!$("#sysPermissionEditForm").valid())
             return;
         var jso = changeForm2Jso("#sysPermissionEditForm");
@@ -163,11 +166,12 @@ var sysPermissionEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("sysPermission/list.htm");
-                     sysPermissionEdit.cancel();
-                    if(this.modal){
-                        $("#sysPermissionGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#SysPermissionGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -176,7 +180,8 @@ var sysPermissionEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("sysPermission/list.htm");
         }

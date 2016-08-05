@@ -23,22 +23,20 @@ import core.page.Page;
 public class LogTest {
 	LogService logService;
 
-	@Before
+
 	public void init() {
 		ApplicationContext context = new ClassPathXmlApplicationContext(
 				"\\config\\xml\\applicationContext.xml");
 		logService = (LogService) context.getBean("logService");
 	}
-	
-		@Test
-		public void listExceptionLog(){
-			Page page =new Page();
-			page.setPageSize(1);
-			page.setCurPage(0);
-			AppExceptionLogExample example =new AppExceptionLogExample();
-			example.setPage(page);
-			List<AppExceptionLog> log =logService.listExceptionLog(example);
-			Assert.isTrue(log.size()>=0);
-			
-		}
+	public void listExceptionLog(){
+		Page page =new Page();
+		page.setPageSize(1);
+		page.setCurPage(0);
+		AppExceptionLogExample example =new AppExceptionLogExample();
+		example.setPage(page);
+		List<AppExceptionLog> log =logService.listExceptionLog(example);
+		Assert.isTrue(log.size()>=0);
+
+	}
 }

@@ -7,20 +7,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1″>
 <title>后台管理系统</title>
-  <link rel="stylesheet" type="text/css" href="${path}/static/css/bootstrap.min.css" >
-   <link rel="stylesheet" type="text/css" href="${path}/static/css/main.css" >
-    <link rel="stylesheet" type="text/css" href="${path}/static/css/menu3.css" >
-    <link rel="stylesheet" type="text/css" href="${path}/static/css/style.css" >
- <link rel="stylesheet" type="text/css" href="${path}/static/css/collapse.css" >
+<link rel="stylesheet" type="text/css" href="${path}/static/css/bootstrap.min.css" >
+<link rel="stylesheet" type="text/css" href="${path}/static/css/main.css" >
+<link rel="stylesheet" type="text/css" href="${path}/static/css/menu3.css" >
+<link rel="stylesheet" type="text/css" href="${path}/static/css/head.css" >
+
+<link rel="stylesheet" type="text/css" href="${path}/static/css/style.css" >
+<link rel="stylesheet" type="text/css" href="${path}/static/css/collapse.css" >
+<link rel="stylesheet" type="text/css" href="${path}/static/css/font-awesome.css" >
 
 <script type="text/javascript" src="${path}/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="${path}/static/js/common.js"></script>
 <script type="text/javascript" src="${path}/static/js/menu.js"></script>
-	<!--<script type="text/javascript" src="${path}/static/js/react.js"></script>-->
 
-	<script type="text/javascript" charset="utf-8" src="${path}/ueditor/ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="${path}/ueditor/ueditor.all.min.js"> </script>
-    <script type="text/javascript" charset="utf-8" src="${path}/ueditor/lang/zh-cn/zh-cn.js"></script>
 
 <%
 String path = request.getContextPath();
@@ -33,59 +32,66 @@ pageContext.setAttribute("basePath",basePath);
 
 <script type="text/javascript" >
 var WEBCONTEXT="${path}";
-var PATH="${path}"; 
-includeCSS([
-"/static/css/font-awesome.css",
+var PATH="${path}";
+var cssAry=[
+"/static/css/grid.css",
+ /*"/static/css/jqgrid.css",*/
+ /* "/static/css/head.css",*/
 
-
-
- "/static/css/grid.css",
-  "/static/css/head.css",
-   "/static/css/global.css",
     "/static/css/widget.css",
-    /*"/static/css/window.css",*/
+   "/static/css/window.css",
     "/static/css/zTreeStyle.css",
-   /*  "/static/css/layer.css"*/
-  
-]);
+    "/static/css/layer.css"
+
+];
+var jsAry=[/*"/static/js/menu.js" ,
+                     "/static/js/validmsg.js",*/
+                     "/static/js/DateUtils.js",
+                    /* "/static/js/jquery-ui.min.js",*/
+                     "/static/js/grid.js",
+                      /* "/static/js/jquery.jqGrid.js",*/
+                      "/static/js/jquery.form.js",
+                      "/static/js/grid.locale-en.js",
+                      "/static/js/My97DatePicker/WdatePicker.js",
+                      "/static/js/jquery.validate.js",
+                      "/static/js/additional-methods.js",
+                     /* "/static/js/index.js",*/
+                      "/static/js/window.js",
+                     "/static/js/bootstrap.min.js",
+                      "/static/js/drag.js",
+                      "/static/js/dialog.js",
+                      "/static/js/jquery.ztree.core-3.5.js",
+                      "/static/js/jquery.ztree.excheck-3.5.js",
+                       "/static/js/layer.js",
+                     /*  "/static/js/location.js",*/
 
 
-includeJS(["/static/js/menu.js" ,
-         /*  "/static/js/validmsg.js",*/
-           "/static/js/DateUtils.js",
-          /* "/static/js/jquery-ui.min.js",*/
-          "/static/js/grid.js",
-              /*"/static/js/jquery.jqGrid.js",*/
-            "/static/js/jquery.form.js",
-            "/static/js/grid.locale-en.js",
-            "/static/js/My97DatePicker/WdatePicker.js",
-            "/static/js/jquery.validate.js",
-            "/static/js/additional-methods.js",
-           /* "/static/js/index.js",*/
-            "/static/js/window.js",
-           "/static/js/bootstrap.min.js",
-            "/static/js/drag.js",
-            "/static/js/dialog.js",
-            "/static/js/jquery.ztree.core-3.5.js",
-            "/static/js/jquery.ztree.excheck-3.5.js",
-             /* "/static/js/layer.js",*/
-           /*  "/static/js/location.js",*/
+                    ];
+includeCSS(cssAry);
+includeJS(jsAry);
 
-
-          ]);
+         /*   setTimeout("loadCssJs()",1000);
+                   function loadCssJs(){
+                     	Ajax.get(PATH+"/moreCssJs.htm", null, function(data) {
+                                 if(data.indexOf("504")!=-1){
+                                     window.location="/spcity/login.htm";return;
+                                 }
+                     			$('#moreCssJs').html(data);
+                     		});
+                   }*/
 </script>
 
 
 </head>
 <body>
-
+<div id="moreCssJs"style="display:none"></div>
 <div id="page" class="page pace-done" >
 	   <nav class="page-nav menu-wrap clearfix  navbar-default navbar-static-side">
         <div class="logo">
             <!-- <span class="logo-head">aWiFi</span> -->
-            
+
             <%-- <img src="${path}/statics/img/logo.png"></img>
- --%>           
+ --%>
              <div class="logo-desc" ><span class="nav-icon"><i onclick="$('#page').toggleClass('collapse1')" style="" class="fa fa-reorder">&nbsp;</i></span><span class="logo-desc-text"'>后台管理系统</span></div>
         </div>
         <div id="menu" class="menu">
@@ -241,19 +247,19 @@ includeJS(["/static/js/menu.js" ,
                         </div>
                     </div>
 
-    <div id="main " class="page-bd  main clearfix wrapper wrapper-content animated fadeInRight" >
+    <div id="main " class="  main"  style="width:100%;height:100%;">
 
 	</div>
-	
-</div>
-    
 
-     
+</div>
+
+
+
 </div>
 <div class="widget"></div>
     <div class="mask" ></div>
 
-    
+
 </body>
 
 
@@ -269,58 +275,72 @@ Ajax.getJSON(PATH+"/auth/menu/list.json",null,function(result){
 });
 var resources="<%=resourceStr%>";
 var menuList=[
-              {id:100,name:"Dashboard",url:"",pid:0,icon:"fa fa-dashboard"},
-                {id:1001,name:"Dashboard V1",url:"www.baidu.com",pid:100,icon:"fa fa-circle-o"},
-                {id:1002,name:"Dashboard V2",url:"www.baidu.om",pid:100,icon:"fa fa-circle-o"},
-              /*{id:1,name:"日志管理",url:"",pid:0,icon:"fa fa-bank"},
-              {id:2,name:"访问日志",url:"",pid:1},
-              {id:3,name:"异常日志",url:PATH+"/log/listRequestLog",pid:1},
-              {id:21,name:"访问日志A",url:PATH+"/log/listRequestLog",pid:2},
-              {id:22,name:"访问日志B",url:PATH+"/log/listRequestLog",pid:2},*/
-              {id:5,name:"用户管理",url:"",pid:0,icon:"fa fa-diamond"},
+            {id:100,name:"Dashboard",url:"",pid:0,icon:"fa fa-dashboard"},
+            {id:1001,name:"Dashboard V1",url:"www.baidu.com",pid:100,icon:"fa fa-circle-o"},
+            {id:1002,name:"Dashboard V2",url:"www.baidu.om",pid:100,icon:"fa fa-circle-o"},
+            /*{id:1,name:"日志管理",url:"",pid:0,icon:"fa fa-bank"},
+            {id:2,name:"访问日志",url:"",pid:1},
+            {id:3,name:"异常日志",url:"/log/listRequestLog",pid:1},
+            {id:21,name:"访问日志A",url:"/log/listRequestLog",pid:2},
+            {id:22,name:"访问日志B",url:"/log/listRequestLog",pid:2},*/
+            {id:5,name:"用户管理",url:"",pid:0,icon:"fa fa-user"},
 
-                {id:51,name:"level51",url:"",pid:5,icon:"fa fa-diamond"},
-                 {id:511,name:"level511",url:"",pid:51,icon:"fa fa-diamond"},
-                  {id:5111,name:"level5111",url:"",pid:511,icon:"fa fa-diamond"},
-                                   {id:5112,name:"level5112",url:"",pid:511,icon:"fa fa-diamond"},
-                  {id:512,name:"level512",url:"",pid:51,icon:"fa fa-diamond"},
-             /* {id:51,name:"用户管理",url:PATH+"/user/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:6,name:"角色管理",url:PATH+"/auth/role/list.htm",pid:5},*/
-              {id:7,name:"日历",url:PATH+"/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
-               {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},
-                 {id:"8-1",name:"按钮",url:PATH+"/static/html/example/button.html",icon:"fa fa-spinner",pid:8},
+            {id:51,name:"level51",url:"",pid:5,icon:"fa fa-diamond"},
+            {id:511,name:"level511",url:"",pid:51,icon:"fa fa-diamond"},
+            {id:5111,name:"level5111",url:"",pid:511,icon:"fa fa-diamond"},
+            {id:5112,name:"level5112",url:"",pid:511,icon:"fa fa-diamond"},
+            {id:512,name:"level512",url:"",pid:51,icon:"fa fa-diamond"},
+            /* {id:51,name:"用户管理",url:"/user/list.htm",icon:"fa fa-spinner",pid:5},
+            {id:6,name:"角色管理",url:"/auth/role/list.htm",pid:5},*/
+            {id:7,name:"日历",url:"/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
+            {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},
+            {id:"8-1",name:"按钮",url:"/static/html/example/button.html",icon:"fa fa-spinner",pid:8},
 
-                     {id:"8-2",name:"导航条",url:PATH+"/static/html/example/navbar.html",icon:"fa fa-spinner",pid:8},
-              {id:9,name:"手机登录页面",url:PATH+"/login/login.htm",icon:"fa fa-spinner",pid:8},
-              {id:10,name:"上传图片",url:PATH+"/static/html/imageCompress.html",icon:"fa fa-bank",pid:8},
-              {id:11,name:"列表",url:PATH+"/static/html/example/table.html",icon:"fa fa-spinner",pid:8},
-               {id:81,name:"地区选择",url:PATH+"/static/html/example/location.html",icon:"fa fa-spinner",pid:8},
-                {id:82,name:"富文本编辑器",url:PATH+"/static/html/example/uedit.html",icon:"fa fa-spinner",pid:8},
-              {id:12,name:"alert",url:PATH+"/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
-             /* {id:13,name:"短信",url:PATH+"/smsBatch/list.htm",icon:"fa fa-spinner",pid:0},
-              {id:14,name:"合作伙伴",url:PATH+"/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0},*/
-              {id:15,name:"用户",url:PATH+"/sysUser/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:16,name:"角色",url:PATH+"/sysRole/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:17,name:"资源",url:PATH+"/sysResource/list.htm",icon:"fa fa-spinner",pid:5},
-               {id:50017,name:"permission",url:PATH+"/sysPermission/list.htm",icon:"fa fa-spinner",pid:5},
-                {id:50018,name:"menu",url:PATH+"/sysMenu/list.htm",icon:"fa fa-spinner",pid:5},
-                {id:50018,name:"rolePermission",url:PATH+"/sysRolePermission/listMapper.htm",icon:"fa fa-spinner",pid:5},
-              /*{id:18,name:"用户角色",url:PATH+"/sysUserRole/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:19,name:"角色资源",url:PATH+"/sysRoleResource/list.htm",icon:"fa fa-spinner",pid:5},
-              {id:20,name:"用户资源",url:PATH+"/sysUserResource/list.htm",icon:"fa fa-spinner",pid:5},*/
-               {id:21,name:"用户角色关联",url:PATH+"/sysUserRole/listMapper.htm",icon:"fa fa-spinner",pid:5},
-               {id:22,name:"角色资源关联",url:PATH+"/sysRoleResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
-               {id:23,name:"用户资源关联",url:PATH+"/sysUserResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
-             /* {id:24,name:"短信验证码",url:PATH+"/smsRecord/list.htm",icon:"fa fa-spinner",pid:0},*/
-                   {id:25,name:"系统配置",url:PATH+"/sysConfig/list.htm",icon:"fa fa-spinner",pid:0},
-                    {id:26,name:"动物园管理",url:"",icon:"fa fa-spinner",pid:0},
-                     {id:27,name:"最新视频",url:PATH+"/videoNew/list.htm",icon:"fa fa-spinner",pid:26},
-                     {id:28,name:"最新视频",url:PATH+"/static/html/videoNew.html",icon:"fa fa-spinner",pid:26},
-                         {id:30,name:"海绵城市",url:"",icon:"fa fa-spinner",pid:0},
-                      {id:301,name:"专家智库",url:PATH+"/expert/list.htm",icon:"fa fa-spinner",pid:30},
-                      {id:302,name:"新闻资讯",url:PATH+"/artical/list.htm",icon:"fa fa-spinner",pid:30},
+            {id:"8-2",name:"导航条",url:"/static/html/example/navbar.html",icon:"fa fa-spinner",pid:8},
+            {id:9,name:"手机登录页面",url:"/login/login.htm",icon:"fa fa-spinner",pid:8},
+            {id:10,name:"上传图片",url:"/static/html/imageCompress.html",icon:"fa fa-bank",pid:8},
+            {id:11,name:"列表",url:"/static/html/example/table.html",icon:"fa fa-spinner",pid:8},
+            {id:81,name:"地区选择",url:"/static/html/example/location.html",icon:"fa fa-spinner",pid:8},
+            {id:82,name:"富文本编辑器",url:"/static/html/example/uedit.html",icon:"fa fa-spinner",pid:8},
+            {id:12,name:"alert",url:"/static/html/example/alert.html",icon:"fa fa-spinner",pid:8},
+            /* {id:13,name:"短信",url:"/smsBatch/list.htm",icon:"fa fa-spinner",pid:0},
+            {id:14,name:"合作伙伴",url:"/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0},*/
+            {id:15,name:"用户",url:"/sysUser/list.htm",icon:"fa fa-spinner",pid:5},
+            {id:16,name:"角色",url:"/sysRole/list.htm",icon:"fa fa-spinner",pid:5},
+            {id:17,name:"资源",url:"/sysResource/list.htm",icon:"fa fa-spinner",pid:5},
+            {id:50017,name:"permission",url:"/sysPermission/list.htm",icon:"fa fa-spinner",pid:5},
+            {id:50018,name:"menu",url:"/sysMenu/list.htm",icon:"fa fa-spinner",pid:5},
+            {id:50018,name:"rolePermission",url:"/sysRolePermission/listMapper.htm",icon:"fa fa-spinner",pid:5},
+            /*{id:18,name:"用户角色",url:"/sysUserRole/list.htm",icon:"fa fa-spinner",pid:5},
+            {id:19,name:"角色资源",url:"/sysRoleResource/list.htm",icon:"fa fa-spinner",pid:5},
+            {id:20,name:"用户资源",url:"/sysUserResource/list.htm",icon:"fa fa-spinner",pid:5},*/
+            {id:21,name:"用户角色关联",url:"/sysUserRole/listMapper.htm",icon:"fa fa-spinner",pid:5},
+            {id:22,name:"角色资源关联",url:"/sysRoleResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
+            {id:23,name:"用户资源关联",url:"/sysUserResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
+            /* {id:24,name:"短信验证码",url:"/smsRecord/list.htm",icon:"fa fa-spinner",pid:0},*/
+            {id:25,name:"系统管理",url:"",icon:"fa fa-gear",pid:0},
 
-              ]
+            {id:2501,name:"系统日志",url:"/sysLog/list.htm",icon:"fa fa-file-archive-o",pid:25},
+             {id:2502,name:"日志标签",url:"/sysLogTag/list.htm",icon:"fa fa-tag",pid:25},
+
+         /*   {id:26,name:"动物园管理",url:"",icon:"fa fa-spinner",pid:0},
+            {id:27,name:"最新视频",url:"/videoNew/list.htm",icon:"fa fa-spinner",pid:26},
+            {id:28,name:"最新视频",url:"/static/html/videoNew.html",icon:"fa fa-spinner",pid:26},
+
+            {id:30,name:"海绵城市",url:"",icon:"fa fa-spinner",pid:0},
+
+            {id:302,name:"新闻资讯",url:"/artical/list.htm",icon:"fa fa-spinner",pid:30},
+            {id:303,name:"新闻资讯审核",url:"/artical/listAudit.htm",icon:"fa fa-spinner",pid:30},
+            {id:303,name:"新闻资讯审核",url:"/artical/listAudit.htm",icon:"fa fa-spinner",pid:30},
+            {id:304,name:"专家智库",url:"/expert/list.htm",icon:"fa fa-spinner",pid:30},
+            {id:305,name:"合作伙伴",url:"/partner/list.htm",icon:"fa fa-spinner",pid:30},
+            {id:306,name:"专家介绍",url:"/expertDetail/list.htm",icon:"fa fa-spinner",pid:30},
+            {id:307,name:"专家文献",url:"/expertArtical/list.htm",icon:"fa fa-spinner",pid:30},
+            {id:308,name:"合作伙伴介绍",url:"/partnerDetail/list.htm",icon:"fa fa-spinner",pid:30},*/
+            {id:31,name:"图表",url:"",icon:"fa fa-bar-chart",pid:0},
+                {id:311,name:"登录人数",url:"/static/html/example/echarts.html",icon:"fa fa-area-chart",pid:31}
+
+          ]
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 $(document).ready(function(){if($(".page-wrap").height()<$(window).height())
     $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
@@ -328,10 +348,22 @@ $(document).ready(function(){if($(".page-wrap").height()<$(window).height())
 $(document).scroll(function(){if($(".page-wrap").height()<$(window).height())
     $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
 })
-$(document).resize(function(){
+/*$(document).resize(function(){
 if($(".page-wrap").height()<$(window).height())
-    $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
-})
+ $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
+})*/
+
+ $(document).ready(function(){
+                                function fix_height(){
+                                 $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
+                                       // var h = $("#tray").height();
+                                      //  $("#preview").attr("height", (($(window).height()) - h) + "px");
+                                }
+                                $(window).resize(function(){ fix_height(); }).resize();
+
+                        });
 </script>
+
+
 <script type="text/javascript" src="${path}/static/js/head.js"></script>
 </html>

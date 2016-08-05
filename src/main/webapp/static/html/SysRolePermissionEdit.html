@@ -43,7 +43,8 @@
 
 var sysRolePermissionEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#sysRolePermissionEditForm",
     validParam:{
         rules: {
@@ -76,6 +77,7 @@ var sysRolePermissionEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#sysRolePermissionEditForm").validate(this.validParam);
@@ -110,6 +112,7 @@ var sysRolePermissionEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         if (!$("#sysRolePermissionEditForm").valid())
             return;
         var jso = changeForm2Jso("#sysRolePermissionEditForm");
@@ -134,11 +137,12 @@ var sysRolePermissionEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("sysRolePermission/list.htm");
-                     sysRolePermissionEdit.cancel();
-                    if(this.modal){
-                        $("#sysRolePermissionGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#SysRolePermissionGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -147,7 +151,8 @@ var sysRolePermissionEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("sysRolePermission/list.htm");
         }

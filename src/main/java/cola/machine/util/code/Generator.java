@@ -136,12 +136,9 @@ public class Generator {
         StringBuffer sb = new StringBuffer();
         String type = "";
         String typeName = "";
-
         table = load(homePath.resolve("src/main/resources/"+code+".cfg"));
         allTable.put(table.getName(), table);
         table.init();
-       
-
         // FreeMarkerUtil.processTemplate(templatePath, templateName,
         // templateEncoding, root, out);
     }
@@ -863,7 +860,7 @@ return ymd;
             ZColum zcol =cols.get(i);
             String type =zcol.getType().toLowerCase();
             String commonStr= "id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\"  class=\"form-control input-sm\" ";
-            if(zcol.isPk() /*&& !zcol.isEdit()*/){
+            if(zcol.isPk() && !zcol.isEdit() /*&& !zcol.isEdit()*/){
                 sb.append(tab+"<input type=\"hidden\" "+commonStr+">").append(ctrl);
             }else{
 
@@ -982,7 +979,7 @@ return ymd;
         for(int i=0;i<cols.size();i++){
             ZColum zcol =cols.get(i);
             String type =zcol.getType().toLowerCase();
-            if(zcol.isPk()){
+            if(zcol.isPk()&& !zcol.isEdit()){
                 sb.append(tab+"<input type=\"hidden\" id=\""+zcol.getName()+"\" name=\""+zcol.getName()+"\">").append(ctrl);
             }else{
                 sb.append(tab+"<div class=\"form-group\">").append(ctrl);
@@ -1122,12 +1119,15 @@ return ymd;
       //  "SysRoleResource","SysUserResource"
         //"SysUser","VideoNew","VideoHot","Collect"
         //"Expert"/*"Artical",*//*"Partner"*/
-     //   Generator.generate(new String[]{"SysMenu",/*"Artical",*/"SysUser","SysRole","SysPermission","SysUserRole","SysUserPermission","SysRolePermission"/*,"Expert","ExpertDetail","ExpertArtical","Partner","PartnerDetail"*/
-               /* "SysLog"*/
-             //   });
+       // Generator.generate(new String[]{"SysMenu","Artical","SysUser","SysRole","SysPermission","SysUserRole","SysUserPermission","SysRolePermission","Expert","ExpertDetail","ExpertArtical","Partner","PartnerDetail",
+           //    "SysLog"
+            //  });
 
         //Generator.generate(new String[]{"WiiDeviceExtend" });
-        Generator.generate(new String[]{"SysConfig" });
+     // Generator.generate(new String[]{"SysConfig" });
+      //  Generator.generate(new String[]{"MerchantExtends","DeviceExtends" });
+        Generator.generate(new String[]{"SysLogTag" });
+       // Generator.generate(new String[]{"SmsRecord" });
     }
 
   

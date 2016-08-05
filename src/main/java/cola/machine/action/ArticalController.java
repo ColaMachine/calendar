@@ -522,7 +522,10 @@ public class ArticalController extends BaseController{
         }*/
         // artical.setCreator(user.getId());
         //artical.setCreatorname(user.getUsername());
-
+        logger.info("开始保存数据");
+        System.out.println("开始保存数据:");
+        System.out.println("内容长度:"+artical.getContent().length());
+        logger.info("内容长度:"+artical.getContent().length());
         return articalService.save(artical);
 
     }

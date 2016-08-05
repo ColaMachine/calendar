@@ -44,7 +44,7 @@
 </div>
 <script>
 var sysMenuList={
-    modal:false,
+    modal:true,
     mygrid:null,
     treeObj:null,
     dqData:null,
@@ -64,7 +64,7 @@ var sysMenuList={
     },
     addEventListener:function(){
         $(this.root).find(".addBtn").click(this.addInfo.Apply(this));
-        $(this.root).find(".editBtn").click(this.editInfo.Apply(this));
+          $(this.root).find(".editBtn").click(this.editSelectInfo.Apply(this));
         $(this.root).find(".deleteBtn").click(this.multiDelete.Apply(this));
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
@@ -105,7 +105,7 @@ var sysMenuList={
             } ,
             {   name : 'status',width : 80,
                 formatter : function(value, grid, rows) {
-                  var map ={'2':'禁用','1':'启用',};
+                  var map ={'1':'启用','2':'禁用',};
                   return map[value];
                 }
 
@@ -132,6 +132,16 @@ var sysMenuList={
     },
     addInfo:function (){
         dialog.window('/sysMenu/edit.htm',this.modal);
+    },
+    editSelectInfo:function(){
+        var rowid =this.mygrid.jqGrid("getGridParam","selrow");
+        var rowData = this.mygrid.jqGrid('getRowData',rowid);
+        var id = rowData["id"];
+        if(StringUtil.isBlank(id)){
+            dialog.alert("请选中一行数据");
+        }else{
+            dialog.window("/sysMenu/edit.htm?id="+id,this.modal);
+        }
     },
     editInfo:function (id){
         dialog.window("/sysMenu/edit.htm?id="+id,this.modal);

@@ -79,7 +79,7 @@ font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",
 
 	height: 100%;
 	/**Typography**/
-	font-size: 0.8rem;
+	font-size: 0.8em;
 	/*color: white;*/
 	text-align: left;
 	/**Visual**/
@@ -136,8 +136,8 @@ i.undefined {
 .menu-wrap .logo-desc {
 	white-space: nowrap;
 	overflow: hidden;
-	min-height: 2.25rem;
-	font-size: 1.25rem;
+	min-height: 2.25em;
+	font-size: 1.25em;
 }
 
 .menu-wrap  {
@@ -262,8 +262,8 @@ menu li a span{
 
 .menu-wrap .menu li>a {
 	position: relative;
-	line-height: 2.25rem;
-	min-height: 2.25rem;
+	line-height: 2.25em;
+	min-height: 2.25em;
 	/*color: white;*/
 	text-decoration: none;
 }
@@ -355,7 +355,7 @@ menu li a span{
 	/* float: left;
 	line-height: inherit;
 	margin-left: 0px;
-	margin-right: 1rem;
+	margin-right: 1em;
 	margin-top: 12px; */
 	color:#gray;
 }

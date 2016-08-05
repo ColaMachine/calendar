@@ -23,7 +23,8 @@
         <div class="col-sm-10">
             <select  id="type" name="type"  class="form-control input-sm"  >
                 <option value=''>-请选择-</option>
-                <option value=1>新闻咨询</option>
+                <option value=1>新闻</option>
+                <option value=2>资讯</option>
             </select>
         </div>
     </div>
@@ -52,7 +53,7 @@
             <input type="number" id="creator" name="creator"  class="form-control input-sm"  maxlength="11" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)"></input>
         </div>
     </div>
-    <div style="display:none" class="form-group">
+    <div class="form-group">
         <label for="pic" class="col-sm-2 control-label">封面:</label>
         <div class="col-sm-10">
 <input  id="pic" name="pic"  value="null" style="display:none" class="form-control input-sm"   maxlength="40"></input>        </div>
@@ -94,7 +95,8 @@
 
 var articalEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#articalEditForm",
        ue:null,
     validParam:{
@@ -109,7 +111,7 @@ var articalEdit={
             maxlength:50000,required:true
         },
         type:{
-            CheckBox:["1"],digits:true
+            CheckBox:["1","2"],digits:true,required:true
         },
         status:{
             CheckBox:["1","2","3","4","5"],digits:true
@@ -118,7 +120,7 @@ var articalEdit={
             maxlength:200
         },
         creator:{
-            digits:true,required:true
+            digits:true
         },
         pic:{
             maxlength:40
@@ -145,7 +147,7 @@ var articalEdit={
             maxlength:"正文不能多于50000个字符"
         },
         type:{
-            CheckBox:"必须输入'1'中的值",digits:"必须输入整数"
+            CheckBox:"必须输入'1','2'中的值",digits:"必须输入整数"
         },
         status:{
             CheckBox:"必须输入'1','2','3','4','5'中的值",digits:"必须输入整数"
@@ -176,6 +178,7 @@ var articalEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#articalEditForm").validate(this.validParam);
@@ -208,6 +211,7 @@ var articalEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         $("#content").val(this.ue.getContent());
         if (!$("#articalEditForm").valid())
             return;
@@ -219,11 +223,12 @@ var articalEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("artical/list.htm");
-                     articalEdit.cancel();
-                    if(this.modal){
-                        $("#articalGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#ArticalGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -232,7 +237,8 @@ var articalEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("artical/list.htm");
         }

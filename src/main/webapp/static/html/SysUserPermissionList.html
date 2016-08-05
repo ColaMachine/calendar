@@ -26,7 +26,7 @@
 </div>
 <script>
 var sysUserPermissionList={
-    modal:false,
+    modal:true,
     mygrid:null,
     treeObj:null,
     dqData:null,
@@ -42,7 +42,7 @@ var sysUserPermissionList={
     },
     addEventListener:function(){
         $(this.root).find(".addBtn").click(this.addInfo.Apply(this));
-        $(this.root).find(".editBtn").click(this.editInfo.Apply(this));
+          $(this.root).find(".editBtn").click(this.editSelectInfo.Apply(this));
         $(this.root).find(".deleteBtn").click(this.multiDelete.Apply(this));
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
@@ -88,6 +88,16 @@ var sysUserPermissionList={
     },
     addInfo:function (){
         dialog.window('/sysUserPermission/edit.htm',this.modal);
+    },
+    editSelectInfo:function(){
+        var rowid =this.mygrid.jqGrid("getGridParam","selrow");
+        var rowData = this.mygrid.jqGrid('getRowData',rowid);
+        var id = rowData["id"];
+        if(StringUtil.isBlank(id)){
+            dialog.alert("请选中一行数据");
+        }else{
+            dialog.window("/sysUserPermission/edit.htm?id="+id,this.modal);
+        }
     },
     editInfo:function (id){
         dialog.window("/sysUserPermission/edit.htm?id="+id,this.modal);

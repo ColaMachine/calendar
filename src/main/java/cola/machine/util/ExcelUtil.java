@@ -439,6 +439,7 @@ public class ExcelUtil {
      *             抛出IO异常
      */
     public static void main(String[] args) throws IOException {
+/*
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
         for (int i = 0; i < 10; i++) {
             Map<String, String> map = new HashMap<String, String>();
@@ -453,5 +454,15 @@ public class ExcelUtil {
         colTitle.put("c", "第二列");
         colTitle.put("d", "第三列");
         getExcelFile(list, "E:\\1.xlsx", colTitle);
+*/
+
+
+        List<Map<String,String>> listMap = ExcelUtil.getExcelData(new File("C:\\zzw\\doc\\2016-08-03\\台州所有酒店.xlsx"));
+
+        for(int i =0 ;i<listMap.size();i++){
+            Map<String,String> map = listMap.get(i);
+            System.out.println(","+map.get("a"));
+        }
+
     }
 }

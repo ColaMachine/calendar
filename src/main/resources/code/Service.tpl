@@ -105,7 +105,7 @@ public class ${Abc}Service extends BaseService {
        ${distinctCheck}
        </#if>
        //判断是更新还是插入
-        if (${abc}.get${table.pk.name[0]?upper_case}${table.pk.name[1..]}()==null) {
+        if (${abc}.get${table.pk.name?cap_first}()==null ||  this.selectByPrimaryKey(${abc}.get${table.pk.name?cap_first}())==null) {
             <#if table.pk.type?starts_with("varchar")>
                 ${abc}.set${table.pk.name[0]?upper_case}${table.pk.name[1..]}(UUIDUtil.getUUID());
             <#else>

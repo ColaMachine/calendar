@@ -3,7 +3,7 @@ var headWidget={
     ids:{
         root:".page-hd",
         loginOut:"#loginOut",
-        collapse:"#collapse",
+        collapse:"#collapse"
     },
     doms:{
 
@@ -36,7 +36,7 @@ var headWidget={
     },
     collapse:function(){
         $('#page').toggleClass('collapse1');
-    },
+    }
 
 }
 headWidget.init();

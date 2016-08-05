@@ -8,16 +8,16 @@
 	var jDragOnMove = null;
 	$.jDragSetPos = function(event){
 		var pos = $.getMousePosition(event);
-		
+
 		var X = (pos.x - jDragMouseX);//偏移量
 		var Y = (pos.y - jDragMouseY);		//偏移量
 		if(jDragContainer != '' && $(jDragContainer).length == 1){
-		
+
 			var conpos = $(jDragContainer).position();
 			var minleft = conpos.left;
 			minleft += isNaN(parseInt($(jDragContainer).css('margin-left'))) ? 0 : parseInt($(jDragContainer).css('margin-left'));
 			minleft += isNaN(parseInt($(jDragContainer).css('border-left-width'))) ? 0 : parseInt($(jDragContainer).css('border-left-width'));
-			
+
 			var maxleft = minleft + $(jDragContainer).innerWidth() - $(jDragObj).outerWidth();
 			var mintop = conpos.top;
 			mintop += isNaN(parseInt($(jDragContainer).css('margin-top'))) ? 0 : parseInt($(jDragContainer).css('margin-top'));
@@ -90,7 +90,7 @@
 					jDragMouseY = pos.y;
 					jDragElemTop  = dragobj.offsetTop;
 					jDragElemLeft = dragobj.offsetLeft;
-					
+
 					$.jDragSetPos(event);
 					if(typeof(opts.ondrop) == 'function') jDragOnDrop = opts.ondrop;
 					if(typeof(opts.onmove) == 'function') jDragOnMove = opts.onmove;

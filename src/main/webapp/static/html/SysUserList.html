@@ -1,10 +1,10 @@
 
-<div id="SysUserList" class="col-lg-12 ibox float-e-margins">
+<div id="SysUserList" class="table-responsive">
    <!-- <div class="main-hd ibox-title">| 用户</div>-->
 
 
-    <div class="main-bd ibox-content">
-        <div class="body_top" >
+    <div class="main-bd DataTables_Table_0_wrapper">
+        <div class="body_top html5buttons" >
             <form class="form-inline app-search">
                     <label for="id">编号</label>
             <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="15" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="编号"></input>
@@ -43,7 +43,7 @@
 </div>
 <script>
 var sysUserList={
-    modal:false,
+    modal:true,
     mygrid:null,
     treeObj:null,
     dqData:null,
@@ -59,7 +59,7 @@ var sysUserList={
     },
     addEventListener:function(){
         $(this.root).find(".addBtn").click(this.addInfo.Apply(this));
-        $(this.root).find(".editBtn").click(this.editInfo.Apply(this));
+          $(this.root).find(".editBtn").click(this.editSelectInfo.Apply(this));
         $(this.root).find(".deleteBtn").click(this.multiDelete.Apply(this));
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
@@ -91,7 +91,7 @@ var sysUserList={
             } ,
             {   name : 'status',width : 80,
                 formatter : function(value, grid, rows) {
-                  var map ={'3':'未激活','2':'禁用','1':'正常',};
+                  var map ={'1':'正常','2':'禁用','3':'未激活',};
                   return map[value];
                 }
 
@@ -127,6 +127,16 @@ var sysUserList={
     },
     addInfo:function (){
         dialog.window('/sysUser/edit.htm',this.modal);
+    },
+    editSelectInfo:function(){
+        var rowid =this.mygrid.jqGrid("getGridParam","selrow");
+        var rowData = this.mygrid.jqGrid('getRowData',rowid);
+        var id = rowData["id"];
+        if(StringUtil.isBlank(id)){
+            dialog.alert("请选中一行数据");
+        }else{
+            dialog.window("/sysUser/edit.htm?id="+id,this.modal);
+        }
     },
     editInfo:function (id){
         dialog.window("/sysUser/edit.htm?id="+id,this.modal);

@@ -32,7 +32,8 @@
 
 var ${abc}Edit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#${abc}EditForm",
     <#if ueditor??>
        ue:null,
@@ -50,6 +51,7 @@ var ${abc}Edit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#${abc}EditForm").validate(this.validParam);
@@ -109,6 +111,7 @@ var ${abc}Edit={
     },
 
     saveInfo:function(){
+    var that =this;
  <#if ueditor??>
         $("#${ueditor}").val(this.ue.getContent());
  </#if>
@@ -138,11 +141,12 @@ var ${abc}Edit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("${abc}/list.htm");
-                     ${abc}Edit.cancel();
-                    if(this.modal){
-                        $("#${abc}Grid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#${Abc}Grid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -151,7 +155,8 @@ var ${abc}Edit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("${abc}/list.htm");
         }

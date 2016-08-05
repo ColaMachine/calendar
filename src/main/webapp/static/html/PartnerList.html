@@ -66,7 +66,7 @@
 </div>
 <script>
 var partnerList={
-    modal:false,
+    modal:true,
     mygrid:null,
     treeObj:null,
     dqData:null,
@@ -82,7 +82,7 @@ var partnerList={
     },
     addEventListener:function(){
         $(this.root).find(".addBtn").click(this.addInfo.Apply(this));
-        $(this.root).find(".editBtn").click(this.editInfo.Apply(this));
+          $(this.root).find(".editBtn").click(this.editSelectInfo.Apply(this));
         $(this.root).find(".deleteBtn").click(this.multiDelete.Apply(this));
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
@@ -120,7 +120,7 @@ var partnerList={
             } ,
             {   name : 'type',width : 80,
                 formatter : function(value, grid, rows) {
-                  var map ={'2':'院校','1':'企业',};
+                  var map ={'1':'企业','2':'院校',};
                   return map[value];
                 }
 
@@ -168,6 +168,16 @@ var partnerList={
     },
     addInfo:function (){
         dialog.window('/partner/edit.htm',this.modal);
+    },
+    editSelectInfo:function(){
+        var rowid =this.mygrid.jqGrid("getGridParam","selrow");
+        var rowData = this.mygrid.jqGrid('getRowData',rowid);
+        var id = rowData["id"];
+        if(StringUtil.isBlank(id)){
+            dialog.alert("请选中一行数据");
+        }else{
+            dialog.window("/partner/edit.htm?id="+id,this.modal);
+        }
     },
     editInfo:function (id){
         dialog.window("/partner/edit.htm?id="+id,this.modal);

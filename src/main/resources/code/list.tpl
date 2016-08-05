@@ -1,10 +1,10 @@
 
-<div id="${Abc}List" class="col-lg-12 ibox float-e-margins">
+<div id="${Abc}List" class="table-responsive">
    <!-- <div class="main-hd ibox-title">| ${table.remark}</div>-->
 
 
-    <div class="main-bd ibox-content">
-        <div class="body_top" >
+    <div class="main-bd DataTables_Table_0_wrapper">
+        <div class="body_top html5buttons" >
             <form class="form-inline app-search">
             ${searchhtml}
             <button type="button"  class="btn btn-default searchBtn">查询</button>
@@ -20,7 +20,7 @@
 </div>
 <script>
 var ${abc}List={
-    modal:false,
+    modal:true,
     mygrid:null,
     treeObj:null,
     dqData:null,
@@ -40,7 +40,7 @@ var ${abc}List={
     },
     addEventListener:function(){
         $(this.root).find(".addBtn").click(this.addInfo.Apply(this));
-        $(this.root).find(".editBtn").click(this.editInfo.Apply(this));
+          $(this.root).find(".editBtn").click(this.editSelectInfo.Apply(this));
         $(this.root).find(".deleteBtn").click(this.multiDelete.Apply(this));
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
     },
@@ -107,6 +107,16 @@ ${(refName+"_"+refKeyName)?uncap_first}<#else>${col.name}</#if>',width : 80,
     },
     addInfo:function (){
         dialog.window('/${abc}/edit.htm',this.modal);
+    },
+    editSelectInfo:function(){
+        var rowid =this.mygrid.jqGrid("getGridParam","selrow");
+        var rowData = this.mygrid.jqGrid('getRowData',rowid);
+        var id = rowData["id"];
+        if(StringUtil.isBlank(id)){
+            dialog.alert("请选中一行数据");
+        }else{
+            dialog.window("/${abc}/edit.htm?id="+id,this.modal);
+        }
     },
     editInfo:function (id){
         dialog.window("/${abc}/edit.htm?id="+id,this.modal);

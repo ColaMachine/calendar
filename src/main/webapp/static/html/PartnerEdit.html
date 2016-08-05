@@ -88,7 +88,8 @@
 
 var partnerEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#partnerEditForm",
     validParam:{
         rules: {
@@ -169,6 +170,7 @@ var partnerEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#partnerEditForm").validate(this.validParam);
@@ -196,6 +198,7 @@ var partnerEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         if (!$("#partnerEditForm").valid())
             return;
         var jso = changeForm2Jso("#partnerEditForm");
@@ -206,11 +209,12 @@ var partnerEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("partner/list.htm");
-                     partnerEdit.cancel();
-                    if(this.modal){
-                        $("#partnerGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#PartnerGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -219,7 +223,8 @@ var partnerEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("partner/list.htm");
         }

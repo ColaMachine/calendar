@@ -134,7 +134,19 @@ public final class DateUtil {
 		return (hh < 10 ? "0" + hh : hh) + ":" + (mm < 10 ? "0" + mm : mm)
 				+ ":" + (ss < 10 ? "0" + ss : ss);
 	}
+	public static String toString(Date date,String format){
+		DateFormat df = new SimpleDateFormat(format);
+		Date d = null;
+		try {
+			return df.format(date);
 
+		} catch (Exception e) {
+			// 如果不能转换,肯定是错误格式
+			return null;
+		}
+
+
+	}
 	// 判断日期格式是否正确
 	public static boolean checkDate(String date, String format) {
 		DateFormat df = new SimpleDateFormat(format);

@@ -45,7 +45,8 @@
 
 var expertArticalEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#expertArticalEditForm",
        ue:null,
     validParam:{
@@ -85,6 +86,7 @@ var expertArticalEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#expertArticalEditForm").validate(this.validParam);
@@ -119,6 +121,7 @@ var expertArticalEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         $("#content").val(this.ue.getContent());
         if (!$("#expertArticalEditForm").valid())
             return;
@@ -130,11 +133,12 @@ var expertArticalEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("expertArtical/list.htm");
-                     expertArticalEdit.cancel();
-                    if(this.modal){
-                        $("#expertArticalGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#ExpertArticalGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -143,7 +147,8 @@ var expertArticalEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("expertArtical/list.htm");
         }

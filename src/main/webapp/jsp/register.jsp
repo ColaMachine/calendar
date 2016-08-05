@@ -37,10 +37,10 @@
         <div>
             <div>
 
-                <h1 style="font-size:110px" class="logo-name">海绵＋</h1>
+                <h1 style="font-size:80px" class="logo-name">装维＋</h1>
 
             </div>
-            <h3>注册 to 海绵+</h3>
+            <h3>注册 to 装维+</h3>
             <p>注　册　一　个　账　号　瞧　瞧　吧.</p>
             <form id="registerForm" class="m-t" role="form" action="login.html">
 
@@ -78,7 +78,7 @@
                 <p class="text-muted text-center"><small>已经有账号了吗?</small></p>
                 <a class="btn btn-sm btn-white btn-block" href="${path}/login.htm">登录</a>
             </form>
-            <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 © 2014</small> </p>
+            <p class="m-t"> <small></small> </p>
         </div>
     </div>
 

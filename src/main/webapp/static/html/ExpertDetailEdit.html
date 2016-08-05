@@ -39,7 +39,8 @@
 
 var expertDetailEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#expertDetailEditForm",
        ue:null,
     validParam:{
@@ -73,6 +74,7 @@ var expertDetailEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#expertDetailEditForm").validate(this.validParam);
@@ -107,6 +109,7 @@ var expertDetailEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         $("#content").val(this.ue.getContent());
         if (!$("#expertDetailEditForm").valid())
             return;
@@ -118,11 +121,12 @@ var expertDetailEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("expertDetail/list.htm");
-                     expertDetailEdit.cancel();
-                    if(this.modal){
-                        $("#expertDetailGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#ExpertDetailGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -131,7 +135,8 @@ var expertDetailEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("expertDetail/list.htm");
         }

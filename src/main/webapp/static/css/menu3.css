@@ -2,10 +2,10 @@
 
 /*********************************Position 位置**/
 .menu-wrap{
-    z-index: 2000;
+  /*  z-index: 2000;*/
     /**Position**/
-    top: 0px;
-    position: absolute ;
+/*    top: 0px;
+    position: absolute ;*/
 
 }
 .menu-wrap .menu>ul>li {
@@ -238,10 +238,6 @@ color:white;
 /***收缩动画****/
 .menu-wrap
 {
-
-
-
-
 transition:width 0.5s;
 -moz-transition:width 0.5s;
 -webkit-transition:width 0.5s;

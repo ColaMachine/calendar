@@ -79,7 +79,8 @@
 
 var sysMenuEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#sysMenuEditForm",
     validParam:{
         rules: {
@@ -148,6 +149,7 @@ var sysMenuEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#sysMenuEditForm").validate(this.validParam);
@@ -177,6 +179,7 @@ var sysMenuEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         if (!$("#sysMenuEditForm").valid())
             return;
         var jso = changeForm2Jso("#sysMenuEditForm");
@@ -187,11 +190,12 @@ var sysMenuEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("sysMenu/list.htm");
-                     sysMenuEdit.cancel();
-                    if(this.modal){
-                        $("#sysMenuGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#SysMenuGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -200,7 +204,8 @@ var sysMenuEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("sysMenu/list.htm");
         }

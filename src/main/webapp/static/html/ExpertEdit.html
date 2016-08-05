@@ -24,12 +24,6 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="baike" class="col-sm-2 control-label">百科地址:</label>
-        <div class="col-sm-10">
-            <textarea  id="baike" name="baike"  class="form-control input-sm"   maxlength="100"  ></textarea>
-        </div>
-    </div>
-    <div class="form-group">
         <label for="remark" class="col-sm-2 control-label">备注:</label>
         <div class="col-sm-10">
             <textarea  id="remark" name="remark"  class="form-control input-sm"   maxlength="200"  ></textarea>
@@ -66,7 +60,8 @@
 
 var expertEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#expertEditForm",
     validParam:{
         rules: {
@@ -81,9 +76,6 @@ var expertEdit={
         },
         title:{
             maxlength:40
-        },
-        baike:{
-            maxlength:100
         },
         remark:{
             maxlength:200
@@ -109,9 +101,6 @@ var expertEdit={
         title:{
             maxlength:"职称不能多于40个字符"
         },
-        baike:{
-            maxlength:"百科地址不能多于100个字符"
-        },
         remark:{
             maxlength:"备注不能多于200个字符"
         },
@@ -129,6 +118,7 @@ var expertEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#expertEditForm").validate(this.validParam);
@@ -156,6 +146,7 @@ var expertEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         if (!$("#expertEditForm").valid())
             return;
         var jso = changeForm2Jso("#expertEditForm");
@@ -166,11 +157,12 @@ var expertEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("expert/list.htm");
-                     expertEdit.cancel();
-                    if(this.modal){
-                        $("#expertGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#ExpertGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -179,7 +171,8 @@ var expertEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("expert/list.htm");
         }

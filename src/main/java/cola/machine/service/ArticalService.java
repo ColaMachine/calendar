@@ -82,8 +82,12 @@ public class ArticalService extends BaseService {
         if (artical.getId()==null) {
             artical.setCreatetime(new Timestamp(new Date().getTime()));
             artical.setStatus(1);
+            System.out.println("开始insert："+artical.getContent().length());
+            logger.info("开始insert："+artical.getContent().length());
             articalMapper.insert(artical);
         } else {
+            System.out.println("开始update："+artical.getContent().length());
+            logger.info("开始update："+artical.getContent().length());
              articalMapper.updateByPrimaryKeySelective(artical);
         }
         return ResultUtil.getSuccResult();

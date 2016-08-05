@@ -96,13 +96,21 @@ public class SysConfigController extends BaseController{
         if(!StringUtil.isBlank(keyLike)){
             params.put("keyLike",keyLike);
         }
-        String valuate = request.getParameter("valuate");
-        if(!StringUtil.isBlank(valuate)){
-            params.put("valuate",valuate);
+        String value = request.getParameter("value");
+        if(!StringUtil.isBlank(value)){
+            params.put("value",value);
         }
-        String valuateLike = request.getParameter("valuateLike");
-        if(!StringUtil.isBlank(valuateLike)){
-            params.put("valuateLike",valuateLike);
+        String valueLike = request.getParameter("valueLike");
+        if(!StringUtil.isBlank(valueLike)){
+            params.put("valueLike",valueLike);
+        }
+        String remark = request.getParameter("remark");
+        if(!StringUtil.isBlank(remark)){
+            params.put("remark",remark);
+        }
+        String remarkLike = request.getParameter("remarkLike");
+        if(!StringUtil.isBlank(remarkLike)){
+            params.put("remarkLike",remarkLike);
         }
 
         params.put("page",page);
@@ -132,13 +140,21 @@ public class SysConfigController extends BaseController{
         if(!StringUtil.isBlank(keyLike)){
             params.put("keyLike",keyLike);
         }
-        String valuate = request.getParameter("valuate");
-        if(!StringUtil.isBlank(valuate)){
-            params.put("valuate",valuate);
+        String value = request.getParameter("value");
+        if(!StringUtil.isBlank(value)){
+            params.put("value",value);
         }
-        String valuateLike = request.getParameter("valuateLike");
-        if(!StringUtil.isBlank(valuateLike)){
-            params.put("valuateLike",valuateLike);
+        String valueLike = request.getParameter("valueLike");
+        if(!StringUtil.isBlank(valueLike)){
+            params.put("valueLike",valueLike);
+        }
+        String remark = request.getParameter("remark");
+        if(!StringUtil.isBlank(remark)){
+            params.put("remark",remark);
+        }
+        String remarkLike = request.getParameter("remarkLike");
+        if(!StringUtil.isBlank(remarkLike)){
+            params.put("remarkLike",remarkLike);
         }
 
         List<SysConfig> sysConfigs = sysConfigService.listByParams(params);
@@ -204,9 +220,14 @@ public class SysConfigController extends BaseController{
             sysConfig.setKey(String.valueOf(key)) ;
         }
         
-        String valuate = request.getParameter("valuate");
-        if(!StringUtil.isBlank(valuate)){
-            sysConfig.setValuate(String.valueOf(valuate)) ;
+        String value = request.getParameter("value");
+        if(!StringUtil.isBlank(value)){
+            sysConfig.setValue(String.valueOf(value)) ;
+        }
+        
+        String remark = request.getParameter("remark");
+        if(!StringUtil.isBlank(remark)){
+            sysConfig.setRemark(String.valueOf(remark)) ;
         }
         */
         String id = request.getParameter("id");
@@ -217,9 +238,13 @@ public class SysConfigController extends BaseController{
         if(!StringUtil.isBlank(key)){
             sysConfig.setKey(key);
         }
-        String valuate = request.getParameter("valuate");
-        if(!StringUtil.isBlank(valuate)){
-            sysConfig.setValuate(valuate);
+        String value = request.getParameter("value");
+        if(!StringUtil.isBlank(value)){
+            sysConfig.setValue(value);
+        }
+        String remark = request.getParameter("remark");
+        if(!StringUtil.isBlank(remark)){
+            sysConfig.setRemark(remark);
         }
 
         //valid
@@ -227,7 +252,8 @@ public class SysConfigController extends BaseController{
         String validStr="";
         vu.add("id", id, "编号",  new Rule[]{new Digits(10,0)});
         vu.add("key", key, "名称",  new Rule[]{new Length(50)});
-        vu.add("valuate", valuate, "对应值",  new Rule[]{new Length(50),new NotEmpty()});
+        vu.add("value", value, "对应值",  new Rule[]{new Length(50),new NotEmpty()});
+        vu.add("remark", remark, "说明",  new Rule[]{new Length(250),new NotEmpty()});
         validStr = vu.validateString();
         if(StringUtil.isNotEmpty(validStr)) {
             return ResultUtil.getResult(302,validStr);
@@ -307,13 +333,21 @@ public class SysConfigController extends BaseController{
         if(!StringUtil.isBlank(keyLike)){
             params.put("keyLike",keyLike);
         }
-        String valuate = request.getParameter("valuate");
-        if(!StringUtil.isBlank(valuate)){
-            params.put("valuate",valuate);
+        String value = request.getParameter("value");
+        if(!StringUtil.isBlank(value)){
+            params.put("value",value);
         }
-        String valuateLike = request.getParameter("valuateLike");
-        if(!StringUtil.isBlank(valuateLike)){
-            params.put("valuateLike",valuateLike);
+        String valueLike = request.getParameter("valueLike");
+        if(!StringUtil.isBlank(valueLike)){
+            params.put("valueLike",valueLike);
+        }
+        String remark = request.getParameter("remark");
+        if(!StringUtil.isBlank(remark)){
+            params.put("remark",remark);
+        }
+        String remarkLike = request.getParameter("remarkLike");
+        if(!StringUtil.isBlank(remarkLike)){
+            params.put("remarkLike",remarkLike);
         }
 
         // 查询list集合
@@ -336,14 +370,16 @@ public class SysConfigController extends BaseController{
         LinkedHashMap<String, String> colTitle = new LinkedHashMap<String, String>();
         colTitle.put("id", "编号");
         colTitle.put("key", "名称");
-        colTitle.put("valuate", "对应值");
+        colTitle.put("value", "对应值");
+        colTitle.put("remark", "说明");
         List finalList = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             SysConfig sm = list.get(i);
             HashMap<String,Object> map = new HashMap<String,Object>();
             map.put("id",  list.get(i).getId());
             map.put("key",  list.get(i).getKey());
-            map.put("valuate",  list.get(i).getValuate());
+            map.put("value",  list.get(i).getValue());
+            map.put("remark",  list.get(i).getRemark());
             finalList.add(map);
         }
         try {

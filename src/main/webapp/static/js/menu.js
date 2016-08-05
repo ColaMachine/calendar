@@ -164,9 +164,10 @@ var zMenu = {
 		}
 		Ajax.get(PATH+url, null, function(data) {
             if(data.indexOf("504")!=-1){
-                window.location="/spcity/login.htm";return;
+                window.location=PATH+"/login.htm";return;
             }
-			$('.main').html(data);
+			//$('.main').html(data);
+			$('.main').append(ibox.render(data,"新窗口"));
 			if (typeof fun == 'function') fun();
 		});
 
@@ -182,7 +183,7 @@ var zMenu = {
 	},
 	createLi: function(data, row) {
 		var html =
-			"<li ><a id=\"m_a_" + row["id"] + "\" href=\"" + row[this.urlName] + "\" ><span class='nav-icon'><i class='" + (StringUtil.isBlank(row["icon"])?"fa fa-diamond":row["icon"]) + "'></i></span><span class='nav-text'>" + row[this.menuName] + "</span>" + (isNull(row[this.urlName]) ? "<span class='nav-caret'><i class=\"fa fa-caret-down\"></i></span>" : "") + "</a><ul id=\"m_u_" + row["id"] + "\">";
+			"<li ><a id=\"m_a_" + row["id"] + "\" href=\"" + row[this.urlName] + "\" ><span class='nav-icon'><i class='" + (StringUtil.isBlank(row["icon"])?"fa fa-diamond":row["icon"]) + "'></i></span><span class='nav-text'>" + row[this.menuName] + "</span>" + (isNull(row[this.urlName]) ? "<span class='nav-caret'><i class=\"fa fa-caret-down\"></i></span>" : "") + "</a><ul  id=\"m_u_" + row["id"] + "\">";
 		for (var i = 0; i < data.length; i++) {
 			if (typeof data[i][this.pidName] != 'undefined' && data[i][this.pidName] != null && data[i][this.pidName] == row[this.idName]) { //说明有子项目
 				html += this.createLi(data, data[i]);

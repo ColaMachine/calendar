@@ -14,7 +14,7 @@ CREATE TABLE `sys_user` (
     `address` varchar(50) NULL COMMENT '地址',
     `weichat` varchar(20) NULL COMMENT '微信',
     `qq` bigint(11) NULL COMMENT 'qq',
-    `face` varchar(100) NULL DEFAULT static/img/timg.jpeg COMMENT '头像',
+    `face` varchar(100) NULL DEFAULT 'static/img/timg.jpeg' COMMENT '头像',
     `remark` varchar(200) NULL COMMENT '备注',
     `createtime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
     `updatetime` timestamp NULL DEFAULT NULL COMMENT '更新时间',

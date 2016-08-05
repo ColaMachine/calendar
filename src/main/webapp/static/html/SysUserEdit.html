@@ -142,7 +142,8 @@
 
 var sysUserEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#sysUserEditForm",
     validParam:{
         rules: {
@@ -271,6 +272,7 @@ var sysUserEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#sysUserEditForm").validate(this.validParam);
@@ -298,6 +300,7 @@ var sysUserEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         if (!$("#sysUserEditForm").valid())
             return;
         var jso = changeForm2Jso("#sysUserEditForm");
@@ -308,11 +311,12 @@ var sysUserEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("sysUser/list.htm");
-                     sysUserEdit.cancel();
-                    if(this.modal){
-                        $("#sysUserGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#SysUserGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -321,7 +325,8 @@ var sysUserEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("sysUser/list.htm");
         }

@@ -23,10 +23,16 @@ public class SysConfig {
     }    public void setKey(String key){
         this.key=key;
     }/**对应值**/
-    private String valuate;
-    public String getValuate(){
-        return valuate;
-    }    public void setValuate(String valuate){
-        this.valuate=valuate;
+    private String value;
+    public String getValue(){
+        return value;
+    }    public void setValue(String value){
+        this.value=value;
+    }/**说明**/
+    private String remark;
+    public String getRemark(){
+        return remark;
+    }    public void setRemark(String remark){
+        this.remark=remark;
     }
 }

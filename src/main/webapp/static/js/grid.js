@@ -1647,7 +1647,7 @@
 
 										    var _content = this.p.colModel[j].formatter.call(this,value,this.p,this.p.data[i]);
 										    if(_content){
-										        _content=_content.replace(/\'/g,"").replace(/(<.*>)/g,"")
+										        _content=(_content+"").replace(/\'/g,"").replace(/(<.*>)/g,"")
 										    }
 											html += "<td width=\""
 													+ this.p.colModel[j].width
@@ -1832,7 +1832,7 @@
 						return ary;
 					});
 					return ary;
-				},
+				}
 			});
 	//闭包结束
 })(jQuery);

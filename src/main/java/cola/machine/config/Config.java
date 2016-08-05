@@ -25,25 +25,14 @@ import org.springframework.beans.factory.annotation.Value;
  *
  */
 public class Config {
-
+    /**
+     * 验证码配置
+     */
     private ValidCodeConfig validCode;
-    public ValidCodeConfig getValidCode() {
-        return validCode;
-    }
-
-    public void setValidCode(ValidCodeConfig validCode) {
-        this.validCode = validCode;
-    }
-
-
     /**
      * 短信每次发送量
      */
     private int pvSmsSendAmount;
-    public int getPvSmsSendAmount() {
-        return pvSmsSendAmount;
-    }
-
     /**
      * 日志
      */
@@ -60,32 +49,10 @@ public class Config {
      * 缓存配置
      */
     private CacheConfig cache = new CacheConfig();
-    public void setPvSmsSendAmount(int pvSmsSendAmount) {
-        this.pvSmsSendAmount = pvSmsSendAmount;
-    }
-
-    public void setSystem(SystemConfig system) {
-        this.system = system;
-    }
-
-    public void setCache(CacheConfig cache) {
-        this.cache = cache;
-    }
-
-    public void setImage(ImageConfig image) {
-        this.image = image;
-    }
-
-
     /**
      * 图片服务配置
      */
     private ImageConfig image = new ImageConfig();
-
-    public ImageConfig getImage() {
-        return image;
-    }
-
     /**
      * 单例 配置
      */
@@ -194,4 +161,36 @@ public class Config {
     public static void main(String args[]){
         Config.getInstance();
     }
+
+    public ValidCodeConfig getValidCode() {
+        return validCode;
+    }
+
+    public void setValidCode(ValidCodeConfig validCode) {
+        this.validCode = validCode;
+    }
+
+    public ImageConfig getImage() {
+        return image;
+    }
+
+    public void setPvSmsSendAmount(int pvSmsSendAmount) {
+        this.pvSmsSendAmount = pvSmsSendAmount;
+    }
+
+    public void setSystem(SystemConfig system) {
+        this.system = system;
+    }
+
+    public void setCache(CacheConfig cache) {
+        this.cache = cache;
+    }
+
+    public void setImage(ImageConfig image) {
+        this.image = image;
+    }
+    public int getPvSmsSendAmount() {
+        return pvSmsSendAmount;
+    }
+
 }

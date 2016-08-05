@@ -58,7 +58,6 @@ public class ImageUtil {
      * 图像放大
      * 
      * @param originalImage
-     * @param times
      * @return
      */
     public static BufferedImage fixSize(BufferedImage originalImage, int width, int height) {
@@ -402,7 +401,7 @@ public class ImageUtil {
      * 说明:
      * 
      * @param path
-     * @param sufix
+
      * @param imageName
      * @param imageData
      * @return void
@@ -442,7 +441,7 @@ public class ImageUtil {
             success = 1;
             message = "上传成功,参数长度:" + len2 + "字符，解析文件大小:" + len + "字节";
         }
-        return ResultUtil.getResult(1, imageName, "上传成功", null);
+        return ResultUtil.getResult(0, imageName, "上传成功", null);
     }
 
     // references: http://blog.csdn.net/remote_roamer/article/details/2979822

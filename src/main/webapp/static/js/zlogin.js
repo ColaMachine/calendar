@@ -47,7 +47,7 @@ var loginForm={
         }
 
         extend(this.valid,BaseValidator);
-       this.validator= validator(this.doms.form,this.valid);
+        this.validator= validator(this.doms.form,this.valid);
         //this.doms.form.validate(this.valid);
         this.doms.submitBtn.removeAttribute("disabled");
         this.addEventListener();
@@ -68,7 +68,7 @@ var loginForm={
                 this.blur();
             }
         }
-         this.doms.pwd.onkeydown=function(e){
+        this.doms.pwd.onkeydown=function(e){
             var keycode=document.all?event.keyCode:e.which;
             if(keycode==13){
                 that.submit();
@@ -77,7 +77,6 @@ var loginForm={
         }
     },
     forgetLink:function(){
-
         forgetPwdForm.show();
         //emailValidForm.setEmail("371452875@qq.com");
         //emailValidForm.show();

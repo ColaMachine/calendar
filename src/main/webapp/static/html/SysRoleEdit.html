@@ -65,7 +65,8 @@
 
 var sysRoleEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#sysRoleEditForm",
     validParam:{
         rules: {
@@ -122,6 +123,7 @@ var sysRoleEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#sysRoleEditForm").validate(this.validParam);
@@ -147,6 +149,7 @@ var sysRoleEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         if (!$("#sysRoleEditForm").valid())
             return;
         var jso = changeForm2Jso("#sysRoleEditForm");
@@ -157,11 +160,12 @@ var sysRoleEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("sysRole/list.htm");
-                     sysRoleEdit.cancel();
-                    if(this.modal){
-                        $("#sysRoleGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#SysRoleGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -170,7 +174,8 @@ var sysRoleEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("sysRole/list.htm");
         }

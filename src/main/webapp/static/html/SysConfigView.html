@@ -13,9 +13,15 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="valuate" class="col-sm-2 control-label">对应值:</label>
+        <label for="value" class="col-sm-2 control-label">对应值:</label>
         <div class="col-sm-10">
-            <span name="valuate" id="valuate"  class="form-control"  ></span>
+            <span name="value" id="value"  class="form-control"  ></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="remark" class="col-sm-2 control-label">说明:</label>
+        <div class="col-sm-10">
+            <span name="remark" id="remark"  class="form-control"  ></span>
         </div>
     </div>
 
@@ -40,9 +46,15 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="valuate" class="col-sm-2 control-label">对应值:</label>
+        <label for="value" class="col-sm-2 control-label">对应值:</label>
         <div class="col-sm-10">
-            <span name="valuate" id="valuate"  class="form-control"  ></span>
+            <span name="value" id="value"  class="form-control"  ></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="remark" class="col-sm-2 control-label">说明:</label>
+        <div class="col-sm-10">
+            <span name="remark" id="remark"  class="form-control"  ></span>
         </div>
     </div>
 
@@ -56,11 +68,13 @@
 </div>-->
 <script type="text/javascript">
 var sysConfigView={
-    modal:false,
+    modal:true,
+    windowIndex:null,
     root:$("#SysConfigView"),
     init:function(){
-    var that = this;
-    this.addEventListener();
+        this.windowIndex=dialog.windowIndex;
+        var that = this;
+        this.addEventListener();
         //获取传入参数
         if(!StringUtil.isBlank(getParam("id"))){
             Ajax.getJSON("sysConfig/view.json?id="+getParam("id"),null,function(data){

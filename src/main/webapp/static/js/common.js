@@ -1282,8 +1282,11 @@ var dialog={
     close:function(index){
         layer.close(index);
     },
-    closeWindow:function(index){
+   /* closeWindow:function(index){
         layer.close(index);
+    },*/
+    closeWindow:function(){
+        layer.close(this.windowIndex);
     },
     confirm:function(msg,fn){
         return layer.confirm(msg,fn);
@@ -1334,7 +1337,11 @@ var dialog={
         dialog.hideMask();
     	layer.close(index);
     },
+    windowIndex:0,
+
     window:function(url,flag){
+
+        var that =this;
         window.data={};
         //截取参数
         var position=url.indexOf("?");
@@ -1359,8 +1366,17 @@ var dialog={
             success: function(data){
                 //jLoading.close();
                 if(flag){
-                     $('.modal-dialog').html(data);
-                     $('.modal-dialog').show();
+
+                   //页面层
+                   var index= layer.open({
+                     type: 1,
+                     skin: 'layui-layer-rim', //加上边框
+                     area: ['600px', '640px'], //宽高
+                     content:data
+                   });
+                   that.windowIndex= index;
+                    return index;
+
                 }else{
                     $(".main").html(data);
                 }
@@ -1572,8 +1588,8 @@ var setting = {
        };
 var globalValidator={
 messages:{},
-methods:{},
-}
+methods:{}
+};
 function validator(form,cfg){
 
 
@@ -1726,12 +1742,13 @@ var _validator= {
             // bind to the blur event of the target in order to revalidate whenever the target field is updated
             // TODO find a way to bind the event just once, avoiding the unbind-rebind overhead
             var target = $( param );
+
            /* if ( this.settings.onfocusout ) {
                 target.unbind( ".validate-equalTo" ).bind( "blur.validate-equalTo", function() {
                     $( element ).valid();
                 });
             }*/
-            return value === target.value;
+            return value === target.val();
         },
 
         // http://jqueryvalidation.org/remote-method/
@@ -2024,7 +2041,7 @@ function zImageUtil(config) {
 					Ajax.post(_this.postUrl,
 						json,
 						function(data) {
-							if (data.r == 1) {
+							if (data.r == AJAX_SUCC) {
 								_this.imgDom.attr("src", PATH+"/" + data.data);
 								//$(_this).parent().find("#picurl")
 								console.log("imgUrl:" + data.data);
@@ -2089,7 +2106,7 @@ function zImageUtil(config) {
 
                 $(that.fileInput).trigger("click");
             });
-		},
+		}
 	};
 	o.init(config);
 	return o;
@@ -2102,7 +2119,7 @@ function zImageUtil2(config) {
 		maxHeight: null, //预设的最大高度
 		maxWidth: null, //预设的最大宽度
 		postUrl: null, //提交的url"/calendar/image/upload.json"
-		preShow: true,
+		preShow: false,
 		callback: null,
         fileInput:null,
 		fileChange: function(e) {
@@ -2131,14 +2148,21 @@ function zImageUtil2(config) {
 					// alert(data)
 					json.imageData = encodeURIComponent(data);
 					console.log("begin post");
-
+                   dialog.showWait();
 					Ajax.post(_this.postUrl,
 						json,
 						function(data) {
+						 dialog.hideWait();
+
 							if (data.r == 1) {
-								_this.imgDom.src = PATH+"/" + data.data;
-								$(_this).parent().find("#picurl")
-								console.log("imgUrl:" + data.data);
+/*
+                                console.log(data.r+":"+AJAX_SUCC);
+                                console.log(data);
+                                console.log(_this.imgDom);
+                                console.log("hello:"+PATH+"/" + data.data);*/
+								$(_this.imgDom).attr("src", PATH+"/" + data.data);
+							/*	$(_this).parent().find("#picurl");
+								console.log("imgUrl:" + data.data);*/
 							} else {
 								//	                        		zalert(data.msg);
 							}
@@ -2206,7 +2230,7 @@ function zImageUtil2(config) {
             $(this.imgDom).click(function(){
                 $(that.fileInput).trigger("click");
             });
-		},
+		}
 	};
 	o.init(config);
 	return o;
@@ -2350,4 +2374,33 @@ function setTitle(str){
 $("#page-title").text(str);
 $("#page-title-2").text(str);
 }
+var ibox={
 
+render:function(html,title){
+   var ibox_title='<div class="row"><div class="col-lg-12"><div class="ibox float-e-margins">'+ '<div class="ibox-title">'+
+                    '<h5>'+title+'</h5>'+
+                    '<div class="ibox-tools">'+
+                        '<a class="collapse-link">'+
+                            '<i class="fa fa-chevron-up"></i>'+
+                        '</a>'+
+                        '<a class="dropdown-toggle" data-toggle="dropdown" href="#">'+
+                            '<i class="fa fa-wrench"></i>'+
+                        '</a>'+
+                        '<ul class="dropdown-menu dropdown-user">'+
+                            '<li><a href="#">Config option 1</a>'+
+                            '</li>'+
+                            '<li><a href="#">Config option 2</a>'+
+                            '</li>'+
+                        '</ul>'+
+                        '<a class="close-link">'+
+                        '    <i class="fa fa-times"></i>'+
+                        '</a>'+
+                    '</div>'+
+                '</div>'+
+  '<div style="display: block;" class="ibox-content ">'+
+html+
+              '</div></div></div></div>';
+return ibox_title;
+}
+
+}

@@ -520,8 +520,9 @@ public class ValidCodeService {
         }
         String params = String.format("systemno=%s&sessionid=%s&code=%s", systemNo, sessionid, code);
         String urlPrefix = Config.getInstance().getValidCode().getServerUrl();
-        String jsonStr = HttpRequestUtil.sendGet(Config.getInstance().getValidCode().getServerUrl()+"/code/img/b/valid.json", params);
-        ResultDTO result = JSON.parseObject(jsonStr, ResultDTO.class);
+       // String jsonStr =// HttpRequestUtil.sendGet(Config.getInstance().getValidCode().getServerUrl()+"/code/img/b/valid.json", params);
+
+        ResultDTO result = this.validCode(systemNo,sessionid,code,false);// JSON.parseObject(jsonStr, ResultDTO.class);
         return result;
         // TODO Auto-generated method stub
     }

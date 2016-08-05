@@ -13,9 +13,15 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="valuate" class="col-sm-2 control-label">对应值:</label>
+        <label for="value" class="col-sm-2 control-label">对应值:</label>
         <div class="col-sm-10">
-            <input  type="text"  id="valuate" name="valuate"  class="form-control input-sm"   maxlength="50"  ></input>
+            <input  type="text"  id="value" name="value"  class="form-control input-sm"   maxlength="50"  ></input>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="remark" class="col-sm-2 control-label">说明:</label>
+        <div class="col-sm-10">
+            <textarea  id="remark" name="remark"  class="form-control input-sm"   maxlength="250"  ></textarea>
         </div>
     </div>
 
@@ -37,7 +43,8 @@
 
 var sysConfigEdit={
     form:null,
-    modal:false,
+    modal:true,
+    windowIndex:null,
     formId:"#sysConfigEditForm",
     validParam:{
         rules: {
@@ -47,8 +54,11 @@ var sysConfigEdit={
         key:{
             maxlength:50
         },
-        valuate:{
+        value:{
             maxlength:50,required:true
+        },
+        remark:{
+            maxlength:250,required:true
         },
 
         },
@@ -59,8 +69,11 @@ var sysConfigEdit={
         key:{
             maxlength:"名称不能多于50个字符"
         },
-        valuate:{
+        value:{
             maxlength:"对应值不能多于50个字符"
+        },
+        remark:{
+            maxlength:"说明不能多于250个字符"
         },
 
         }
@@ -70,6 +83,7 @@ var sysConfigEdit={
         this.form.find(".cancelBtn").click(this.cancel.Apply(this));
     },
     init:function(){
+        this.windowIndex=dialog.windowIndex;
         this.form=$(this.formId);
         this.addEventListener();
         $("#sysConfigEditForm").validate(this.validParam);
@@ -95,6 +109,7 @@ var sysConfigEdit={
     },
 
     saveInfo:function(){
+    var that =this;
         if (!$("#sysConfigEditForm").valid())
             return;
         var jso = changeForm2Jso("#sysConfigEditForm");
@@ -105,11 +120,12 @@ var sysConfigEdit={
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){
                     //goPage("sysConfig/list.htm");
-                     sysConfigEdit.cancel();
-                    if(this.modal){
-                        $("#sysConfigGrid").jqGrid("reloadGrid");
+
+                    if(that.modal){
+                        $("#SysConfigGrid").jqGrid("reloadGrid");
                     }
                     dialog.close(index);
+                     that.cancel();
                 });
             }else{
                 dialog.error(data.msg);
@@ -118,7 +134,8 @@ var sysConfigEdit={
     },
     cancel:function(){
         if(this.modal){
-            $("#mymodal").modal("toggle");
+           // $("#mymodal").modal("toggle");
+            dialog.closeWindow(this.windowIndex);
         }else{
             goPage("sysConfig/list.htm");
         }

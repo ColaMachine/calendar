@@ -21,7 +21,7 @@
     <div class="form-group">
         <label for="type" class="col-sm-2 control-label">类型:</label>
         <div class="col-sm-10">
-            <span  name="type" id="type" datatype="map" data="{'1':'新闻咨询',}" class="form-control" ></span>
+            <span  name="type" id="type" datatype="map" data="{'1':'新闻','2':'资讯',}" class="form-control" ></span>
         </div>
     </div>
     <div class="form-group">
@@ -95,7 +95,7 @@
     <div class="form-group">
         <label for="type" class="col-sm-2 control-label">类型:</label>
         <div class="col-sm-10">
-            <span  name="type" id="type" datatype="map" data="{'1':'新闻咨询',}" class="form-control" ></span>
+            <span  name="type" id="type" datatype="map" data="{'1':'新闻','2':'资讯',}" class="form-control" ></span>
         </div>
     </div>
     <div class="form-group">
@@ -150,11 +150,13 @@
 </div>-->
 <script type="text/javascript">
 var articalView={
-    modal:false,
+    modal:true,
+    windowIndex:null,
     root:$("#ArticalView"),
     init:function(){
-    var that = this;
-    this.addEventListener();
+        this.windowIndex=dialog.windowIndex;
+        var that = this;
+        this.addEventListener();
         //获取传入参数
         if(!StringUtil.isBlank(getParam("id"))){
             Ajax.getJSON("artical/view.json?id="+getParam("id"),null,function(data){

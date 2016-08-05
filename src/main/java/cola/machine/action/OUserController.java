@@ -80,11 +80,7 @@ public class OUserController extends BaseController {
         return ResultUtil.getDataResult(userList);
     }*/
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index3(HttpServletRequest request) {
-        request.setAttribute("path", SysConfig.PATH);
-        return "/jsp/index.jsp";
-    }
+
 
     /**
      * 说明:登录提交
@@ -343,7 +339,11 @@ public class OUserController extends BaseController {
         }
         return "/active/active.jsp";
     }
-
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index3(HttpServletRequest request) {
+        request.setAttribute("path", SysConfig.PATH);
+        return "/jsp/index.jsp";
+    }
     @RequestMapping(value = "/index.htm", method = RequestMethod.GET)
     public String index(HttpServletRequest request) {
         // System.out.println(request.getParameter("path"));
@@ -361,10 +361,16 @@ public class OUserController extends BaseController {
         // System.out.println(request.getParameter("path"));
         // System.out.println(request.getSession().getAttribute("path"));
         // System.out.println(request.getServletContext().getAttribute("path"));
-        request.setAttribute("path", "/calendar");
+        request.setAttribute("path",SysConfig.PATH);
         return "/index.jsp";
     }
 
+    @RequestMapping(value = "/moreCssJs.htm", method = RequestMethod.GET)
+    public String moreCssJs(HttpServletRequest request) {
+
+        request.setAttribute("path",SysConfig.PATH);
+        return "/jsp/moreCssJs.jsp";
+    }
     @RequestMapping(value = "/forgetpwd.htm", method = RequestMethod.GET)
     public String forgetPwd(HttpServletRequest request) {
         RandomValidateCode r = new RandomValidateCode();
