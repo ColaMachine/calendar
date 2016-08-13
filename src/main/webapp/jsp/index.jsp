@@ -16,7 +16,7 @@
 <script type="text/javascript" src="${path}/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="${path}/static/js/common.js"></script>
 <script type="text/javascript" src="${path}/static/js/menu.js"></script>
-	<!--<script type="text/javascript" src="${path}/static/js/react.js"></script>-->
+
 
 	<script type="text/javascript" charset="utf-8" src="${path}/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="${path}/ueditor/ueditor.all.min.js"> </script>
@@ -242,7 +242,7 @@ includeJS(["/static/js/menu.js" ,
                     </div>
 
     <div id="main " class="page-bd  main clearfix wrapper wrapper-content animated fadeInRight" >
-
+        <nav id="editor"></nav>
 	</div>
 	
 </div>
@@ -288,6 +288,8 @@ var menuList=[
               {id:6,name:"角色管理",url:PATH+"/auth/role/list.htm",pid:5},*/
               {id:7,name:"日历",url:PATH+"/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
                {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},
+                 {id:"8-1-1",name:"组件编辑器具",url:PATH+"/static/html/edit.html",icon:"fa fa-spinner",pid:8},
+
                  {id:"8-1",name:"按钮",url:PATH+"/static/html/example/button.html",icon:"fa fa-spinner",pid:8},
 
                      {id:"8-2",name:"导航条",url:PATH+"/static/html/example/navbar.html",icon:"fa fa-spinner",pid:8},
@@ -334,4 +336,7 @@ if($(".page-wrap").height()<$(window).height())
 })
 </script>
 <script type="text/javascript" src="${path}/static/js/head.js"></script>
+	<script type="text/javascript" src="${path}/static/js/react.js"></script>
+<script type="text/javascript" src="${path}/static/js/JSXTransformer.js"></script>
+   <script type="text/jsx"  src="static/js/editor_head.js"></script>
 </html>
