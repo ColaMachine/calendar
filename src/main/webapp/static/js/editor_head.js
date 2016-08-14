@@ -8,14 +8,10 @@ var EditorHead = React.createClass({
 	  render: function() {
 		  return (
 		  <header className="header">
-            1231233333333333333333333333333333333333
+            333
 		  </header>
         );
         }
     }
 );
 
-React.render(
-        <EditorHead  />,
-        document.getElementById('editor')
-      );
