@@ -20,7 +20,6 @@
 <script type="text/javascript" src="${path}/static/js/common.js"></script>
 <script type="text/javascript" src="${path}/static/js/menu.js"></script>
 
-
 <%
 String path = request.getContextPath();
 
@@ -247,7 +246,9 @@ includeJS(jsAry);
                         </div>
                     </div>
 
+
     <div id="main " class="  main wrapper wrapper-content animated fadeInRight "  style="width:100%;height:100%;">
+
 
 	</div>
 
@@ -275,6 +276,7 @@ Ajax.getJSON(PATH+"/auth/menu/list.json",null,function(result){
 });
 var resources="<%=resourceStr%>";
 var menuList=[
+
            /* {id:100,name:"Dashboard",url:"",pid:0,icon:"fa fa-dashboard"},
             {id:1001,name:"Dashboard V1",url:"www.baidu.com",pid:100,icon:"fa fa-circle-o"},
             {id:1002,name:"Dashboard V2",url:"www.baidu.om",pid:100,icon:"fa fa-circle-o"},*/
@@ -341,6 +343,8 @@ var menuList=[
                 {id:311,name:"登录人数",url:"/static/html/example/echarts.html",icon:"fa fa-area-chart",pid:31}
 
           ]
+
+
 zMenu.init("menu",menuList,{id:"id",url:"url",pid:"pid",name:"name"});
 $(document).ready(function(){if($(".page-wrap").height()<$(window).height())
     $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
@@ -366,4 +370,7 @@ if($(".page-wrap").height()<$(window).height())
 
 
 <script type="text/javascript" src="${path}/static/js/head.js"></script>
+	<script type="text/javascript" src="${path}/static/js/react.js"></script>
+<script type="text/javascript" src="${path}/static/js/JSXTransformer.js"></script>
+   <script type="text/jsx"  src="static/js/editor_head.js"></script>
 </html>
