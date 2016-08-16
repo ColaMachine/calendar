@@ -199,6 +199,9 @@ var Ajax={
  getJSON:function(url,data,callback){
     this.AjaxFun(url,data,callback,{type:"GET",dataType:"JSON"});
  },
+  getJSONP:function(url,data,callback){
+       this.AjaxFun(url,data,callback,{type:"GET",dataType:"jsonp", jsonp: "callback",jsonpCallback:"success_jsonpCallback"});
+  },
  post:function(url,data,callback){
     this.AjaxFun(url,data,callback,{type:"POST"});
  },

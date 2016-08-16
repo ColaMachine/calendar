@@ -261,8 +261,8 @@ var staByHourChart={
         });
         $("#staByHour").find(".searchBtn").click(searchInfo);
         function searchInfo(){
-            var beginDate = $("#createTimeBegin").val();
-            var endDate = $("#createTimeEnd").val();
+            var beginDate = $("#staByHour").find("#createTimeBegin").val();
+            var endDate =  $("#staByHour").find("#createTimeEnd").val();
             Ajax.getJSON(PATH+"/sysLog/getCountEveryHour.json",{code:$("#code").val(),beginDate:beginDate,endDate:endDate},function(data){
                    // console.log(data);
                      myChart.setOption({

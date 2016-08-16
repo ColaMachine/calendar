@@ -695,11 +695,15 @@ public class SysLogController extends BaseController{
     public Object getCountEveryHour(HttpServletRequest request){
         String beginDateStr = request.getParameter("beginDate");
         String code = request.getParameter("code");
-        String endDateStr = request.getParameter("endDate");
+       String endDateStr = request.getParameter("endDate");
         Date beginDate = DateUtil.parseToDate(beginDateStr,"yyyy-MM-dd");
-        Date endDate =DateUtil.parseToDate(endDateStr,"yyyy-MM-dd");
+
+
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(beginDate);
+        calendar.add(Calendar.DATE,1);
+        Date endDate =DateUtil.parseToDate(endDateStr,"yyyy-MM-dd");
         List<Integer> countAry = new ArrayList<>();
         List<String> categories = new ArrayList<>();
         HashMap params =new HashMap();
@@ -707,7 +711,7 @@ public class SysLogController extends BaseController{
         params.put("code",code);
         while(calendar.getTime().getTime()<=endDate.getTime()){
             params.put("createTimeBegin",calendar.getTime());
-            categories.add(DateUtil.toString(calendar.getTime(),"yyyy-MM-dd"));
+            categories.add(DateUtil.toString(calendar.getTime(),"yyyy-MM-dd:HH"));
             calendar.add(Calendar.HOUR,1);
             params.put("createTimeEnd",calendar.getTime());
 

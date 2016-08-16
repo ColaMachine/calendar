@@ -166,8 +166,8 @@ var zMenu = {
             if(data.indexOf("504")!=-1){
                 window.location=PATH+"/login.htm";return;
             }
-			//$('.main').html(data);
-			$('.main').append(ibox.render(data,"新窗口"));
+			$('.main').html(data);
+			//$('.main').append(ibox.render(data,"新窗口"));
 			if (typeof fun == 'function') fun();
 		});
 

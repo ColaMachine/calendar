@@ -34,8 +34,8 @@ pageContext.setAttribute("basePath",basePath);
 var WEBCONTEXT="${path}";
 var PATH="${path}";
 var cssAry=[
-"/static/css/grid.css",
- /*"/static/css/jqgrid.css",*/
+/*"/static/css/grid.css",*/
+"/static/css/jqgrid.css",
  /* "/static/css/head.css",*/
 
     "/static/css/widget.css",
@@ -48,8 +48,8 @@ var jsAry=[/*"/static/js/menu.js" ,
                      "/static/js/validmsg.js",*/
                      "/static/js/DateUtils.js",
                     /* "/static/js/jquery-ui.min.js",*/
-                     "/static/js/grid.js",
-                      /* "/static/js/jquery.jqGrid.js",*/
+                    /* "/static/js/grid.js",*/
+                       "/static/js/jquery.jqGrid.js",
                       "/static/js/jquery.form.js",
                       "/static/js/grid.locale-en.js",
                       "/static/js/My97DatePicker/WdatePicker.js",
@@ -275,9 +275,9 @@ Ajax.getJSON(PATH+"/auth/menu/list.json",null,function(result){
 });
 var resources="<%=resourceStr%>";
 var menuList=[
-            {id:100,name:"Dashboard",url:"",pid:0,icon:"fa fa-dashboard"},
+           /* {id:100,name:"Dashboard",url:"",pid:0,icon:"fa fa-dashboard"},
             {id:1001,name:"Dashboard V1",url:"www.baidu.com",pid:100,icon:"fa fa-circle-o"},
-            {id:1002,name:"Dashboard V2",url:"www.baidu.om",pid:100,icon:"fa fa-circle-o"},
+            {id:1002,name:"Dashboard V2",url:"www.baidu.om",pid:100,icon:"fa fa-circle-o"},*/
             /*{id:1,name:"日志管理",url:"",pid:0,icon:"fa fa-bank"},
             {id:2,name:"访问日志",url:"",pid:1},
             {id:3,name:"异常日志",url:"/log/listRequestLog",pid:1},
@@ -285,11 +285,11 @@ var menuList=[
             {id:22,name:"访问日志B",url:"/log/listRequestLog",pid:2},*/
             {id:5,name:"用户管理",url:"",pid:0,icon:"fa fa-user"},
 
-            {id:51,name:"level51",url:"",pid:5,icon:"fa fa-diamond"},
+          /*  {id:51,name:"level51",url:"",pid:5,icon:"fa fa-diamond"},
             {id:511,name:"level511",url:"",pid:51,icon:"fa fa-diamond"},
             {id:5111,name:"level5111",url:"",pid:511,icon:"fa fa-diamond"},
             {id:5112,name:"level5112",url:"",pid:511,icon:"fa fa-diamond"},
-            {id:512,name:"level512",url:"",pid:51,icon:"fa fa-diamond"},
+            {id:512,name:"level512",url:"",pid:51,icon:"fa fa-diamond"},*/
             /* {id:51,name:"用户管理",url:"/user/list.htm",icon:"fa fa-spinner",pid:5},
             {id:6,name:"角色管理",url:"/auth/role/list.htm",pid:5},*/
             {id:7,name:"日历",url:"/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
@@ -307,16 +307,16 @@ var menuList=[
             {id:14,name:"合作伙伴",url:"/PartnerUserlist.htm",icon:"fa fa-spinner",pid:0},*/
             {id:15,name:"用户",url:"/sysUser/list.htm",icon:"fa fa-spinner",pid:5},
             {id:16,name:"角色",url:"/sysRole/list.htm",icon:"fa fa-spinner",pid:5},
-            {id:17,name:"资源",url:"/sysResource/list.htm",icon:"fa fa-spinner",pid:5},
-            {id:50017,name:"permission",url:"/sysPermission/list.htm",icon:"fa fa-spinner",pid:5},
-            {id:50018,name:"menu",url:"/sysMenu/list.htm",icon:"fa fa-spinner",pid:5},
-            {id:50018,name:"rolePermission",url:"/sysRolePermission/listMapper.htm",icon:"fa fa-spinner",pid:5},
+           /* {id:17,name:"资源",url:"/sysResource/list.htm",icon:"fa fa-spinner",pid:5},*/
+            {id:50017,name:"权限",url:"/sysPermission/list.htm",icon:"fa fa-spinner",pid:5},
+            {id:50018,name:"菜单",url:"/sysMenu/list.htm",icon:"fa fa-spinner",pid:5},
+            {id:50018,name:"角色权限关联",url:"/sysRolePermission/listMapper.htm",icon:"fa fa-spinner",pid:5},
             /*{id:18,name:"用户角色",url:"/sysUserRole/list.htm",icon:"fa fa-spinner",pid:5},
             {id:19,name:"角色资源",url:"/sysRoleResource/list.htm",icon:"fa fa-spinner",pid:5},
             {id:20,name:"用户资源",url:"/sysUserResource/list.htm",icon:"fa fa-spinner",pid:5},*/
             {id:21,name:"用户角色关联",url:"/sysUserRole/listMapper.htm",icon:"fa fa-spinner",pid:5},
-            {id:22,name:"角色资源关联",url:"/sysRoleResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
-            {id:23,name:"用户资源关联",url:"/sysUserResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
+            /*{id:22,name:"角色资源关联",url:"/sysRoleResource/listMapper.htm",icon:"fa fa-spinner",pid:5},
+            {id:23,name:"用户资源关联",url:"/sysUserResource/listMapper.htm",icon:"fa fa-spinner",pid:5},*/
             /* {id:24,name:"短信验证码",url:"/smsRecord/list.htm",icon:"fa fa-spinner",pid:0},*/
             {id:25,name:"系统管理",url:"",icon:"fa fa-gear",pid:0},
 
