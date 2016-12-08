@@ -1,9 +1,8 @@
 package core.redis.annotation;
 
-import cola.machine.util.StringUtil;
+import com.dozenx.util.StringUtil;
 import org.springframework.util.Assert;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.ShardedJedis;
 
 /**
  * Created by dozen.zhang on 2016/5/13.

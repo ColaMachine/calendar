@@ -5,19 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import cola.machine.service.ActivityService;
+
 
 
 public class ActivityTest{
-	@Autowired 
-	ActivityService activityService;
-
-	@Before
-	public void init() {
-		ApplicationContext context = new ClassPathXmlApplicationContext(
-				"\\config\\xml\\applicationContext.xml");
-		activityService = (ActivityService) context.getBean("activityService");
-	}
+//	@Autowired
+//	ActivityService activityService;
+//
+//	@Before
+//	public void init() {
+//		ApplicationContext context = new ClassPathXmlApplicationContext(
+//				"\\config\\xml\\applicationContext.xml");
+//		activityService = (ActivityService) context.getBean("activityService");
+//	}
 /*	@Test
     public void updateActivity() {
 		DateTime startDate =DateTime.parseDateTime("2014-05-29T01:30:00");

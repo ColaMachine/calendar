@@ -1,39 +1,35 @@
 
 <div id="SysUserList" class="table-responsive">
-   <!-- <div class="main-hd ibox-title">| 用户</div>-->
+    <!-- <div class="main-hd ibox-title">| 用户</div>-->
 
 
-    <div class="main-bd DataTables_Table_0_wrapper">
-        <div class="body_top html5buttons" >
+    <div class="main-bd ">
+        <div class="body_top " >
             <form class="form-inline app-search">
-                    <label for="id">编号</label>
-            <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="15" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="编号"></input>
-        <label for="username">用户名</label>
-            <input type="text" id="usernameLike" name="usernameLike"  class="form-control input-sm"   maxlength="20" placeholder="用户名" ></input>
-        <label for="nkname">昵称</label>
-            <input type="text" id="nknameLike" name="nknameLike"  class="form-control input-sm"   maxlength="20" placeholder="昵称" ></input>
-        <label for="type">类型</label>
-            <input type="number" id="type" name="type"  class="form-control input-sm"  maxlength="4" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="类型"></input>
-        <label for="status">状态</label>
-            <select id="status" name="status"  class="form-control input-sm"  >
-                <option value=''>-请选择-</option>
-                <option value=1>正常</option>
-                <option value=2>禁用</option>
-                <option value=3>未激活</option>
-            </select>
-        <label for="email">邮箱地址</label>
-            <input type="text" id="emailLike" name="emailLike"  class="form-control input-sm"   maxlength="50" placeholder="邮箱地址" ></input>
-        <label for="telno">手机号码</label>
-            <input type="text" id="telnoLike" name="telnoLike"  class="form-control input-sm"   maxlength="11" placeholder="手机号码" ></input>
-        <label for="idcard">身份证号码</label>
-            <input type="text" id="idcardLike" name="idcardLike"  class="form-control input-sm"   maxlength="18" placeholder="身份证号码" ></input>
-        <label for="face">头像</label>
-            <input type="text" id="faceLike" name="faceLike"  class="form-control input-sm"   maxlength="100" placeholder="头像" ></input>
 
-            <button type="button"  class="btn btn-default searchBtn">查询</button>
+                <label for="username">用户名</label>
+                <input type="text" id="usernameLike" name="usernameLike"  class="form-control input-sm"   maxlength="20" placeholder="用户名" ></input>
+                <label for="nkname">昵称</label>
+                <input type="text" id="nknameLike" name="nknameLike"  class="form-control input-sm"   maxlength="20" placeholder="昵称" ></input>
+
+                <label for="status">状态</label>
+                <select id="status" name="status"  class="form-control input-sm"  >
+                    <option value=''>-请选择-</option>
+                    <option value=1>正常</option>
+                    <option value=2>禁用</option>
+                    <option value=3>未激活</option>
+                </select>
+                <label for="email">邮箱地址</label>
+                <input type="text" id="emailLike" name="emailLike"  class="form-control input-sm"   maxlength="50" placeholder="邮箱地址" ></input>
+                <label for="telno">手机号码</label>
+                <input type="text" id="telnoLike" name="telnoLike"  class="form-control input-sm"   maxlength="11" placeholder="手机号码" ></input>
+
+
+                <button type="button"  class="btn btn-default searchBtn">查询</button>
+                <button class="btn btn-primary addBtn" ><i class="fa fa-plus"></i>新增</button>
             </form>
 
-            <button class="btn btn-primary addBtn" ><i class="fa fa-plus"></i>新增</button>
+
             <!--<button class="btn btn-primary deleteBtn"><i class="fa fa-plus"></i>删除</button>-->
             <!--<button class="btn btn-primary exportBtn"><i class="fa fa-plus"></i>导出</button>-->
         </div>
@@ -48,6 +44,7 @@ var sysUserList={
     treeObj:null,
     dqData:null,
     root:$("#SysUserList"),
+
     init:function(){
 
         setTitle("用户");

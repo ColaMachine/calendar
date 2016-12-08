@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.system.portal.editorTempComp.dao.EditorTempCompMapper">
+  <resultMap id="BaseResultMap" type="com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="templateId" jdbcType="BIGINT" property="templateId" />
+      <result column="componentId" jdbcType="BIGINT" property="componentId" />
+      <result column="config" jdbcType="VARCHAR" property="config" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    editor_temp_comp.`id` ,editor_temp_comp.`templateId` ,editor_temp_comp.`componentId` ,editor_temp_comp.`config` 
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from editor_temp_comp
+    where editor_temp_comp.id =   #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from editor_temp_comp
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+   <delete id="deleteExtra" parameterType="map">
+          delete from editor_temp_comp
+          where templateId in
+          <foreach collection="templateIds" item="item" index="index"
+                   open="(" separator="," close=")"> #{item}</foreach>
+         <if test="componentIds != null and id != '' " >
+          and componentId not in
+          <foreach collection="componentIds" item="item" index="index"
+                   open="(" separator="," close=")"> #{item}</foreach>
+       </if>
+      </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp" >
+
+    insert into editor_temp_comp (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=BIGINT}
+,#{templateId,jdbcType=BIGINT}
+,#{componentId,jdbcType=BIGINT}
+,#{config,jdbcType=VARCHAR}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp" >
+    insert into editor_temp_comp
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="templateId != null" >  
+           `templateId`, 
+        </if>  
+        <if test="componentId != null" >  
+           `componentId`, 
+        </if>  
+        <if test="config != null" >  
+           `config`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=BIGINT},
+        </if>  
+        <if test="templateId != null" >  
+          #{templateId,jdbcType=BIGINT},
+        </if>  
+        <if test="componentId != null" >  
+          #{componentId,jdbcType=BIGINT},
+        </if>  
+        <if test="config != null" >  
+          #{config,jdbcType=VARCHAR},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp" >
+    update editor_temp_comp
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=BIGINT},
+        </if>  
+        <if test="templateId != null" >  
+             `templateId`=#{templateId,jdbcType=BIGINT},
+        </if>  
+        <if test="componentId != null" >  
+             `componentId`=#{componentId,jdbcType=BIGINT},
+        </if>  
+        <if test="config != null" >  
+             `config`=#{config,jdbcType=VARCHAR},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp" >
+    update editor_temp_comp
+    set 
+              `templateId`=#{templateId,jdbcType=BIGINT},  
+              `componentId`=#{componentId,jdbcType=BIGINT},  
+              `config`=#{config,jdbcType=VARCHAR}  
+where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from editor_temp_comp where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="templateId != null and templateId != '' ">  
+           and `templateId` = #{templateId}
+        </if>  
+        <if test="componentId != null and componentId != '' ">  
+           and `componentId` = #{componentId}
+        </if>  
+        <if test="config != null and config != '' ">  
+           and `config` = #{config}
+        </if>  
+        <if test="configLike != null and configLike != '' ">  
+             and `config` like "%"#{configLike}"%"
+        </if>   
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from editor_temp_comp
+
+    where 1=1
+        <if test="id != null and id != '' ">  
+           and editor_temp_comp.`id` = #{id}
+        </if>  
+        <if test="templateId != null and templateId != '' ">  
+           and editor_temp_comp.`templateId` = #{templateId}
+        </if>  
+        <if test="componentId != null and componentId != '' ">  
+           and editor_temp_comp.`componentId` = #{componentId}
+        </if>  
+        <if test="config != null and config != '' ">  
+           and editor_temp_comp.`config` = #{config}
+        </if>  
+        <if test="configLike != null and configLike != '' ">  
+             and editor_temp_comp.`config` like "%"#{configLike}"%"
+        </if>   
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from editor_temp_comp where 1=1
+        <if test="id != null and id != '' ">  
+           and editor_temp_comp.`id` = #{id}
+        </if>  
+        <if test="templateId != null and templateId != '' ">  
+           and editor_temp_comp.`templateId` = #{templateId}
+        </if>  
+        <if test="componentId != null and componentId != '' ">  
+           and editor_temp_comp.`componentId` = #{componentId}
+        </if>  
+        <if test="config != null and config != '' ">  
+           and editor_temp_comp.`config` = #{config}
+        </if>  
+        <if test="configLike != null and configLike != '' ">  
+             and editor_temp_comp.`config` like "%"#{configLike}"%"
+        </if>   
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from editor_temp_comp where 1!=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="templateId != null and templateId != '' ">
+           or `templateId` = #{templateId}
+        </if>
+        <if test="componentId != null and componentId != '' ">
+           or `componentId` = #{componentId}
+        </if>
+        <if test="config != null and config != '' ">
+           or `config` = #{config}
+        </if>
+  </select>
+</mapper>

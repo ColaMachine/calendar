@@ -1247,27 +1247,31 @@
 									this.p.width_sum += this.p.colModel[i].width;
 
 								}
-								var gridHeadhtml = "<div><table class='table '> <thead> <tr>  ";
+								var gridHeadhtml = "<div class='grid-head'><table class='table '> <thead> <tr>  ";
+					
 								if(this.p.multiselect){
 									gridHeadhtml += "<th style=\"width:5%;text-align:center\" ><input type='checkbox' class='cbox' id='cb_"+this.id+"' name='cb_"+this.id+"' > </th>";
 								}
+								//alert($(this.p.pager).width());
+								var width = $(this.p.pager).width()
 								for (var i = 0; i < this.p.colNames.length; i++) {
 
 									if (this.p.colModel[i].width == 0) {
 										gridHeadhtml += "<th style='display:none' width=\""
-												+ this.p.colModel[i].width
+												+ this.p.colModel[i].width*width
 												/ this.p.width_sum
-												* 100
-												+ "%\">"
+												//* 100
+												+ "px\">"
 												+ this.p.colNames[i]
 												+ "</th>";
-									} else
+									} else{
 
-										gridHeadhtml += "<th width=\""
-												+ this.p.colModel[i].width
-												/ this.p.width_sum * 100
-												+ "%\">" + this.p.colNames[i]
-												+ "</th>";
+										gridHeadhtml += "<th style=\"width:"
+												+ this.p.colModel[i].width*width
+												/ this.p.width_sum// * 100
+												+ "px\"><a>" + this.p.colNames[i]
+												+ "</a><span class='moveSpan' style='cursor:e-resize;'>&nbsp;</span></th>";
+												}
 								}
 								gridHeadhtml += "</tr></thead></table></div>";
 								//		grid=gridParam;
@@ -1297,6 +1301,55 @@
 										$(event.data.id).jqGrid("selectAll");
 									});
 								}
+								var _x,_y;//鼠标离控件左上角的相对位置
+								var move=false;//移动标记
+								var  moveSapn=null;
+								var oriWidth;
+								$(this).find(".moveSpan").mousedown(function(e){
+                                    move=true;
+                                    moveSapn=this;
+                                    _x=e.pageX;
+                                    oriWidth= $(moveSapn).parent().width();
+                                    _y=e.page;
+								});$(document).mousemove(function(e){
+                                    if(move){
+                                        var x=e.pageX-_x;//控件左上角到屏幕左上角的相对位置
+                                        var y=e.pageY-_y;
+                                        $(moveSapn).parent().width( oriWidth+x);//css({"top":y,"left":x});
+                                        var totalWidth =0;
+                                        $(moveSapn).parent().parent().children().each(function(){
+                                            totalWidth+=$(this).width()+15;
+                                        });
+                                        $($t.childNodes[0]).width(totalWidth/*$(moveSapn).parent().parent().width()*/);
+                                    //  console.log(x);
+                                    }
+
+								});$(document).mouseup(function(e){
+								if(move){
+                                    console.log("mouseup");
+                                    move=false;
+                                    var tableThs =$(".grid-head").find("tr").eq(0).find("th");
+                                    console.log("tableThs.length"+tableThs.length);
+                                    console.log("$('.grid-head').find('tr')"+$(".grid-head").find("tr").length);
+                                    var tableTds =$(".grid-content").find("tr").eq(0).find("td");
+                                    console.log("$('.grid-content').find('tr')"+tableTds.length);
+                                    for(var i=0;i<tableThs.length;i++){
+                                        tableTds.eq(i).width(tableThs.eq(i).width()+"px");
+								    }
+                                    var totalWidth =0;
+								    $(moveSapn).parent().parent().children().each(function(){
+                                                                               console.log($(this).width()+16);
+                                                                               totalWidth+=$(this).width()+16;
+                                    });
+                                    console.log(totalWidth);
+                                      $($t.childNodes[0]).width(totalWidth);//$(moveSapn).parent().parent().width()
+                                }
+
+								})
+
+
+
+
 								//		$(this.p.gridParam.pager_selector).find("li").first().on("click",this.p.goPre.Apply(this));
 								//		$(this.gridParam.pager_selector).find("li").last().on("click",this.goNext.Apply(this));
 								$($t).jqGrid("ajaxRequest");
@@ -1617,11 +1670,11 @@
 					this
 							.each(function() {
 								var $t = this;
-								var html = "<div><table class='table table-striped table-bordered table-hover dataTables-example dataTable'>";
+								var html = "<div><table class='table'>";
 								if(this.p.data.length==0){
 								html += "<thead><div style='text-align:center;'>暂无数据</div></thead>";
 								}
-
+                                var width = $(this.p.pager).width()
                                 html += "<tbody>";
 								for (var i = 0; i < this.p.data.length; i++) {
 									html += "<tr >";
@@ -1631,16 +1684,28 @@
 									for (var j = 0; j < this.p.colModel.length; j++) {
 										var colName = this.p.colModel[j].name;
 										var value = this.p.data[i][colName];
+										var title =value;
+										if(value){
+                                            if(value&& value.length>200){
+                                                value= value.substr(0,20);
+                                            }
+                                            title =value;
+                                            if(StringUtil.endWith(value,"png") ||  StringUtil.endWith(value,"jpeg")  ){
+                                                value="<img class='commondity_pic' src='"+value+"'></img>"
+                                            }
+										}
 										if (typeof (value) == 'undefined' ||value==null|| value=='null' || value=='undefined') {
 											value = '';
 										}
 
 										if (this.p.colModel[j].width == 0) {
-											html += "<td style='display:none' width=\""
-													+ this.p.colModel[j].width
+
+
+											html += "<td style='display:none'"+(i==0?(" style=\"width:"
+													+ this.p.colModel[j].width *width
 													/ this.p.width_sum
-													* 100
-													+ "%\">"
+													//* 100
+													+ "px\""):"")+">"
 													+ this.p.colNames[j]
 													+ "</td>";
 										} else if (typeof (this.p.colModel[j].formatter) != 'undefined') {
@@ -1649,18 +1714,21 @@
 										    if(_content){
 										        _content=(_content+"").replace(/\'/g,"").replace(/(<.*>)/g,"")
 										    }
-											html += "<td width=\""
-													+ this.p.colModel[j].width
+											html += "<td "+(i==0?("style=\"width:"
+													+ this.p.colModel[j].width *width
 													/ this.p.width_sum
-													* 100
-													+ "%\"><span title ='"+_content+"'>"
+													//* 100
+													+ "px\""):"")+"><span title ='"+_content+"'>"
 													+ this.p.colModel[j].formatter.call(this,value,this.p,this.p.data[i]);
 											+"</span></td>";
-										} else
-											html += "<td width=\""
-													+ this.p.colModel[j].width
-													/ this.p.width_sum * 100
-													+ "%\"><span title='"+value+"'>" + (value?(value.length>20?value.substr(0,20):value):value) + "</span></td>";
+										} else{
+
+
+											html += "<td "+(i==0?("style=\"width:"
+													+ this.p.colModel[j].width *width
+													/ this.p.width_sum
+													+ "px\""):"")+"><span title='"+title+"'>" + value + "</span></td>";
+                                        }
 									}
 									html += "</tr>";
 
@@ -1755,20 +1823,20 @@
 									}
 								}
 								if(_min>1){
-									pageHtml += "<li class=\"  num\"><a href=\"javascript:void(0)\" >"+1+"</a></li><li >...</li>";
+									pageHtml += "<li class=\"  num\"><a href=\"javascript:void(0)\" >"+1+"</a></li><li ><span>...</span></li>";
 								}
 								for (var i = _min; i <= _max; i++) {
 									if (i == page)
 										pageHtml += "<li class=\"  num\" ><span class='curr page_bg'>"
 												+ i + "</span></li>";
 									else
-										pageHtml += "<li class=\"num\" ><a href=\"javascript:void(0)\" >" + i
+										pageHtml += "<li class=\"num clearfix\" ><a href=\"javascript:void(0)\" >" + i
 												+ "</a></li>";
 								}
 
 
 								if(_max<totalPage){
-									pageHtml += "<li >...</li><li class=\"  num\" ><a href=\"javascript:void(0)\" >"+totalPage+"</a></li>";
+									pageHtml += "<li  ><span>...</span></li><li class=\"  num\" ><a href=\"javascript:void(0)\" >"+totalPage+"</a></li>";
 								}
 								//加上最后一页 和...号
 								/*
@@ -1792,7 +1860,7 @@
                                 }else{
                                 pageHtml+="<li><a href=\"javascript:void(0)\" class=\"page_bg next\" aria-label=\"Next\">下一页</a>";
                                 }
-								pageHtml += "</li><span>共"+totalPage+"页，"+this.p.records+"条信息</span></ul></nav>";
+								pageHtml += "</li><li><span style='border-width:0px;white-space:nowrap;'>共"+totalPage+"页，"+this.p.records+"条信息,<a style='border-width:0px;color:black'>每页"+this.p.rowNum+"条<i class='fa fa-caret-down'></i></a></span></li></ul></nav>";
                                 $t.page=page;
 								$(this.p.pager).html(pageHtml);
 								$(this.p.pager).find(".pre")

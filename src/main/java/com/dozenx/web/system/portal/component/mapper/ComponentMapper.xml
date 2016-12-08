@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.system.portal.component.dao.ComponentMapper">
+  <resultMap id="BaseResultMap" type="com.dozenx.web.system.portal.component.bean.Component">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="remark" jdbcType="VARCHAR" property="remark" />
+      <result column="face" jdbcType="VARCHAR" property="face" />
+      <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    component.`id` ,component.`name` ,component.`remark` ,component.`face` ,component.`createtime` 
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from component
+    where component.id =   #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from component
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.system.portal.component.bean.Component" >
+
+    insert into component (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=BIGINT}
+,#{name,jdbcType=VARCHAR}
+,#{remark,jdbcType=VARCHAR}
+,#{face,jdbcType=VARCHAR}
+,#{createtime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="com.dozenx.web.system.portal.component.bean.Component" >
+    insert into component
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="name != null" >  
+           `name`, 
+        </if>  
+        <if test="remark != null" >  
+           `remark`, 
+        </if>  
+        <if test="face != null" >  
+           `face`, 
+        </if>  
+        <if test="createtime != null" >  
+           `createtime`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=BIGINT},
+        </if>  
+        <if test="name != null" >  
+          #{name,jdbcType=VARCHAR},
+        </if>  
+        <if test="remark != null" >  
+          #{remark,jdbcType=VARCHAR},
+        </if>  
+        <if test="face != null" >  
+          #{face,jdbcType=VARCHAR},
+        </if>  
+        <if test="createtime != null" >  
+          #{createtime,jdbcType=TIMESTAMP},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.system.portal.component.bean.Component" >
+    update component
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=BIGINT},
+        </if>  
+        <if test="name != null" >  
+             `name`=#{name,jdbcType=VARCHAR},
+        </if>  
+        <if test="remark != null" >  
+             `remark`=#{remark,jdbcType=VARCHAR},
+        </if>  
+        <if test="face != null" >  
+             `face`=#{face,jdbcType=VARCHAR},
+        </if>  
+        <if test="createtime != null" >  
+             `createtime`=#{createtime,jdbcType=TIMESTAMP},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dozenx.web.system.portal.component.bean.Component" >
+    update component
+    set 
+              `name`=#{name,jdbcType=VARCHAR},  
+              `remark`=#{remark,jdbcType=VARCHAR},  
+              `face`=#{face,jdbcType=VARCHAR},  
+              `createtime`=#{createtime,jdbcType=TIMESTAMP}  
+where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from component where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="name != null and name != '' ">  
+           and `name` = #{name}
+        </if>  
+        <if test="nameLike != null and nameLike != '' ">  
+             and `name` like "%"#{nameLike}"%"
+        </if>   
+        <if test="remark != null and remark != '' ">  
+           and `remark` = #{remark}
+        </if>  
+        <if test="remarkLike != null and remarkLike != '' ">  
+             and `remark` like "%"#{remarkLike}"%"
+        </if>   
+        <if test="face != null and face != '' ">  
+           and `face` = #{face}
+        </if>  
+        <if test="faceLike != null and faceLike != '' ">  
+             and `face` like "%"#{faceLike}"%"
+        </if>   
+        <if test="createtime != null and createtime != '' ">  
+           and `createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and `createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and `createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and `createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and `createtime` &lt;= #{createtimeEnd}
+        </if> 
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from component
+
+    where 1=1
+        <if test="id != null and id != '' ">  
+           and component.`id` = #{id}
+        </if>  
+        <if test="name != null and name != '' ">  
+           and component.`name` = #{name}
+        </if>  
+        <if test="nameLike != null and nameLike != '' ">  
+             and component.`name` like "%"#{nameLike}"%"
+        </if>   
+        <if test="remark != null and remark != '' ">  
+           and component.`remark` = #{remark}
+        </if>  
+        <if test="remarkLike != null and remarkLike != '' ">  
+             and component.`remark` like "%"#{remarkLike}"%"
+        </if>   
+        <if test="face != null and face != '' ">  
+           and component.`face` = #{face}
+        </if>  
+        <if test="faceLike != null and faceLike != '' ">  
+             and component.`face` like "%"#{faceLike}"%"
+        </if>   
+        <if test="createtime != null and createtime != '' ">  
+           and component.`createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and component.`createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and component.`createtime` &lt;= #{createtimeEnd}
+        </if> 
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from component where 1=1
+        <if test="id != null and id != '' ">  
+           and component.`id` = #{id}
+        </if>  
+        <if test="name != null and name != '' ">  
+           and component.`name` = #{name}
+        </if>  
+        <if test="nameLike != null and nameLike != '' ">  
+             and component.`name` like "%"#{nameLike}"%"
+        </if>   
+        <if test="remark != null and remark != '' ">  
+           and component.`remark` = #{remark}
+        </if>  
+        <if test="remarkLike != null and remarkLike != '' ">  
+             and component.`remark` like "%"#{remarkLike}"%"
+        </if>   
+        <if test="face != null and face != '' ">  
+           and component.`face` = #{face}
+        </if>  
+        <if test="faceLike != null and faceLike != '' ">  
+             and component.`face` like "%"#{faceLike}"%"
+        </if>   
+        <if test="createtime != null and createtime != '' ">  
+           and component.`createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and component.`createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and component.`createtime` &lt;= #{createtimeEnd}
+        </if> 
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from component where 1!=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="name != null and name != '' ">
+           or `name` = #{name}
+        </if>
+        <if test="remark != null and remark != '' ">
+           or `remark` = #{remark}
+        </if>
+        <if test="face != null and face != '' ">
+           or `face` = #{face}
+        </if>
+        <if test="createtime != null and createtime != '' ">
+           or `createtime` = #{createtime}
+        </if>
+  </select>
+</mapper>

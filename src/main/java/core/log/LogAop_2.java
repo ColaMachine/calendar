@@ -6,14 +6,12 @@ package core.log;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-import cola.machine.util.RedisUtil;
+import com.dozenx.util.RedisUtil;
 import core.redis.annotation.JedisManageSupport;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;

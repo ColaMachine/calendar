@@ -5,7 +5,39 @@ var zMenu = {
 	urlName: "",
 	pidName: "",
 	menuName: "",
+	r:null,
 	init: function(id, data, option) {
+
+	    function Router(){
+            this.routes = {};
+            this.curUrl = '';
+
+            this.addRoute = function(path, callback){
+                this.routes[path] = callback || function(){alert(path);zMenu.loadPage(path)};
+            };
+
+            this.refresh = function(){
+                this.curUrl = location.hash.slice(1) || '/';
+                if( this.routes[this.curUrl]){
+                    this.routes[this.curUrl]();
+                }else{
+                if(this.curUrl=='/'){//住过主页面不做跳转吗 这里需要改一下 应该是调到主页面 但是内容可以是空白的
+                    return;
+                }
+                    zMenu.loadPage(this.curUrl);
+                }
+            };
+
+            this.init = function(){
+                window.addEventListener('load', this.refresh.bind(this), false);
+                window.addEventListener('hashchange', this.refresh.bind(this), false);
+
+            }
+        }
+this.R = new Router();
+this.R.init();
+
+
 		var ele = document.getElementById(id);
 		if (ele) {
 			var html = "<ul class='nav'>";
@@ -78,7 +110,7 @@ var zMenu = {
 				//查找当前所属的li状态是否是打开状态的
 				if ($(this).parent().hasClass('open')) { //console.log("rm open");
 					var that =this;
-					$("#" + ul).slideUp(200, function() {$(that).parent().removeClass('open');});
+					$("#" + ul).slideUp(50*$("#" + ul).children().length, function() {$(that).parent().removeClass('open');});
 					//$(this).parent().find("ul").eq(0).slideUp(200,function(){});
 				} else { //console.log("add open");
 					//$(".mark").removeClass("mark");
@@ -98,7 +130,8 @@ var zMenu = {
 
                         }else{
                         var _that=this;
-                             $(this).find("ul").eq(0).slideUp(200,function(){$(_that).removeClass('open');});
+                        var ul=  $(this).find("ul").eq(0);
+                             $(ul).slideUp(50*$(ul).children().length,function(){$(_that).removeClass('open');});
                         }
                           /*var flag=false;
                           var parent=$(that).parent();
@@ -117,14 +150,16 @@ var zMenu = {
                     });
 
 
-					$("#" + ul).slideDown(200, function() {$( that).parent().addClass('open');});
+					$("#" + ul).slideDown(50*$("#" + ul).children().length, function() {$( that).parent().addClass('open');});
 					
 				}
 			} else {
 				$(".menu-wrap").find('.active').removeClass('active');
 				$(this).parent().parent().find('a').removeClass('active');
 				$(this).addClass('active');
-				_this.loadPage($(this).attr("href"));
+				//_this.loadPage($(this).attr("href"));
+                window.location="#"+$(this).attr("href");
+
 			}
 		});
 
@@ -162,13 +197,13 @@ var zMenu = {
 		}else{
 		    url="/"+url;
 		}
+
 		Ajax.get(PATH+url, null, function(data) {
-            if(data.indexOf("504")!=-1){
-                window.location=PATH+"/login.htm";return;
-            }
+
+
 			$('.main').html(data);
 			//$('.main').append(ibox.render(data,"新窗口"));
-			if (typeof fun == 'function') fun();
+			//if (typeof fun == 'function') fun();
 		});
 
 	},
@@ -182,8 +217,14 @@ var zMenu = {
 			"</svg></i>";
 	},
 	createLi: function(data, row) {
+	var url =row[this.urlName];
+	    this.R.addRoute(url, function() {
+	    zMenu.loadPage(url);
+          // res.style.background = 'blue';
+        //   res.innerHTML = '这是首页';
+        });
 		var html =
-			"<li ><a id=\"m_a_" + row["id"] + "\" href=\"" + row[this.urlName] + "\" ><span class='nav-icon'><i class='" + (StringUtil.isBlank(row["icon"])?"fa fa-diamond":row["icon"]) + "'></i></span><span class='nav-text'>" + row[this.menuName] + "</span>" + (isNull(row[this.urlName]) ? "<span class='nav-caret'><i class=\"fa fa-caret-down\"></i></span>" : "") + "</a><ul  id=\"m_u_" + row["id"] + "\">";
+			"<li ><a id=\"m_a_" + row["id"] + "\" href=\""+ row[this.urlName] + "\" ><span class='nav-icon'><i class='" + (StringUtil.isBlank(row["icon"])?"fa fa-diamond":row["icon"]) + "'></i></span><span class='nav-text'>" + row[this.menuName] + "</span>" + (isNull(row[this.urlName]) ? "<span class='nav-caret'><i class=\"fa fa-caret-down\"></i></span>" : "") + "</a><ul  id=\"m_u_" + row["id"] + "\">";
 		for (var i = 0; i < data.length; i++) {
 			if (typeof data[i][this.pidName] != 'undefined' && data[i][this.pidName] != null && data[i][this.pidName] == row[this.idName]) { //说明有子项目
 				html += this.createLi(data, data[i]);

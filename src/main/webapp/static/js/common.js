@@ -11,7 +11,7 @@
 
 // AJAX璋冪敤 濡傦細ACWS.ajax('common/service/UserSelect/Init', inputData,
 // afterInit,{async:false});
-
+var PATH="";
 String.prototype.trim= function(){  
     // 用正则表达式将前后空格  
     // 用空字符串替代。  
@@ -200,7 +200,7 @@ var Ajax={
     this.AjaxFun(url,data,callback,{type:"GET",dataType:"JSON"});
  },
   getJSONP:function(url,data,callback){
-       this.AjaxFun(url,data,callback,{type:"GET",dataType:"jsonp", jsonp: "callback",jsonpCallback:"success_jsonpCallback"});
+    this.AjaxFun(url,data,callback,{type:"GET",dataType:"jsonp", jsonp: "callback",jsonpCallback:"success_jsonpCallback"});
   },
  post:function(url,data,callback){
     this.AjaxFun(url,data,callback,{type:"POST"});
@@ -222,7 +222,7 @@ var Ajax={
          		options.async = false;
          	var param = options.inputData;
          	options.success = function(outputData) {//alert("success")
-         		if(outputData.r=="504"){
+         		if((typeof outputData=="object" && outputData.r=="504" )|| (typeof outputData=="string" && outputData.indexOf("504")!=-1)){
          			window.location=PATH+"/login.htm";
          		}
          		if (typeof callback == 'function') {
@@ -290,9 +290,16 @@ function changeForm2JsoTemp(formId) {
 
 
 
+    function json2Str(jsonObj){
+      var jStr = "{ ";
+        for(var item in jsonObj){
+            jStr += "'"+item+"':'"+jsonObj[item]+"',";
+        }
+        jStr += " }";
+        return jStr;
+    }
 
 function changeForm2Jso(formId) {
-
 	var jso = {};
 	var arr = $( formId).serializeArray();
 	for (var i = 0; i < arr.length; i++) {
@@ -759,6 +766,9 @@ function getCellValue(id, index) {
 }
 
 function goPage(currentPage, everyPage) {
+
+    window.location="#"+PATH+currentPage;
+    return;
 	console.log(currentPage);
 	zMenu.loadPage(currentPage);
 	return;
@@ -1005,7 +1015,7 @@ function includeJS(data){
 		if(!isNull(PATH) && data[i].indexOf(PATH)==-1){
 			data[i]=PATH+data[i];
 		}
-			document.write("<script id='"+i+"' type='text/javascript' src='"+data[i]+"'  charset='utf-8'> </script>");
+			$(document).append("<script id='"+i+"' type='text/javascript' src='"+data[i]+"'  charset='utf-8'> </script>");
 		}
 	}
 	
@@ -1021,11 +1031,20 @@ function includeCSS(data){
 			if(!isNull(PATH) && data[i].indexOf(PATH)==-1){
 				data[i]=PATH+data[i];
 			}
-				document.write("<link rel='stylesheet' href='"+data[i]+"' type='text/css' />");
+            document.write("<link rel='stylesheet' href='"+data[i]+"' type='text/css' />");
 		}
 	}
 	
 	
+}
+
+
+
+function loadStyles(url) {
+var link = document.createElement('link');link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = url;
+document.getElementsByTagName('head')[0].appendChild(link);
 }
 /**
  * 跳转链接同一用此处
@@ -1301,25 +1320,31 @@ var dialog={
               layer.alert(msg);
             }
     },
+    tips:function(msg,id){
+        layer.tips(msg,id,{tips:3,time:5000});
+    },
      showWait:function(msg){
     	//this.showMask();
     	//$(".wait").style.display="block";
     	return layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
     },
     hideMask:function () {
-        var mask=   document.getElementsByClassName("mask");
-        if(mask.length>0){
+        var mask=  $(".mask");// document.getElementsByClassName("mask");
+      //  mask.css("display","none");
+        mask.hide();
+        /*if(mask.length>0){
             mask[0].style.display="none";
-        }
+        }*/
     },
     hideWidget: function (){
-        var widget=   document.getElementsByClassName("widget");
+        /*var widget=   document.getElementsByClassName("widget");
         if(widget.length>0){
             widget[0].style.display="none";
-        }
+        }*/
+        $(".widget").hide();
     },
     showMask:function(){
-        var mask = document.getElementsByClassName("mask");
+        var mask = $(".mask");//document.getElementsByClassName("mask");
 
         if(mask.length==0){
 
@@ -1327,11 +1352,13 @@ var dialog={
             div.setAttribute("class","mask");
             document.body.appendChild(div);
         }
-        mask[0].style.display="block";
-        mask[0].onclick=function(){
+        mask.show();
+       // mask.css("display","block");
+       // mask[0].style.display="block";
+        mask.click(function(){
            dialog.hideWidget();
            dialog.hideMask();
-        }
+        });
     //$(".mask").show()
     },
     hideWait:function(index){
@@ -1361,7 +1388,12 @@ var dialog={
             window.data[key]=val;
         }
         }
+
+//        window.location= "#"+PATH+url;
+//
+//        return;
         //  jLoading.start();
+
         $.ajax({
             type: 'GET',
             url: PATH+url,
@@ -1381,7 +1413,9 @@ var dialog={
                     return index;
 
                 }else{
-                    $(".main").html(data);
+                     window.location= "#"+PATH+url;
+
+                   // $(".main").html(data);
                 }
 
                 if(typeof fun == 'function') fun();
@@ -1409,18 +1443,22 @@ function zdialogue(jso){
 	"</div></div>"+
 	"</div>";
 	var widget =null;
-	var widgets= document.getElementsByClassName("widget");
+	var widgets= $(".widget");//document.getElementsByClassName("widget");
 	if(widgets.length>0){
+        widgets.html(html);
+        widgets.show();
 
-	    widget= widgets[0];
-		widget.innerHTML=html;
-		widget.style.display="block";
+	   // widget= widgets[0];
+		//widget.innerHTML=html;
+		//widget.style.display="block";
+		widget=widgets[0];
 	}else{
 
 	   widget=document.createElement("div");
 	    widget.setAttribute("class","widget");
 	    widget.innerHTML=html;
 	      document.body.appendChild(widget);
+	      widget.style.display="block";
 		//$("body").append(html);
 	}
 	var sure = widget.getElementsByClassName("sure");
@@ -1502,6 +1540,25 @@ StringUtil.isBlank=function(it){
 		return true;
 	}
 	return null;
+}
+StringUtil.startWith=function(str,content){
+                       var reg=new RegExp("^"+content);
+                       return reg.test(str);
+                     }
+
+                  //   alert(StringUtil.startWith("123.png","png1"));
+StringUtil.endWith=function(str,content){
+                       var reg=new RegExp(content+"$");
+                       return reg.test(str);
+                     }
+String.prototype.startWith=function(str){
+  var reg=new RegExp("^"+str);
+  return reg.test(this);
+}
+
+String.prototype.endWith=function(str){
+  var reg=new RegExp(str+"$");
+  return reg.test(this);
 }
 StringUtil.isPhone=function(it){
 return /^[1][3578][0-9]{9}$/.test(it);
@@ -1826,22 +1883,25 @@ var _validator= {
                     for(var ruleName in cfg.rules[this.name]){console.log(ruleName);
                         if(that.methods[ruleName]){
                            var bool= that. methods[ruleName].call(that,getVal(this),this,cfg.rules[this.name][ruleName]);
+                           var errorElement=$(form).find("."+that.cfg["errorClass"]);
+                           errorElement.remove();
                            if(bool){
-                              var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
+                             /* var errorElement=$(form).find("[name='"+that.cfg["errorClass"]+"']");//form.getElementsByClassName();
                               for(var i=0;i<errorElement.length;i++){
-                                  if(errorElement[i].getAttribute("for")==this.name){
+                                  if(errorElement[i].attr("for")==this.name){
                                         errorElement[i].parentNode.removeChild(errorElement[i]);
                                   }
-                              }
+                              }*/
                                 //消除提示框
                            }else{
                                 //var div ="<div class='"+that.cfg.erroClass+"'>"+that.cfg.messages[ruleName]+"</div>";
-                                var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
+                              /*    var errorElement=$(form).find("[name='"+that.cfg["errorClass"]+"']");
+                               // var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
                                 for(var i=0;i<errorElement.length;i++){
-                                    if(errorElement[i].getAttribute("for")==this.name){
+                                    if(errorElement[i].attr("for")==this.name){
                                           errorElement[i].parentNode.removeChild(errorElement[i]);
                                     }
-                                }
+                                }*/
 
                                 var div =document.createElement(that.cfg.errorElement);
                                 var className = that.cfg["errorClass"];
@@ -1850,10 +1910,15 @@ var _validator= {
                               //  div.attributes["for"]=inputName;
 
                                 var msg = that.cfg.messages[this.name][ruleName];
+
+
                                 if(!msg){
                                     msg=that.messages[ruleName];
                                 }
-                                 div.innerText=msg;
+                                dialog.tips(msg,"#"+this.id);
+
+                                 // layer.tips(msg,"#"+this.id);
+                                 //div.innerText=msg;
                                  that.cfg.errorPlacement.call(that,div,this);
                                 //显示错误提示框
 
@@ -1872,27 +1937,31 @@ var _validator= {
             for(var inputName in this.cfg.rules){
                 var input = getChildByName(form,inputName);
                 if(input ){
+
                     //input ;
                     //var rules= cfg.rules[inputName];
                         for(var ruleName in this.cfg.rules[input.name]){
                             if(that.methods[ruleName]){
                                var bool= that. methods[ruleName].call(that,getVal(input),input,this.cfg.rules[input.name][ruleName]);
+                                var errorElement= $(form).find("."+that.cfg["errorClass"]);
+                                errorElement.remove();
                                if(bool){
-                                  var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
-                                  for(var i=0;i<errorElement.length;i++){
+                                //  var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
+
+                               /*   for(var i=0;i<errorElement.length;i++){
                                       if(errorElement[i].getAttribute("for")==input.name){
                                             errorElement[i].parentNode.removeChild(errorElement[i]);
                                       }
-                                  }
+                                  }*/
                                     //消除提示框
                                }else{
                                     //var div ="<div class='"+that.cfg.erroClass+"'>"+that.cfg.messages[ruleName]+"</div>";
-                                    var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
+                                  /*  var errorElement=form.getElementsByClassName(that.cfg["errorClass"]);
                                     for(var i=0;i<errorElement.length;i++){
                                         if(errorElement[i].getAttribute("for")==input.name){
                                               errorElement[i].parentNode.removeChild(errorElement[i]);
                                         }
-                                    }
+                                    }*/
 
                                     var div =document.createElement(that.cfg.errorElement);
                                     var className = that.cfg["errorClass"];
@@ -1904,7 +1973,11 @@ var _validator= {
                                     if(!msg){
                                         msg=that.messages[ruleName];
                                     }
-                                     div.innerText=msg;
+                                         dialog.tips(msg,"#"+input.id);
+                                  /*  layer.tips(msg,"#"+input.id,{
+                                                                  tips:[3, '#000']
+                                                                });*/
+                                    // div.innerText=msg;
                                      that.cfg.errorPlacement.call(that,div,input);
                                     //显示错误提示框
 
@@ -1965,16 +2038,16 @@ var BaseValidator={
     },
 
     errorPlacement : function(error, element) {
-       // $(element).closest('.form-group').append(error);
+        $(element).closest('.form-group').append(error);
       // console.log(element.parentNode.getAttribute("class"));
-      var form_group=element;
+     /* var form_group=element;
       for(var i=0;i<10;i++){
         form_group=form_group.parentNode;
         if(form_group.getAttribute("class") && form_group.getAttribute("class").indexOf("form-group")!=-1){
         form_group.appendChild(error);
         break;
         }
-      }
+      }*/
 
         //error.insertAfter(element);
     },
@@ -2043,12 +2116,14 @@ function zImageUtil(config) {
 
 					Ajax.post(_this.postUrl,
 						json,
-						function(data) {
-							if (data.r == AJAX_SUCC) {
+						function(data) {console.log("ajax return");
+							if (data.r == AJAX_SUCC) {console.log("succ");
 								_this.imgDom.attr("src", PATH+"/" + data.data);
 								//$(_this).parent().find("#picurl")
 								console.log("imgUrl:" + data.data);
 							} else {
+							    console.log("fail");
+
 								//	                        		zalert(data.msg);
 							}
 							if (_this.callback != null)
@@ -2157,7 +2232,7 @@ function zImageUtil2(config) {
 						function(data) {
 						 dialog.hideWait();
 
-							if (data.r == 1) {
+							if (data.r == AJAX_SUCC) {
 /*
                                 console.log(data.r+":"+AJAX_SUCC);
                                 console.log(data);
@@ -2325,7 +2400,7 @@ init:function(selector,context){
      selector.find=find;
         return selector;
     }
-    if(selector[0]=='#'){
+    if(selector.charAt(0)=='#'){
         var dom = document.getElementById(selector.replace("#",''));
         if(dom){
             dom.find=find;

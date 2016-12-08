@@ -1,10 +1,10 @@
 
-<div id="SysUserRoleList" class="col-lg-12 ibox float-e-margins">
+<div id="SysUserRoleList" class="table-responsive">
    <!-- <div class="main-hd ibox-title">| 用户角色关系</div>-->
 
 
-    <div class="main-bd ibox-content">
-        <div class="body_top" >
+    <div class="main-bd DataTables_Table_0_wrapper">
+        <div class="body_top html5buttons" >
             <form class="form-inline app-search">
                     <label for="id">主键</label>
             <input type="number" id="id" name="id"  class="form-control input-sm"  maxlength="15" onkeyup="chkInt(this,8)" onafterpaste="chkInt(this,8)" placeholder="主键"></input>
@@ -31,6 +31,7 @@ var sysUserRoleList={
     treeObj:null,
     dqData:null,
     root:$("#SysUserRoleList"),
+   tmpl:
     init:function(){
 
         setTitle("用户角色关系");

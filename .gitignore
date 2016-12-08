@@ -28,3 +28,8 @@ src/main/webapp/static/upload/*
 src/main/webapp/static/jsx/node_modules/*
 src/main/webapp/static/jsx/*
 src/main/webapp/upload/
+protalEditor/gulp/nodemodules/*
+portalEditor/gulp/node_modules/*
+gulp/*
+src/main/webapp/images/*
+src/main/webapp/html/*

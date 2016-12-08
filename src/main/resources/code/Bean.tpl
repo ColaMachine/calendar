@@ -5,7 +5,7 @@
  * 创建日期: 2015年11月15日
  * 文件说明: 
  */
-package cola.machine.bean;
+package ${table.pkg}.${abc}.bean;
 import java.sql.Timestamp;
 import java.util.Date;
 <#assign abc="${table.name[0]?lower_case}${table.name[1..]}">

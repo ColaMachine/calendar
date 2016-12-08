@@ -17,6 +17,7 @@
       %>
     <link rel="stylesheet" type="text/css" href="${path}/static/css/main.css" >
     <link rel="stylesheet" type="text/css" href="${path}/static/css/widget.css" >
+      <link rel="stylesheet" type="text/css" href="${path}/static/css/login.css" >
         <link rel="stylesheet" type="text/css" href="${path}/static/css/bootstrap.min.css" >
     <link rel="stylesheet" type="text/css" href="${path}/static/css/style.css" >
       <link rel="stylesheet" type="text/css" href="${path}/static/css/custom.css" >
@@ -30,6 +31,8 @@
             charset="utf-8"></script>
       <script src="${path}/static/js/common.js" type="text/javascript"
                 charset="utf-8"></script>
+                   <script src="${path}/static/js/layer.js" type="text/javascript"
+                                charset="utf-8"></script>
 <style type="text/css">
 .help-block-left-animation{
      color:red !important;
@@ -39,8 +42,8 @@
 
 <body class="gray-bg">
  <canvas style="position:absolute;top:300px;left:0px;width:100%;height:400px;" id="canvas"></canvas>
-                		<script type="text/javascript" src="static/js/clock/digit.js"></script>
-                		<script type="text/javascript" src="static/js/clock/cutdown.js" ></script>
+                	<!--	<script type="text/javascript" src="static/js/clock/digit.js"></script>
+                		<script type="text/javascript" src="static/js/clock/cutdown.js" ></script>-->
     <div class="loginColumns animated fadeInDown">
         <div class="row">
 
@@ -177,7 +180,7 @@
         $(document).ready(function(){
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
+                radioClass: 'iradio_square-green'
             });
         });
     </script>

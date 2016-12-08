@@ -31,7 +31,7 @@ public int loadBeanDefinitions(EncodedResource encodedResource) throws Bean
               //new NamedThreadLocal<Set<EncodedResource>>("XML bean definition resources currently being loaded");
            }
            if (!currentResources.add(encodedResource)) {// 把file [C:\Users\dozen.zhang\Documents\calendar\target\classes\config\xml \applicationContext.xml]加入到集合中
-//file [C:\Users\dozen.zhang\Documents\calendar\target\classes\config\xml\app-context-config.xml]
+//file [C:\Users\dozen.zhang\Documents\calendar\target\classes\config\xml\spring-context-config.xml]
               throw new BeanDefinitionStoreException(
                     "Detected cyclic loading of " + encodedResource + " - check your import definitions!");
            }
@@ -160,7 +160,7 @@ protected void doRegisterBeanDefinitions(Element root) {
            this.delegate = createHelper(this.readerContext, root, parent);//go52
 
            preProcessXml(root);//什么都没做
-           parseBeanDefinitions(root, this.delegate);// resolver app-context-config.xml recurse root 第一次是applicationcontext.xml的beans节点
+           parseBeanDefinitions(root, this.delegate);// resolver spring-context-config.xml recurse root 第一次是applicationcontext.xml的beans节点
            postProcessXml(root);8
 
            this.delegate = parent;
@@ -238,7 +238,7 @@ protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelega
               for (int i = 0; i < nl.getLength(); i++) {
                  Node node = nl.item(i);
                  if (node instanceof Element) {
-                    Element ele = (Element) node;//第一个解析到的是import  <import resource="app-context-config.xml" />
+                    Element ele = (Element) node;//第一个解析到的是import  <import resource="spring-context-config.xml" />
                     if (delegate.isDefaultNamespace(ele)) {
                        parseDefaultElement(ele, delegate);
                     }
@@ -311,7 +311,7 @@ protected void importBeanDefinitionResource(Element ele) {
               // No URL -> considering resource location as relative to the current file.
               try {
                  int importCount;
-                 Resource relativeResource = getReaderContext().getResource().createRelative(location);//new FileSystemResource //将app-context-config.xml change into file [C:\Users\dozen.zhang\Documents\calendar\target\classes\config\xml\app-context-config.xml]
+                 Resource relativeResource = getReaderContext().getResource().createRelative(location);//new FileSystemResource //将app-context-config.xml change into file [C:\Users\dozen.zhang\Documents\calendar\target\classes\config\xml\spring-context-config.xml]
                  if (relativeResource.exists()) {
                     importCount = getReaderContext().getReader().loadBeanDefinitions(relativeResource);//转到43 第二次调用
                     actualResources.add(relativeResource);

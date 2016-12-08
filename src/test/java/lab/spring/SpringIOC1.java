@@ -1,6 +1,6 @@
 package lab.spring;
 
-import cola.machine.service.ActivityService;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

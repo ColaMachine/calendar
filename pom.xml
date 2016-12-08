@@ -96,11 +96,11 @@
 			<artifactId>gson</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-		<!--<dependency>
+		<dependency>
 			<groupId>ch.ethz.ganymed</groupId>
 			<artifactId>ganymed-ssh2</artifactId>
 			<version>build210</version>
-		</dependency>-->
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -354,6 +354,17 @@
 			<artifactId>poi</artifactId>
 			<version>3.13</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>2.2.1</version>
+		</dependency>
 
 
 		<dependency>
@@ -420,6 +431,8 @@
 			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ueditor-1.1.2.jar</systemPath>
 			<version>1.1.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans-xpath -->
+
 
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -442,6 +455,11 @@
 			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/json.jar</systemPath>
 			<version>1.9</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<!-- <directory>src/main/webtarget</directory> -->
@@ -460,7 +478,7 @@
 				<artifactId>tomcat-maven-plugin</artifactId>
 				<version>1.1</version>
 				<configuration>
-					<path>/spcity</path>
+					<path>/</path>
 					<port>8081</port>
 					<uriEncoding>UTF-8</uriEncoding>
 					<url>http://localhost:8081/manager/html</url>

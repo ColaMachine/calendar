@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.system.expertDetail.dao.ExpertDetailMapper">
+  <resultMap id="BaseResultMap" type="com.dozenx.web.system.expertDetail.bean.ExpertDetail">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="expertId" jdbcType="BIGINT" property="expertId" />
+      <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="expert_username" jdbcType="VARCHAR" property="expert_username" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    expert_detail.`id` ,expert_detail.`expertId` ,expert_detail.`content` 
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+                ,expert.username as Expert_username
+    from expert_detail
+               left join expert expert
+                 on expert_detail.expertId = expert.id
+    where expert_detail.id =   #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from expert_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.system.expertDetail.bean.ExpertDetail" >
+
+    insert into expert_detail (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=BIGINT}
+,#{expertId,jdbcType=BIGINT}
+,#{content,jdbcType=VARCHAR}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="com.dozenx.web.system.expertDetail.bean.ExpertDetail" >
+    insert into expert_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="expertId != null" >  
+           `expertId`, 
+        </if>  
+        <if test="content != null" >  
+           `content`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=BIGINT},
+        </if>  
+        <if test="expertId != null" >  
+          #{expertId,jdbcType=BIGINT},
+        </if>  
+        <if test="content != null" >  
+          #{content,jdbcType=VARCHAR},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.system.expertDetail.bean.ExpertDetail" >
+    update expert_detail
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=BIGINT},
+        </if>  
+        <if test="expertId != null" >  
+             `expertId`=#{expertId,jdbcType=BIGINT},
+        </if>  
+        <if test="content != null" >  
+             `content`=#{content,jdbcType=VARCHAR},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dozenx.web.system.expertDetail.bean.ExpertDetail" >
+    update expert_detail
+    set 
+              `expertId`=#{expertId,jdbcType=BIGINT},  
+              `content`=#{content,jdbcType=VARCHAR}  
+where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from expert_detail where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="expertId != null and expertId != '' ">  
+           and `expertId` = #{expertId}
+        </if>  
+        <if test="content != null and content != '' ">  
+           and `content` = #{content}
+        </if>  
+        <if test="contentLike != null and contentLike != '' ">  
+             and `content` like "%"#{contentLike}"%"
+        </if>   
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+           ,expert.username as Expert_username
+    from expert_detail
+
+    left join expert expert
+      on expert_detail.expertId = expert.id
+
+    where 1=1
+        <if test="id != null and id != '' ">  
+           and expert_detail.`id` = #{id}
+        </if>  
+        <if test="expertId != null and expertId != '' ">  
+           and expert_detail.`expertId` = #{expertId}
+        </if>  
+        <if test="content != null and content != '' ">  
+           and expert_detail.`content` = #{content}
+        </if>  
+        <if test="contentLike != null and contentLike != '' ">  
+             and expert_detail.`content` like "%"#{contentLike}"%"
+        </if>   
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from expert_detail where 1=1
+        <if test="id != null and id != '' ">  
+           and expert_detail.`id` = #{id}
+        </if>  
+        <if test="expertId != null and expertId != '' ">  
+           and expert_detail.`expertId` = #{expertId}
+        </if>  
+        <if test="content != null and content != '' ">  
+           and expert_detail.`content` = #{content}
+        </if>  
+        <if test="contentLike != null and contentLike != '' ">  
+             and expert_detail.`content` like "%"#{contentLike}"%"
+        </if>   
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from expert_detail where 1!=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="expertId != null and expertId != '' ">
+           or `expertId` = #{expertId}
+        </if>
+        <if test="content != null and content != '' ">
+           or `content` = #{content}
+        </if>
+  </select>
+</mapper>

@@ -32,11 +32,11 @@
 	</bean>-->
 
 	<!-- 系统配置 -->
-	<import resource="app-context-config.xml" />
+	<import resource="spring-context-config.xml" />
 	<!-- 数据库配置 -->
-	<import resource="app-context-database.xml" />
+	<import resource="spring-context-database.xml" />
 	<!-- 必要的bean配置 -->
-<!--	<import resource="app-context-bean.xml" />-->
+<!--	<import resource="spring-context-bean.xml" />-->
 	<!-- <context:annotation-config /> -->
 	
 </beans>

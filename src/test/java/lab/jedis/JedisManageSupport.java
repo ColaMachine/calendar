@@ -1,11 +1,9 @@
 package lab.jedis;
 
 
-import cola.machine.util.StringUtil;
+import com.dozenx.util.StringUtil;
 import org.springframework.util.Assert;
 import redis.clients.jedis.ShardedJedis;
-
-import javax.jws.WebService;
 
 /**
  * Created by dozen.zhang on 2016/5/13.

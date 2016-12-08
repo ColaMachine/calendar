@@ -82,7 +82,7 @@ var sysLogList={
         });
 
         setTitle("系统日志");
-        this.mygrid =this.root.find(".grid").jqGrid(this.gridParam);
+        this.mygrid =this.root.find("#SysLogGrid").jqGrid(this.gridParam);
         this.addEventListener();
         this.loadData();
     },

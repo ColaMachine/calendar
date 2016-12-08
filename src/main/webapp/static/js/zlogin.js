@@ -20,7 +20,7 @@ var loginForm={
         pwd:null,
         rememberMe:null,
         forgetLink:null,
-        submitBtn:null,
+        submitBtn:null
     },
     doms:{
 
@@ -35,7 +35,7 @@ var loginForm={
             picCaptchaImg:"#loginPicCaptchaImg",
             rememberMe:"#rememberme",
             forgetLink:"#forgetLink",
-            submitBtn:"#loginBtn",
+            submitBtn:"#loginBtn"
         };
 
         extend(this.ids,cfg);
@@ -81,11 +81,14 @@ var loginForm={
         //emailValidForm.setEmail("371452875@qq.com");
         //emailValidForm.show();
     },
+
     //登录按扭提交
     submit:function(){
+       
         if(!this.validator.valid(this.doms.form)){
             return;
         }
+
         var dialogId = dialog.showWait();
         var jso = changeForm2Jso("#login_form");
         var jso={};
@@ -94,7 +97,11 @@ var loginForm={
         jso.picCaptcha=this.doms.picCaptchaInput.value;
         //jso.password=$$.md5(jso.password);
         //先禁用按钮
-        $$("#loginBtn").setAttribute("disabled", "disabled");
+       // $("loginBtn")
+        this.doms.submitBtn.setAttribute("disabled", "disabled");
+        this.doms.submitBtn.innerText="提交中...";
+        setTimeout("$('#loginBtn').removeAttr('disabled').text('登录')",3000);
+       // $$("#loginBtn").setAttribute("disabled", "disabled");
         //alert($$("#rememberme").attr("checked"));
         //判断是否使用记住功能
         if ($$("#rememberme").getAttribute("checked") == 'checked') {//alert("选中了记住我");
@@ -109,6 +116,7 @@ var loginForm={
             } else {
             dialog.close(dialogId);
             dialog.alert(data.msg);
+           // alert(data.msg);
               /*  var ul = $$("#login_form").find(".failure").find("ul");
                 ul.empty();
                 ul.append("<li>" + data[AJAX_MSG] + "</li>");
@@ -128,7 +136,9 @@ var loginForm={
         that =this;
         Ajax.getJSON(PATH+"/code/img/request.json",null,function(result){
             if(result.r==AJAX_SUCC){
-               that.doms.picCaptchaImg.setAttribute("src","data:image/png;base64,"+result.data.imgdata);
+             //  that.doms.picCaptchaImg.setAttribute("src","data:image/png;base64,"+result.data.imgdata);
+
+                 that.doms.picCaptchaImg.src="data:image/png;base64,"+result.data.imgdata;
             }else{
                 dialog.error(result.msg);
             }
@@ -146,26 +156,26 @@ var loginForm={
             pwd : {
                 stringCheck : true,
                 required : true,
-                rangelength : [ 6, 15 ],
+                rangelength : [ 6, 15 ]
             },
             picCaptcha:{
-                 required : true,
+                 required : true
             }
         },
         messages : {
             email : {
                 required : "邮箱/手机号未填写",
               /*  isemailorphone:true,*/
-                rangelength : "邮箱/手机号长度应在50字符以内",
+                rangelength : "邮箱/手机号长度应在50字符以内"
             },
             pwd : {
                 required : "密码未填写",//TODO 增加判断
                 rangelength : "密码应由6~20个的数字或字母组成"
             },
             picCaptcha:{
-                             required : "请输入验证码",
+                             required : "请输入验证码"
             }
-        },
+        }
 
     },
 
@@ -229,7 +239,7 @@ var forgetPwdForm={
             phone:null,//手机span
             submitBtn:null,//提交按钮
             pwd:null,
-            pwdrepeat:null,
+            pwdrepeat:null
 
         },
     doms:{
@@ -265,7 +275,7 @@ var forgetPwdForm={
             forgetPwdAccount : {
                 required : "邮箱/手机号未填写",
               /*  isemailorphone:true,*/
-                rangelength : "邮箱/手机号长度应在50字符以内",
+                rangelength : "邮箱/手机号长度应在50字符以内"
             },
             forgetPwdCaptcha : {
                 required : "请填写短信验证码",
@@ -295,7 +305,7 @@ var forgetPwdForm={
             phone:"#forgetPwdAccount",
             submitBtn:"#forgetPwdSubmitBtn",
             pwd:"#forgetPwdpwd",
-            pwdrepeat:"#forgetPwdpwdrepeat",
+            pwdrepeat:"#forgetPwdpwdrepeat"
 
         };
 
@@ -315,7 +325,7 @@ var forgetPwdForm={
         //this.doms.form.validate(this.valid);
         this.validator= validator(this.doms.form,this.valid);
 
-        this.doms.submitBtn.removeAttribute("disabled");
+       // this.doms.submitBtn.removeAttribute("disabled");
         this.addEventListener();
 
 
@@ -338,6 +348,7 @@ var forgetPwdForm={
         }, 1000);
     },
    submit:function(){
+
         if(! this.validator.valid(this.doms.form)){
             return;
         }

@@ -8,8 +8,6 @@
 package cola.machine.util.rules;
 
 
-import cola.machine.util.StringUtil;
-
 public class PhoneRule extends Rule {
     
     public PhoneRule() {

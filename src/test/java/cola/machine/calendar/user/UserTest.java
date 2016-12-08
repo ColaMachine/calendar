@@ -4,18 +4,18 @@ import org.junit.Before;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import cola.machine.service.UserService;
+//import cola.machine.service.UserService;
 
 public class UserTest {
-	UserService userService = null;
-
-	@Before
-	public void init() {
-
-		ApplicationContext context = new ClassPathXmlApplicationContext(
-				"\\config\\xml\\applicationContext.xml");
-		userService = (UserService) context.getBean("userService");
-	}
+//	UserService userService = null;
+//
+//	@Before
+//	public void init() {
+//
+//		ApplicationContext context = new ClassPathXmlApplicationContext(
+//				"\\config\\xml\\applicationContext.xml");
+//		userService = (UserService) context.getBean("userService");
+//	}
 /*
 	@Test
 	public void countAll() {

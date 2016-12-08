@@ -6,7 +6,7 @@
  * 文件说明: 
  */
 
-package cola.machine.action;
+package ${table.pkg}.${abc}.action;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.LinkedHashMap;
-
+import com.dozenx.util.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,18 +29,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import cola.machine.service.${Abc}Service;
-import cola.machine.bean.${Abc};
-import cola.machine.util.ResultUtil;
-import cola.machine.util.ValidateUtil;
-import cola.machine.util.rules.*;
-import core.page.Page;
-
-import cola.machine.util.StringUtil;
-import cola.machine.util.ValidateUtil;
-import core.util.RequestUtil;
-import core.action.ResultDTO;
-import cola.machine.util.DateUtil;
+import ${table.pkg}.${abc}.service.${Abc}Service;
+import ${table.pkg}.${abc}.bean.${Abc};
+import com.dozenx.util.ResultUtil;
+import com.dozenx.util.ValidateUtil;
+import com.dozenx.web.core.rules.*;
+import com.dozenx.web.core.page.Page;
+import com.dozenx.web.core.base.BaseController;
+import com.dozenx.util.StringUtil;
+import com.dozenx.util.ValidateUtil;
+import com.dozenx.web.util.RequestUtil;
+import com.dozenx.web.message.ResultDTO;
+import com.dozenx.util.DateUtil;
 <#if table.mapper??>
 import cola.machine.bean.${table.mapper.mapper};
 import cola.machine.service.${table.mapper.mapper}Service;
@@ -117,7 +117,7 @@ ${getSearchParam}
     public Object listAll(HttpServletRequest request) {
         ${getSearchParam}
         List<${Abc}> ${abc}s = ${abc}Service.listByParams(params);
-        return ResultUtil.getResult(${abc}s);
+        return ResultUtil.getDataResult(${abc}s);
     }
     
     /**
@@ -283,7 +283,7 @@ ${validCode}
             finalList.add(map);
         }
         try {
-            if (cola.machine.util.ExcelUtil.getExcelFile(finalList, fileName, colTitle) != null) {
+            if (ExcelUtil.getExcelFile(finalList, fileName, colTitle) != null) {
                 return this.getResult(SUCC,fileName,"导出成功");
             }
             /*

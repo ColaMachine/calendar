@@ -20,7 +20,7 @@
   </listener> 
 
   <listener>
-    	<listener-class>cola.machine.web.listener.SysListener</listener-class>
+    	<listener-class> com.dozenx.web.core.listener.SysListener</listener-class>
 	</listener>	
 	<!-- Spring Mvc -->
 	<!-- <servlet-mapping>
@@ -32,13 +32,17 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:spring-mvc.xml</param-value>
+			<param-value>classpath:config/xml/spring-mvc.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>springMVC</servlet-name>
 		<url-pattern>*.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>springMVC</servlet-name>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
         <servlet-name>springMVC</servlet-name>
@@ -54,7 +58,7 @@
     </filter> -->
 	 <filter>
         <filter-name>loginfilter</filter-name>
-        <filter-class>cola.machine.calendar.filter.LoginFilter</filter-class>
+        <filter-class> com.dozenx.web.core.filter.LoginFilter</filter-class>
 		<init-param>
 			<param-name>checkSessionKey</param-name>
 			<param-value>user</param-value>

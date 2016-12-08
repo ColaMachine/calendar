@@ -8,11 +8,12 @@
 <meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1″>
 <title>后台管理系统</title>
 <link rel="stylesheet" type="text/css" href="${path}/static/css/bootstrap.min.css" >
+
 <link rel="stylesheet" type="text/css" href="${path}/static/css/main.css" >
 <link rel="stylesheet" type="text/css" href="${path}/static/css/menu3.css" >
 <link rel="stylesheet" type="text/css" href="${path}/static/css/head.css" >
 
-<link rel="stylesheet" type="text/css" href="${path}/static/css/style.css" >
+
 <link rel="stylesheet" type="text/css" href="${path}/static/css/collapse.css" >
 <link rel="stylesheet" type="text/css" href="${path}/static/css/font-awesome.css" >
 
@@ -33,22 +34,24 @@ pageContext.setAttribute("basePath",basePath);
 var WEBCONTEXT="${path}";
 var PATH="${path}";
 var cssAry=[
-/*"/static/css/grid.css",*/
-"/static/css/jqgrid.css",
+
+"/static/css/grid.css",
+/*"/static/css/bankgrid.css",*/
+/*"/static/css/jqgrid.css",*/
  /* "/static/css/head.css",*/
 
     "/static/css/widget.css",
    "/static/css/window.css",
     "/static/css/zTreeStyle.css",
-    "/static/css/layer.css"
+    "/static/css/layer.css",
 
 ];
 var jsAry=[/*"/static/js/menu.js" ,
                      "/static/js/validmsg.js",*/
                      "/static/js/DateUtils.js",
                     /* "/static/js/jquery-ui.min.js",*/
-                    /* "/static/js/grid.js",*/
-                       "/static/js/jquery.jqGrid.js",
+                    "/static/js/grid.js",
+                      /*  "/static/js/jquery.jqGrid.js",*/
                       "/static/js/jquery.form.js",
                       "/static/js/grid.locale-en.js",
                       "/static/js/My97DatePicker/WdatePicker.js",
@@ -62,6 +65,8 @@ var jsAry=[/*"/static/js/menu.js" ,
                       "/static/js/jquery.ztree.core-3.5.js",
                       "/static/js/jquery.ztree.excheck-3.5.js",
                        "/static/js/layer.js",
+                        "/ueditor/ueditor.config.js",
+                         "/ueditor/ueditor.all.js",
                      /*  "/static/js/location.js",*/
 
 
@@ -84,7 +89,7 @@ includeJS(jsAry);
 </head>
 <body>
 <div id="moreCssJs"style="display:none"></div>
-<div id="page" class="page pace-done" >
+<div id="page" class="page" >
 	   <nav class="page-nav menu-wrap clearfix  navbar-default navbar-static-side">
         <div class="logo">
             <!-- <span class="logo-head">aWiFi</span> -->
@@ -97,13 +102,13 @@ includeJS(jsAry);
         </div>
     </nav>
 	<div class="page-wrap main-wrap gray-bg">
-		<div id="" class="page-hd row border-bottom">
+		<div id="" class="page-hd  border-bottom">
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
                         <a id="collapse" class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                         <form role="search" class="navbar-form-custom" action="search_results.html">
                             <div class="form-group">
-                                <input type="text" placeholder="查询..." class="form-control" name="top-search" id="top-search">
+                               <!-- <input type="text" placeholder="查询..." class="form-control" name="top-search" id="top-search">-->
                             </div>
                         </form>
                     </div>
@@ -209,7 +214,7 @@ includeJS(jsAry);
 
 
                         <li>
-                            <a id="loginOut">
+                            <a id="loginOut" >
                                 <i class="fa fa-sign-out"></i> 退出
                             </a>
                         </li>
@@ -217,9 +222,10 @@ includeJS(jsAry);
 
                 </nav>
                 </div>
-<div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-10">
-                    <h2 id="page-title">主页</h2>
+<div class="row  page-heading">
+                <div class="col-lg-12
+                ">
+                 <!--   <span id="page-title">主页</span>-->
                     <ol class="breadcrumb">
                         <li>
                             <a href="index.htm">主页</a>
@@ -237,7 +243,7 @@ includeJS(jsAry);
                 </div>
             </div>
 
-            <div class="page-ft footer-wrap footer">
+            <div style="display:none" class="page-ft footer-wrap footer">
                         <div class="pull-right">
                             10GB of <strong>250GB</strong> Free.
                         </div>
@@ -247,7 +253,7 @@ includeJS(jsAry);
                     </div>
 
 
-    <div id="main " class="  main wrapper wrapper-content animated fadeInRight "  style="width:100%;height:100%;">
+    <div id="main " class="  row main  "  style="width:100%;height:100%;">
 
 
 	</div>
@@ -324,12 +330,13 @@ var menuList=[
 
             {id:2501,name:"系统日志",url:"/sysLog/list.htm",icon:"fa fa-file-archive-o",pid:25},
              {id:2502,name:"日志标签",url:"/sysLogTag/list.htm",icon:"fa fa-tag",pid:25},
+               {id:2503,name:"配置",url:"/sysConfig/list.htm",icon:"fa fa-tag",pid:25},
 
-         /*   {id:26,name:"动物园管理",url:"",icon:"fa fa-spinner",pid:0},
+           {id:26,name:"动物园管理",url:"",icon:"fa fa-spinner",pid:0},
             {id:27,name:"最新视频",url:"/videoNew/list.htm",icon:"fa fa-spinner",pid:26},
             {id:28,name:"最新视频",url:"/static/html/videoNew.html",icon:"fa fa-spinner",pid:26},
 
-            {id:30,name:"海绵城市",url:"",icon:"fa fa-spinner",pid:0},
+            {id:30,name:"资料",url:"",icon:"fa fa-spinner",pid:0},///*海绵城市*/
 
             {id:302,name:"新闻资讯",url:"/artical/list.htm",icon:"fa fa-spinner",pid:30},
             {id:303,name:"新闻资讯审核",url:"/artical/listAudit.htm",icon:"fa fa-spinner",pid:30},
@@ -338,10 +345,16 @@ var menuList=[
             {id:305,name:"合作伙伴",url:"/partner/list.htm",icon:"fa fa-spinner",pid:30},
             {id:306,name:"专家介绍",url:"/expertDetail/list.htm",icon:"fa fa-spinner",pid:30},
             {id:307,name:"专家文献",url:"/expertArtical/list.htm",icon:"fa fa-spinner",pid:30},
-            {id:308,name:"合作伙伴介绍",url:"/partnerDetail/list.htm",icon:"fa fa-spinner",pid:30},*/
-            {id:31,name:"图表",url:"",icon:"fa fa-bar-chart",pid:0},
-                {id:311,name:"登录人数",url:"/static/html/example/echarts.html",icon:"fa fa-area-chart",pid:31}
+            {id:308,name:"合作伙伴介绍",url:"/partnerDetail/list.htm",icon:"fa fa-spinner",pid:30},
 
+            {id:31,name:"图表",url:"",icon:"fa fa-bar-chart",pid:0},
+                {id:311,name:"登录人数",url:"/static/html/example/echarts.html",icon:"fa fa-area-chart",pid:31},
+            {id:32,name:"拍卖行",url:"",url:"/rubish/auction.html",icon:"fa fa-area-chart",pid:0},
+              {id:33,name:"页面制作",url:"",icon:"fa fa-area-chart",pid:0},
+             {id:331,name:"编辑器",url:"/static/html/editor/edit.html",icon:"fa fa-area-chart",pid:33},
+              {id:332,name:"组件",url:"/component/list.htm",icon:"fa fa-area-chart",pid:33},
+               {id:333,name:"模板",url:"/template/list.htm",icon:"fa fa-area-chart",pid:33},
+  {id:334,name:"模板组件匹配",url:"/editorTempComp/listMapper.htm",icon:"fa fa-area-chart",pid:33},
           ]
 
 
@@ -352,25 +365,32 @@ $(document).ready(function(){if($(".page-wrap").height()<$(window).height())
 $(document).scroll(function(){if($(".page-wrap").height()<$(window).height())
     $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
 })
-/*$(document).resize(function(){
+$(document).resize(function(){console.log(1);
+
 if($(".page-wrap").height()<$(window).height())
  $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
-})*/
+
+})
 
  $(document).ready(function(){
-                                function fix_height(){
-                                 $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
-                                       // var h = $("#tray").height();
-                                      //  $("#preview").attr("height", (($(window).height()) - h) + "px");
-                                }
-                                $(window).resize(function(){ fix_height(); }).resize();
+    $("#loginOut").click(function(){
+        window.location=PATH+"/logout.htm";
+    })
 
-                        });
+    function fix_height(){
+    $(".grid-content").css("height",$(window).height()-153-95-60);
+    $(".page-wrap").css("min-height",$(window).height()+$(window).scrollTop());
+    // var h = $("#tray").height();
+    //  $("#preview").attr("height", (($(window).height()) - h) + "px");
+    }
+    $(window).resize(function(){ fix_height(); }).resize();
+
+});
 </script>
 
-
+<!--
 <script type="text/javascript" src="${path}/static/js/head.js"></script>
 	<script type="text/javascript" src="${path}/static/js/react.js"></script>
 <script type="text/javascript" src="${path}/static/js/JSXTransformer.js"></script>
-   <script type="text/jsx"  src="static/js/editor_head.js"></script>
+   <script type="text/jsx"  src="static/js/editor_head.js"></script>-->
 </html>

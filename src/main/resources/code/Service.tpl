@@ -6,7 +6,7 @@
  * 文件说明: 
  */
 
-package cola.machine.service;
+package ${table.pkg}.${abc}.service;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,30 +19,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import cola.machine.bean.${Abc};
-import cola.machine.dao.${Abc}Mapper;
-import cola.machine.util.CacheUtil;
-import cola.machine.util.ResultUtil;
-import cola.machine.util.UUIDUtil;
-import cola.machine.util.ValidateUtil;
-import cola.machine.util.StringUtil;
-import core.page.Page;
+import ${table.pkg}.${abc}.bean.${Abc};
+import ${table.pkg}.${abc}.dao.${Abc}Mapper;
+import com.dozenx.util.CacheUtil;
+import com.dozenx.util.ResultUtil;
+import com.dozenx.util.UUIDUtil;
+import com.dozenx.util.ValidateUtil;
+import com.dozenx.util.StringUtil;
+import com.dozenx.web.core.page.Page;
+import com.dozenx.web.core.base.BaseService;
 <#if table.mapper??>
 import java.util.StringTokenizer;
-import cola.machine.bean.${table.mapper.mapper};
-import cola.machine.dao.${table.mapper.mapper}Mapper;
+import  ${table.pkg}.${abc}.bean.${table.mapper.mapper};
+import  ${table.pkg}.${abc}.dao.${table.mapper.mapper}Mapper;
 
 </#if>
  <#if table.mapper??>
            <#if table.mapper.mapper==Abc>
-import cola.machine.bean.${table.mapper.parent};
-import cola.machine.bean.${table.mapper.child};
-import cola.machine.dao.${table.mapper.parent}Mapper;
-import cola.machine.dao.${table.mapper.child}Mapper;
-
+import ${table.pkg}.${abc}.bean.${table.mapper.parent};
+import ${table.pkg}.${abc}.bean.${table.mapper.child};
+import ${table.pkg}.${abc}.dao.${table.mapper.parent}Mapper;
+import ${table.pkg}.${abc}.dao.${table.mapper.child}Mapper;
     </#if>
         </#if>
-import core.action.ResultDTO;
+import com.dozenx.web.message.ResultDTO;
 
 @Service("${abc}Service")
 public class ${Abc}Service extends BaseService {

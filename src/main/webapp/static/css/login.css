@@ -178,7 +178,7 @@ label {
     left:50%;
     margin-left:-150px;
     z-index: 1040;
-    width:300px;
+   /* width:300px;*/
     display: none;
     overflow: hidden;
     -webkit-overflow-scrolling: touch;

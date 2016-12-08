@@ -3,16 +3,17 @@
    <!-- <div class="main-hd ibox-title">| ${table.remark}</div>-->
 
 
-    <div class="main-bd DataTables_Table_0_wrapper">
-        <div class="body_top html5buttons" >
+    <div class="main-bd ">
+        <div class="body_top " >
             <form class="form-inline app-search">
             ${searchhtml}
-            <button type="button"  class="btn btn-default searchBtn">查询</button>
+            <button type="button"  class="btn btn-primary searchBtn">查询</button>
+            <button class="btn btn-secondary addBtn" ><i class="fa fa-plus"></i>新增</button>
+                        <!--<button class="btn btn-primary deleteBtn"><i class="fa fa-plus"></i>删除</button>-->
+                        <!--<button class="btn btn-primary exportBtn"><i class="fa fa-plus"></i>导出</button>-->
             </form>
 
-            <button class="btn btn-primary addBtn" ><i class="fa fa-plus"></i>新增</button>
-            <!--<button class="btn btn-primary deleteBtn"><i class="fa fa-plus"></i>删除</button>-->
-            <!--<button class="btn btn-primary exportBtn"><i class="fa fa-plus"></i>导出</button>-->
+
         </div>
         <table id="${table.name}Grid" class="grid table"></table>
         <div id="${table.name}Grid-Pager" class="pager"></div>
@@ -25,7 +26,7 @@ var ${abc}List={
     treeObj:null,
     dqData:null,
     root:$("#${table.name}List"),
-   tmpl:
+
     init:function(){
 
         setTitle("${table.remark}");
