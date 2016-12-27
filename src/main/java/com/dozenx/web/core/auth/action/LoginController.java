@@ -16,6 +16,7 @@ import com.dozenx.web.core.rules.NotEmpty;
 import com.dozenx.web.core.rules.Required;
 import com.dozenx.web.core.rules.Rule;
 import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.util.ConfigUtil;
 import com.dozenx.web.util.RequestUtil;
 import com.dozenx.web.util.TerminalUtil;
 import org.slf4j.Logger;
@@ -28,7 +29,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -59,6 +64,17 @@ public class LoginController extends BaseController {
         // logger.debug("s");
         // System.out.println(123);
         //getJedis().set("1","2");
+        ServletContext context = request.getSession().getServletContext();
+        WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(context);
+        for(String name:wac.getBeanDefinitionNames()){
+            System.out.println("[ioc]"+name+"    ");
+        }
+        WebApplicationContext wac2 = ContextLoader.getCurrentWebApplicationContext();
+
+        for(String name:wac2.getBeanDefinitionNames()){
+            System.out.println("[ioc111-------------]"+name+"    ");
+        }
+        //ConfigUtil.getConfig("1234");
         request.setAttribute("path", SysConfig.PATH);
 
         //System.out.println("登录页面");
