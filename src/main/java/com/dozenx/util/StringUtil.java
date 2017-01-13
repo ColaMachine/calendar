@@ -1,5 +1,8 @@
 package com.dozenx.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -159,9 +162,9 @@ public class StringUtil {
         }
         return false;
     }
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         System.out.println(StringUtil.isID("330104198601292711"));;
-    }
+    }*/
 
 	/**  随机数字池**/
 	public static String randDigitString = "0123456789";//随机产生的字符串
@@ -543,4 +546,133 @@ return ymd;
 	public static byte[] base64Decode(String base64Code) throws Exception{
 		return new BASE64Decoder().decodeBuffer(base64Code);
 	}
+static HashMap<Character,Character> gbkMap =null;
+
+    //http://www.cnblogs.com/human/p/3517607.html
+    public static String byte2Str(byte[] bytes,String charset) throws Exception {
+        StringBuffer  returnStr= new StringBuffer();
+        int unicode =0;
+       // byte[] bytes =new byte[4];
+        String unicodeBiteStr="";
+        if(charset.equals("gbk")){
+           if(gbkMap==null) {
+               gbkMap=new HashMap<Character,Character>();
+               List<String> lists =new ArrayList<String>();
+               lists= FileUtil.readFile2List("/Users/luying/Documents/workspace/calendar/gbk2unicode");
+                for(String line:lists){
+                    if(!StringUtil.isBlank(line)){
+                        String[] ary = line.split(" ");
+
+                       // byte gbkByte =Byte.parseByte(ary[0],16);
+                       // byte unicodeByte  =Byte.parseByte(ary[1],16);
+                       byte[] gbkBytes =ByteUtil.hexStr2Bytes(ary[0]);
+                        char gbkByte =ByteUtil.getChar(gbkBytes);//char)(gbkBytes[0]<<4+gbkBytes[1]);
+
+                        byte[] unicodeBytes =ByteUtil.hexStr2Bytes(ary[2]);
+                        char unicodeByte =ByteUtil.getChar(unicodeBytes);//(char)(unicodeBytes[0]<<4+unicodeBytes[1]);
+
+
+                        gbkMap.put(gbkByte,unicodeByte);
+                    }
+                }
+            }
+            //Byte.parseByte("")
+             //newByte= Byte.parseByte("B8F6",16);
+            //byte[] newBytes= ByteUtil.hexStr2Bytes("B8F6");
+            //char newChar = ByteUtil.getChar(newBytes);
+            //gbkMap.get(newChar);*/
+            //char unicodeChar1 = gbkMap.get(newChar);
+            //System.out.println(unicodeChar1);
+
+
+            for(int i=0;i<bytes.length;i++){
+                if(bytes[i]>0&&bytes[i]<=107){
+                    returnStr.append((char)bytes[i]);
+                    //s+=;
+                }else{
+                    byte[] byteAry =new byte[2];
+                    byteAry[0]= bytes[i];
+                    byteAry[1]= bytes[i+1];
+                    char ch = ByteUtil.getChar(byteAry);
+                    //int ch = (bytes[i]<<4+bytes[i+1]);
+                    i++;
+                    char unicodeChar = gbkMap.get(ch);
+                    //s+=unicodeChar;
+                    returnStr.append((char)bytes[i]);
+                }
+            }
+
+        }else {//什么是utf-8 utf-8 有明显的特征他的第一位有几个1说明她有几位 后面的几位都是01开头的s
+            //boolean start=false;
+            int weishu=0;
+            for(int i=0;i<bytes.length;i++){
+                int nowIndex =i;
+                 weishu =0;
+                int[] biteAry = ByteUtil.to8BinaryInt(bytes[i]);
+                //开始计算有几个头部1
+                String newUnicodeBiteStr="";
+                for(int j=0;j<biteAry.length;j++){
+                    if(biteAry[j]==1){
+                        weishu++;
+                    }else{
+                        break;
+                    }
+
+                }
+                //得到剩余的比特
+                for(int j=weishu+1;j<8;j++){
+                    newUnicodeBiteStr+=biteAry[j];
+
+                }
+                //将剩余的数值转换成unicode值
+                for(int biteLeft =2;biteLeft<=weishu;biteLeft++){
+                    i++;
+                    int[] nextBiteAry = ByteUtil.to8BinaryInt(bytes[i]);
+                    if(nextBiteAry[0]!=1 || nextBiteAry[1]!=0){
+                        throw new Exception("it's not utf-8 charset encode utf-8 must begin with 10");
+                    }
+                    for(int k=2;k<8;k++){
+                        newUnicodeBiteStr+=nextBiteAry[k];
+                    }
+
+                }
+
+                /*if(ByteUtil.to8BinaryInt(bytes[i])[0]==0){
+                    //说明是什么呢 说明是单字节字符
+                    char chars=(char) bytes[i];
+                    s+=String.valueOf(chars);
+                    start=false;
+                }else{
+                    if(!start){
+                        String binaryStr = ByteUtil.to8BinaryStr(bytes[i]);
+                        int oneNum =1;
+                        int zeroIndex=1;
+                        while(binaryStr.charAt(zeroIndex)=='1'){
+                            zeroIndex++;
+                        }
+                        weishu=zeroIndex+1;
+                        if(weishu>4){
+                            System.out.println("该位数超过了4为");
+                        }
+
+                    }
+                }*/
+
+                //把那个转成unicode代表的字符
+
+               // System.out.println((char)ByteUtil.binaryStr2int(newUnicodeBiteStr));
+                returnStr.append((char)ByteUtil.binaryStr2int(newUnicodeBiteStr));
+            }
+        }
+        return returnStr.toString();
+
+    }
+
+    public static void main(String args[]){
+        try {
+           System.out.println( StringUtil.byte2Str(new String("1234567890ab个你好啊我知道你是谁").getBytes("gbk"),"gbk"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

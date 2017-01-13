@@ -15,6 +15,8 @@ import com.dozenx.core.Path.PathManager;
 import org.slf4j.Logger;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtil {
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(FileUtil.class);
@@ -31,6 +33,21 @@ public class FileUtil {
             templateStr.append(s + "\r\n");
         }
         return templateStr.toString();
+    }
+
+
+    public static List<String > readFile2List(String path) throws IOException {
+        File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
+
+        BufferedReader br = new BufferedReader(new FileReader(file));
+       List<String> lines =new ArrayList();
+        String s ;
+       // StringBuffer templateStr = new StringBuffer();
+        while ((s = br.readLine()) != null) {
+            lines.add(s);
+           // templateStr.append(s + "\r\n");
+        }
+        return lines;
     }
 
     /**

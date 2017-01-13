@@ -1,0 +1,27 @@
+POST http://www.mayadisc.com/logging.php?action=login& HTTP/1.1
+Host: www.mayadisc.com
+Connection: keep-alive
+Content-Length: 190
+Cache-Control: max-age=0
+Origin: http://www.mayadisc.com
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Referer: http://www.mayadisc.com/logging.php?action=login
+Accept-Language: zh-CN,zh;q=0.8
+Cookie: is_use_cookiex=yes; cdb_cookietime=2592000; cdb_oldtopics=D2094663D; cdb_fid5=1480639303; cdb_sid=FwV7KV; is_use_cookied=yes
+
+POST http://www.mayadisc.com/logging.php?action=login HTTP/1.1
+Host: www.mayadisc.com
+Connection: keep-alive
+Cache-Control: max-age=0
+Content-Length: 0
+Origin: http://www.mayadisc.com
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,**/*//*;q=0.8
+Accept-Language: zh-CN
+Accept-Encoding: identity
+Referer: http://www.mayadisc.com/logging.php?action=login
+Cookie: is_use_cookiex=yes; cdb_oldtopics=D2094663D; is_use_cookied=yes; cdb_cookietime=2592000; Host=www.mayadisc.com; cdb_fid5=1480639303; cdb_sid=FwV7KV;

@@ -6,9 +6,6 @@ import com.dozenx.core.config.SysConfig;
 import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -51,7 +48,7 @@ public class RandomValidateCode {
     /**
      * 生成随机图片
      */
-    public void getImgRandcode(HttpServletRequest request,
+    /*public void getImgRandcode(HttpServletRequest request,
             HttpServletResponse response) {
         HttpSession session = request.getSession();
         //BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
@@ -62,7 +59,7 @@ public class RandomValidateCode {
         g.setColor(getRandColor(110, 133));
         //绘制干扰线
         for(int i=0;i<=lineSize;i++){
-            drowLine(g);
+            drawLine(g);
         }
         //绘制随机字符
         String randomString = "";
@@ -77,7 +74,7 @@ public class RandomValidateCode {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
     
     
     /**
@@ -94,12 +91,12 @@ public class RandomValidateCode {
         g.setColor(getRandColor(110, 133));
         //绘制干扰线
         for(int i=0;i<=lineSize;i++){
-            drowLine(g);
+            drawLine(g);
         }
         //绘制随机字符
         String randomString = "";
         for(int i=1;i<=length;i++){
-            randomString=drowString(g,randomString,i);
+            randomString=drawString(g,randomString,i);
         }
         //System.out.println(randomString);
         g.dispose();
@@ -140,12 +137,12 @@ public class RandomValidateCode {
         g.setColor(getRandColor(110, 133));
         //绘制干扰线
         for(int i=0;i<=lineSize;i++){
-            drowLine(g);
+            drawLine(g);
         }
         //绘制随机字符
         String randomString = "";
         for(int i=1;i<=length;i++){
-            randomString=drowString(g,randomString,i);
+            randomString=drawString(g,randomString,i);
         }
         //System.out.println(randomString);
         g.dispose();
@@ -177,7 +174,8 @@ public class RandomValidateCode {
     /*
      * 绘制字符串
      */
-    private String drowString(Graphics2D  g,String randomString,int i){
+    private String drawString(Graphics2D  g,String randomString,int i){
+        //javax.servlet.ServletOutputStream o;
         g.setFont(getFont());
         g.setColor(new Color(random.nextInt(101),random.nextInt(111),random.nextInt(121)));
         String rand = String.valueOf(getRandomString(random.nextInt(randString.length())));
@@ -197,7 +195,7 @@ public class RandomValidateCode {
     /*
      * 绘制字符串
      */
-    private void drowString(Graphics2D  g,char car,int i){
+    private void drawString(Graphics2D  g,char car,int i){
         g.setFont(getFont());
         g.setColor(new Color(random.nextInt(101),random.nextInt(111),random.nextInt(121)));
         int rotateAngle= random.nextInt(rotate_value*2)-rotate_value;
@@ -215,7 +213,7 @@ public class RandomValidateCode {
     /*
      * 绘制干扰线
      */
-    private void drowLine(Graphics g){
+    private void drawLine(Graphics g){
         int x = random.nextInt(width);
         int y = random.nextInt(height);
         int xl = random.nextInt(13);
@@ -253,11 +251,11 @@ public class RandomValidateCode {
         g.setColor(getRandColor(110, 133));
         //绘制干扰线
         for(int i=0;i<=lineSize;i++){
-            drowLine(g);
+            drawLine(g);
         }
         //绘制随机字符
         for(int i=1;i<=str.length();i++){
-            drowString(g,str.charAt(i-1),i);
+            drawString(g,str.charAt(i-1),i);
         }
         //System.out.println(randomString);
         g.dispose();
@@ -265,19 +263,19 @@ public class RandomValidateCode {
             filename = UUIDUtil.getUUID()+".jpg";
         }
 
-        /*File file=PathManager.getInstance().getVcodePath().resolve(filename+".jpg").toFile();
+        File file=PathManager.getInstance().getVcodePath().resolve(filename+".jpg").toFile();
         if(file.exists()){
             System.out.println("文件已经存在");
         }else{
             //如果要创建的多级目录不存在才需要创建。
             file.createNewFile();
-        }*/
+        }
         ByteArrayOutputStream  baos = new ByteArrayOutputStream();
         ImageIO.write(image, "JPEG",baos);//将内存中的图片通过流动形式输出到客户端
         byte[] bytes = baos.toByteArray();
         BASE64Encoder encoder = new BASE64Encoder();
         String  result = encoder.encodeBuffer(bytes).trim();
-        //ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
+        ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
         return new String[]{Config.getInstance().getImage().getVcodeDir()+"/"+filename+".jpg",str,result};
     }
 }
