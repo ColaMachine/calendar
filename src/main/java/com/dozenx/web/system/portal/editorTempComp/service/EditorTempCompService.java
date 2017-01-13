@@ -8,10 +8,7 @@
 
 package com.dozenx.web.system.portal.editorTempComp.service;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -33,7 +30,6 @@ import com.dozenx.util.ValidateUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.base.BaseService;
-import java.util.StringTokenizer;
 import  com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp;
 import  com.dozenx.web.system.portal.editorTempComp.dao.EditorTempCompMapper;
 
@@ -219,88 +215,87 @@ public class EditorTempCompService extends BaseService {
      * @return
      */
     public ResultDTO msave1(String templateIdStr,List list) {
-        Long[] componentIds =new Long[list.size()];
+
         if(StringUtil.isBlank(templateIdStr) || !StringUtil.checkNumeric(templateIdStr)){
             return ResultUtil.getResult(101,"参数错误");
         }
         Long templateId =Long.valueOf(templateIdStr);
 
 
-        if(list==null || list.size()==0){
-            list=null;
+        List<EditorTempComp> newList = new ArrayList<>();
+        // 参数预处理
+        Long[] componentIds =new Long[list.size()];
 
+        Template template = templateMapper.selectByPrimaryKey(Long.valueOf(templateId));
+        if (template == null) {
+            return ResultUtil.getResult(101, "数据不存在");
         }
+        HashMap params =new HashMap();
+        params.put("templateId",templateId);
+
+
+
         if(list!=null)
             for(int i=0;i<list.size();i++){
                 HashMap record =(HashMap)list.get(i);
-                if(!StringUtil.checkNumeric((String)record.get("componentId"))){
+                EditorTempComp editorTempComp = new EditorTempComp();
+                Object idObj =  record.get("id");
+
+
+                Integer index= (Integer)record.get("index");
+                editorTempComp.setIndex(index);
+                Long componentId =  Long.valueOf(record.get("componentId")+"");
+                if(componentId == null ){
                     return ResultUtil.getResult(101,"参数错误");
                 }
-                String componentIdStr = (String)record.get("componentId");
-                componentIds[i]=Long.valueOf(componentIdStr);
-                record.put("componentId",Long.valueOf(componentIdStr));
-
-            }
-
-
-        //验证父亲id 正确性 是否存在
-
-
-            //
-            Template template = templateMapper.selectByPrimaryKey(Long.valueOf(templateId));
-            if (template == null) {
-                return ResultUtil.getResult(101, "数据不存在");
-            }
-
-                //查询的数据不存在
-
-        if(list!=null)
-            for(int i=0;i<list.size();i++){
-                HashMap record =(HashMap)list.get(i);
-                Component component = componentMapper.selectByPrimaryKey((Long)record.get("componentId"));
+                Component component = componentMapper.selectByPrimaryKey(componentId);
                 //查询的数据不存在
                 if(component==null ){
                     return ResultUtil.getResult(101,"数据不存在");
                 }
-            }
-        HashMap params =new HashMap();
-        //验证子id 正确性 是否存在
-        if(templateId!=null)
+                componentIds[i]=Long.valueOf(componentId);
 
-                for(int j=0;j<list.size();j++){
-                    EditorTempComp editorTempComp =new  EditorTempComp();
-                    HashMap record_ =(HashMap)list.get(j);
-                    Long componentId =(Long)record_.get("componentId");
-
-                    //查找是否已经有关联数据了
-
-                    params.put("componentId",componentId);
-                    params.put("templateId",templateId);
-                    int count = editorTempCompMapper.countByParams(params);
-                    if(count>0){
-                        List<EditorTempComp> multiData = editorTempCompMapper.listByParams(params);
-                        if(multiData.size()>1){
-                            logger.error("accroding to templateId and componentId search data more than one code logic may be error please check it 根据id 查找数据多余一条 代码逻辑有问题:"+ JSON.toJSONString(params));
-
-                        }
-                        EditorTempComp editorTempComp_ =multiData.get(0);
-                        editorTempComp_.setConfig((String)record_.get("config"));
-                        editorTempCompMapper.updateByPrimaryKey(editorTempComp_);
-                        continue;
+                editorTempComp.setComponentId(componentId);
+                String config =(String) record.get("state");
+                editorTempComp.setConfig(config);
+                editorTempComp.setTemplateId(templateId);
+                newList.add(editorTempComp);
+                if(idObj!=null){
+                    Long id= Long.valueOf(idObj+"");
+                    //editorTempComp.setId(id);
+                    EditorTempComp tempComp = editorTempCompMapper.selectByPrimaryKey(id);
+                    if(tempComp== null ){
+                        return ResultUtil.getResult(101,"数据不存在");
                     }
-                    editorTempComp.setComponentId(componentId);
-                    editorTempComp.setTemplateId(templateId);
-                    editorTempComp.setConfig((String)record_.get("config"));
+                    editorTempComp.setId(id);
+
+
+                    editorTempCompMapper.updateByPrimaryKey(editorTempComp);
+                }else{
                     editorTempCompMapper.insert(editorTempComp);
                 }
 
-        //删除多余的数据
-        params.clear();
-        Long[] templateIds=new Long[]{templateId};
+            }
 
-        params.put("componentIds",templateIds);
-        params.put("templateIds",componentIds);
-        editorTempCompMapper.deleteExtra(params);
+
+        List<EditorTempComp> oldList = editorTempCompMapper.listByParams(params);
+
+        for(EditorTempComp oldTempComp : oldList){
+            boolean exist = false;
+            for(EditorTempComp newTempComp: newList){
+                if(newTempComp.getId() == oldTempComp.getId()){
+                    exist=true;
+                    break;
+                }
+
+
+            }
+            if(!exist){
+                editorTempCompMapper.deleteByPrimaryKey(oldTempComp.getId());
+            }
+        }
+
+
         //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
         return ResultUtil.getSuccResult();
     }

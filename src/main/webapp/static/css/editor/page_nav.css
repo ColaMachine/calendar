@@ -129,5 +129,7 @@ ul .page-menu {
 .page-navigator {
     padding-right: 0px !important;
     padding-left: 0px !important;
+    /*width:322px !important;*/
     height: 100%;
+    float: left;
 }

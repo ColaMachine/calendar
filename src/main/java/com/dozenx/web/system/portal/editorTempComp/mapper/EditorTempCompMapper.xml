@@ -6,9 +6,10 @@
       <result column="templateId" jdbcType="BIGINT" property="templateId" />
       <result column="componentId" jdbcType="BIGINT" property="componentId" />
       <result column="config" jdbcType="VARCHAR" property="config" />
+      <result column="index" jdbcType="INTEGER" property="index" />
   </resultMap>
   <sql id="Base_Column_List">
-    editor_temp_comp.`id` ,editor_temp_comp.`templateId` ,editor_temp_comp.`componentId` ,editor_temp_comp.`config` 
+    editor_temp_comp.`id` ,editor_temp_comp.`templateId` ,editor_temp_comp.`componentId` ,editor_temp_comp.`config`  ,editor_temp_comp.`index`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -39,6 +40,7 @@
 ,#{templateId,jdbcType=BIGINT}
 ,#{componentId,jdbcType=BIGINT}
 ,#{config,jdbcType=VARCHAR}
+     ,#{index,jdbcType=INTEGER}
     )
   </insert>
    <insert id="insertSelective" parameterType="com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp" >
@@ -55,7 +57,10 @@
         </if>  
         <if test="config != null" >  
            `config`, 
-        </if>  
+        </if>
+        <if test="index != null" >
+            `index`,
+        </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
         <if test="id != null" >  
@@ -69,7 +74,10 @@
         </if>  
         <if test="config != null" >  
           #{config,jdbcType=VARCHAR},
-        </if>  
+        </if>
+        <if test="index != null" >
+            #{index,jdbcType=INTEGER},
+        </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp" >
@@ -86,7 +94,10 @@
         </if>  
         <if test="config != null" >  
              `config`=#{config,jdbcType=VARCHAR},
-        </if>  
+        </if>
+        <if test="index != null" >
+            `index`=#{index,jdbcType=INTEGER},
+        </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -95,8 +106,9 @@
     set 
               `templateId`=#{templateId,jdbcType=BIGINT},  
               `componentId`=#{componentId,jdbcType=BIGINT},  
-              `config`=#{config,jdbcType=VARCHAR}  
-where id = #{id,jdbcType=BIGINT}
+              `config`=#{config,jdbcType=VARCHAR}  ,
+      `index`=#{index,jdbcType=INTEGER}
+      where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
     select 
@@ -116,7 +128,8 @@ where id = #{id,jdbcType=BIGINT}
         </if>  
         <if test="configLike != null and configLike != '' ">  
              and `config` like "%"#{configLike}"%"
-        </if>   
+        </if>
+      order by `index`
   </select>
    <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
     select 
@@ -124,21 +137,22 @@ where id = #{id,jdbcType=BIGINT}
     from editor_temp_comp
 
     where 1=1
-        <if test="id != null and id != '' ">  
+        <if test="id != null and id != '' ">
            and editor_temp_comp.`id` = #{id}
-        </if>  
-        <if test="templateId != null and templateId != '' ">  
+        </if>
+        <if test="templateId != null and templateId != '' ">
            and editor_temp_comp.`templateId` = #{templateId}
-        </if>  
-        <if test="componentId != null and componentId != '' ">  
+        </if>
+        <if test="componentId != null and componentId != '' ">
            and editor_temp_comp.`componentId` = #{componentId}
-        </if>  
-        <if test="config != null and config != '' ">  
+        </if>
+        <if test="config != null and config != '' ">
            and editor_temp_comp.`config` = #{config}
-        </if>  
-        <if test="configLike != null and configLike != '' ">  
+        </if>
+        <if test="configLike != null and configLike != '' ">
              and editor_temp_comp.`config` like "%"#{configLike}"%"
-        </if>   
+        </if>
+       order by `index`
   </select>
    <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
     select 

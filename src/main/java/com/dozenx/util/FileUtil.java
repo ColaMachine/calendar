@@ -21,7 +21,9 @@ public class FileUtil {
 
     public static String readFile2Str(String path) throws IOException {
         File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
-
+        if(!file.exists()){
+            return "";
+        }
         BufferedReader br = new BufferedReader(new FileReader(file));
         String s;
         StringBuffer templateStr = new StringBuffer();
@@ -123,19 +125,53 @@ public class FileUtil {
             //bufferWritter.write(content);
             System.out.println("Done");
         } catch (IOException e) {
+            System.out.println(file.getAbsolutePath().toString());
             e.printStackTrace();
             throw e;
         } finally {
            /* bufferWritter.flush();
             if(bufferWritter!=null )
                 bufferWritter.close();*/
+
             fileWritter.flush();
             if (fileWritter != null)
                 fileWritter.close();
 
         }
     }
+    public static void writeFile(String filePath, String content) throws IOException {
+        FileWriter fileWritter = null;
+        File file =new File(filePath);
+        // BufferedWriter bufferWritter=null;
+        try {
+            //if file doesnt exists, then create it
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            //true = append file
+            fileWritter = new FileWriter(file, false);
+            fileWritter.write(content);
+            //  bufferWritter = new BufferedWriter(fileWritter);
+            //bufferWritter.write(content);
+            System.out.println("Done");
+        } catch (IOException e) {
+            System.out.println(file.getAbsolutePath().toString());
+            e.printStackTrace();
+            throw e;
+        } finally {
+           /* bufferWritter.flush();
+            if(bufferWritter!=null )
+                bufferWritter.close();*/
 
+            fileWritter.flush();
+            if (fileWritter != null)
+                fileWritter.close();
+
+        }
+    }
     public static void main(String args[]) {
         try {
 

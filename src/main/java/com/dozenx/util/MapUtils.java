@@ -33,7 +33,19 @@ public class MapUtils {
 			request.setAttribute(key,value);
 		}
 	}
+	public static String join(HashMap map ,String seprator){
+		StringBuffer sb =new StringBuffer();
 
+		Iterator it = map.keySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<String, Object> entry = (Map.Entry<String, Object>)it.next();
+			String key = entry.getKey();
+			String value =entry.getValue()+"";
+			sb.append(key+"="+value+"&");
+		}
+	return sb.toString();
+
+	}
 	public static HashMap request2Map(HttpServletRequest request) {
 		HashMap map = new HashMap();
 	     Enumeration paramNames = request.getParameterNames();

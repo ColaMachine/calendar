@@ -64,7 +64,7 @@ public class LoginController extends BaseController {
         // logger.debug("s");
         // System.out.println(123);
         //getJedis().set("1","2");
-        ServletContext context = request.getSession().getServletContext();
+     /*   ServletContext context = request.getSession().getServletContext();
         WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(context);
         for(String name:wac.getBeanDefinitionNames()){
             System.out.println("[ioc]"+name+"    ");
@@ -73,7 +73,7 @@ public class LoginController extends BaseController {
 
         for(String name:wac2.getBeanDefinitionNames()){
             System.out.println("[ioc111-------------]"+name+"    ");
-        }
+        }*/
         //ConfigUtil.getConfig("1234");
         request.setAttribute("path", SysConfig.PATH);
 

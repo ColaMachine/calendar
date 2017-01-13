@@ -21,6 +21,16 @@ import org.springframework.util.DigestUtils;
 import sun.misc.BASE64Decoder;
 public class StringUtil {
 	public static String EMPTY = "";
+
+	public static boolean  isUrl(String str){
+		if(isEmpty(str)){
+			return false;
+		}
+		if(str.matches("(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?")){
+			return true;
+		}
+		return false;
+	}
 	public static boolean  isEmpty(String str){
 		if(str ==null ||  str.length()==0){
 			return true;

@@ -147,6 +147,13 @@ public class ValidCodeService {
         }
     }
 
+    /**
+     * 对历史记录清0
+     * @param key
+     * @param history
+     * @param code
+     * @param nowTime
+     */
     public void resetHistory(String key,SmsHistory history,String code,Long nowTime){
         history.getTimes().offer(nowTime);
         history.setLast(nowTime);

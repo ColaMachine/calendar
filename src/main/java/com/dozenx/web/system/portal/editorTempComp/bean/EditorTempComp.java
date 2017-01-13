@@ -11,6 +11,16 @@ import java.util.Date;
 
 public class EditorTempComp {
     /**编号**/
+    private int index;
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     private Long id;
     public Long getId(){
         return id;
@@ -30,6 +40,16 @@ public class EditorTempComp {
         this.componentId=componentId;
     }/**配置**/
     private String config;
+
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
+    }
+
+    private String html;
     public String getConfig(){
         return config;
     }    public void setConfig(String config){

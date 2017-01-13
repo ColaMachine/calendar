@@ -43,8 +43,37 @@ public class Component {
         this.createtime=createtime;
     }
 
-    public String entity;
+    private String html;
 
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
+    }
+
+    private String entity;
+
+    private String entitySource;
+
+    public String getEntitySource() {
+        return entitySource;
+    }
+
+    public void setEntitySource(String entitySource) {
+        this.entitySource = entitySource;
+    }
+
+    public String getSettingSource() {
+        return settingSource;
+    }
+
+    public void setSettingSource(String settingSource) {
+        this.settingSource = settingSource;
+    }
+
+    private String settingSource;
 
     public String getEntity() {
         return entity;

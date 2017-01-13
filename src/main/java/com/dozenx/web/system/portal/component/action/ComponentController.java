@@ -244,7 +244,7 @@ public class ComponentController extends BaseController{
     
     /**
      * 说明:保存角色信息
-     * 
+     *
      * @param request
      * @return
      * @throws Exception
@@ -262,22 +262,22 @@ public class ComponentController extends BaseController{
         if(!StringUtil.isBlank(id)){
             component.setId(Long.valueOf(id)) ;
         }
-        
+
         String name = request.getParameter("name");
         if(!StringUtil.isBlank(name)){
             component.setName(String.valueOf(name)) ;
         }
-        
+
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
             component.setRemark(String.valueOf(remark)) ;
         }
-        
+
         String face = request.getParameter("face");
         if(!StringUtil.isBlank(face)){
             component.setFace(String.valueOf(face)) ;
         }
-        
+
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
             component.setCreatetime(Timestamp.valueOf(createtime)) ;
@@ -307,6 +307,23 @@ public class ComponentController extends BaseController{
         if(!StringUtil.isBlank(setting)){
             component.setSetting(setting);
         }
+
+        String entitySource = request.getParameter("entitySource");
+        if(!StringUtil.isBlank(entitySource)){
+            component.setEntitySource(entitySource);
+        }
+
+        String html = request.getParameter("html");
+        if(!StringUtil.isBlank(html)){
+            component.setHtml(html);
+        }
+
+
+        String settingSource = request.getParameter("settingSource");
+        if(!StringUtil.isBlank(settingSource)){
+            component.setSettingSource(settingSource);
+        }
+
         String css=request.getParameter("css");
         if(!StringUtil.isBlank(css)){
             component.setCss(css);
@@ -336,7 +353,30 @@ public class ComponentController extends BaseController{
         }
 
         return componentService.save(component);
-       
+
+    }
+
+    /**
+     * 说明:保存角色信息
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午1:33:00
+     */
+    // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
+    @RequestMapping(value = "/copy.json")
+    @ResponseBody
+    public Object copy(HttpServletRequest request) throws Exception {
+
+        String id = request.getParameter("id");
+
+        Component component = this.componentService.selectByPrimaryKey(Long.valueOf(id));
+        component.setId(null);
+        return componentService.save(component);
+
     }
 
     @RequestMapping(value = "/del.json")

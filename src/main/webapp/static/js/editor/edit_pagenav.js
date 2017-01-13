@@ -17,7 +17,7 @@ var PageNav = React.createClass({displayName: "PageNav",
 	  render: function() {
           var that =this;
 		  return (
-          React.createElement("div", {className: "page-navigator col-xs-1 col-sm-5"}, 
+          React.createElement("div", {className: "page-navigator "}, 
               React.createElement("div", {className: "mask"}), 
               React.createElement("div", null, 
                   React.createElement("ul", {className: "nav nav-tabs"}, 

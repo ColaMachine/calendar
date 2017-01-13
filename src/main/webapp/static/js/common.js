@@ -223,7 +223,13 @@ var Ajax={
          	var param = options.inputData;
          	options.success = function(outputData) {//alert("success")
          		if((typeof outputData=="object" && outputData.r=="504" )|| (typeof outputData=="string" && outputData.indexOf("504")!=-1)){
-         			window.location=PATH+"/login.htm";
+
+                    dialog.confirm("请重新登录 正为你跳转登录页面",function(){
+                    window.location=PATH+"/login.htm";
+                    });
+
+         		  //  alert("请重新登录 正为你跳转登录页面");
+
          		}
          		if (typeof callback == 'function') {
          			callback(outputData);
@@ -2284,7 +2290,7 @@ function zImageUtil2(config) {
 
 		},
 		init: function(jso) {
-			this.imgDom = $("<img class=\"row-10 img-upload\" alt=\"请上传图片\"></img>");
+			this.imgDom = $("<img class=\" img-upload\" alt=\"请上传图片\"></img>");
 			this.maxHeight = jso.maxHeight||633;
 			this.maxWidth = jso.maxWidth||300;
 			this.postUrl = jso.postUrl||(PATH+"/image/upload.json");
@@ -2481,4 +2487,25 @@ html+
 return ibox_title;
 }
 
+}
+
+var MapUtil={
+
+combine:function(map1,map2){
+var map={};
+for(var i in map1){
+    map[i]=map1[i];
+}
+for(var i in map2){
+    map[i]=map2[i];
+}
+return map;
+}
+}
+
+
+function getQueryString(name) {
+var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+var r = window.location.search.substr(1).match(reg);
+if (r != null) return unescape(r[2]); return null;
 }

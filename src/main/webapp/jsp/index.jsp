@@ -20,7 +20,8 @@
 <script type="text/javascript" src="${path}/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="${path}/static/js/common.js"></script>
 <script type="text/javascript" src="${path}/static/js/menu.js"></script>
-
+<script type="text/javascript" src="${path}/static/js/slider.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/slider.css" >
 <%
 String path = request.getContextPath();
 
@@ -38,7 +39,7 @@ var cssAry=[
 "/static/css/grid.css",
 /*"/static/css/bankgrid.css",*/
 /*"/static/css/jqgrid.css",*/
- /* "/static/css/head.css",*/
+ "/static/css/head.css",
 
     "/static/css/widget.css",
    "/static/css/window.css",
@@ -351,10 +352,13 @@ var menuList=[
                 {id:311,name:"登录人数",url:"/static/html/example/echarts.html",icon:"fa fa-area-chart",pid:31},
             {id:32,name:"拍卖行",url:"",url:"/rubish/auction.html",icon:"fa fa-area-chart",pid:0},
               {id:33,name:"页面制作",url:"",icon:"fa fa-area-chart",pid:0},
+               {id:335,name:"测试",url:"window:/static/html/editor/reactTest.html",icon:"fa fa-area-chart",pid:33},
              {id:331,name:"编辑器",url:"/static/html/editor/edit.html",icon:"fa fa-area-chart",pid:33},
-              {id:332,name:"组件",url:"/component/list.htm",icon:"fa fa-area-chart",pid:33},
-               {id:333,name:"模板",url:"/template/list.htm",icon:"fa fa-area-chart",pid:33},
-  {id:334,name:"模板组件匹配",url:"/editorTempComp/listMapper.htm",icon:"fa fa-area-chart",pid:33},
+            {id:332,name:"组件",url:"/component/list.htm",icon:"fa fa-area-chart",pid:33},
+           {id:333,name:"模板",url:"/template/list.htm",icon:"fa fa-area-chart",pid:33},
+            {id:334,name:"模板组件匹配",url:"/editorTempComp/listMapper.htm",icon:"fa fa-area-chart",pid:33},
+             {id:34,name:"商品",url:"",icon:"fa fa-area-chart",pid:0},
+                           {id:340,name:"商品列表",url:"/goods/list.htm",icon:"fa fa-area-chart",pid:34},
           ]
 
 

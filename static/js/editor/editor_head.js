@@ -7,7 +7,8 @@ var EditorHead = React.createClass({
 
 	  render: function() {
 		  return (
-		  <header className="header">
+		  <header className=
+		  "header">
             333
 		  </header>
         );

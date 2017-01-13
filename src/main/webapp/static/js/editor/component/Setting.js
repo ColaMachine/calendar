@@ -1,8 +1,6 @@
 
 var _Setting_ = function (entity, divId) {
     var setting = null;
-    var name="header";
-
     var _state = entity.state || {
 
         };

@@ -41,7 +41,29 @@ public class ComponentService extends BaseService {
      * @date 2015年11月15日下午12:36:24
      */
     public List<Component> listByParams4Page(HashMap params) {
-        return componentMapper.listByParams4Page(params);
+
+        List<Component> components=
+         componentMapper.listByParams4Page(params);
+        for(Component component:components){
+            try {
+                component.setHtml(FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("src/main/webapp/static/html/editor/component/source").resolve("entity" + component.getId() + ".html").toString()));
+
+                component.setEntity(FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("src/main/webapp/static/js/editor/component/source").resolve("entity" + component.getId() + ".js").toString()));
+
+                component.setSetting(FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("src/main/webapp/static/js/editor/component/source").resolve("setting" + component.getId() + ".js").toString()));
+
+                component.setEntitySource(FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("static/js/editor/component/source").resolve("entity" + component.getId() + ".js").toString()));
+
+                component.setSettingSource(FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("static/js/editor/component/source").resolve("setting" + component.getId() + ".js").toString()));
+
+
+                component.setCss(FileUtil.readFile2Str(PathManager.getInstance().getTmpPath().resolve("component" + component.getId() + ".css").toString()));
+                ;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return components;
     }
     public List<Component> listByParams(HashMap params) {
         return componentMapper.listByParams(params);
@@ -84,21 +106,35 @@ public class ComponentService extends BaseService {
             componentMapper.updateByPrimaryKeySelective(component);
         }
         try {
-            if(component.getEntity().length()>0){
-                FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("entity"+component.getId()+".js").toFile(),component.getEntity()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/.replaceAll("_Entity_","Entity"+component.getId()));
+        /*    if(component.getEntity().length()>0){
+                FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("").resolve("entity"+component.getId()+".js").toFile(),component.getEntity()*//*.replaceAll("&lt;","<").replaceAll("&gt;",">")*//*.replaceAll("_Entity_","Entity"+component.getId()));
               //  FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".jshtml").toFile(),component.getJsHtml());
             }
 
             if(component.getSetting().length()>0){
-                FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("setting"+component.getId()+".js").toFile(),component.getSetting()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/.replaceAll("_Setting_","Setting"+component.getId()));
+                FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("setting"+component.getId()+".js").toFile(),component.getSetting()*//*.replaceAll("&lt;","<").replaceAll("&gt;",">")*//*.replaceAll("_Setting_","Setting"+component.getId()));
+                //  FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".jshtml").toFile(),component.getJsHtml());
+            }*/
+            if(StringUtil.isNotEmpty(component.getHtml())){
+                FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("src/main/webapp/static/html/editor/component").resolve("source/entity"+component.getId()+".html").toString(),component.getHtml()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/.replaceAll("_Entity_","Entity"+component.getId()));
+                //  FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".jshtml").toFile(),component.getJsHtml());
+            }
+            if(StringUtil.isNotEmpty(component.getEntitySource())){
+                FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("static/js/editor/component").resolve("source/entity"+component.getId()+".js").toString(),component.getEntitySource()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/.replaceAll("_Entity_","Entity"+component.getId()));
                 //  FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".jshtml").toFile(),component.getJsHtml());
             }
 
-            if(component.getCss().length()>0){
-                FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".css").toFile(),component.getCss()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/);
+            if(StringUtil.isNotEmpty(component.getSettingSource())){
+                FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("static/js/editor/component").resolve("source/setting"+component.getId()+".js").toString(),component.getSettingSource()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/.replaceAll("_Setting_","Setting"+component.getId()));
+                //  FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".jshtml").toFile(),component.getJsHtml());
+            }
+
+            if(StringUtil.isNotEmpty(component.getCss())){
+                FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".css").toString(),component.getCss()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/);
                 //FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".csshtml").toFile(),component.getCssHtml());
             }
 
+           new CmdUtil().execCommand("gulp build",PathManager.getInstance().getHomePath().resolve("gulp").toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,9 +162,15 @@ public class ComponentService extends BaseService {
     public Component selectByPrimaryKey(Long id){
         Component component = componentMapper.selectByPrimaryKey(id);
         try {
-            component.setEntity( FileUtil.readFile2Str(PathManager.getInstance().getTmpPath().resolve("entity"+component.getId()+".js").toString()));
+            component.setHtml( FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("src/main/webapp/static/html/editor/component/source").resolve("entity"+component.getId()+".html").toString()));
 
-            component.setSetting( FileUtil.readFile2Str(PathManager.getInstance().getTmpPath().resolve("setting"+component.getId()+".js").toString()));
+            component.setEntity( FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("src/main/webapp/static/js/editor/component/source").resolve("entity"+component.getId()+".js").toString()));
+
+            component.setSetting( FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("src/main/webapp/static/js/editor/component/source").resolve("setting"+component.getId()+".js").toString()));
+
+            component.setEntitySource( FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("static/js/editor/component/source").resolve("entity"+component.getId()+".js").toString()));
+
+            component.setSettingSource( FileUtil.readFile2Str(PathManager.getInstance().getHomePath().resolve("static/js/editor/component/source").resolve("setting"+component.getId()+".js").toString()));
 
 
             component.setCss( FileUtil.readFile2Str(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".css").toString()));;

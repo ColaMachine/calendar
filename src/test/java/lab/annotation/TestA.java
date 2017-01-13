@@ -24,6 +24,8 @@ import java.lang.annotation.Target;
         ElemenetType.PACKAGE          　　 包声明
         ElemenetType.PARAMETER             参数声明
         ElemenetType.TYPE          　　　　  类，接口（包括注解类型）或enum声明*/
+
+
 @Target({ElementType.TYPE,ElementType.METHOD,ElementType.FIELD,ElementType.CONSTRUCTOR})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TestA {

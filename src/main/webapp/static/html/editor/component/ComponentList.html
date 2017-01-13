@@ -17,6 +17,7 @@
 
             <button type="button"  class="btn btn-primary searchBtn">查询</button>
             <button class="btn btn-secondary addBtn" ><i class="fa fa-plus"></i>新增</button>
+                <button class="btn btn-secondary copyBtn" ><i class="fa fa-copy"></i>复制</button>
                         <!--<button class="btn btn-primary deleteBtn"><i class="fa fa-plus"></i>删除</button>-->
                         <!--<button class="btn btn-primary exportBtn"><i class="fa fa-plus"></i>导出</button>-->
             </form>
@@ -49,6 +50,7 @@ var componentList={
           $(this.root).find(".editBtn").click(this.editSelectInfo.Apply(this));
         $(this.root).find(".deleteBtn").click(this.multiDelete.Apply(this));
         $(this.root).find(".searchBtn").click(this.searchInfo.Apply(this));
+         $(this.root).find(".copyBtn").click(this.copyInfo.Apply(this));
     },
     gridParam:{
         datatype: "json",
@@ -113,6 +115,25 @@ var componentList={
         var jso = changeForm2Jso(".app-search");
 
         this.mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
+    },
+     copyInfo:function (){
+
+var id= this.mygrid.jqGrid('getGridParam','selrow');
+if(StringUtil.isBlank(id)){
+    dialog.error("请先选中一条数据","",null);
+    return;
+}
+var rowData = this.mygrid.jqGrid('getRowData',id);
+var  mygrid =  this.mygrid;
+
+Ajax.getJSON("/component/copy.json?id="+rowData.id,null,function(data){
+     if(data.r==AJAX_SUCC){
+                 mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
+            }else{
+                dialog.error(data.msg,"导出失败",null);
+            }
+});
+
     },
     viewInfo:function (id){
         dialog.window("/component/view.htm?id="+id,this.modal);

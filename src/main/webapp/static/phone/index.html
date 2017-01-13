@@ -21,9 +21,9 @@
 	    	<nav>
 	    		<a id="login" href="login.html"><div class="header-left center-text row-2-5 left small-text">
 	    			<img class="header-left-img" src="img/header/wifi.png">
-	    			<span class="header-left-span right-text">连网</span>
+	    			<span class="header-left-span right-text">筛选</span>
 	    		</div></a>
-	    		<div class="center-text row-5 left normal-text">微站</div>
+	    		<div class="center-text row-5 left normal-text">网站名</div>
 	    		<a href="infoMnger.html"><div class="header-right center-text row-2-5 left small-text">
 	    			<img class="header-right-img right" src="img/header/information.png">
 	    		</div></a>
@@ -46,42 +46,42 @@
 				<div class="row-2 left center-text">
 					<div class="app-icon row-8">
 						<a href="#"><img class="row-9" src="img/app/lunch.png"></a>
-						<div class="small-text row-10">点餐</div>
+						<div class="small-text row-10">白菜价</div>
 					</div>
 				</div>
 
 				<div class="row-2 left center-text">
 					<div class="app-icon row-8">
 						<a href="#"><img class="row-9" src="img/app/services.png"></a>
-						<div class="small-text row-10">服务</div>
+						<div class="small-text row-10">发现</div>
 					</div>
 				</div>
 
 				<div class="row-2 left center-text">
 					<div class="app-icon row-8">
 						<a href="#"><img class="row-9" src="img/app/order.png"></a>
-						<div class="small-text row-10">买单</div>
+						<div class="small-text row-10">众筹</div>
 					</div>
 				</div>
 
 				<div class="row-2 left center-text">
 					<div class="app-icon row-8">
 						<a href="#"><img class="row-9" src="img/app/cup.png"></a>
-						<div class="small-text row-10">续杯</div>
+						<div class="small-text row-10">原创</div>
 					</div>
 				</div>
 
 				<div class="row-2 left center-text">
 					<div class="app-icon row-8">
 						<a href="#"><img class="row-9" src="img/app/share.png"></a>
-						<div class="small-text row-10">分享</div>
+						<div class="small-text row-10">海淘</div>
 					</div>
 				</div>
 			</div>
 
 			<!-- 店铺介绍 -->
 			<div class="title">
-				<span class="title-text small-text gray-text">店铺介绍</span>
+				<span class="title-text small-text gray-text">头条</span>
 			</div>
 			<div class="information small-text">
 				<div class="information-text">周末跟朋友聚会的地方，也是约会的好地方，更是喝咖啡的好地方！</div>
@@ -89,7 +89,7 @@
 
 			<!-- 照片墙 -->
 			<div class="title">
-				<span class="title-text small-text gray-text">照片墙</span>
+				<span class="title-text small-text gray-text">精选</span>
 			</div>
 			<div class="pic-wall clr-fix">
 				<div class="row-3-3 left center-text">
@@ -158,20 +158,99 @@
 				</div>
 			</div>-->
 
-			<!--<div class="more row-9">
-				<button class="back-gray gray-text normal-text">查看更多</button>
-			</div>-->
+
 			
     	</div>
-		
-		<footer class="row-10 footer light-gray-text">
+        <style>
+            li{ list-style: none; }
+            .app-li-it{
+                display:table;
+            }
+            .app-li-it-pic{
+                width:20%;
+                display:table-cell;
+            }
+            .app-li-it-content{
+                width:80%;
+                margin-left:110px;
+                padding-left:50px;
+                display:table-cell;
+                vertical-align: middle;
+            }
+            .app-li-it-pic img{
+                max-height: 100px;
+                min-height: 100px;
+            }
+            .app-li-it-text{
+                width:100%;
+                color:gray;
+                display:table;
+            }
+            .src-net{
+                display:table-cell;
+                width:30%;
+            }
+            .comment-num{
+                display:table-cell;
+                width:30%;
+            }
+            .goods-score{
+                display:table-cell;
+                width:30%;
+            }
+
+        </style>
+        <div class="title">
+            <span class="title-text small-text gray-text">商品列表</span>
+        </div>
+		<ul class="app-li">
+            <li class="app-li-it">
+                <div class="app-li-it-pic"><a href="http://www.baidu.com"><img src="img/pic-wall/1.png"/></a></div>
+                <div class="app-li-it-content">
+                    <div class="app-li-it-title"><a href="http://www.baidu.com"><h2>标题</h2></a></div>
+                    <div class="app-li-it-text"><span class="src-net">淘宝|23:12</span><span class="comment-num">评论:2</span><span class="goods-score">评分:98%</span></div>
+                </div>
+            </li>
+            <li class="app-li-it">
+                <div class="app-li-it-pic"><a href="http://www.baidu.com"><img src="img/pic-wall/1.png"/></a></div>
+                <div class="app-li-it-content">
+                    <div class="app-li-it-title"><a href="http://www.baidu.com"><h2>标题</h2></a></div>
+                    <div class="app-li-it-text"><span class="src-net">淘宝|23:12</span><span class="comment-num">评论:2</span><span class="goods-score">评分:98%</span></div>
+                </div>
+            </li>
+            <li class="app-li-it">
+                <div class="app-li-it-pic"><a href="http://www.baidu.com"><img src="img/pic-wall/1.png"/></a></div>
+                <div class="app-li-it-content">
+                    <div class="app-li-it-title"><a href="http://www.baidu.com"><h2>标题</h2></a></div>
+                    <div class="app-li-it-text"><span class="src-net">淘宝|23:12</span><span class="comment-num">评论:2</span><span class="goods-score">评分:98%</span></div>
+                </div>
+            </li>
+            <li class="app-li-it">
+                <div class="app-li-it-pic"><a href="http://www.baidu.com"><img src="img/pic-wall/1.png"/></a></div>
+                <div class="app-li-it-content">
+                    <div class="app-li-it-title"><a href="http://www.baidu.com"><h2>标题</h2></a></div>
+                    <div class="app-li-it-text"><span class="src-net">淘宝|23:12</span><span class="comment-num">评论:2</span><span class="goods-score">评分:98%</span></div>
+                </div>
+            </li>
+            <li class="app-li-it">
+                <div class="app-li-it-pic"><a href="http://www.baidu.com"><img src="img/pic-wall/1.png"/></a></div>
+                <div class="app-li-it-content">
+                    <div class="app-li-it-title"><a href="http://www.baidu.com"><h2>标题</h2></a></div>
+                    <div class="app-li-it-text"><span class="src-net">淘宝|23:12</span><span class="comment-num">评论:2</span><span class="goods-score">评分:98%</span></div>
+                </div>
+            </li>
+        </ul>
+        <div class="more row-9">
+            <button class="back-gray gray-text normal-text">查看更多</button>
+        </div>
+		<!--<footer class="row-10 footer light-gray-text">
 			<div class="row-9 center-text footer-top">
-				<span class="small-text">本系统由中国电信爱WiFi运营中心提供支持</span>
+				<span class="small-text">本系统由dozen.zhang提供支持</span>
 			</div>
 			<div class="row-9 center-text footer-bottom">
 				<span class="small-text">400-8252-525</span>
 			</div>
-		</footer>
+		</footer>-->
 
 		<script type="text/javascript" src="js/comm/util.js"></script>
 		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>

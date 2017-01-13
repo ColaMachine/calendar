@@ -1,9 +1,6 @@
 package com.dozenx.util.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +23,49 @@ public class MysqlUtil {
 		compare();
 		System.out.println("compare end ");
 	}
+	public Connection getConnection(String user,String password,String url){
+		Connection conn;
+		try {
 
+			// 之所以要使用下面这条语句，是因为要使用MySQL的驱动，所以我们要把它驱动起来，
+			// 可以通过Class.forName把它加载进去，也可以通过初始化来驱动起来，下面三种形式都可以
+			Class.forName("com.mysql.jdbc.Driver");// 动态加载mysql驱动
+			// or:
+			// com.mysql.jdbc.Driver driver = new com.mysql.jdbc.Driver();
+			// or：
+			// new com.mysql.jdbc.Driver();
+
+			System.out.println("成功加载MySQL驱动程序");
+			// 一个Connection代表一个数据库连接
+			conn = DriverManager.getConnection(url+"?user="+user+"&password="+password);
+			return conn;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	public void executeQuery(String user,String password,String url,String sql){
+		Connection conn ;
+		try{
+			conn=this.getConnection(user,password,url);
+
+
+			Statement stmt	= conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				HashMap map =new HashMap();
+				rs.getRow();
+				// System.out.println(rs.getString(1));
+				tables_a.add(rs.getString(1));
+				map_a.put(rs.getString(1), new ArrayList());
+			}
+			rs.close();
+		}catch (Exception e ){
+			e.printStackTrace();
+		}
+
+	}
 	public void compare() {
 		for (int i = 0; i < tables_a.size(); i++) {
 			String tablename = tables_a.get(i);

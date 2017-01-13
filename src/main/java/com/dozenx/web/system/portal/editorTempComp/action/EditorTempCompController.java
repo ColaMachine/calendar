@@ -11,10 +11,12 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.util.*;
 
+import com.alibaba.fastjson.JSON;
 import com.dozenx.util.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.dozenx.web.system.portal.component.service.ComponentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,8 @@ public class EditorTempCompController extends BaseController{
     /** 权限service **/
     @Autowired
     private EditorTempCompService editorTempCompService;
-
+    @Autowired
+    private ComponentService componentService;
 
     /**
      * 说明: 跳转到角色列表页面
@@ -106,6 +109,9 @@ public class EditorTempCompController extends BaseController{
 
         params.put("page",page);
         List<EditorTempComp> editorTempComps = editorTempCompService.listByParams4Page(params);
+        for(EditorTempComp editorTempComp:editorTempComps){
+            editorTempComp.setHtml(componentService.selectByPrimaryKey(editorTempComp.getComponentId()).getHtml());
+        }
         return ResultUtil.getResult(editorTempComps, page);
     }
 
@@ -258,13 +264,16 @@ public class EditorTempCompController extends BaseController{
     @RequestMapping(value = "/msave1.json")
     @ResponseBody
     public Object msave1(HttpServletRequest request) throws Exception {
-        HashMap map =MapUtils.request2Map(request);
-        String templateId = (String)map.get("templateId");
+       // HashMap map =MapUtils.request2Map(request);
+        String templateId = (String)request.getParameter("templateId");
+
+        String data = (String)request.getParameter("data");
+       List<HashMap> list =  JSON.parseArray(data,HashMap.class);
         if(StringUtil.isBlank(templateId)){
             return getResult(1,"缺少参数");
         }
-        Iterator<Map.Entry<String,String>> it = map.entrySet().iterator();
-        List list =new ArrayList();
+      //  Iterator<Map.Entry<String,String>> it = map.entrySet().iterator();
+       /* List list =new ArrayList();
         while(it.hasNext()){
             Map.Entry entry = it.next();
             HashMap record =new HashMap();
@@ -272,7 +281,7 @@ public class EditorTempCompController extends BaseController{
             record.put("componentId",entry.getKey());
             record.put("config",entry.getValue());
             list.add(record);
-        }
+        }*/
 
 
         return editorTempCompService.msave1( templateId, list);

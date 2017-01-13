@@ -98,14 +98,7 @@
 		</property>
 	</bean> -->
 
-	<bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:properties/config.properties</value>
-			</list>
-		</property>
-	</bean>
+
 
 	<!-- 开启mvc注解 -->
 	<mvc:annotation-driven validator="validator"

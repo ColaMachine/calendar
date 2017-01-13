@@ -34,8 +34,8 @@ var zMenu = {
 
             }
         }
-this.R = new Router();
-this.R.init();
+        this.R = new Router();
+        this.R.init();//路由初始化
 
 
 		var ele = document.getElementById(id);
@@ -193,18 +193,23 @@ this.R.init();
 		    $(".main-content").fadeIn('slow');}
 		  );return;*/
 		//	jLoading.start();
-		if(url.substr(0,1)=="/"){
-		}else{
-		    url="/"+url;
+
+        if(url.indexOf("window:")!=-1){
+      //  alert(url.replace("window:",""));return;
+            window.open(url.replace("window:",""));
+        }else{
+        	if(url.substr(0,1)=="/"){
+        		}else{
+        		    url="/"+url;
+        		}
+            Ajax.get(PATH+url, null, function(data) {
+
+
+                $('.main').html(data);
+                //$('.main').append(ibox.render(data,"新窗口"));
+                //if (typeof fun == 'function') fun();
+            });
 		}
-
-		Ajax.get(PATH+url, null, function(data) {
-
-
-			$('.main').html(data);
-			//$('.main').append(ibox.render(data,"新窗口"));
-			//if (typeof fun == 'function') fun();
-		});
 
 	},
 	createIcon: function() {
