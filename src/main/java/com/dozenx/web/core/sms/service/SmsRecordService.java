@@ -17,7 +17,7 @@ import com.dozenx.util.ResultUtil;
 import com.dozenx.util.ValidateUtil;
 import com.dozenx.web.core.sms.bean.SmsRecord;
 import com.dozenx.web.core.sms.dao.SmsRecordMapper;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

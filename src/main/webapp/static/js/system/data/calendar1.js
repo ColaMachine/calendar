@@ -30,7 +30,7 @@ Calendar.prototype.goPreYear=function(){
 	var m=day.getMonth();
 	var d=day.getDate();
 	y--;
-	
+
 	if(d>28){
 		var endDay=CaculateMonthDays(y,m);
 		d=d>endDay?endDay:d;
@@ -46,7 +46,7 @@ Calendar.prototype.goNextYear=function(){
 	var m=day.getMonth();
 	var d=day.getDate();
 	y++;
-	
+
 	if(d>28){
 		var endDay=CaculateMonthDays(y,m);
 		d=d>endDay?endDay:d;
@@ -96,6 +96,7 @@ Calendar.prototype.goNextMonth=function(){
 	day.setYear(y);
 	day.setMonth(m,d);
 	this.dummyDay=day;
+
 };
 Calendar.prototype.goPreDay=function(){
 	var day = this.dummyDay;
@@ -108,7 +109,7 @@ Calendar.prototype.goPreDay=function(){
 	{
 		if(m>0){
 			m--;
-			
+
 		}else{
 			y--;
 			m=11;
@@ -131,7 +132,7 @@ Calendar.prototype.goNextDay=function(){
 	{
 		if(m<11){
 			m++;
-			
+
 		}else{
 			y++;
 			m=0;

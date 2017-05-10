@@ -107,7 +107,7 @@ public class TerminalUtil {
         while(m.find()){
             terminalBrand =  m.group(1);
         }
-        if(StringUtil.isEmpty(terminalBrand)){
+        if(StringUtil.isBlank(terminalBrand)){
             return StringUtil.EMPTY;
         }
         return terminalBrand.trim().replaceAll("_", ".");
@@ -127,7 +127,7 @@ public class TerminalUtil {
         while(m.find()){
             terminalBrand =  m.group(1);
         }
-        if(StringUtil.isEmpty(terminalBrand)){
+        if(StringUtil.isBlank(terminalBrand)){
             return StringUtil.EMPTY;
         }
         return terminalBrand.trim().replaceAll("_", ".");
@@ -177,7 +177,7 @@ public class TerminalUtil {
         while(m.find()){
             terminalVersion=m.group(0);
         }
-        if(StringUtil.isEmpty(terminalVersion)){
+        if(StringUtil.isBlank(terminalVersion)){
             return StringUtil.EMPTY;
         }
         return getTerminalVersionNum(terminalVersion);
@@ -197,7 +197,7 @@ public class TerminalUtil {
         while(m.find()){
             terminalVersion=m.group(0);
         }
-        if(StringUtil.isEmpty(terminalVersion)){
+        if(StringUtil.isBlank(terminalVersion)){
             return StringUtil.EMPTY;
         }
         return getTerminalVersionNum(terminalVersion);
@@ -217,7 +217,7 @@ public class TerminalUtil {
         while(m.find()){
             terminalVersion=m.group(2);
         }
-        if(StringUtil.isEmpty(terminalVersion)){
+        if(StringUtil.isBlank(terminalVersion)){
             return StringUtil.EMPTY;
         }
         return getTerminalVersionNum(terminalVersion);
@@ -237,7 +237,7 @@ public class TerminalUtil {
         while(m.find()){
             terminalVersion=m.group(0);
         }
-        if(StringUtil.isEmpty(terminalVersion)){
+        if(StringUtil.isBlank(terminalVersion)){
             return StringUtil.EMPTY;
         }
         return getTerminalVersionNum(terminalVersion);
@@ -258,7 +258,7 @@ public class TerminalUtil {
             terminalVersionNum = m.group(0);
             break;
         }
-        if(StringUtil.isEmpty(terminalVersionNum)){
+        if(StringUtil.isBlank(terminalVersionNum)){
             return StringUtil.EMPTY;
         }
         return terminalVersionNum.trim().replaceAll("_", ".");

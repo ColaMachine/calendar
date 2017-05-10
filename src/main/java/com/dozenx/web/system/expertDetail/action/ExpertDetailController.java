@@ -8,14 +8,13 @@
 
 package com.dozenx.web.system.expertDetail.action;
 import java.io.File;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.LinkedHashMap;
 import com.dozenx.util.*;
-import javax.annotation.Resource;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -24,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -37,9 +35,7 @@ import com.dozenx.web.core.rules.*;
 import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.base.BaseController;
 import com.dozenx.util.StringUtil;
-import com.dozenx.util.ValidateUtil;
 import com.dozenx.web.util.RequestUtil;
-import com.dozenx.web.message.ResultDTO;
 import com.dozenx.util.DateUtil;
 @Controller
 @RequestMapping("/expertDetail")
@@ -221,7 +217,7 @@ public class ExpertDetailController extends BaseController{
         vu.add("expertId", expertId, "专家",  new Rule[]{new Digits(15,0),new NotEmpty()});
         vu.add("content", content, "介绍",  new Rule[]{new Length(50000)});
         validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
+        if(StringUtil.isNotBlank(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
 
@@ -269,7 +265,7 @@ public class ExpertDetailController extends BaseController{
                 return ResultUtil.getResult(302,validStr);
             }
             
-            if(StringUtil.isNotEmpty(validStr)) {
+            if(StringUtil.isNotBlank(validStr)) {
                 return ResultUtil.getResult(302,validStr);
             }
             idAry[i]=Long.valueOf(idStrAry[i]);

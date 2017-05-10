@@ -112,7 +112,7 @@ var i=0;
           var that =this;
 		  return (
               <div className="container-fluid">
-                  <div className="row body-container">
+                  <div className="row body-container isplay:none">
                       <div className="col-sm-12">
                             <EditorHead/>
                             <div className="left-container">
@@ -125,7 +125,7 @@ var i=0;
                       </div>
                   </div>
 
-              </div>
+               </div>
 
         );
         }

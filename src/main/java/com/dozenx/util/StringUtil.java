@@ -1,5 +1,6 @@
 package com.dozenx.util;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +23,22 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.util.DigestUtils;
 
 import sun.misc.BASE64Decoder;
+
+/**
+ * 字符串工具类
+ * @author 张智威
+ * 2017年4月10日 上午10:07:58
+ */
 public class StringUtil {
 	public static String EMPTY = "";
 
+	/**
+	 * 判断是否是url
+	 * @param str
+	 * @return
+	 * @author 张智威
+	 * @date 2017年4月10日 上午10:08:51
+	 */
 	public static boolean  isUrl(String str){
 		if(isEmpty(str)){
 			return false;
@@ -34,19 +48,39 @@ public class StringUtil {
 		}
 		return false;
 	}
-	public static boolean  isEmpty(String str){
+	/**
+	 * 判断是否是为空
+	 * @param str
+	 * @return
+	 * @author 张智威
+	 * @date 2017年4月10日 上午10:09:11
+	 */
+	private static boolean  isEmpty(String str){
 		if(str ==null ||  str.length()==0){
 			return true;
 		}
 		return false;
 	}
+	/**
+	 * 判断是否是为空
+	 * @param str
+	 * @return
+	 * @author 张智威
+	 * @date 2017年4月10日 上午10:09:11
+	 */
 	public static boolean  isBlank(String str){
 		if(str ==null ||  str.length()==0){
 			return true;
 		}
 		return false;
 	}
-
+	/**
+	 * 判断是否为null
+	 * @param obj
+	 * @return
+	 * @author 张智威
+	 * @date 2017年4月10日 上午10:09:50
+	 */
 	public static boolean  isNull(Object obj){
 		if(obj==null)
 			return true;
@@ -57,29 +91,49 @@ public class StringUtil {
 		}
 		return false;
 	}
-	public static boolean  isNotEmpty(String str){
-		
+	/**
+	 * 判断是否不为空
+	 * @param str
+	 * @return
+	 * @author 张智威
+	 * @date 2017年4月10日 上午10:10:21
+	 */
+	public static boolean  isNotBlank(String str){
+
 		return !isEmpty(str);
 	}
-	
-	public static boolean checkEmailValid(String email){
+	/**
+	 * 判断是否不为空
+	 * @param str
+	 * @return
+	 * @author 张智威
+	 * @date 2017年4月10日 上午10:10:21
+	 */
+	/*public static boolean  isNotEmpty(String str){
+		
+		return !isEmpty(str);
+	}*/
+	/**
+	 * 判断是否为邮箱地址
+	 * @param email
+	 * @return
+	 * @author 张智威
+	 * @date 2017年4月10日 上午10:10:48
+	 */
+	public static boolean checkEmail(String email){
 		String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
 		return matcher.find();
 	}
-	public static boolean isNumeric(String str){
-		if (str == null|| str.equals("")) {
-			return false;
-		}
-		int sz = str.length();
-		for (int i = 0; i < sz; i++) {
-			if (Character.isDigit(str.charAt(i)) == false) {
-				return false;
-			}
-		}
-		return true;
-	}
+	/**
+	 * 判断是否为数字
+	 * @param str
+	 * @return
+	 * @author 张智威
+	 * @date 2017年4月10日 上午10:10:59
+	 */
+
 	public static boolean checkNumeric(String str){
         if (str == null|| str.equals("")) {
             return false;
@@ -92,18 +146,42 @@ public class StringUtil {
         }
         return true;
     }
-	
+
+	/**
+	 * 检查是否日期字符串
+	 * @param str
+	 * @param format
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:19* @return
+     */
 	public static boolean checkDateStr(String str,String format){
 	    format=format.replaceAll("[yMdhHms]", "\\\\d");
 	   return str.matches(format);
 	}
 
+	/**
+	 * 验证用户名称有效性
+	 * @param username
+	 * @return
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:19
+     */
 	public static boolean checkUserNameValid(String username){
 		String regex = "/^[0-9A-Za-z]*[a-zA-Z]+[0-9A-Za-z]*$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(username);
 		return matcher.find();
 	}
+
+	/**
+	 * 检查是否是float 类型数据
+	 * @param value 被检查字符串
+	 * @param integer 整数位长度
+	 * @param fraction 小数位长度
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:19
+     * @return
+     */
 	public static boolean checkFloat(String value,int integer,int fraction){
 	    String regex= String.format("^[+|-]?\\d{1,%d}(\\.\\d{1,%d})?$", integer,fraction);
 	    if(fraction==0){
@@ -114,13 +192,37 @@ public class StringUtil {
 		Matcher matcher = pattern.matcher(value);
 		return matcher.find();
 	}
+
+	/**
+	 * 转成首字母大写
+	 * @param abc
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:19
+	 * @return
+     */
 	public static String getAbc(String abc){
 	    return abc.substring(0, 1).toUpperCase()+abc.substring(1);
 	}
+
+	/**
+	 * 转成首字母小写
+	 * @param abc
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:19
+	 * @return
+     */
 	public static String getabc(String abc){
         return abc.substring(0, 1).toLowerCase()+abc.substring(1);
     }
-	
+
+	/**
+	 * 根据间隔符合连起来
+	 * @param join
+	 * @param strAry
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:19
+	 * @return
+     */
 	public  static String join(String join,Object [] strAry){
 		StringBuffer sb=new StringBuffer();
         for(int i=0;i<strAry.length;i++){
@@ -132,18 +234,43 @@ public class StringUtil {
         }
         return new String(sb);
 	}
-	
+
+	/**
+	 * 从字符串中提取对应开始结束字符串中间值
+	 * @param content
+	 * @param a
+	 * @param b
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:19
+	 * @return
+     */
 	public static String getContentBetween(String content,String a,String b){
 		int index = content.indexOf(a)+a.length();
 		int last = content.lastIndexOf(b);
 		return content.substring(index, last);
 	}
+
+	/**
+	 *判断是否手机号码
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:19
+	 * @param value
+	 * @return
+     */
     public static boolean isPhone(String value) {
         String regex = "^[1][3578][0-9]{9}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(value);
         return matcher.find();
     }
+
+	/**
+	 * 判断是否是邮箱地址
+	 * @author dozen.zhang
+	 * @date 2016年3月18日下午9:06:19
+	 * @param value
+	 * @return
+     */
     public static boolean isEmail(String value) {
         String regex = "^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w{2,3}){1,3})$";
         Pattern pattern = Pattern.compile(regex);
@@ -162,16 +289,14 @@ public class StringUtil {
         }
         return false;
     }
-    /*public static void main(String[] args) {
-        System.out.println(StringUtil.isID("330104198601292711"));;
-    }*/
+
 
 	/**  随机数字池**/
 	public static String randDigitString = "0123456789";//随机产生的字符串
 	
 	/**随机字母池  **/
-	public static String randAlphaString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
-	public static String randAlphaDigitString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
+	private static String randAlphaString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
+	private  static String randAlphaDigitString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
 	public static String getRandomString(int len){
 		String code ="";
 		for(int i=0;i<len;i++){
@@ -205,7 +330,7 @@ public class StringUtil {
 	public static String getRandomAlphaDigitString(int len){
 		String code ="";
 		for(int i=0;i<len;i++){
-			code+=randAlphaString.charAt((int)(Math.random()*randAlphaDigitString.length()));
+			code+=randAlphaDigitString.charAt((int)(Math.random()*randAlphaDigitString.length()));
 		}
 		return code;
 	}
@@ -670,7 +795,10 @@ static HashMap<Character,Character> gbkMap =null;
 
     public static void main(String args[]){
         try {
-           System.out.println( StringUtil.byte2Str(new String("1234567890ab个你好啊我知道你是谁").getBytes("gbk"),"gbk"));
+        String s = "http://61.154.14.180:18001/auth/welcome.jsp?dev_info={%22belongTo%22:%22fujian%22,%22corp%22:%22ZTE%22,%22devId%22:%22FatAP_31_20160405b52922b8-5559-4785-886a-c7cdd490b585%22,%22devName%22:%22FatAp-228-3941-8C7967044A74%22,%22mac%22:%228C7967044A74%22,%22merCascade%22:%22210980%22,%22merId%22:%22210980%22,%22model%22:%22ZXWL-WR100%22,%22region%22:%22330105%22,%22ssid%22:%22aWiFi-YYT%22,%22type%22:%22A%22}&gw_port=2060&global_value=8114E757A2_FatAP_31_20160405b52922b8-5559-4785-886a-c7cdd490b585_B4B676787CBA&global_key=portal_with_auth&dev_id=FatAP_31_20160405b52922b8-5559-4785-886a-c7cdd490b585&user_mac=B4B676787CBA&gw_address=192.168.10.1&url=http://www.baidu.com/&login_type=unauth&";
+
+			s= URLDecoder.decode(s);
+			System.out.println(s);
         } catch (Exception e) {
             e.printStackTrace();
         }

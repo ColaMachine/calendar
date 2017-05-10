@@ -8,11 +8,8 @@
 
 package com.dozenx.web.system.portal.component.service;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -24,9 +21,8 @@ import org.springframework.stereotype.Service;
 
 import com.dozenx.web.system.portal.component.bean.Component;
 import com.dozenx.web.system.portal.component.dao.ComponentMapper;
-import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.base.BaseService;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 
 @Service("componentService")
 public class ComponentService extends BaseService {
@@ -115,21 +111,21 @@ public class ComponentService extends BaseService {
                 FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("setting"+component.getId()+".js").toFile(),component.getSetting()*//*.replaceAll("&lt;","<").replaceAll("&gt;",">")*//*.replaceAll("_Setting_","Setting"+component.getId()));
                 //  FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".jshtml").toFile(),component.getJsHtml());
             }*/
-            if(StringUtil.isNotEmpty(component.getHtml())){
+            if(StringUtil.isNotBlank(component.getHtml())){
                 FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("src/main/webapp/static/html/editor/component").resolve("source/entity"+component.getId()+".html").toString(),component.getHtml()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/.replaceAll("_Entity_","Entity"+component.getId()));
                 //  FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".jshtml").toFile(),component.getJsHtml());
             }
-            if(StringUtil.isNotEmpty(component.getEntitySource())){
+            if(StringUtil.isNotBlank(component.getEntitySource())){
                 FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("static/js/editor/component").resolve("source/entity"+component.getId()+".js").toString(),component.getEntitySource()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/.replaceAll("_Entity_","Entity"+component.getId()));
                 //  FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".jshtml").toFile(),component.getJsHtml());
             }
 
-            if(StringUtil.isNotEmpty(component.getSettingSource())){
+            if(StringUtil.isNotBlank(component.getSettingSource())){
                 FileUtil.writeFile(PathManager.getInstance().getHomePath().resolve("static/js/editor/component").resolve("source/setting"+component.getId()+".js").toString(),component.getSettingSource()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/.replaceAll("_Setting_","Setting"+component.getId()));
                 //  FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".jshtml").toFile(),component.getJsHtml());
             }
 
-            if(StringUtil.isNotEmpty(component.getCss())){
+            if(StringUtil.isNotBlank(component.getCss())){
                 FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".css").toString(),component.getCss()/*.replaceAll("&lt;","<").replaceAll("&gt;",">")*/);
                 //FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("component"+component.getId()+".csshtml").toFile(),component.getCssHtml());
             }

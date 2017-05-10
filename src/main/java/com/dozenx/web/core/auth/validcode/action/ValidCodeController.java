@@ -10,9 +10,12 @@ import com.dozenx.core.config.ValidCodeConfig;
 import com.dozenx.util.ResultUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.auth.validcode.service.ValidCodeService;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.base.BaseController;
+import com.dozenx.web.core.log.ResultDTO;
 import com.dozenx.web.util.RequestUtil;
 import org.codehaus.jackson.map.util.JSONPObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +26,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/code")
-public class ValidCodeController {
-
+public class ValidCodeController extends BaseController{
+    /** * Logger 引入 */
+    private static Logger logger = LoggerFactory.getLogger(ValidCodeController.class);
     @Autowired
     private ValidCodeService validCodeService;
     public void setValidCodeService(ValidCodeService validCodeService) {
@@ -225,7 +229,17 @@ public class ValidCodeController {
     }
     @RequestMapping(value = "/sms/request.json", method = RequestMethod.GET)
     public @ResponseBody ResultDTO smsRequest(HttpServletRequest request){
+
+
+
         String phone =request.getParameter("phone");
+
+        //防止短信被滥用接口
+        if(request.getSession().getAttribute("hellosms")==null){
+            logger.error("cheater ip:"+   request.getRemoteAddr()+" xforward "+request.getHeader("x-forwarded-for")+"phone:"+phone);
+            return this.getResult();
+        }
+
         if(StringUtil.isBlank(phone)||!StringUtil.isPhone(phone)){
             return ResultUtil.getResult(302,"手机号不能为空");
         }

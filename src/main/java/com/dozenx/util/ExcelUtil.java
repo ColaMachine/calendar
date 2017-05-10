@@ -6,7 +6,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.usermodel.DateUtil;
+//import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
@@ -19,7 +19,7 @@ public class ExcelUtil {
 
     /**
      * 将一个EXCEL文件转化为数据集合（以表头每列为key，对应列内容为value的list集合）
-     * 
+     *
      * @param file
      *            文件
      * @return List
@@ -27,8 +27,7 @@ public class ExcelUtil {
      *             抛出异常
      * @author 宋展辉
      */
-    public static List<Map<String, String>> getExcelData(File file)
-            throws IOException {
+    public static List<Map<String, String>> getExcelData(File file) throws IOException {
         List<Map<String, String>> retDats = new ArrayList<Map<String, String>>();
         FileInputStream finput = new FileInputStream(file);
         try {
@@ -37,13 +36,13 @@ public class ExcelUtil {
             int firsRowNum = sheet.getFirstRowNum();
             int lastRowNum = sheet.getLastRowNum();
             Row headerRow = sheet.getRow(firsRowNum);
-            if(headerRow==null){
+            if (headerRow == null) {
                 throw new IOException("excel头部数据缺失 请按模板使用");
             }
             List<String> header = getHeader(headerRow);
             for (int i = firsRowNum + 1; i <= lastRowNum; i++) {
                 Row row = sheet.getRow(i);
-                if(row==null){
+                if (row == null) {
                     continue;
                 }
                 Map<String, String> eRow = new LinkedHashMap<String, String>();
@@ -63,14 +62,15 @@ public class ExcelUtil {
 
     /**
      * 将excel文件转化为javaBean
-     * 
+     *
      * @param file
      *            文件
      * @param valueType
      *            值类型
      * @param colMatch
      *            参数 excel列名为key，字段名为value的Map
-     * @param <T> 对象
+     * @param <T>
+     *            对象
      * @return List
      * @throws Exception
      *             抛出异常
@@ -78,8 +78,8 @@ public class ExcelUtil {
      * @throws IOException
      *             抛出IO异常
      */
-    public static <T> List<T> getExcelDataToBean(File file, Class<T> valueType,
-            Map<String, String> colMatch) throws IOException {
+    public static <T> List<T> getExcelDataToBean(File file, Class<T> valueType, Map<String, String> colMatch)
+            throws IOException {
         // 生成excel对应的初始数据
         List<Map<String, String>> list = getExcelData(file);
         // 如果有匹配需要替换的列名（因为EXCEL导入一般使用的是中文，导入数据库则是英文），则进行key名的替换
@@ -100,8 +100,7 @@ public class ExcelUtil {
         List<T> relists = new ArrayList<T>();
         for (int i = 0; i < list.size(); i++) {
             String json = JsonUtils.toJsonString(list.get(i));
-            Gson gson = new Gson();
-            T object = gson.fromJson(json, valueType);
+            T object = JsonUtils.toJavaBean(json, valueType);
             relists.add(object);
         }
         return relists;
@@ -109,7 +108,7 @@ public class ExcelUtil {
 
     /**
      * 将一个Excel文件转化为Map（以对应表格位置为key，表格内容为value的Map）
-     * 
+     *
      * @param file
      *            文件
      * @return Map
@@ -117,8 +116,7 @@ public class ExcelUtil {
      *             抛出异常
      * @author 宋展辉
      */
-    public static Map<String, String> getExcelMData(File file)
-            throws IOException {
+    public static Map<String, String> getExcelMData(File file) throws IOException {
         Map<String, String> retDats = new HashMap<String, String>();
         FileInputStream finput = new FileInputStream(file);
         try {
@@ -151,7 +149,7 @@ public class ExcelUtil {
 
     /**
      * 生成EXCEL文件
-     * 
+     *
      * @param obj
      *            实体类集合
      * @param filePath
@@ -163,8 +161,8 @@ public class ExcelUtil {
      *             抛出异常
      * @author 宋展辉 2015年11月6日 下午3:19:39
      */
-    public static File getExcelFile(List<?> obj, String filePath,
-            LinkedHashMap<String, String> colTitle) throws IOException {
+    public static File getExcelFile(List<?> obj, String filePath, LinkedHashMap<String, String> colTitle)
+            throws IOException {
         if (obj == null || obj.size() == 0) {
             return null;
         } else {
@@ -179,7 +177,7 @@ public class ExcelUtil {
 
     /**
      * 将object转化为Map<String,String>
-     * 
+     *
      * @param object
      *            参数
      * @return Map
@@ -191,7 +189,7 @@ public class ExcelUtil {
             return null;
         } else if (object instanceof Map) {// 若本身就是一个Map对象，则将Map对象的键对值都转化为字符后输出
             for (Object obj : ((Map) object).keySet()) {
-                map.put(obj.toString(), ((Map) object).get(obj)==null?"":((Map) object).get(obj).toString());
+                map.put(obj.toString(), ((Map) object).get(obj) == null ? "" : ((Map) object).get(obj).toString());
             }
         } else {// 其他情况则用反射输出该对象的所有属性，以属性名（小写）为key，属性值为value
             Field[] declaredFields = object.getClass().getDeclaredFields();
@@ -205,8 +203,8 @@ public class ExcelUtil {
                         // 属性为空则输出空串
                     } else if (obj instanceof Date) {
                         // 属性为时间类型则输出年月日时分秒格式的字符串
-                        value = com.dozenx.util.DateUtil.formatToString(
-                                (Date) obj, "yyyy-MM-dd HH:mm:ss");
+                        value = DateUtil.formatToString((Date) obj,
+                                "yyyy-MM-dd HH:mm:ss");
                     } else {
                         // 其他情况下直接转化为字符串
                         value = obj.toString();
@@ -222,7 +220,7 @@ public class ExcelUtil {
 
     /**
      * 生成EXCEL文件
-     * 
+     *
      * @param data
      *            参数 Map<String,String>对象集合
      * @param filePath
@@ -234,13 +232,11 @@ public class ExcelUtil {
      *             抛出异常
      * @author 宋展辉 2015年11月6日 下午3:19:58
      */
-    public static File getExcelFileFromMap(List<Map<String, String>> data,
-            String filePath, LinkedHashMap<String, String> colTitle)
-            throws IOException {
+    public static File getExcelFileFromMap(List<Map<String, String>> data, String filePath,
+                                           LinkedHashMap<String, String> colTitle) throws IOException {
         if (data == null || data.size() == 0) {
             return null;
-        } else if (StringUtil.isEmpty(filePath)
-                || !(filePath.endsWith("xls") || filePath.endsWith("xlsx"))) {
+        } else if (StringUtil.isBlank(filePath) || !(filePath.endsWith("xls") || filePath.endsWith("xlsx"))) {
             throw new IOException("传入正确的Excel文件路径");
         } else {
             Workbook wb = null;
@@ -282,7 +278,8 @@ public class ExcelUtil {
                 }
             }
             // 输出Excel文件
-            FileOutputStream fos = new FileOutputStream(PathManager.getInstance().getTmpPath().resolve(filePath).toFile());
+            FileOutputStream fos = new FileOutputStream(
+                    PathManager.getInstance().getTmpPath().resolve(filePath).toFile());
             wb.write(fos);
             fos.close();
             wb.close();
@@ -321,8 +318,7 @@ public class ExcelUtil {
      * @throws IOException
      *             抛出IO异常
      */
-    private static Workbook getWorkBook(InputStream input, String fileName)
-            throws IOException {
+    private static Workbook getWorkBook(InputStream input, String fileName) throws IOException {
         Workbook wb = null;
         if (fileName.indexOf("xlsx") >= 0) {
             wb = new XSSFWorkbook(input);
@@ -363,11 +359,9 @@ public class ExcelUtil {
             case 1:
                 try {
                     String value = cell.getStringCellValue();
-                    String temp = new String(Hex.encodeHex(value
-                            .getBytes("utf-8"))).replaceAll("c2a0", "20");
+                    String temp = new String(Hex.encodeHex(value.getBytes("utf-8"))).replaceAll("c2a0", "20");
                     try {
-                        value = new String(Hex.decodeHex(temp.toCharArray()),
-                                "utf-8");
+                        value = new String(Hex.decodeHex(temp.toCharArray()), "utf-8");
                     } catch (Exception localException1) {
                     }
                     return value.trim();
@@ -375,10 +369,8 @@ public class ExcelUtil {
                     return new String(cell.getStringCellValue().getBytes());
                 }
             case 0:
-                if ((DateUtil.isCellDateFormatted(cell))
-                        || ((cell.getCellStyle() != null) && ("yyyy\"年\"m\"月\";@"
-                                .equals(cell.getCellStyle()
-                                        .getDataFormatString())))) {
+                if ((DateUtil.checkDate(cell.getStringCellValue(),"YYYY/mm/dd")) || ((cell.getCellStyle() != null)
+                        && ("yyyy\"年\"m\"月\";@".equals(cell.getCellStyle().getDataFormatString())))) {
                     String format = cell.getCellStyle().getDataFormatString();
                     if (format.equals("yyyy\"年\"m\"月\";@")) {
                         format = "yyyy-MM";
@@ -386,11 +378,8 @@ public class ExcelUtil {
                         format = format.replace("yyyy\\-mm\\-dd", "yyyy-MM-dd");
                     } else if (format.startsWith("m/d/yy")) {
                         format = format.replace("m/d/yy", "yyyy/MM/dd");
-                    } else if (format
-                            .startsWith("[$-F800]dddd\\,\\ mmmm\\ dd\\,\\ yyyy")) {
-                        format = format.replace(
-                                "[$-F800]dddd\\,\\ mmmm\\ dd\\,\\ yyyy",
-                                "yyyy年MM月dd日");
+                    } else if (format.startsWith("[$-F800]dddd\\,\\ mmmm\\ dd\\,\\ yyyy")) {
+                        format = format.replace("[$-F800]dddd\\,\\ mmmm\\ dd\\,\\ yyyy", "yyyy年MM月dd日");
                     } else if (format.startsWith("yyyy\\-m\\-d")) {
                         format = format.replace("yyyy\\-m\\-d", "yyyy-MM-dd");
                     } else {
@@ -405,8 +394,7 @@ public class ExcelUtil {
                     }
                 }
                 NumberFormat nf = NumberFormat.getInstance(Locale.CHINESE);
-                return String.valueOf(nf.format(cell.getNumericCellValue())
-                        .replace(",", ""));
+                return String.valueOf(nf.format(cell.getNumericCellValue()).replace(",", ""));
             case 4:
                 return String.valueOf(cell.getBooleanCellValue());
             case 2:
@@ -423,29 +411,21 @@ public class ExcelUtil {
      *             抛出IO异常
      */
     public static void main(String[] args) throws IOException {
-/*
-        List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        for (int i = 0; i < 10; i++) {
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("a", "aaaa");
-            map.put("b", "bbbb");
-            map.put("c", "cccc");
-            map.put("d", "dddd");
-            list.add(map);
-        }
-        LinkedHashMap<String, String> colTitle = new LinkedHashMap<String, String>();
-        colTitle.put("a", "第一列");
-        colTitle.put("c", "第二列");
-        colTitle.put("d", "第三列");
-        getExcelFile(list, "E:\\1.xlsx", colTitle);
-*/
+		/*
+		 * List<Map<String, String>> list = new ArrayList<Map<String,
+		 * String>>(); for (int i = 0; i < 10; i++) { Map<String, String> map =
+		 * new HashMap<String, String>(); map.put("a", "aaaa"); map.put("b",
+		 * "bbbb"); map.put("c", "cccc"); map.put("d", "dddd"); list.add(map); }
+		 * LinkedHashMap<String, String> colTitle = new LinkedHashMap<String,
+		 * String>(); colTitle.put("a", "第一列"); colTitle.put("c", "第二列");
+		 * colTitle.put("d", "第三列"); getExcelFile(list, "E:\\1.xlsx", colTitle);
+		 */
 
+        List<Map<String, String>> listMap = ExcelUtil.getExcelData(new File("C:\\zzw\\doc\\2016-08-03\\台州所有酒店.xlsx"));
 
-        List<Map<String,String>> listMap = ExcelUtil.getExcelData(new File("C:\\zzw\\doc\\2016-08-03\\台州所有酒店.xlsx"));
-
-        for(int i =0 ;i<listMap.size();i++){
-            Map<String,String> map = listMap.get(i);
-            System.out.println(","+map.get("a"));
+        for (int i = 0; i < listMap.size(); i++) {
+            Map<String, String> map = listMap.get(i);
+            System.out.println("," + map.get("a"));
         }
 
     }

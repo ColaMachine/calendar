@@ -435,7 +435,7 @@ public class SysLogController extends BaseController {
         vu.add("createTime", createTime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         vu.add("startTime", startTime, "开始时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
+        if(StringUtil.isNotBlank(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
 
@@ -483,7 +483,7 @@ public class SysLogController extends BaseController {
                 return ResultUtil.getResult(302,validStr);
             }
             
-            if(StringUtil.isNotEmpty(validStr)) {
+            if(StringUtil.isNotBlank(validStr)) {
                 return ResultUtil.getResult(302,validStr);
             }
             idAry[i]=Integer.valueOf(idStrAry[i]);

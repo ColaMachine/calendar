@@ -5,7 +5,7 @@
  * 创建日期: 2015年11月9日
  * 文件说明: 
  */
-package com.dozenx.web.core.log;
+package com.dozenx.web.core.log.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

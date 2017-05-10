@@ -22,7 +22,13 @@ public class MapUtils {
 		returnMap.put(SysConfig.AJAX_MSG,msg);
 		return returnMap;
 	}
-	
+	/**
+	 * 把map的值放回到request里
+	 * @param map
+	 * @param request
+	 * @author 张智威
+	 * @date 2017年4月11日 下午10:01:47
+	 */
 	public static void push2Request(Map map,HttpServletRequest request){
 		Iterator it = map.keySet().iterator();
 		while(it.hasNext()){
@@ -33,7 +39,15 @@ public class MapUtils {
 			request.setAttribute(key,value);
 		}
 	}
-	public static String join(HashMap map ,String seprator){
+	/**
+	 * 用指定分隔符连接keyvalue
+	 * @param map
+	 * @param seprator
+	 * @return
+	 * @author 张智威
+	 * @date 2017年4月11日 下午9:59:16
+	 */
+	public static String join(Map map ,String seprator){
 		StringBuffer sb =new StringBuffer();
 
 		Iterator it = map.keySet().iterator();
@@ -41,9 +55,9 @@ public class MapUtils {
 			Map.Entry<String, Object> entry = (Map.Entry<String, Object>)it.next();
 			String key = entry.getKey();
 			String value =entry.getValue()+"";
-			sb.append(key+"="+value+"&");
+			sb.append(key+"="+value+seprator);
 		}
-	return sb.toString();
+		return sb.substring(0,sb.length()-2);
 
 	}
 	public static HashMap request2Map(HttpServletRequest request) {

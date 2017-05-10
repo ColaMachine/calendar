@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.module.question.dao.QuestUserInfoMapper">
+
+	<insert id="add"
+		parameterType="com.dozenx.web.module.question.bean.QuestionnaireUserInfo">
+		insert into user_questionnaire_userinfo
+		(user_phone, merchant_id,ap_mac ,ssid,free_level,average_pay)
+		values (#{userId,jdbcType=BIGINT}
+		,#{merchantId,jdbcType=BIGINT}
+		,#{apMac,jdbcType=VARCHAR}
+		,#{ssid,jdbcType=VARCHAR}
+		,#{freeLevel,jdbcType=INTEGER}
+		,#{averagePay,jdbcType=FLOAT}
+		)
+	</insert>
+	<select id="queryByUserId" parameterType="java.lang.Long" resultType="com.dozenx.web.module.question.bean.QuestionnaireUserInfo">
+		select user_phone userId , merchant_id merchantId , ap_mac apMac , ssid
+		,free_level freeLevel ,average_pay averagePay
+			from user_questionnaire_userinfo
+		where user_phone=#{userId,jdbcType=BIGINT}
+	</select>
+	<update id="update" parameterType="com.dozenx.web.module.question.bean.QuestionnaireUserInfo" >
+	update user_questionnaire_userinfo set free_level=#{freeLevel,jdbcType=INTEGER}
+		where user_phone=#{userId,jdbcType=BIGINT}
+	</update>
+	
+
+
+
+</mapper>

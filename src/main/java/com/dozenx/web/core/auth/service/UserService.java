@@ -19,11 +19,7 @@ import com.dozenx.web.core.auth.sysUser.service.SysUserService;
 import com.dozenx.web.core.auth.sysUserRole.bean.SysUserRole;
 import com.dozenx.web.core.auth.sysUserRole.dao.SysUserRoleMapper;
 import com.dozenx.web.core.auth.validcode.service.ValidCodeService;
-import com.dozenx.web.core.log.LogUtil;
-import com.dozenx.web.core.log.ServiceCode;
-import com.dozenx.web.core.log.ServiceMsg;
-import com.dozenx.web.message.ErrorMsg;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +73,11 @@ public class UserService extends SysUserService {
 	}
 	public SysUser getUserByTelno(String email) {
 		SysUser user = userMapper.selectUserByTelno(email);
+		return user;
+	}
+
+	public SysUser getUserById(Long id) {
+		SysUser user = sysUserMapper.selectByPrimaryKey(id);
 		return user;
 	}
 
@@ -168,10 +169,10 @@ public class UserService extends SysUserService {
 		//检查是否有相同账号用户
 		//TODO 改成count 就可以了
 		SysUser sameEmailUser =new SysUser();
-		if(StringUtil.isNotEmpty(user.getEmail())){
+		if(StringUtil.isNotBlank(user.getEmail())){
 			 sameEmailUser = this.getUserByEmail(user.getEmail());
 
-		}else if(StringUtil.isNotEmpty(user.getTelno())){
+		}else if(StringUtil.isNotBlank(user.getTelno())){
 			sameEmailUser = this.getUserByTelno(user.getTelno());
 		}else{
 			return ResultUtil.getResult(301,"手机号或邮箱地址必填");
@@ -184,7 +185,7 @@ public class UserService extends SysUserService {
 			user.setPassword(MD5Utils.MD5Encode(user.getPassword()));
 			this.sysUserMapper.insert(user);
 
-			if(StringUtil.isNotEmpty(user.getEmail())) {
+			if(StringUtil.isNotBlank(user.getEmail())) {
 				// 插入激活数据
 				Active active = new Active();
 				active.setUserid(user.getId());
@@ -207,8 +208,8 @@ public class UserService extends SysUserService {
 				try {
 					EmailUtil.send(user.getEmail(), "你的邮件验证码:" + active.getActiveid() + "");
 				}catch (Exception e){
-					LogUtil.system(serviceCode,218,user.getEmail()+active.getActiveid(),e.getMessage()+" 发送邮件失败","");
-					return ResultUtil.getResultDetail(serviceCode, ErrorMsg.THIRD, 219, ServiceMsg.SEND_FAIL);
+					LogUtilFeichu.system(serviceCode,218,user.getEmail()+active.getActiveid(),e.getMessage()+" 发送邮件失败","");
+					return ResultUtil.getResultDetail(serviceCode, LogType.THIRD, 219, "SEND_FAIL");
 				}
 			}
 			return ResultUtil.getSuccResult();
@@ -326,29 +327,29 @@ public class UserService extends SysUserService {
 		if(StringUtil.isPhone(account)){
 			SysUser user = this.getUserByTelno(account);
 			if(user==null)
-				return  ResultUtil.getResult(ServiceMsg.USER_NOT_FOUND);
+				return  ResultUtil.getResult("USER_NOT_FOUND");
 			ResultDTO result = validCodeService.smsValidCode("calendar", account, code);
 			userid =user.getId();
 		}else if(StringUtil.isEmail(account)){
 
 			SysUser user = this.getUserByEmail(account);
 			if(user==null)
-				return  ResultUtil.getResult(ServiceMsg.USER_NOT_FOUND);
+				return  ResultUtil.getResult("USER_NOT_FOUND");
 			userid=user.getId();
 			// db校验
 			Pwdrst pwdrst = pwdrstMapper.selectPwdrstById(code);
 			if (pwdrst == null || pwdrst.getUserid()!= userid) {
-				return ResultUtil.getResult(ServiceMsg.VALIDCODE_MATCH_ERR);
+				return ResultUtil.getResult("VALIDCODE_MATCH_ERR");
 			}
 			if (pwdrst.isUsed()) {
-				return ResultUtil.getResult(ServiceMsg.VALIDCODE_USED);
+				return ResultUtil.getResult("VALIDCODE_USED");
 			}
 
 			pwdrst.setUsed(true);
 			pwdrstMapper.used(code);
 			 userid = pwdrst.getUserid();
 		}else{
-			return ResultUtil.getResult(ServiceMsg.ACCOUNT_FORMAT_ERR);
+			return ResultUtil.getResult("ACCOUNT_FORMAT_ERR");
 		}
 
 
@@ -375,22 +376,22 @@ public class UserService extends SysUserService {
 
 	public ResultDTO activeWithEmail(String email,String code){
 		if(StringUtil.isBlank(email)|| !StringUtil.isEmail(email) || StringUtil.isBlank(code)){
-			return ResultUtil.getResultDetail(serviceCode,ErrorMsg.PARAM,395,ServiceMsg.PARAM_ERR);
+			return ResultUtil.getResultDetail(serviceCode,LogType.PARAM,395,"PARAM_ERR");
 		}
 
 		Active active = this.activeMapper.selectActiveById(code);
 
 		if (active == null || StringUtil.isBlank(active.getActiveid())) {
-			return ResultUtil.getResult(ServiceMsg.VALIDCODE_ERR);
+			return ResultUtil.getResult("VALIDCODE_ERR");
 		}
 		if (active.isActived()) {
-			return ResultUtil.getResult(ServiceMsg.VALIDCODE_USED);
+			return ResultUtil.getResult("VALIDCODE_USED");
 		}
 
 
 		SysUser olduser =sysUserMapper.selectByPrimaryKey(active.getUserid());
 		if(!email.equals(olduser.getEmail())){
-			return ResultUtil.getResultDetail(serviceCode,ErrorMsg.PARAM,410,ServiceMsg.PARAM_ERR);
+			return ResultUtil.getResultDetail(serviceCode,LogType.PARAM,410,"PARAM_ERR");
 		}
 		active.setActived(true);
 		active.setActivedtime(new Timestamp((new Date()).getTime()));

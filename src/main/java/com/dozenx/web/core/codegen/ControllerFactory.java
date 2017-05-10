@@ -50,7 +50,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
                 rules.add(String.format("new Digits(10,0)"));
             }
         }
-        if(StringUtil.isNotEmpty(zcol.getValid())){
+        if(StringUtil.isNotBlank(zcol.getValid())){
             String[] validAry= zcol.getValid().split(",,");
             for(int j=0;j<validAry.length;j++){
                 if(validAry[j].toLowerCase().startsWith("regex")){
@@ -82,9 +82,10 @@ public class ControllerFactory extends DefaultGenCodeFactory {
     private String getCtrlViewM(ZTable table) {
         this.tabNo=2;
         StringBuffer sb =new StringBuffer();
-        line(sb,"String id = request.getParameter(\"id\");");
-        line(sb,"HashMap<String,Object> result =new HashMap<String,Object>();");
-        line(sb,"if(!StringUtil.isBlank(id)){");
+       // line(sb,"String id = request.getParameter(\"id\");");
+        line(sb,"HashMap<String,Object> result =new HashMap</*String,Object*/>();");
+        //line(sb,"if(!StringUtil.isBlank(id)){");
+        line(sb,"if(id > 0){");
         lineForw(sb,StringUtil.getAbc(table.getName())+" bean = "+StringUtil.getabc(table.getName())+"Service.selectByPrimaryKey("+GenCodeHelper.changeMySqlType2JavaType(table.getPk().getType())+".valueOf(id));");
         line(sb,"result.put(\"bean\", bean);");
             if(table.getMapper()!=null&& table.getName().equals(table.getMapper().getParent())){
@@ -176,7 +177,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
                rules.add(String.format("new NotEmpty()"));
                jsrules.add(String.format("required:true"));
            }
-           if(StringUtil.isNotEmpty(zcol.getValid())){
+           if(StringUtil.isNotBlank(zcol.getValid())){
                String[] validAry= zcol.getValid().split(",,");
                for(int j=0;j<validAry.length;j++){
                    if(validAry[j].toLowerCase().startsWith("regex")){

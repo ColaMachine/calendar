@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import com.dozenx.util.ResultUtil;
 import com.dozenx.web.core.log.bean.SysLog;
 import com.dozenx.web.core.log.dao.SysLogMapper;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -225,7 +225,7 @@ public class SysLogTagController extends BaseController {
         vu.add("remark", remark, "注解",  new Rule[]{new Length(50)});
         vu.add("detail", detail, "详解",  new Rule[]{new Length(100)});
         validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
+        if(StringUtil.isNotBlank(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
 
@@ -273,7 +273,7 @@ public class SysLogTagController extends BaseController {
                 return ResultUtil.getResult(302,validStr);
             }
             
-            if(StringUtil.isNotEmpty(validStr)) {
+            if(StringUtil.isNotBlank(validStr)) {
                 return ResultUtil.getResult(302,validStr);
             }
             idAry[i]=Integer.valueOf(idStrAry[i]);

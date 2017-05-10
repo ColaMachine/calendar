@@ -148,9 +148,9 @@ function showCalendar(it){
 
 	div.style.top=arr.top+it.offsetHeight;*/
 
-	Using("System.Web.UI.WebControls.SelectDate");
+	//Using("System.Web.UI.WebControls.SelectDate");
 
-	var d = new SelectDate();
+	var d = new MiniCalendar();
 	d.render(it.id);
 
 	/*var span=document.createElement("span");

@@ -7,9 +7,12 @@
  */
 package com.dozenx.web.core.base;
 
+import com.dozenx.util.ResultUtil;
+import com.dozenx.web.core.log.LogType;
+import com.dozenx.web.core.log.ServiceCode;
 import com.dozenx.web.core.page.Page;
-import com.dozenx.web.message.ErrorMessage;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ErrorMessage;
+import com.dozenx.web.core.log.ResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,8 +28,16 @@ Logger logger=LoggerFactory.getLogger(this.getClass());
     protected ResultDTO getResult(){
         return getResult(SUCC, null, null,null);
     }
-    
-    /**
+	/**
+	 * 返回成功，默认代码1
+	 * @return
+	 * @author 宋展辉
+	 */
+	protected ResultDTO getDataResult(Object data){
+		return getResult(SUCC, data, null,null);
+	}
+
+	/**
      * 返回成功，代码result
      * @param result
      * @return
@@ -78,12 +89,29 @@ Logger logger=LoggerFactory.getLogger(this.getClass());
 		if(result==null||msg==null){
 			logger.error("错误代码名\""+code+"\"不存在");
 			result ="999";
-			msg = "未知错误，详细情况请查看日志";
+			msg= code;
+			//msg = "未知错误，详细情况请查看日志";
 		}
 		return getResult(Integer.valueOf(result), msg);
 		
 	}
-	
+	/**返回错误请求，根据错误代码名code获取错误代码及说明
+	 * @param code
+	 * @return
+	 * @author 宋展辉
+	 */
+	protected ResultDTO getWrongResultFromCfg(String code,String location,String paramName){
+		String result = ErrorMessage.getErrorMsgCode(code);
+		String msg = ErrorMessage.getErrorMsg(code);
+		if(result==null||msg==null){
+			logger.error("错误代码名\""+code+"\"不存在");
+			result ="999";
+			msg = "未知错误，详细情况请查看日志";
+		}
+		msg= msg.replace("{0}",location).replace("{1}",paramName);
+		return getResult(Integer.valueOf(location+result), msg);
+
+	}
 	/**返回未登录错误
 	 * @return
 	 * @author zzw
@@ -117,5 +145,18 @@ Logger logger=LoggerFactory.getLogger(this.getClass());
 	protected ResultDTO getResult(int result, Object data, String msg , Page page){
         return new ResultDTO(result, data, msg, page);
     }
+
+	/**
+	 * 自定义返回
+	 * @param serviceCode
+	 * @param  logType
+	 * @param detail
+	 * @param msg
+	 * @return
+	 * @author 宋展辉
+	 */
+	protected ResultDTO getResult(ServiceCode serviceCode, LogType logType, int detail, String msg){
+		return  ResultUtil.getResultDetail(serviceCode, logType,detail, msg);
+	}
 	
 }

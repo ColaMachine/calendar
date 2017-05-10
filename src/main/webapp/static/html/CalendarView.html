@@ -15,6 +15,7 @@
 		<!-- <script src="/static/js/system/data/calendar1.js" charset="utf-8">
 		</script><script src="/static/js/jsframework.js" charset="utf-8"></script>-->
 
+		<link rel="stylesheet" type="text/css" href="/static/css/MiniCalendar.css" >
      <!--  <script type="javascript">
             includeCSS(["/static/css/CalendarView.css",
 "/static/css/WorkBench.css"
@@ -32,10 +33,19 @@ includeJS(["/static/js/system/global.js",
 		<script src="static/js/system/action/Drag.js" charset="utf-8"></script>
 		<!--<script src="static/js/DateUtils.js" charset="utf-8"></script>-->
 		<script src="static/js/system/web/ui/webcontrols/calendarview1.js" charset="utf-8"></script>
-<!--		<script src="/static/js/system/data/calendar1.js" charset="utf-8"></script>
+		<script src="/static/js/system/data/calendar1.js" charset="utf-8"></script>
+		<!--<script src="static/js/DateUtils.js" charset="utf-8"></script>-->
+		<script src="static/js/system/web/ui/webcontrols/MiniCalendar.js" charset="utf-8"></script>
+	<!--	<script src="static/js/system/web/ui/webcontrols/SelectDate1.js" charset="utf-8"></script>
 
-		<script src="/static/js/system/web/ui/webcontrols/MiniCalendar.js" charset="utf-8"></script>-->
+		<script src="/static/js/system/data/calendar1.js" charset="utf-8"></script>
+
+                <script src="/static/js/system/web/ui/webcontrols/MiniCalendar.js" charset="utf-8"></script>
+-->
+		<!---->
 		<!--<script src="/static/js/system/web/ui/webcontrols/property.js" charset="utf-8"></script>-->
+
+
 <style type="text/css">
 table{border:0;margin:0;border-collapse:collapse;}
 table td{padding:0;}
@@ -222,7 +232,7 @@ table td{padding:0;}
 			};
 		}
 	}
-	disableMouseSelection(document.documentElement);
+	//disableMouseSelection(document.documentElement);
 	window.onresize=findDimensions;
 	function hiddenDialogue(){
 console.log("hidedialogue");

@@ -16,7 +16,7 @@ import com.dozenx.web.core.auth.service.AuthService;
 import com.dozenx.web.core.auth.service.UserService;
 import com.dozenx.web.core.auth.sysMenu.service.SysMenuService;
 import com.dozenx.web.core.auth.sysUser.bean.SysUser;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

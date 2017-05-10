@@ -1,7 +1,7 @@
 package com.dozenx.web.core.log;
 /*编码详解 00111001
-第一组3位数字表示service名 （需要维护在servicecode 里）
-第二组2为数字表示错误类型 第一位代表大类，第二位可细分小类（已维护在LogType）
+第一组2为数字表示错误类型 第一位代表大类，第二位可细分小类（已维护在LogType）
+第二组3位数字表示service名 （需要维护在servicecode 里）
 第三组3位数字表示明细错误(detailCode)*/
 public enum LogType {
     TRACK(1,"正常打印消息"),//
@@ -10,6 +10,8 @@ public enum LogType {
     SERVICE(4,"服务错误"),//service 自身处理出错 业务级别错误
     THIRD(5,"第三方错误"),//依赖错误 service 内部调用第三方服务出错
     SYSTEM(6,"系统错误"),//system 系统级别错误
+    UI(7,"系统错误"),//system 系统级别错误
+ 
     UNKNOW(99,"未知异常");//未知异常
     private String serviceName;
     private int value;

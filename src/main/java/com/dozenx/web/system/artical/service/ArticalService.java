@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -21,14 +20,9 @@ import org.springframework.stereotype.Service;
 
 import com.dozenx.web.system.artical.bean.Artical;
 import com.dozenx.web.system.artical.dao.ArticalMapper;
-import com.dozenx.util.CacheUtil;
 import com.dozenx.util.ResultUtil;
-import com.dozenx.util.UUIDUtil;
-import com.dozenx.util.ValidateUtil;
-import com.dozenx.util.StringUtil;
-import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.base.BaseService;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 
 @Service("articalService")
 public class ArticalService extends BaseService {

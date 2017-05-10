@@ -3,19 +3,19 @@ package com.dozenx.web.core.auth.validcode.service;
 import java.util.*;
 
 
-import com.dozenx.core.config.CacheConfig;
 import com.dozenx.core.config.Config;
 import com.dozenx.core.config.SystemValidCodeConfig;
 import com.dozenx.core.config.ValidCodeConfig;
 import com.dozenx.util.*;
-import com.dozenx.web.core.log.LogUtil;
+import com.dozenx.web.core.log.LogType;
 import com.dozenx.web.core.log.ServiceCode;
-import com.dozenx.web.core.log.ServiceMsg;
+import com.dozenx.web.core.log.service.LogUtilService;
 import com.dozenx.web.core.sms.bean.SmsHistory;
 import com.dozenx.web.core.sms.bean.SmsRecord;
 import com.dozenx.web.core.sms.service.SmsRecordService;
-import com.dozenx.web.message.ErrorMsg;
-import com.dozenx.web.message.ResultDTO;
+
+import com.dozenx.web.core.log.ResultDTO;
+import com.dozenx.web.util.ConfigUtil;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +28,18 @@ import javax.annotation.Resource;
 @Service("validCodeService")
 public class ValidCodeService {
     private ServiceCode serviceCode =ServiceCode.ValidCodeService;
+    /**日志**/
+    private Logger logger =LoggerFactory.getLogger(ValidCodeService.class);
+
     /**
      * 日志类
      */
     private static final Logger log = LoggerFactory.getLogger(ValidCodeService.class);
     @Resource
     private SmsRecordService smsRecordService;
+
+    @Resource
+    private LogUtilService LogUtil;
     /**
      * @param systemCode 系统名称
      * @param phone 手机号码
@@ -53,14 +59,14 @@ public class ValidCodeService {
              * (!result.isRight()) { return result; }
              */
             if (systemConfig == null) {
-                return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 301, ServiceMsg.SERVICECODE_ERR);
+                return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 301, "SERVICECODE_ERR");
             }
             // 验证phone
             if (StringUtil.isBlank(phone)) {
-                return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 302, ServiceMsg.PHONE_NOT_EMPTY);
+                return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 302, "PHONE_NOT_EMPTY");
             }
             if (!StringUtil.isPhone(phone)) {
-                return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 303, ServiceMsg.PHONE_FORMAT_ERR);
+                return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 303, "PHONE_FORMAT_ERR");
             }
             // 取缓存中业务+手机号 的value
             // String mapValue = (String)
@@ -90,11 +96,11 @@ public class ValidCodeService {
                 //}
                 //验证是否刷新过快
                 if (nowTime < (history.getLast() + systemConfig.getSmsRefreshTime())) {
-                    return ResultUtil.getResultDetail(serviceCode, ErrorMsg.INFO, 304, ServiceMsg.VALIDCODE_REQUEST_FAST);
+                    return ResultUtil.getResultDetail(serviceCode, LogType.INFO, 304, "VALIDCODE_REQUEST_FAST");
                 }
                 //验证是否在指定时间 请求次数超过限定
-                if (!beyondErrTimes(history, systemConfig.getMaxRequestTime(), systemConfig.getRangeTime())) {
-                    return ResultUtil.getResultDetail(serviceCode, ErrorMsg.INFO, 305, ServiceMsg.SEND_TOO_MUCH_TIMES);
+                if (beyondErrTimes(history, systemConfig.getMaxRequestTime(), systemConfig.getRangeTime())) {
+                    return ResultUtil.getResultDetail(serviceCode, LogType.INFO, 305, "SEND_TOO_MUCH_TIMES");
                 }
             } else {
                 history = new SmsHistory();
@@ -106,32 +112,41 @@ public class ValidCodeService {
 
 
 
-            SmsHistory ipHistory = new SmsHistory();
-            ipHistory= (SmsHistory)CacheUtil.getInstance().readCache("sms"+ip,SmsHistory.class);
-            if(beyondErrTimes(ipHistory,20,(long)24*60*60*1000)){
-                return ResultUtil.getResultDetail(serviceCode, ErrorMsg.INFO, 305, ServiceMsg.SEND_TOO_MUCH_TIMES);
+            //检查ip在指定范围内是否有限制
+            SmsHistory ipHistory= (SmsHistory)CacheUtil.getInstance().readCache("sms"+ip,SmsHistory.class);
+            if(ipHistory==null){
+                 ipHistory = new SmsHistory();
+            }else
+            if(beyondErrTimes(ipHistory,30,(long)24*60*60*1000)){
+                return ResultUtil.getResultDetail(serviceCode, LogType.INFO, 305, "SEND_TOO_MUCH_TIMES");
             }
-            ipHistory.getTimes().offer(nowTime);
-            CacheUtil.getInstance().writeCache("sms"+ip,ipHistory);
+
+
 
             // 返回验证码
             HashMap<String,String> map = new HashMap<String,String>();
-            map.put("code", finalCode);
+            //map.put("code", finalCode);
             SmsUtil smsUtil = new SmsUtil();
-            String rc = smsUtil.sendSms(finalCode, phone, (short) 1);
+            logger.info("验证码"+finalCode);
+            String rc = smsUtil.sendSms(ConfigUtil.getConfig("login_sms_template").replace("%code%",finalCode), phone, (short) 1);
             SmsRecord record =new SmsRecord();
             record.setPhone(phone);
+            String contentTemplate = ConfigUtil.getConfig("login_sms_template");
+            contentTemplate= contentTemplate.replace("%code%",finalCode);
             record.setContent(finalCode);
+
             record.setStatus("fail".equals(rc)?(byte)1:(byte)2);
             record.setSystemNo(systemCode);
             smsRecordService.save(record);
-            if ("fail".equals(rc)) {
-                return ResultUtil.getResultDetail(serviceCode, ErrorMsg.THIRD, 307,ServiceMsg.SMS_SEND_FAIL);
+            if (!ConfigUtil.getConfig("test").equals("true") && "fail".equals(rc)) {
+                return ResultUtil.getResultDetail(serviceCode, LogType.THIRD, 307,"SMS_SEND_FAIL");
             }
             result = ResultUtil.getDataResult(map);
 
             if (result.isRight()) {
                 resetHistory(systemCode + phone,history,finalCode,nowTime);
+                resetHistory("sms"+ip,ipHistory,finalCode,nowTime);
+
                 // 塞入缓存系统
 
 //                RedisUtil.set(systemCode + phone, insertJson);
@@ -141,9 +156,10 @@ public class ValidCodeService {
             }
             return result;
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
             LogUtil.system(serviceCode,308,systemCode+phone,e.getMessage(),"");
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.UNKNOW, 308, ServiceMsg.UNKNOWN);
+            return ResultUtil.getResultDetail(serviceCode, LogType.UNKNOW, 308, "UNKNOWN");
         }
     }
 
@@ -180,14 +196,14 @@ public class ValidCodeService {
              * (!result.isRight()) { return result; }
              */
             if (systemConfig == null) {
-                return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 309, ServiceMsg.SERVICECODE_ERR);
+                return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 309, "SERVICECODE_ERR");
             }
             // 验证phone
             if (StringUtil.isBlank(email)) {
-                return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 310, ServiceMsg.EMAIL_NOT_EMPTY);
+                return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 310, "EMAIL_NOT_EMPTY");
             }
             if (!StringUtil.isEmail(email)) {
-                return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 311, ServiceMsg.EMAIL_FORMAT_ERR);
+                return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 311, "EMAIL_FORMAT_ERR");
             }
             // 取缓存中业务+手机号 的value
             // String mapValue = (String)
@@ -213,11 +229,11 @@ public class ValidCodeService {
                 }
                 //验证是否刷新过快
                 if (nowTime < (history.getLast() +systemConfig.getSmsRefreshTime())) {
-                    return ResultUtil.getResultDetail(serviceCode, ErrorMsg.INFO, 312, ServiceMsg.VALIDCODE_REQUEST_FAST);
+                    return ResultUtil.getResultDetail(serviceCode, LogType.INFO, 312, "VALIDCODE_REQUEST_FAST");
                 }
                 //验证是否在指定时间
                 if (!beyondErrTimes(history, systemConfig.getMaxRequestTime(), systemConfig.getRangeTime())) {
-                    return ResultUtil.getResultDetail(serviceCode, ErrorMsg.INFO, 313, ServiceMsg.SEND_TOO_MUCH_TIMES);
+                    return ResultUtil.getResultDetail(serviceCode, LogType.INFO, 313, "SEND_TOO_MUCH_TIMES");
                 }
             } else {
                 history = new SmsHistory();
@@ -234,7 +250,7 @@ public class ValidCodeService {
                 EmailUtil.send(email, finalCode);
             }catch(Exception e){
                 LogUtil.system(serviceCode,218,email+finalCode,e.getMessage()+" 发送邮件失败","");
-                return ResultUtil.getResultDetail(serviceCode, ErrorMsg.THIRD, 219, ServiceMsg.SEND_FAIL);
+                return ResultUtil.getResultDetail(serviceCode, LogType.THIRD, 219, "SEND_FAIL");
             }
 
             SmsRecord record =new SmsRecord();
@@ -255,7 +271,7 @@ public class ValidCodeService {
             return result;
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.UNKNOW, 315, ServiceMsg.UNKNOWN);
+            return ResultUtil.getResultDetail(serviceCode, LogType.UNKNOW, 315, "UNKNOWN");
         }
     }
     public boolean beyondErrTimes(SmsHistory s, int times, Long longtime) {
@@ -265,9 +281,9 @@ public class ValidCodeService {
             list.poll();
         }
         if (list.size() > times) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public ResultDTO smsValidCode(String systemCode, String phone, String code) {
@@ -289,17 +305,17 @@ public class ValidCodeService {
         if (StringUtil.isBlank(systemCode) || StringUtil.isBlank(phone) || StringUtil.isBlank(code))
         // 查看该手机号是否是在异常名单当中
         {
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 301, ServiceMsg.PARAM_NULL);
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 301, "PARAM_NULL");
         }
 
         if (isSms && !StringUtil.isPhone(phone)) {
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 302, ServiceMsg.PARAM_PHONE);
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 302, "PARAM_PHONE");
         }
 
         ValidCodeConfig defaultConfig = Config.getInstance().getValidCode();
         SystemValidCodeConfig systemConfig = defaultConfig.getSystems().get(systemCode);
         if (systemConfig == null) {
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 303, "业务代码错误");
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 303, "业务代码错误");
         }
 
 
@@ -318,34 +334,36 @@ public class ValidCodeService {
         }
         // 验证长短
         if (code.length() != len) {
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 304, "验证码错误");
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 304, "验证码错误");
         }
         // 验证字符
         if (type == 1 && !StringUtil.checkNumeric(code)) {
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 305, "验证码错误");
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 305, "验证码错误");
         } else if (type == 2 && !StringUtil.checkAlpha(code)) {
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 306, "验证码错误");
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 306, "验证码错误");
         }else if(type ==3 && !StringUtil.checkAlphaNumeric(code)){
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 312, "验证码错误");
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 312, "验证码错误");
         }
 
         // 获取缓存中的数据
         // 取缓存中业务+手机号 的value
 
         SmsHistory history = (SmsHistory) CacheUtil.getInstance().readCache(systemCode + phone, SmsHistory.class);
-
+        if(history==null){
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 307, "请重新获取验证码");
+        }
         if(isSms&&   history.getErrTrys()>defaultConfig.getSmsFailTimes()){
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 307, "请重新获取验证码");
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 307, "请重新获取验证码");
         }else if( history.getErrTrys()>defaultConfig.getImgFailTimes()){
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 307, "请重新获取验证码");
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 307, "请重新获取验证码");
         }
         if (history == null||StringUtil.isBlank(history.getCode())) {
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 307, "请重新获取验证码");
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 307, "请重新获取验证码");
         }
 
         // 获取上次访问时间
        /* if (StringUtil.isBlank(history.getCode())) {
-            return ResultUtil.getResult(serviceCode, ErrorMsg.PARAM, 308, "缓存格式错误");
+            return ResultUtil.getResult(serviceCode, LogType.PARAM, 308, "缓存格式错误");
         }*/
 
         Long timeStamp =history.getLast();
@@ -355,20 +373,21 @@ public class ValidCodeService {
         // 验证码是否过期
         Long nowTime = new Date().getTime();
         if ((timeStamp + liveTime) < nowTime) {
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.SYSTEM, 309, "请重新获取验证码");
+            return ResultUtil.getResultDetail(serviceCode, LogType.SYSTEM, 309, "请重新获取验证码");
         }
         // 验证短信验证码是否相同 忽略大小写
         if (code.equalsIgnoreCase(realCode.toLowerCase())) {
             //CacheUtil.getInstance().clearCache(systemCode + phone);//验证通过了 就不要历史记录了吗 应该还是要的吧 不然每次都成功 一天能调用1w次?
-            history.setCode(null);
-            CacheUtil.getInstance().writeCache(systemCode + phone,history);
+           // history.setCode(null);
+            this.resetHistory(systemCode + phone,history,null,System.currentTimeMillis());
+            //CacheUtil.getInstance().writeCache(systemCode + phone,history);
             return ResultUtil.getSuccResult();
             // 销毁该验证码
         } else {
 
             history.setErrTrys(history.getErrTrys()+1);
             CacheUtil.getInstance().writeCache(systemCode + phone,history);
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.INFO, 310, "验证码不正确");
+            return ResultUtil.getResultDetail(serviceCode, LogType.INFO, 310, "验证码不正确");
 
         }
     }
@@ -410,7 +429,7 @@ public class ValidCodeService {
          * { return result; }
          */
         if (systemConfig == null) {
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.PARAM, 301, "系统代号不正确");
+            return ResultUtil.getResultDetail(serviceCode, LogType.PARAM, 301, "系统代号不正确");
         }
 
         // ResultDTO result = validSystemNo(systemCode);
@@ -446,12 +465,12 @@ public class ValidCodeService {
 
                     if (nowTime < (history.getLast() + systemConfig.getImgRefreshTime())) {
                         // 刷新过快
-                        return ResultUtil.getResultDetail(serviceCode, ErrorMsg.INFO, 302, "刷新验证码过快");
+                        return ResultUtil.getResultDetail(serviceCode, LogType.INFO, 302, "刷新验证码过快");
 
                     }
                 } catch (Exception e) {
                     log.error("validcode.live.time");
-                    return ResultUtil.getResultDetail(serviceCode, ErrorMsg.SYSTEM, 303, "验证码生存周期配置有误");
+                    return ResultUtil.getResultDetail(serviceCode, LogType.SYSTEM, 303, "验证码生存周期配置有误");
                 }
 
                 // 开始清理之前的key
@@ -464,7 +483,7 @@ public class ValidCodeService {
         }
         // 生成验证码
         int vcLen = systemConfig.getImgLength();
-        String finalCode = getCode(systemConfig.getSmsCharType(),vcLen);
+        String finalCode = getCode(systemConfig.getImgCharType(),vcLen);
 
         // 发送验证码
 
@@ -474,7 +493,7 @@ public class ValidCodeService {
             codeAry = rvc.getImgRandcode(finalCode, systemCode + sessionid);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.getResultDetail(serviceCode, ErrorMsg.SYSTEM, 460, "验证码生成错误");
+            return ResultUtil.getResultDetail(serviceCode, LogType.SYSTEM, 460, "验证码生成错误");
         }
 
         finalCode = codeAry[1];
@@ -496,7 +515,7 @@ public class ValidCodeService {
                 //CacheUtil.getInstance().writeCache(systemCode + sessionid,history, systemConfig.getImgLiveTime() / 1000);
             } catch (Exception e) {
                 e.printStackTrace();
-                return ResultUtil.getResultDetail(serviceCode, ErrorMsg.SYSTEM, 486, "缓存失败");
+                return ResultUtil.getResultDetail(serviceCode, LogType.SYSTEM, 486, "缓存失败");
             }
         }//redis.clients.jedis.exceptions.JedisConnectionException
         return result;

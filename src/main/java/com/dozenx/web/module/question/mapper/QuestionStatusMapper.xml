@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.module.question.dao.QuestionStatusMapper">
+	
+  
+  <insert id="add" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.module.question.bean.QuestionnaireStatus" >
+    insert into user_questionnaire_status 
+    	(user_id,status)
+    values (#{userId,jdbcType=BIGINT}
+		,#{status,jdbcType=INTEGER}
+    )
+  </insert>
+  
+  <select id="queryByUserId" parameterType="java.lang.Long" resultType="com.dozenx.web.module.question.bean.QuestionnaireStatus" >
+  
+  select user_id userId , status 
+  	from user_questionnaire_status
+  	where user_id=#{userId,jdbcType=BIGINT}
+  
+  </select>
+  
+  <update id="update" parameterType="com.dozenx.web.module.question.bean.QuestionnaireStatus">
+ 	update user_questionnaire_status 
+ 		set status=#{status,jdbcType=INTEGER}
+ 		where user_id=#{userId,jdbcType=BIGINT} 
+ </update>
+</mapper>

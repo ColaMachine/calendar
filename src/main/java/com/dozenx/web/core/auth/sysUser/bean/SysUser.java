@@ -125,4 +125,14 @@ public class SysUser {
     }    public void setUpdatetime(Timestamp updatetime){
         this.updatetime=updatetime;
     }
+
+    public Long getOutId() {
+        return outId;
+    }
+
+    public void setOutId(Long outId) {
+        this.outId = outId;
+    }
+
+    public Long outId;
 }

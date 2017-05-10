@@ -12,7 +12,7 @@ import javax.mail.MessagingException;
  */
 public class EmailUtil {
     public static void send(String email,String content) throws MessagingException {
-        if(StringUtil.isNotEmpty(email)) {
+        if(StringUtil.isNotBlank(email)) {
 
             // 发送激活邮件
             MailSenderInfo mailInfo = new MailSenderInfo();

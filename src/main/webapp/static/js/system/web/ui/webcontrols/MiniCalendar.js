@@ -17,7 +17,9 @@ t = MiniCalendar.Extends(Calendar, "MiniCalendar");
 t.div_id="";
 MiniCalendar.prototype.render = function(id) {
 	this.div_id=id;
-	$(id).innerHTML=this.getCalendarStr();
+		var str = this.getCalendarStr();
+
+	$$(id).innerHTML=str;
 };
 
 MiniCalendar.prototype.getCalendarStr = function() {
@@ -33,7 +35,7 @@ MiniCalendar.prototype.getCalendarStr = function() {
 		b_thisMonth = true;
 
 	// var d=this.date.getDate();
-	var _weekFirstDay = CaculateWeekDay(y, m, 1);
+	var _weekFirstDay = CaculateDaysWeekNum(y, m, 1);
 	var _days = CaculateMonthDays(y, m);
 	
 	if(m==1){
@@ -42,7 +44,7 @@ MiniCalendar.prototype.getCalendarStr = function() {
 	}else{
 		var pre_days = CaculateMonthDays(y, m-1);
 	}
-	var _weekLastDay = CaculateWeekDay(y, m, _days)
+	var _weekLastDay = CaculateDaysWeekNum(y, m, _days)
 	var _index = new Number(0);
 	var _date = new Number(1);
 	var _rows = new Number(1);
@@ -134,6 +136,8 @@ MiniCalendar.prototype.selectDateTd = function(it) {
 	day.setDate(d);
 	this.dummyDay=day;
 		this.selectDate(day);
+
+
 	//对外响应this.refreshCalendarEventView();
 
 };
@@ -160,7 +164,7 @@ var bToday = (this.selectedDay != null
 		this.selectedDay = this.dummyDay;
 		this.selectedDay.setDate(new Number(e.innerHTML.replace("&nbsp;","")));
 		this.dummyDay = this.selectedDay;
-
+        $$(this.div_id).innerHTML= this.selectedDay.format("yyyy-MM-dd");
 		var curSelectedTd = e;
 		var curSeletedTr = (e.parentNode ? e.parentNode : null);
 
@@ -191,7 +195,7 @@ var bToday = (this.selectedDay != null
 // 界面的刷新--------------------------------------------------------------------------------------------------------------------------
 
 MiniCalendar.prototype.refreshView = function() {
-	$(this.div_id).innerHTML = this.getCalendarStr();
+	$$(this.div_id).innerHTML = this.getCalendarStr();
 	this.clear();
 
 };

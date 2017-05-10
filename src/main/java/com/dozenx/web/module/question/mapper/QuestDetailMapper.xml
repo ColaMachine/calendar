@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.module.question.dao.QuestDetailMapper">
+	
+	
+	
+	<!-- <resultMap id="BaseResultMap"
+		type="com.dozenx.web.module.question.bean.bean.mer.MerchantPackage">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="merchant_id" jdbcType="BIGINT" property="merchantId" />
+		<result column="package_type" jdbcType="INTEGER" property="packageType" />
+		<result column="package_key" jdbcType="INTEGER" property="packageKey" />
+		<result column="package_value" jdbcType="FLOAT" property="packageValue" />
+		<result column="effect_datetime" jdbcType="TIMESTAMP" property="effectDatetime" />
+		<result column="expired_datetime" jdbcType="TIMESTAMP"
+			property="expiredDatetime" />
+		<result column="remarks" jdbcType="VARCHAR" property="remarks" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="status_date" jdbcType="TIMESTAMP" property="statusDate" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,merchant_id,package_type,package_key,
+		package_value,effect_datetime,expired_datetime,remarks,status,status_date,create_date
+	</sql>
+	 -->
+  
+  
+  
+  <insert id="add" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.module.question.bean.QuestionnaireDetail" >
+    insert into user_questionnaire_detail 
+    	(user_phone,question_1,question_2,question_3,question_4,question_5,question_6,question_7,
+    	question_8,question_9,question_10,question_11,question_12,question_13,question_14,
+    	question_15,question_16,remark_1,remark_2,remark_3)
+    values (#{userId,jdbcType=BIGINT}
+		,#{question1,jdbcType=VARCHAR}
+		,#{question2,jdbcType=VARCHAR}
+		,#{question3,jdbcType=VARCHAR}
+		,#{question4,jdbcType=VARCHAR}
+		,#{question5,jdbcType=VARCHAR}
+		,#{question6,jdbcType=VARCHAR}
+		,#{question7,jdbcType=VARCHAR}
+		,#{question8,jdbcType=VARCHAR}
+		,#{question9,jdbcType=VARCHAR}
+		,#{question10,jdbcType=VARCHAR}
+		,#{question11,jdbcType=VARCHAR}
+		,#{question12,jdbcType=VARCHAR}
+		,#{question13,jdbcType=VARCHAR}
+		,#{question14,jdbcType=VARCHAR}
+		,#{question15,jdbcType=VARCHAR}
+		,#{question16,jdbcType=VARCHAR}
+		,#{remark1,jdbcType=VARCHAR}
+		,#{remark2,jdbcType=VARCHAR}
+		,#{remark3,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  
+ 
+  
+	
+</mapper>

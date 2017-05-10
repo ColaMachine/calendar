@@ -87,7 +87,29 @@ public class LogAop_2 {
         }
         return object;
     }
+    public static synchronized Jedis getResource() throws Exception {
+        //logger.info("jedis pool:" + (pool == null));
+        Jedis temp =  null;
+        for (int i = 0; i < 3; i ++) {
+            temp = RedisUtil.getResource();
 
+            if (temp != null) {
+                break;
+            }
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                //不处理
+            }
+
+        }
+
+        if (temp == null) {
+            throw new Exception("RedisUtil.getResource ,获取jedis 为null");
+        }
+
+        return temp;
+    }
     private boolean isDeclaredMethod(Object target, Method arg1) {
         Method temp = null;
         try {

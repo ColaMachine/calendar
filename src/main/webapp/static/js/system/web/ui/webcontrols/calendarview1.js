@@ -80,7 +80,13 @@ CalendarView.prototype.render = function() {
 			+ "').changeToDayView()\">day</a><a id='ca-ty-week'  onclick=\"Instance('"
 			+ this.index + "').changeToWeekView()\">week</a>"
 			+ "<a id='ca-ty-month' onclick=\"Instance('" + this.index
-			+ "').changeToMonthAction()\">month</a>" + "</div>" +"</td>"+ "</tr>"
+			+ "').changeToMonthAction()\">month</a>"
+
+			+ "<a id='ca-ty-month' onclick=\"Instance('" + this.index
+            			+ "').changeLongAction()\">long</a>"
+            	+ "<a id='ca-ty-month' onclick=\"Instance('" + this.index
+                        			+ "').changeListAction()\">list</a>"
+			+ "</div>" +"</td>"+ "</tr>"
 			+ "<tr>" + "<td  style=\"padding-top:50px\">"
 			+ "<div id='dp_canopy_div' class='dp_canopy_div' style='display:none'><span class='h zippy-arrow2' unselectable='on'></span><span class='calHeaderSpace'>迷你日历</span></div>"
 			+"<div  id='dp_div' class='dp_div'  >"
@@ -145,10 +151,17 @@ CalendarView.prototype.getCalendarScheduleView = function() {console.log("getCal
 		weekDays = [this.dummyDay];
 	} else if (this.viewMode == 1) {
 		weekDays = getDateOfWeek(this.dummyDay);
-	} else if (this.viewMode == 2) {console.log("hellow");
+	} else if (this.viewMode == 2) {
 		//weekDays = getDateOfMonth(this.dummyDay);
 		return this.getMonthView();
-	}
+	}else if (this.viewMode == 3) {
+     		//weekDays = getDateOfMonth(this.dummyDay);
+     		return this.getLongView();
+    }else if (this.viewMode == 4) {
+          		//weekDays = getDateOfMonth(this.dummyDay);
+          		return this.getListView();//这里只返回了无数据的页面
+          		//数据要等异步加载之后才有
+         }
 
 	global_weekdays = weekDays;
 	// <b class=\"xb1\" style=\"width:1002px; \"></b><b class=\"xb2\"
@@ -200,7 +213,7 @@ CalendarView.prototype.getCalendarScheduleView = function() {console.log("getCal
 			+ "<td>"
 			+ "<div   class=\"wk-scrolltimedevents\" id=\"scrolltimedeventswk\" >"
 
-			+ "<table   id='table2' class='table2' >"
+			+ "<table   id='table2' class='table2 table-no-break ' >"
 			+ "<tbody>" + "<tr >" + "<td  class='td-time-pri' >" + "</td>"
 			+ "<td colSpan='7'>" + this.getRowDrawView() + "</td>" + "</tr>"
 			+ "<tr id='wb-main-tr'>"
@@ -244,7 +257,7 @@ CalendarView.prototype.getCalendarEventDialogView = function() {
 			+ "<tr><td></td><td align=right><i onclick=\"Instance('"
 			+ this.index
 			+ "').closeCalendarEventDialog()\" class=\"bubbleclose\" ></i></td></tr>"
-			+ "<tr><td><span>DATE:</span></td><td ><span id=\"calendarEventDialog_date\" ondblclick='showCalendar(this)'>123</span></td></tr>"
+			+ "<tr><td><span>DATE:</span></td><td ><span id=\"calendarEventDialog_date_start\" ondblclick='showCalendar(this)'>123</span><span id=\"calendarEventDialog_date_end\" ondblclick='showCalendar(this)'>123</span></td></tr>"
 			+ "<tr><td><span>TITLE:</span></td><td><input type=\"text\" id=\"calendarEventDialog_title\"></input></td></tr>"
 			+ "<tr><td><input type=\"button\" value=\"save\" onclick=\"Instance('"
 			+ this.index
@@ -373,7 +386,7 @@ CalendarView.prototype.getDatePickerView = function() {
 //日历主体内容切换到月视图
 CalendarView.prototype.getMonthView = function() {
 
-	var today_y = this.today.getFullYear()
+	var today_y = this.today.getFullYear();
 	var today_m = this.today.getMonth() + 1;
 	var today_d = this.today.getDate();
 
@@ -393,7 +406,7 @@ CalendarView.prototype.getMonthView = function() {
 	} else {
 		var pre_days = CaculateMonthDays(y, m - 1);
 	}
-	var _weekLastDay = CaculateDaysWeekNum(y, m, _days)
+	var _weekLastDay = CaculateDaysWeekNum(y, m, _days);
 	var _index =0;
 	var _date = 1;
 	var _rows =1;
@@ -492,6 +505,157 @@ CalendarView.prototype.getMonthView = function() {
 	return str;
 };
 
+
+
+//日历主体内容切换到月视图
+CalendarView.prototype.getLongView = function() {
+
+  //  Ajax.getJSON("/activity/getActivitys.json",null,function(result){
+   /* var finalData ={};
+    for(var i=0;i<result.data.length;i++){
+        var rowData = result.data[i];
+        var title =rowData.title;
+        var userName =rowData.userName;
+        var ary =title.split("#");
+        var mainTitle = ary[0];
+        var subTitle = ary[1];
+        if(finalData[mainTitle]){
+        }else{
+        finalData[mainTitle]=new Array();
+
+        }
+        var json = {};
+        json.mainTitle = mainTitle;
+         json.subTitle = subTitle;
+          json.userName = userName;
+           json.startTime = rowData.startTime;
+           json.endTime = rowData.endTime;
+        finalData[mainTitle].push(json);
+
+    }
+    var data =result.data;*/
+	var today_y = this.today.getFullYear();
+	var today_m = this.today.getMonth() + 1;
+	var today_d = this.today.getDate();
+
+	var y = this.dummyDay.getFullYear();
+	var m = this.dummyDay.getMonth() + 1;
+	var b_thisMonth = false;
+	if (y == today_y && m == today_m)
+		b_thisMonth = true;
+    var loopDate = new Date(this.dummyDay.getTime());
+    loopDate.setDate(1);
+	// var d=this.date.getDate();
+	var _weekFirstDay = CaculateDaysWeekNum(y, m, 1);//这月的第一天是星期几
+	var _days = CaculateMonthDays(y, m);
+
+	if (m == 1) {
+		var pre_days = CaculateMonthDays(y - 1, 12);
+
+	} else {
+		var pre_days = CaculateMonthDays(y, m - 1);
+	}
+	var _weekLastDay = CaculateDaysWeekNum(y, m, _days);
+	var _index =0;
+	var _date = 1;
+	var _rows =1;
+	var str = "<table  class='wk_mv_table wk-scrolltimedevents'  id='scrolltimedeventswk'>"
+			+ "<tr class='dp_title_tr'  >"
+			+ "<th id='dp_ym_th' class='dp_ym_th' colspan=5 ><span class='zippy-arrow' unselectable='on'></span><span> "
+			+ y
+			+ "年"
+			+ m
+			+ "月</span></th>"
+			+ "<th > <i id='dp_prev_month' onClick='Instance(\""+this.index+"\").datePickerGoPrevMonthAction()' class='dp_prev_month'></i> </th>"
+			+ "<th  > <i id='dp_next_month' onClick='Instance(\""+this.index+"\").datePickerGoNextMonthAction()' class='dp_prev_month dp_next_month'> </i></th>"
+			+ "</tr>"
+
+			+ "<tr class='dp_week_title_tr'><th>主标题</th><th>副标题</th><th>人员</th>";
+
+    for(var i=0;i<30;i++){
+        str+="<th>"+loopDate.getDate()+"</th>";
+        loopDate.setDate(loopDate.getDate()+1);
+    }
+    str+= "</tr>";
+    str+= "<tr>";
+
+	//计算出包含上月的第一行日期行
+/*
+ for(var mainTitle in finalData){
+    var list = finalData[mainTitle];
+
+      for(var i=0;i<list.length;i++){
+       str+="<td>"+list.mainTitle+"</td>";
+        str+="<td>"+list.subTitle+"</td>";
+            str+="<td>"+list.userName+"</td>";
+         for(var j=0;j<30;j++){
+            str+="<td>"+j+"</td>";
+         }
+      }
+    }*/
+    str+= "</tr>";
+	str += "</table>";
+	return str;
+
+};
+
+
+
+//日历主体内容切换到月视图
+CalendarView.prototype.getListView = function() {alert(123);
+
+	var today_y = this.today.getFullYear();
+	var today_m = this.today.getMonth() + 1;
+	var today_d = this.today.getDate();
+
+	var y = this.dummyDay.getFullYear();
+	var m = this.dummyDay.getMonth() + 1;
+	var b_thisMonth = false;
+	if (y == today_y && m == today_m)
+		b_thisMonth = true;
+    var loopDate = new Date(this.dummyDay.getTime());
+    loopDate.setDate(1);
+	// var d=this.date.getDate();
+	var _weekFirstDay = CaculateDaysWeekNum(y, m, 1);//这月的第一天是星期几
+	var _days = CaculateMonthDays(y, m);
+
+	if (m == 1) {
+		var pre_days = CaculateMonthDays(y - 1, 12);
+
+	} else {
+		var pre_days = CaculateMonthDays(y, m - 1);
+	}
+	var _weekLastDay = CaculateDaysWeekNum(y, m, _days);
+	var _index =0;
+	var _date = 1;
+	var _rows =1;
+	var str = "<table  class='wk_mv_table wk-scrolltimedevents'  id='scrolltimedeventswk'>"
+			+ "<tr class='dp_title_tr'  >"
+			+ "<th id='dp_ym_th' class='dp_ym_th' colspan=5 ><span class='zippy-arrow' unselectable='on'></span><span> "
+			+ y
+			+ "年"
+			+ m
+			+ "月</span></th>"
+			+ "<th > <i id='dp_prev_month' onClick='Instance(\""+this.index+"\").datePickerGoPrevMonthAction()' class='dp_prev_month'></i> </th>"
+			+ "<th  > <i id='dp_next_month' onClick='Instance(\""+this.index+"\").datePickerGoNextMonthAction()' class='dp_prev_month dp_next_month'> </i></th>"
+			+ "</tr>"
+
+			+ "<tr class='dp_week_title_tr'><th>主标题</th><th>副标题</th><th>人员</th>";
+
+    for(var i=0;i<30;i++){
+        str+="<th>"+loopDate.getDate()+"</th>";
+        loopDate.setDate(loopDate.getDate()+1);
+    }
+    str+= "</tr>";
+    str+= "<tr>";
+
+
+    str+= "</tr>";
+	str += "</table>";
+	return str;
+
+};
+
 // get the view str end
 /**
 *deprecate
@@ -499,7 +663,7 @@ CalendarView.prototype.getMonthView = function() {
 CalendarView.prototype.displaySingleEvent = function(ce) {
 	this.valueStack["event_" + ce.id] = ce;
 	var title = ce.title;
-	var date = ce.day;
+	var date = ce.startDay;
 	var startTimeSV = ce.startTimeSV;
 	var endTimeSV = ce.endTimeSV;
 	//alert(ce.startTime);
@@ -605,7 +769,8 @@ CalendarView.prototype.createEventInMonthViewAction = function(e) {// 分解此�
     ce.endTime = 60*60;
  ce.startTimeSV = "00:00";
   ce.endTimeSV = "01:00";
-  ce.day=td.id.substr(3);
+  ce.startDay=td.id.substr(3);
+   ce.endDay=td.id.substr(3);
     this.valueStack["event_newEvent"] = ce;
 
     var div_html =this.calendarEventRenderWithOutStyle(ce);
@@ -678,7 +843,9 @@ CalendarView.prototype.createEventAction = function(e) {// 分解此方法
 	ce.endTimeSV = endTimeSV;
 
 	ce.j = data_arr[3];
-	ce.day = td.id.substr(3);
+	ce.endDay =ce.day=ce.startDay = td.id.substr(3);
+
+
 	// 入栈
 	this.valueStack["event_newEvent"] = ce;
 	// 维护calendareventdata
@@ -894,6 +1061,12 @@ CalendarView.prototype.saveCalendarEventAction = function(event) {
 		ce.id = this.currentEventId;
 		$$("event_newEvent").id = "event_" + ce.id;
 	}
+	if($$("calendarEventDialog_date_start").innerHTML.length==10){
+ce.startDay=$$("calendarEventDialog_date_start").innerHTML;
+	}
+	if($$("calendarEventDialog_date_end").innerHTML.length==10){
+ce.endDay=$$("calendarEventDialog_date_end").innerHTML;
+    	}
 
 	this.saveCalendarEventDataService(ce);
 
@@ -943,8 +1116,9 @@ CalendarView.prototype.openCalendarEventDialog = function(it) {
 	 */
 	this.currentEventId = it.id.substr(6);
 	var ce = this.getCalendarEvent(this.currentEventId);
-	$$("calendarEventDialog_date").innerHTML = ce.day + " " + ce.startTimeSV + "~"
-			+ ce.endTimeSV;
+	$$("calendarEventDialog_date_start").innerHTML = ce.startDay + " " + ce.startTimeSV ;
+	$$("calendarEventDialog_date_end").innerHTML = ce.endDay + " " + ce.endTimeSV;
+
 	$$("calendarEventDialog_title").value = ce.title;
 	// get event information from stack
 	// select the current event
@@ -995,11 +1169,35 @@ CalendarView.prototype.changeToWeekView = function() {
         	}*/
 
 };
-
+/**
+*转成月视图
+*/
 CalendarView.prototype.changeToMonthAction = function() {console.log("enter change to monthview")
 console.log("viewMode:"+this.viewMode)
  if(this.viewMode==2)return;
     	this.viewMode = 2;
+	this.refreshCalendarWorkbenchView();return;
+
+};
+/**
+*转成以事情为主的视图
+*/
+CalendarView.prototype.changeLongAction = function() {console.log("enter change to monthview")
+console.log("viewMode:"+this.viewMode)
+ if(this.viewMode==3)return;
+    	this.viewMode = 3;
+	this.refreshCalendarWorkbenchView();return;
+
+};
+
+
+/**
+*转成以事情为主的视图
+*/
+CalendarView.prototype.changeListAction = function() {console.log("enter change to monthview")
+console.log("viewMode:"+this.viewMode)
+ if(this.viewMode==4)return;
+    	this.viewMode = 4;
 	this.refreshCalendarWorkbenchView();return;
 
 };
@@ -1092,8 +1290,8 @@ CalendarView.prototype.refreshCalendarEventDialogView = function(id) {
 	if (ce == null)// || (typeof event) == "undefined"
 		return;
 
-	$$("calendarEventDialog_date").innerHTML = ce.day + " " + ce.startTimeSV + "~"
-			+ ce.endTimeSV;
+	$$("calendarEventDialog_date_start").innerHTML = ce.startDay + " " + ce.startTimeSV ;
+	$$("calendarEventDialog_date_end").innerHTML = ce.endDay + " " + ce.endTimeSV ;
 	$$("calendarEventDialog_title").value = ce.title;
 };
 // 界面的调整变化 在动作的驱动下 界面类动作
@@ -1175,6 +1373,7 @@ CalendarView.prototype.saveCalendarEventDataService = function(ce) {
 
 	// activityAjax.saveCalendarEvent(activity ,isSuccessFully);
 	//alert(jso.STARTDATE);
+
 	save(ce.id);
 //	AjaxFun("activity/saveActivity",jso,this.isSuccessFully);
 };
@@ -1361,7 +1560,7 @@ CalendarView.prototype.moveClanderEventTo = function(ce, x, tY, ao, scrollTop) {
 
 			mouseCurrentCell = i;
 			if (ce.i != mouseCurrentCell) {
-				ce.day = global_weekdays[i - 1].getFullYear()
+				var newDate = global_weekdays[i - 1].getFullYear()
 						+ "-"
 						+ (global_weekdays[i - 1].getMonth() < 9
 								? ("0" + (global_weekdays[i - 1].getMonth() + 1))
@@ -1370,7 +1569,9 @@ CalendarView.prototype.moveClanderEventTo = function(ce, x, tY, ao, scrollTop) {
 						+ (global_weekdays[i - 1].getDate() < 10
 								? ("0" + global_weekdays[i - 1].getDate())
 								: global_weekdays[i - 1].getDate());
+            ce.endDay=autoChange(ce.startDay,newDate,ce.endDay);
 
+            ce.day=ce.startDay=newDate;
 				ce.i = mouseCurrentCell;
 			}
 			break;
@@ -1885,7 +2086,7 @@ CalendarView.prototype.selectDate = function(day) {
 	this.refreshDatePickerView();
 
 };
-
+/**点击页面生成一个空的日历对话框**/
 CalendarView.prototype.addEventView = function(ce) {
 	// 生成dom节点
 	// dialogue附着
@@ -1899,6 +2100,7 @@ CalendarView.prototype.addEventView = function(ce) {
 		ce.id = "newEvent";
 
 		ce.day = getdayStrFromDate(date);
+		ce.endDay=ce.startDay= ce.day;
 		ce.title = "";
 		this.currentEventId = "newEvent";
 	}
@@ -2152,19 +2354,39 @@ CalendarView.prototype.loadEventsView=function(){//alert("before loadevents");
 		jso.STARTDATE=parseInt(DateUtils.retainDay(DateUtils.copyDate(global_weekdays[0])).getTime()/60000);
 		//jso.STARTSZSHIFT=startSzShift;
 		jso.ENDDATE=parseInt((DateUtils.retainDay(DateUtils.copyDate(global_weekdays[6])).getTime()+7*24*60*60*1000)/60000);
-	}else{
+	}else if(this.viewMode==2){
 		jso.STARTDATE=parseInt(getFirstMonthDay(this.dummyDay).getTime()/60000);
 		//jso.STARTSZSHIFT=startSzShift;
 
 		jso.ENDDATE=parseInt((getLastMonthDay(this.dummyDay).getTime()+24*60*60*1000)/60000);
 		//console.log("startdate:"+jso.STARTDATE+" ENDDATE："+jso.ENDDATE);
-	}
+	}else if(this.viewMode==3){
+     		jso.STARTDATE=parseInt(getFirstMonthDay(this.dummyDay).getTime()/60000);
+     		//jso.STARTSZSHIFT=startSzShift;
+
+     		jso.ENDDATE=parseInt((getLastMonthDay(this.dummyDay).getTime()+24*60*60*1000)/60000);
+
+
+     		//console.log("startdate:"+jso.STARTDATE+" ENDDATE："+jso.ENDDATE);
+     	}else if(this.viewMode==4){
+              		jso.STARTDATE=parseInt(getFirstMonthDay(this.dummyDay).getTime()/60000);
+              		//jso.STARTSZSHIFT=startSzShift;
+
+              		jso.ENDDATE=parseInt((getLastMonthDay(this.dummyDay).getTime()+24*60*60*1000)/60000);
+
+
+              		//console.log("startdate:"+jso.STARTDATE+" ENDDATE："+jso.ENDDATE);
+              	}
 
 	//jso.endSZSHIFT=startSzShift;alert(1)
 	/*$.post("http://127.0.0.1:8080/calendar/activity/getActivities",jso,function (data){
 		alert(data[AJAX_RESULT]);
 	});*/
+	if(this.viewMode==3||this.viewMode==4 ){
+	Ajax.post(PATH+"/activity/getAllActivities.json",jso,this.loadEventsViewCallBack.Apply(this));
+	}else{
 	Ajax.post(PATH+"/activity/getActivities.json",jso,this.loadEventsViewCallBack.Apply(this));
+	}
 };
 
 
@@ -2173,8 +2395,206 @@ CalendarView.prototype.loadEventsView=function(){//alert("before loadevents");
  * @param data
  */
 CalendarView.prototype.loadEventsViewCallBack=function(data){//alert(this);//alert("before showActivities");
-	this.valueStack={};
 
+	this.valueStack={};
+	var firstRow;
+    if(this.viewMode==3){
+          var finalData ={};
+            for(var i=0;i<data.data.length;i++){
+                var rowData = data.data[i];
+                var title =rowData.title;
+                var userName =rowData.userName;
+                var ary =title.split("#");
+                var mainTitle = ary[0];
+                var subTitle = ary[1];
+                if(finalData[mainTitle]){
+
+                }else{
+                finalData[mainTitle]=new Array();
+
+                }
+                var json = {};
+                json.mainTitle = mainTitle;
+                 json.subTitle = subTitle;
+                  json.userName = userName;
+                   json.startTime = rowData.startTime;
+                   json.endTime = rowData.endTime;
+                finalData[mainTitle].push(json);
+                 finalData[mainTitle][0].count=1+  (finalData[mainTitle][0].count||0);
+
+            }
+            var data =data.data;
+        	var today_y = this.today.getFullYear();
+        	var today_m = this.today.getMonth() + 1;
+        	var today_d = this.today.getDate();
+
+        	var y = this.dummyDay.getFullYear();
+        	var m = this.dummyDay.getMonth() + 1;
+        	var b_thisMonth = false;
+        	if (y == today_y && m == today_m)
+        		b_thisMonth = true;
+            var loopDate = new Date(this.dummyDay.getTime());
+            loopDate.setDate(1);
+
+        	var _index =0;
+        	var _date = 1;
+        	var _rows =1;
+        	var str =
+        	 "<table  class='wk_mv_table wk-scrolltimedevents'  id='scrolltimedeventswk'>"
+        			+ "<tr class='dp_title_tr'  >"
+        			+ "<th id='dp_ym_th' class='dp_ym_th' colspan=5 ><span class='zippy-arrow' unselectable='on'></span><span> "
+        			+ y
+        			+ "年"
+        			+ m
+        			+ "月</span></th>"
+        			+ "<th > <i id='dp_prev_month' onClick='Instance(\""+this.index+"\").datePickerGoPrevMonthAction()' class='dp_prev_month'></i> </th>"
+        			+ "<th  > <i id='dp_next_month' onClick='Instance(\""+this.index+"\").datePickerGoNextMonthAction()' class='dp_prev_month dp_next_month'> </i></th>"
+        			+ "</tr>"
+
+        			+ "<tr class='dp_week_title_tr'><th>主标题</th><th>副标题</th><th>人员</th>";
+
+            for(var i=0;i<60;i++){
+                str+="<th>"+DateAdd(loopDate,i).format("MM-dd")+"</th>";
+                //loopDate.setDate(loopDate.getDate()+1);
+            }
+            str+= "</tr>";
+
+
+        	//计算出包含上月的第一行日期行
+
+         for(var mainTitle in finalData){
+            var list = finalData[mainTitle];
+
+              for(var i=0;i<list.length;i++){
+              var nowDate = new Date(this.dummyDay.getTime());
+              nowDate.setDate(1);
+               str+= "<tr style='height:25px;'>";
+               if(list[i].count && list[i].count>=1){
+               str+="<td style='height:25px;' rowSpan="+list[i].count +">"+list[i].mainTitle+"</td>";
+               }else{
+               }
+              // str+="<td style='height:25px;' rowSpan="++"">"+list[i].mainTitle+"</td>";
+                str+="<td style='height:25px;'>"+list[i].subTitle+"</td>";
+                    str+="<td style='height:25px;'>"+list[i].userName+"</td>";
+                 for(var j=0;j<60;j++){
+                 console.log(getDateStrByFen(list[i].startTime));
+
+                 console.log(DateAdd(nowDate,j).format("yyyy-MM-dd HH:mm"));
+                   // str+="<td>"+nowDate.getMonth()+"/"+(nowDate.getDate()+j)+"</td>";
+                    if(( DateAdd(nowDate,j).getTime()<=list[i].startTime*60000 && DateAdd(nowDate,j+1).getTime()>=list[i].startTime*60000)||
+( DateAdd(nowDate,j).getTime()<=list[i].endTime*60000 && DateAdd(nowDate,j+1).getTime()>=list[i].endTime*60000)||
+
+( DateAdd(nowDate,j).getTime()>=list[i].startTime*60000 && DateAdd(nowDate,j).getTime()<=list[i].endTime*60000)
+
+                    ){
+                         str+="<td style='height:25px;background-color:red'></td>";
+                    }else{
+                      str+="<td style='height:25px;'></td>";
+                      }
+                 }
+                   str+= "</tr>";
+              }
+            }
+
+          str+= "</table>";
+            $("#div_CalendarEventView_" + this.index).html(str);
+
+
+    }else if(this.viewMode==4){
+                   var finalData ={};
+                     for(var i=0;i<data.data.length;i++){
+                         var rowData = data.data[i];
+                         var title =rowData.title;
+                         var userName =rowData.userName;
+                         var ary =title.split("#");
+                         var mainTitle = ary[0];
+                         var subTitle = ary[1];
+                         if(finalData[mainTitle]){
+
+                         }else{
+                         finalData[mainTitle]=new Array();
+
+                         }
+                         var json = {};
+                         json.mainTitle = mainTitle;
+                          json.subTitle = subTitle;
+                           json.userName = userName;
+                            json.startTime = rowData.startTime;
+                            json.endTime = rowData.endTime;
+                         finalData[mainTitle].push(json);
+                          finalData[mainTitle][0].count=1+  (finalData[mainTitle][0].count||0);
+
+                     }
+                     var data =data.data;
+                 	var today_y = this.today.getFullYear();
+                 	var today_m = this.today.getMonth() + 1;
+                 	var today_d = this.today.getDate();
+
+                 	var y = this.dummyDay.getFullYear();
+                 	var m = this.dummyDay.getMonth() + 1;
+                 	var b_thisMonth = false;
+                 	if (y == today_y && m == today_m)
+                 		b_thisMonth = true;
+                     var loopDate = new Date(this.dummyDay.getTime());
+                     loopDate.setDate(1);
+
+                 	var _index =0;
+                 	var _date = 1;
+                 	var _rows =1;
+                 	var str =
+                 	 "<table  class='wk_mv_table wk-scrolltimedevents'  id='scrolltimedeventswk'>"
+                 			+ "<tr class='dp_title_tr'  >"
+                 			+ "<th id='dp_ym_th' class='dp_ym_th' colspan=5 ><span class='zippy-arrow' unselectable='on'></span><span> "
+                 			+ y
+                 			+ "年"
+                 			+ m
+                 			+ "月</span></th>"
+                 			+ "<th > <i id='dp_prev_month' onClick='Instance(\""+this.index+"\").datePickerGoPrevMonthAction()' class='dp_prev_month'></i> </th>"
+                 			+ "<th  > <i id='dp_next_month' onClick='Instance(\""+this.index+"\").datePickerGoNextMonthAction()' class='dp_prev_month dp_next_month'> </i></th>"
+                 			+ "</tr>"
+
+                 			+ "<tr class='dp_week_title_tr'><th>主标题</th><th>副标题</th><th>人员</th>";
+
+
+                         str+="<th>开始时间</th><th>结束时间</th>";
+                         //loopDate.setDate(loopDate.getDate()+1);
+
+                     str+= "</tr>";
+
+
+                 	//计算出包含上月的第一行日期行
+
+                  for(var mainTitle in finalData){
+                     var list = finalData[mainTitle];
+
+                       for(var i=0;i<list.length;i++){
+                       var nowDate = new Date(this.dummyDay.getTime());
+                       nowDate.setDate(1);
+                        str+= "<tr style='height:25px;'>";
+                       if(list[i].count && list[i].count>=1){
+                        str+="<td style='height:25px;'rowSpan="+list[i].count +" >"+list[i].mainTitle+"</td>";//rowSpan="+list[i].count +"
+                       }else{
+                       }
+                       // str+="<td style='height:25px;' rowSpan="++"">"+list[i].mainTitle+"</td>";
+                         str+="<td style='height:25px;'>"+list[i].subTitle+"</td>";
+                             str+="<td style='height:25px;'>"+list[i].userName+"</td>";
+
+
+
+
+                          str+="<td style='height:25px;background-color:red'>"+(new Date(list[i].startTime*60*1000)).format("yyyy-MM-dd")+"</td>"+
+                          "<td style='height:25px;background-color:red'>"+(new Date(list[i].endTime*60*1000)).format("yyyy-MM-dd")+"</td>";
+
+
+                            str+= "</tr>";
+
+                     }
+ }
+                   str+= "</table>";
+                     $("#div_CalendarEventView_" + this.index).html(str);
+
+
+             }else {
 	if(data!=null && data.data!=null && data.data.length>0){
 		for(var i=0,length=data.data.length;i<length;i++){
 			if(data.data[i]){
@@ -2183,6 +2603,7 @@ CalendarView.prototype.loadEventsViewCallBack=function(data){//alert(this);//ale
 				this.addEventView(ce);
 			}
 		}
+	}
 	}
 
 };
@@ -2258,6 +2679,7 @@ CalendarView.prototype.getDateFromMixStr=function(id){
 };
 /**
 *according to parentnode td 's id changed the ce property and save in db
+* 当拖动了日历的时候发生变化要自动保存到数据库
 */
 CalendarView.prototype.saveChangedAction= function(ao) {
 
@@ -2272,11 +2694,11 @@ CalendarView.prototype.saveChangedAction= function(ao) {
     console.log(ce);
     }
     var ceDate =new Date(ce.data.startTime*60000);
-
+    //如果天数月数发生了变化
     if(date.getMonth()!= ceDate.getMonth() || date.getDate()!= ceDate.getDate()){
         //ceDate.setDate(date.getDate());
         //ceDate.setMonth(date.getMonth());
-        ce.day= date.format("yyyy-MM-dd");//endTime=ceDate.getTime()-ce.startTime+ce.endTime;
+        ce.startDay=ce.day= date.format("yyyy-MM-dd");//endTime=ceDate.getTime()-ce.startTime+ce.endTime;
         //ce.startTime= ceDate.getTime();
         if(ce.id=="event_newEvent"){
             alert("new Event should not enther saveChangeAction method ");
@@ -2289,7 +2711,9 @@ CalendarView.prototype.saveChangedAction= function(ao) {
     if(ce.data && (ce.data.startTime !=ce.startTime || ce.data.endTime != ce.endTime)){
             //ceDate.setDate(date.getDate());
             //ceDate.setMonth(date.getMonth());
-            ce.day= date.format("yyyy-MM-dd");//endTime=ceDate.getTime()-ce.startTime+ce.endTime;
+
+            ce.endDay = autoChange(ce.startDay,date.format("yyyy-MM-dd"),ce.endDay);
+            ce.startDay= ce.day= date.format("yyyy-MM-dd");//endTime=ceDate.getTime()-ce.startTime+ce.endTime;
             //ce.startTime= ceDate.getTime();
             this.saveCalendarEventDataService(ce);
             console.log("save");
@@ -2320,8 +2744,8 @@ CalendarView.prototype.judgeIfSaveInDb= function(id) {
     var ce = ca.getCalendarEvent(ceid);
     if(ce.isdel==ce.data.isdel
      &&ce.title!=ce.data.title
-     &&getTimes(ce.day,ce.startTimeSV)==ce.data.startTime
-      &&getTimes(ce.day,ce.endTimeSV)==ce.data.endTime
+     &&getTimes(ce.startDay,ce.startTimeSV)==ce.data.startTime
+      &&getTimes(ce.endDay,ce.endTimeSV)==ce.data.endTime
      ){
 
         return false;
@@ -2337,8 +2761,8 @@ function judgeIfNeed2Save(ceid) {
     var ce = ca.getCalendarEvent(ceid);
     if(ce.data && ce.isdel==ce.data.isdel
      &&ce.title==ce.data.title
-     &&getTimes(ce.day,ce.startTimeSV)==ce.data.startTime
-      &&getTimes(ce.day,ce.endTimeSV)==ce.data.endTime
+     &&getTimes(ce.startDay,ce.startTimeSV)==ce.data.startTime
+      &&getTimes(ce.endDay,ce.endTimeSV)==ce.data.endTime
      ){
         console.log(ce.isdel +":");
         return false;
@@ -2378,11 +2802,12 @@ function changeJson2CE(data){
 	ce.id=data.id;
 
 	ce.title=data.title;
-	ce.day=new Date(data.startTime*60000).format("yyyy-MM-dd");
+	ce.startDay=ce.day=new Date(data.startTime*60000).format("yyyy-MM-dd");
+
 	ce.startTimeSV=new Date(data.startTime*60000).format("HH:mm");
 
 	ce.endTimeSV=new Date(data.endTime*60000).format("HH:mm");
-
+    ce.endDay=new Date(data.endTime*60000).format("yyyy-MM-dd");
 	console.log((data.startTime%(24*60)/60)+":"+(data.startTime%(60))  );
 
 	ce.startTime=data.startTime%(24*60);
@@ -2401,8 +2826,15 @@ function translateCE2Activity(ce){
 	var activity =new Object();
 	activity.ID=ce.id;
 	activity.TITLE=ce.title;
-	activity. STARTTIME = getTimes(ce.day,ce.startTimeSV);
-	activity.ENDTIME = getTimes(ce.day,ce.endTimeSV);
+
+	activity. STARTTIME = getTimes(ce.startDay,ce.startTimeSV);
+	if(ce.startDay){
+    	activity. STARTTIME = getTimes(ce.startDay,ce.startTimeSV);
+    	}
+	activity.ENDTIME = getTimes(ce.endDay,ce.endTimeSV);
+	if(ce.endDay){
+        	activity. ENDTIME = getTimes(ce.endDay,ce.startTimeSV);
+        	}
 	activity.ISDEL=ce.isdel;
 	return activity;
 }
@@ -2417,6 +2849,7 @@ function save(ceid){
 	if(!judgeIfNeed2Save(ceid)){
 	    return;
 	}
+
 	//判断是否需要保存到数据库
 	synStack[ceid]=ce;
 	//ce.changeFlag=true;

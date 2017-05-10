@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -21,14 +20,10 @@ import org.springframework.stereotype.Service;
 
 import com.dozenx.web.core.auth.sysUser.bean.SysUser;
 import com.dozenx.web.core.auth.sysUser.dao.SysUserMapper;
-import com.dozenx.util.CacheUtil;
 import com.dozenx.util.ResultUtil;
-import com.dozenx.util.UUIDUtil;
-import com.dozenx.util.ValidateUtil;
 import com.dozenx.util.StringUtil;
-import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.base.BaseService;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 
 @Service("sysUserService")
 public class SysUserService extends BaseService {
@@ -79,7 +74,7 @@ public class SysUserService extends BaseService {
                HashMap params =new HashMap();
         params.put("telno",sysUser.getTelno());
         int count = sysUserMapper.countByOrParams(params);
-        if(StringUtil.isNull(sysUser.getId())&& count>0||count>1 ){
+        if(StringUtil.isNull(sysUser.getId())&& count>0 ){
             return ResultUtil.getResult(302,"字段唯一不能重复");
         }
 

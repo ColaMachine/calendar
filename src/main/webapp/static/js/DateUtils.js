@@ -108,6 +108,12 @@ function getDateTime(val){
 	 date.setSeconds(0);
 	 return parseInt(date.getTime()/6000);
 }
+
+function getDateStrByFen(val){
+	var date = new Date(val*60000);
+	return date.format("yyyy-MM-dd HH:mm")
+
+}
 /**
  * 根据精确到分钟的时间戳 换得 该时间戳的时分数值量
  * @param val
@@ -538,4 +544,11 @@ DateUtils.copyDate=function(date){
 var dateNew =new Date(date.getTime());
 
     return dateNew;
+}
+function getDateSince1972(date){
+    return date.getTime()/1000/60/60/24;
+}
+function autoChange(originStartDay ,changedStartDay,originEndDay){
+return DateAdd(parseDate(changedStartDay,"yyyy-MM-dd"),getDateSince1972(parseDate(originEndDay,"yyyy-MM-dd"))-getDateSince1972(parseDate( originStartDay,"yyyy-MM-dd"))).format("yyyy-MM-dd");
+
 }

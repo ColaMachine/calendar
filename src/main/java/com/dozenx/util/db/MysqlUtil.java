@@ -23,13 +23,13 @@ public class MysqlUtil {
 		compare();
 		System.out.println("compare end ");
 	}
-	public Connection getConnection(String user,String password,String url){
+	public Connection getConnection(String driver,String user,String password,String url) throws SQLException, ClassNotFoundException {
 		Connection conn;
 		try {
 
 			// 之所以要使用下面这条语句，是因为要使用MySQL的驱动，所以我们要把它驱动起来，
 			// 可以通过Class.forName把它加载进去，也可以通过初始化来驱动起来，下面三种形式都可以
-			Class.forName("com.mysql.jdbc.Driver");// 动态加载mysql驱动
+			Class.forName(driver);// 动态加载mysql驱动
 			// or:
 			// com.mysql.jdbc.Driver driver = new com.mysql.jdbc.Driver();
 			// or：
@@ -37,18 +37,61 @@ public class MysqlUtil {
 
 			System.out.println("成功加载MySQL驱动程序");
 			// 一个Connection代表一个数据库连接
-			conn = DriverManager.getConnection(url+"?user="+user+"&password="+password);
+			 url = url+"&user="+user+"&password="+password;
+			System.out.println(url);
+			//System.out.println("jdbc:mysql://192.168.10.183:3306/awifiopms?Unicode=true&characterEncoding=utf-8&user=awifi2Badmin&password=awifi2B@#$");
+			conn = DriverManager.getConnection(url+"&user="+user+"&password="+password);
+			//conn = DriverManager.getConnection("jdbc:mysql://192.168.10.183:3306/awifiopms?Unicode=true&characterEncoding=utf-8&user=awifi2Badmin&password=awifi2B@#$");
+
 			return conn;
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}
-		return null;
+
 
 	}
-	public void executeQuery(String user,String password,String url,String sql){
+
+	public List<HashMap<String,String >> executeQuery(Connection con,String sql) throws SQLException {
+			List<HashMap<String,String >> recoreds =new ArrayList<>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			int count = rsmd.getColumnCount();
+
+			String[] names = new String[count];
+
+			for (int i = 0; i < count; i++){
+
+				names[i] = rsmd.getColumnName(i + 1);
+			}
+			while (rs.next()) {
+				HashMap<String,String> record =new HashMap<>();
+				//rs.getRow();
+				for(int i=0;i<count;i++){
+					record.put(names[i],rs.getString(i+1));
+				}
+				recoreds.add(record);
+			}
+			rs.close();
+		}catch (Exception e ){
+			e.printStackTrace();
+			throw e;
+		}finally {
+			try {
+				con.close();//没有使用连接池
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return recoreds;
+	}
+	public void executeQuery(String driver,String user,String password,String url,String sql){
 		Connection conn ;
 		try{
-			conn=this.getConnection(user,password,url);
+			conn=this.getConnection(driver,user,password,url);
 
 
 			Statement stmt	= conn.createStatement();

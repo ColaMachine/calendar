@@ -1,5 +1,6 @@
 package com.dozenx.util;
 
+import com.dozenx.web.util.ConfigUtil;
 import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
@@ -25,11 +26,12 @@ public class SmsUtil {
     public String sendSms(String content, String mobile, Short type) {
         String url;
         try {
-            System.out.println(URLEncoder.encode(content, "UTF-8"));
-            url = PropertiesUtil.get( "sms_server_url")
-                    + "system/sendCode.htm?cellNumber=" + mobile + "&content="
-                    + URLEncoder.encode(content, "UTF-8");
-            String result = HttpRequestUtil.sendPost(url, "");
+
+
+            url = ConfigUtil.getConfig("sms_server_url");
+            url = url.replace("%phone%",mobile).replace("%content%",URLEncoder.encode(content, "UTF-8"));
+
+            String result = HttpRequestUtil.sendGet(url);
             HashMap<String, Object> sms = new HashMap<String, Object>();
             Date date = new Date();
             sms.put("Content", content);

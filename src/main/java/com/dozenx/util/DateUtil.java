@@ -321,7 +321,17 @@ public final class DateUtil {
 		return Integer.parseInt(String.valueOf(between_days));
 
 	}
+	public static String toDateStr(long vlaue){
+		Date date =new Date(vlaue);
+		return DateUtil.toDateStr(date,"yyyy-MM-dd HH:mm");
+	}
+	public static String toDateStr(Date date ,String format){
+		return DateUtil.formatToString(date,format);
+
+	}
 	public static void main(String[] args) {
+		System.out.println(DateUtil.toDateStr(1491038114l*1000));
+		System.out.println(DateUtil.toDateStr(1490862198l*1000));
 		DateUtil.printTimestampby60(24355980);
 		System.out.println(24355980/24/60);
 		System.out.println(24355980/24/60);
@@ -335,6 +345,95 @@ public final class DateUtil {
 		System.out.println(new Date().getTime() );
 		System.out.println(DateUtil.formatToString(new Date(1480695398105l),YYYY_MM_DD_HH_MM_SS));
 	}
+
+	public final static int DATE_INTERVAL_DAY = 1; // 日
+	public final static int DATE_INTERVAL_WEEK = 2; // 周
+	public final static int DATE_INTERVAL_MONTH = 3; // 月
+	public final static int DATE_INTERVAL_YEAR = 4; // 年
+	public final static int DATE_INTERVAL_HOUR = 5; // 小时
+	public final static int DATE_INTERVAL_MINUTE = 6; // 分钟
+	public final static int DATE_INTERVAL_SECOND = 7; // 秒
+	/**
+	 * 加时间
+	 * @author sunju
+	 * @creationDate. 2010-8-27 下午05:28:06
+	 * @param interval 增加项，可以是天数、月份、年数、时间、分钟、秒
+	 * @param date 时间
+	 * @param num 加的数目
+	 * @return 时间加后的时间
+	 */
+	public static Date dateAdd(int interval, Date date, int num) {
+		if (date == null) return null;
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		switch (interval) {
+			case DATE_INTERVAL_DAY:
+				calendar.add(Calendar.DATE, num);
+				break;
+			case DATE_INTERVAL_WEEK:
+				calendar.add(Calendar.WEEK_OF_MONTH, num);
+				break;
+			case DATE_INTERVAL_MONTH:
+				calendar.add(Calendar.MONTH, num);
+				break;
+			case DATE_INTERVAL_YEAR:
+				calendar.add(Calendar.YEAR, num);
+				break;
+			case DATE_INTERVAL_HOUR:
+				calendar.add(Calendar.HOUR, num);
+				break;
+			case DATE_INTERVAL_MINUTE:
+				calendar.add(Calendar.MINUTE, num);
+				break;
+			case DATE_INTERVAL_SECOND:
+				calendar.add(Calendar.SECOND, num);
+				break;
+			default:
+		}
+		return calendar.getTime();
+	}
+
+
+	/**
+	 * @Title: compareDate
+	 * @Description: TODO(日期比较，如果s>=e 返回true 否则返回false)
+	 * @param s
+	 * @param e
+	 * @return boolean
+	 * @throws
+	 * @author luguosui
+	 */
+	public static boolean compareDate(String s, String e) {
+		if(fomatDate(s)==null||fomatDate(e)==null){
+			return false;
+		}
+		return fomatDate(s).getTime() >=fomatDate(e).getTime();
+	}
+	/**
+	 * 获取当前时间字符串(年月日)
+	 * @author sunju
+	 * @creationDate. 2011-5-4 下午08:22:34
+	 * @return 时间字符串
+	 */
+	public static String getNowStringDate() {
+		return DateUtil.formatToString(new Date(), "yyyy-MM-dd");
+	}
+	/**
+	 * 格式化日期
+	 *
+	 * @return
+	 */
+	public static Date fomatDate(String date) {
+		DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			return fmt.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+
 }
 
 

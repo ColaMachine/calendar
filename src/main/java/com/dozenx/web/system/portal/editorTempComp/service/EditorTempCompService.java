@@ -7,12 +7,10 @@
  */
 
 package com.dozenx.web.system.portal.editorTempComp.service;
-import java.sql.Timestamp;
 import java.util.*;
 
 import javax.annotation.Resource;
 
-import com.alibaba.fastjson.JSON;
 import com.dozenx.web.system.portal.component.bean.Component;
 import com.dozenx.web.system.portal.component.dao.ComponentMapper;
 import com.dozenx.web.system.portal.template.bean.Template;
@@ -23,17 +21,11 @@ import org.springframework.stereotype.Service;
 
 import com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp;
 import com.dozenx.web.system.portal.editorTempComp.dao.EditorTempCompMapper;
-import com.dozenx.util.CacheUtil;
 import com.dozenx.util.ResultUtil;
-import com.dozenx.util.UUIDUtil;
-import com.dozenx.util.ValidateUtil;
 import com.dozenx.util.StringUtil;
-import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.base.BaseService;
-import  com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp;
-import  com.dozenx.web.system.portal.editorTempComp.dao.EditorTempCompMapper;
 
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 
 @Service("editorTempCompService")
 public class EditorTempCompService extends BaseService {

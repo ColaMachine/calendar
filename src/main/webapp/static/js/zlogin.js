@@ -10,6 +10,7 @@
  *
  *
  */
+
 var loginForm={
     ids:{
     root:null,
@@ -104,7 +105,9 @@ var loginForm={
        // $$("#loginBtn").setAttribute("disabled", "disabled");
         //alert($$("#rememberme").attr("checked"));
         //判断是否使用记住功能
-        if ($$("#rememberme").getAttribute("checked") == 'checked') {//alert("选中了记住我");
+
+
+        if ($("#rememberme").attr("checked") == 'checked') {//alert("选中了记住我");
         /*	console.log("选中了记住我" );*/
             console.log("username:" + jso.email);
             this.setCookie('username', jso.email, 365);
@@ -198,7 +201,8 @@ getCookie:function (c_name) {
 	return ""
 },
 //设置cookie值
-setCookie:function (c_name, value, expiredays) {console.log("expiredays:"+expiredays);
+setCookie:function (c_name, value, expiredays) {
+    console.log("expiredays:"+expiredays);
 	var exdate = new Date();
 	exdate.setDate(exdate.getDate() + expiredays);
 	console.log(c_name + "=" + escape(value)

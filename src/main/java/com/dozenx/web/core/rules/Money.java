@@ -14,7 +14,7 @@ public class Money extends Rule {
 		if(this.getValue() == null || this.getValue().equals("")){
 			return true;
 		}else{
-			if (StringUtil.isNumeric(this.getValue())) {
+			if (StringUtil.checkNumeric(this.getValue())) {
 				return true;
 			}
 			else {

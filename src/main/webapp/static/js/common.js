@@ -205,6 +205,25 @@ var Ajax={
  post:function(url,data,callback){
     this.AjaxFun(url,data,callback,{type:"POST"});
  },
+ AjaxFun1:function(url, inputData, callback, options, callbackOnError){
+      $.ajax({
+            url:url,
+            data:inputData,
+            //contentType:"application/json",
+           // dataType:options.dataType,
+            success:callback,
+            error:callbackOnError,
+            beforeSend: function(request) {
+                             request.setRequestHeader("Content-Type", "application/json");
+
+                         },
+            headers: {
+contentType:"application/json",
+                          "Content-Type:":"application/json",
+                    }
+            }
+        );
+ },
  AjaxFun:function (url, inputData, callback, options, callbackOnError) {
          	var contextUrl = window.location.href;
          	options = options || {};
@@ -216,7 +235,7 @@ var Ajax={
          	options.url =  url;
          	options.type = options.type||"POST";
          	options.data = inputData;
-         	options.contentType="application/x-www-form-urlencoded; charset=utf-8";
+         	options.contentType="application/x-www-form-urlencoded";//"application/json;charset=utf-8";//
          	//options.data = encodeURIComponent(JSON.stringify(inputData));
          	if (typeof options.async == 'undifined')
          		options.async = false;
@@ -1264,8 +1283,8 @@ function zdialogue(msg,title,src,fontcolor,fn){
 	$(".widget").html(html);
 	if (typeof(fn) != "undefined") 
 	$(html).find(".zbutton_wrap").find("a").click(fn);
-}*/
-var layer={
+}*//*
+var layer1={
 alert:function(msg,fn){
     zalert(msg,"",fn);
 },
@@ -1280,7 +1299,7 @@ close:function(){
    dialog.hideWidget();
 
 }
-}
+}*/
 
 var dialog={
     alert:function(msg,fn){
@@ -1992,9 +2011,9 @@ var _validator= {
                             };//input
                         }
                 }
-                return true;
-            }
 
+            }
+   return true;
         },
     addMethod:function(name,fn,message){
         this.methods[name]=fn;
@@ -2106,7 +2125,7 @@ function zImageUtil(config) {
 					//document.getElementById('myImg').src = data;//压缩结果验证
 					if (_this.preShow) {
 						console.log("img pre show");
-						_this.imgDom.attr("src", data);
+						$(_this.imgDom).attr("src", data);
 
 						//console.log(_this.imgDom);
 
@@ -2124,7 +2143,7 @@ function zImageUtil(config) {
 						json,
 						function(data) {console.log("ajax return");
 							if (data.r == AJAX_SUCC) {console.log("succ");
-								_this.imgDom.attr("src", PATH+"/" + data.data);
+								$(_this.imgDom).attr("src", PATH+"/" + data.data);
 								//$(_this).parent().find("#picurl")
 								console.log("imgUrl:" + data.data);
 							} else {
@@ -2219,7 +2238,7 @@ function zImageUtil2(config) {
 					//document.getElementById('myImg').src = data;//压缩结果验证
 					if (_this.preShow) {
 						console.log("img pre show");
-						_this.imgDom.attr("src",data);
+						$(_this.imgDom).attr("src",data);
 
 						//console.log(_this.imgDom);
 
@@ -2233,6 +2252,7 @@ function zImageUtil2(config) {
 					json.imageData = encodeURIComponent(data);
 					console.log("begin post");
                    dialog.showWait();
+                   alert(_this.postUrl);
 					Ajax.post(_this.postUrl,
 						json,
 						function(data) {
@@ -2508,4 +2528,13 @@ function getQueryString(name) {
 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 var r = window.location.search.substr(1).match(reg);
 if (r != null) return unescape(r[2]); return null;
+}
+
+function removeByValue(arr, val) {
+  for(var i=0; i<arr.length; i++) {
+    if(arr[i] == val) {
+      arr.splice(i, 1);
+      break;
+    }
+  }
 }

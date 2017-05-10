@@ -223,8 +223,10 @@ Drag.dragStart(this);
 event.cancelBubble=true;
 event.stopPropagation();
 }*/
-	$(".bg-layer")[0].appendChild(Drag.tdiv);
-
+	//$(".bg-layer")[0].appendChild(Drag.tdiv);
+	console.log(event.srcElement);
+	console.log(event.srcElement);
+$(event.srcElement).append(Drag.tdiv);
 	Drag.ao = null;
 	Drag.tdiv = null;
 	},

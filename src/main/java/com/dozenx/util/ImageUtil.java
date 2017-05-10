@@ -9,7 +9,7 @@ import com.dozenx.core.Path.PathManager;
 import com.dozenx.core.config.Config;
 import com.dozenx.core.config.ImageConfig;
 import com.dozenx.util.encrypt.Base64Util;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 import com.sun.imageio.plugins.jpeg.JPEGImageWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

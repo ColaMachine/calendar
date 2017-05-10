@@ -19,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 import org.hibernate.validator.internal.util.logging.LoggerFactory;
 import org.slf4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
@@ -26,47 +27,140 @@ import java.util.*;
 
 public class HttpRequestUtil {
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(HttpRequestUtil.class);
+
+    public static void main(String args[]){
+        String result = HttpRequestUtil.sendGet("http://192.168.41.49:8085/awifi-oauth-server-web/tokenController/authorizationGrant?oauthCode=msp_tp53");
+        System.out.println(result);
+    }
+
+
     /**
      * 向指定URL发送GET方法的请求
      * 
      * @modificationHistory.
      * @param url
      *            发送请求的URL
-     * @param param
+     * @param map
      *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
      * @return URL 所代表远程资源的响应结果
      */
-    public static String sendGet(String url, String param) {
+    public static String sendGet(String url, Map map ) {
         StringBuffer result = new StringBuffer("");
         BufferedReader in = null;
         Long startTime = System.currentTimeMillis();
         try {
+            if(map.size()>0){
+                String paramStr = MapUtils.join(map,"&");
+                if(url.indexOf("?")>0){
+                    url+= "&"+paramStr;
+                }else{
+                    url+= "?"+paramStr;
+                }
+            }
+            return UrlRead(url);
+        } catch (Exception e) {
+            return "400";
+        }
+
+    }
+    /**
+     * 向指定URL发送GET方法的请求
+     *
+     * @modificationHistory.
+     *
+     * @param url
+     *            发送请求的URL
+     * @param param
+     *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
+     * @return URL 所代表远程资源的响应结果
+     */
+    public static String sendGet(String url, String param,String ip,String port) {
+
+
+        StringBuffer result = new StringBuffer("");
+        Long startTime = System.currentTimeMillis();
+        BufferedReader in = null;
+        try {
+
             String urlNameString = url + "?" + param;
             URL realUrl = new URL(urlNameString);
             // 打开和URL之间的连接
             URLConnection connection = realUrl.openConnection();
             // 设置通用的请求属性
+            connection.setRequestProperty("X-Forwarded-For", ip);
+            connection.setRequestProperty("X-Forwarded-Port", port);
             connection.setRequestProperty("accept", "*/*");
             connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("user-agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             // 建立实际的连接
             connection.connect();
             // 定义 BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream(), "UTF-8"));
+            in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+           /* String line;
+            while ((line = in.readLine()) != null) {
+                result.append(line);
+            }*/
+
             String line;
             while ((line = in.readLine()) != null) {
                 result.append(line);
             }
             Long endTime = System.currentTimeMillis();
-            logger.info("success to httpget "+url+" param:"+param+" cost time:"+(endTime-startTime)+" result:"+result);
+            logger.info("success to httpget \n"+urlNameString+"  cost time:"+(endTime-startTime)+"\n result:"+result);
+
         } catch (Exception e) {
             // System.out.println("发送GET请求出现异常！" + e);
             Long endTime = System.currentTimeMillis();
-            logger.info("fail to httpget "+url+" param:"+param+"  cost time:"+(endTime-startTime)+" error:"+e.getMessage());
+         //   logger.info("fail to httpget \n "+url+"   cost time:"+(endTime-startTime));
+           // logger.error("send http get error use url: "+url+"error :"+"cost time:"+(endTime-startTime),e);
+            logger.error("send http get error ",e);
+            return "400";
+        }
+        // 使用finally块来关闭输入流
+        finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (Exception e2) {
+                logger.error("close http request failt:", e2);
+                // e2.printStackTrace();
+            }
+        }
+        return result.toString();
+    }
+    public static String UrlRead(String url){
+        StringBuffer result = new StringBuffer("");
+        BufferedReader in = null;
+        Long startTime = System.currentTimeMillis();
+        try{
+        URL realUrl = new URL(url);
+        // 打开和URL之间的连接
+        URLConnection connection = realUrl.openConnection();
+        // 设置通用的请求属性
+        connection.setRequestProperty("accept", "*/*");
+        connection.setRequestProperty("connection", "Keep-Alive");
+        connection.setRequestProperty("user-agent",
+                "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+        // 建立实际的连接
+        connection.connect();
+        // 定义 BufferedReader输入流来读取URL的响应
+        in = new BufferedReader(new InputStreamReader(
+                connection.getInputStream(), "UTF-8"));
+        String line;
+        while ((line = in.readLine()) != null) {
+            result.append(line);
+        }
+        Long endTime = System.currentTimeMillis();
+        logger.info("success to httpget \n"+url+"  cost time:"+(endTime-startTime)+"\n result:"+result);
+        }
+        catch (Exception e) {
+            // System.out.println("发送GET请求出现异常！" + e);
+            Long endTime = System.currentTimeMillis();
+            //logger.info("fail to httpget \n "+url+"   cost time:"+(endTime-startTime));
             //logger.error("send http get error use url: "+url+"error :"+e.getMessage());
-
+           // logger.error("send http get error use url: "+url+"error :"+"cost time:"+(endTime-startTime),e);
+            logger.error("send http get error "+url,e);
             return "400";
         }
         // 使用finally块来关闭输入流
@@ -82,6 +176,53 @@ public class HttpRequestUtil {
         return result.toString();
     }
 
+    /**
+     * 向指定URL发送GET方法的请求
+     *
+     * @modificationHistory.
+     * @param url
+     *            发送请求的URL
+     * @param param
+     *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
+     * @return URL 所代表远程资源的响应结果
+     */
+    public static String sendGet(String url, String param) {
+
+
+        try {
+            if(!StringUtil.isBlank(param)){
+
+                if(url.indexOf("?")>0){
+                    url+= "&"+param;
+                }else{
+                    url+= "?"+param;
+                }
+            }
+            return UrlRead(url);
+        } catch (Exception e) {
+            return "400";
+        }
+    }
+    /**
+     * 向指定URL发送GET方法的请求
+     *
+     * @modificationHistory.
+     * @param url
+     *            发送请求的URL
+     * @param url
+     *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
+     * @return URL 所代表远程资源的响应结果
+     */
+    public static String sendGet(String url) {
+        StringBuffer result = new StringBuffer("");
+        BufferedReader in = null;
+        Long startTime = System.currentTimeMillis();
+        try {
+            return UrlRead(url);
+        } catch (Exception e) {
+            return "400";
+        }
+    }
     /**
      * 向指定 URL 发送POST方法的请求
      * 
@@ -369,7 +510,7 @@ public class HttpRequestUtil {
      *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
      * @return 所代表远程资源的响应结果
      */
-    public static String sendPost3(String url, Map<String, String> params) {
+    public static String sendPost(String url, Map<String, String> params) {
         OutputStream out = null;
         BufferedReader in = null;
         StringBuffer result = new StringBuffer("");

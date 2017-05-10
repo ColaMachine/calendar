@@ -1,7 +1,7 @@
 package com.dozenx.util;
 
 
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 
 public class RegexUtil {
 	public static ResultDTO email(String email){

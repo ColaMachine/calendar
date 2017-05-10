@@ -278,7 +278,7 @@ vu.add("content", content, "内容",  new Rule[]{new Length(200),new NotEmpty()}
 vu.add("status", status, "发送状态",  new Rule[]{});
 vu.add("reason", reason, "失败原因",  new Rule[]{new Length(200)});
         validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
+        if(StringUtil.isNotBlank(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
 
@@ -326,7 +326,7 @@ vu.add("reason", reason, "失败原因",  new Rule[]{new Length(200)});
                 return ResultUtil.getResult(302,validStr);
             }
             
-            if(StringUtil.isNotEmpty(validStr)) {
+            if(StringUtil.isNotBlank(validStr)) {
                 return ResultUtil.getResult(302,validStr);
             }
             idAry[i]=Integer.valueOf(idStrAry[i]);

@@ -275,7 +275,11 @@ public class RandomValidateCode {
         byte[] bytes = baos.toByteArray();
         BASE64Encoder encoder = new BASE64Encoder();
         String  result = encoder.encodeBuffer(bytes).trim();
-        ImageIO.write(image, "JPEG",file);//将内存中的图片通过流动形式输出到客户端
+        try {
+            ImageIO.write(image, "JPEG", file);//将内存中的图片通过流动形式输出到客户端
+        }catch (java.io.FileNotFoundException e){
+            e.printStackTrace();
+        }
         return new String[]{Config.getInstance().getImage().getVcodeDir()+"/"+filename+".jpg",str,result};
     }
 }

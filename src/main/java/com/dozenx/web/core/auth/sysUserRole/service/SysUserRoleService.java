@@ -7,11 +7,8 @@
  */
 
 package com.dozenx.web.core.auth.sysUserRole.service;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -21,22 +18,15 @@ import org.springframework.stereotype.Service;
 
 import com.dozenx.web.core.auth.sysUserRole.bean.SysUserRole;
 import com.dozenx.web.core.auth.sysUserRole.dao.SysUserRoleMapper;
-import com.dozenx.util.CacheUtil;
 import com.dozenx.util.ResultUtil;
-import com.dozenx.util.UUIDUtil;
-import com.dozenx.util.ValidateUtil;
 import com.dozenx.util.StringUtil;
-import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.base.BaseService;
-import java.util.StringTokenizer;
-import  com.dozenx.web.core.auth.sysUserRole.bean.SysUserRole;
-import  com.dozenx.web.core.auth.sysUserRole.dao.SysUserRoleMapper;
 
 import com.dozenx.web.core.auth.sysUser.bean.SysUser;
 import com.dozenx.web.core.auth.sysRole.bean.SysRole;
 import com.dozenx.web.core.auth.sysUser.dao.SysUserMapper;
 import com.dozenx.web.core.auth.sysRole.dao.SysRoleMapper;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 
 @Service("sysUserRoleService")
 public class SysUserRoleService extends BaseService {

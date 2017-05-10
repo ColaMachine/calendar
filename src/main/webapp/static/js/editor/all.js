@@ -112,7 +112,7 @@ var i=0;
           var that =this;
 		  return (
               React.createElement("div", {className: "container-fluid"}, 
-                  React.createElement("div", {className: "row body-container"}, 
+                  React.createElement("div", {className: "row body-container isplay:none"}, 
                       React.createElement("div", {className: "col-sm-12"}, 
                             React.createElement(EditorHead, null), 
                             React.createElement("div", {className: "left-container"}, 
@@ -125,7 +125,7 @@ var i=0;
                       )
                   )
 
-              )
+               )
 
         );
         }

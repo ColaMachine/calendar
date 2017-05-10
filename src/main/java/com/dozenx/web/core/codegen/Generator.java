@@ -270,7 +270,7 @@ public class Generator {
         	   rules.add(String.format("new NotEmpty()"));
         	   jsrules.add(String.format("required:true"));
            }
-           if(StringUtil.isNotEmpty(zcol.getValid())){
+           if(StringUtil.isNotBlank(zcol.getValid())){
         	   String[] validAry= zcol.getValid().split(",,");
         	   for(int j=0;j<validAry.length;j++){
         		   if(validAry[j].toLowerCase().startsWith("regex")){
@@ -370,7 +370,7 @@ public class Generator {
      */
     public String getSearchParam(){
         StringBuffer sb =new StringBuffer();
-        sb.append(tab2+"HashMap<String,Object> params= new HashMap<String,Object>();").append(ctrl);
+        sb.append(tab2+"HashMap<String,Object> params= new HashMap<>();").append(ctrl);
         for(int i=0;i<table.getCols().size();i++){
             ZColum zcol =table.getCols().get(i);
             String type = zcol.getType().toLowerCase();
@@ -627,7 +627,7 @@ return ymd;
                 rules.add(String.format("new Digits(10,0)"));
             }
         }
-        if(StringUtil.isNotEmpty(zcol.getValid())){
+        if(StringUtil.isNotBlank(zcol.getValid())){
             String[] validAry= zcol.getValid().split(",,");
             for(int j=0;j<validAry.length;j++){
                 if(validAry[j].toLowerCase().startsWith("regex")){
@@ -685,7 +685,7 @@ return ymd;
             if(column.isAi()){
                 sql.append(" AUTO_INCREMENT");
             }
-            if(StringUtil.isNotEmpty(column.getDef())){
+            if(StringUtil.isNotBlank(column.getDef())){
                 if(column.getDef().toLowerCase().equals("now")){
                     sql.append(" CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
                 }else{
@@ -1063,7 +1063,7 @@ return ymd;
         return sb.toString();
         
     }
-    public static void generate(String[] codes){
+    public static Generator generate(String[] codes){
         Generator gen = new Generator();
         
         try {
@@ -1110,8 +1110,11 @@ return ymd;
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        return gen;
     }
     public static void main(String[] args) {
+        Generator generator =new Generator();
+        //generator.generate(new String[]{"SysRole","SysUser","SysUserRole"});
         //用户模块
        // Generator.generate(new String[]{"Pwdrst"});
        // Generator.generate(new String[]{/*"SysResource",*/"SysRole","SysUser","SysUserRole"});
@@ -1119,15 +1122,17 @@ return ymd;
       //  "SysRoleResource","SysUserResource"
         //"SysUser","VideoNew","VideoHot","Collect"
         //"Expert"/*"Artical",*//*"Partner"*/
-     Generator.generate(new String[]{/*"SysMenu","SysUser","SysRole","SysPermission","SysUserRole","SysUserPermission","SysRolePermission","Artical","Expert","ExpertDetail","ExpertArtical","Partner","PartnerDetail",
-             "SysLog",*/"Component","SysConfig","Template","EditorTempComp","Goods"
-            });
+     /*Generator.generate(new String[]{*//*"SysMenu","SysUser","SysRole","SysPermission","SysUserRole","SysUserPermission","SysRolePermission","Artical","Expert","ExpertDetail","ExpertArtical","Partner","PartnerDetail",
+             "SysLog",*//*"Component","SysConfig","Template","EditorTempComp","Goods"
+            });*/
 
         //Generator.generate(new String[]{"WiiDeviceExtend" });
      // Generator.generate(new String[]{"SysConfig" });
       //  Generator.generate(new String[]{"MerchantExtends","DeviceExtends" });
        // Generator.generate(new String[]{"SysLogTag" });
-       // Generator.generate(new String[]{"SmsRecord" });
+       //Generator.generate(new String[]{"SmsRecord" });
+        //Generator.generate(new String[]{"Activity" });
+        Generator.generate(new String[]{"MerchantPic","MerchantNews","MerchantNotice" });
     }
 
   

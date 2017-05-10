@@ -1,6 +1,9 @@
 package com.dozenx.core.config;
 
+import com.alibaba.fastjson.JSON;
 import com.dozenx.core.Path.PathManager;
+import com.dozenx.util.FileUtil;
+import com.dozenx.util.JsonUtils;
 import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -150,8 +153,14 @@ public class Config {
          /* registerTypeAdapter(RedisConfig.class, new RedisConfig.Handler()).*/create();
          
     }
-    public static void main(String args[]){
-        Config.getInstance();
+    public static void main(String args[]) {
+        try {
+            String s = FileUtil.readFile2Str("C:\\zzw\\calendar\\src\\main\\resources\\config.cfg");
+            Config config = JSON.parseObject(s, Config.class);
+            Config.getInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public ValidCodeConfig getValidCode() {
@@ -184,5 +193,6 @@ public class Config {
     public int getPvSmsSendAmount() {
         return pvSmsSendAmount;
     }
+
 
 }

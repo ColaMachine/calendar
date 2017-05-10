@@ -1,8 +1,8 @@
 package com.dozenx.util;
 
 import com.dozenx.web.core.rules.Rule;
-import com.dozenx.web.message.ErrorMessage;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ErrorMessage;
+import com.dozenx.web.core.log.ResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -153,7 +153,7 @@ public class ValidateUtil<T> {
     
    
     /**
-     * 说明:
+     * 说明:主要是继承jsr303 hibernate 的基于bean注解的bean校验
      * @param object
      * @return
      * @return ResultDTO

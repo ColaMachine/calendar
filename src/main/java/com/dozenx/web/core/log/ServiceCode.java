@@ -20,7 +20,19 @@ public enum ServiceCode {
     ORDERREPORTCONTROLLER_PAYLIST("消费记录列表"),
     MERCHANT_PACKAGEADD("套餐信息增加"),
     MERCHANT_PACKAGEUPDATE("套餐信息更新"),
-    MERCHANT_QUERYPACKAGELIST("查询套餐信息");
+    MERCHANT_QUERYPACKAGELIST("查询套餐信息"),
+    USERCUTOFFWRAP_SERVICE("用户计时服务"),
+    MERCHANTCONTROLLER("商户服务"),
+    INDEX("首页服务"),
+    WIFI_SERVICE("wifi服务"),
+    TIMEBUS_SERVICE("计时服务"),
+    ACCESSAUTH_SERVICE("ACCESSAUTH_SERVICE"),
+    PackageMngController("PackageMngController"),
+    WifiController("WifiController"),
+    UserWifiTimeService("UserWifiTimeService"),
+    TimePayController("TimePayController"),
+    ThirdWifiAuthUserService("ThirdWifiAuthUserService"),
+    AUTH_SERVICE("认证服务");
     /** 
      *方法名
      */

@@ -1,6 +1,6 @@
 package com.dozenx.web.core.auth.vcode;
 
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 
 public class SmsCodeGen implements ValidCodeGenerator {
 

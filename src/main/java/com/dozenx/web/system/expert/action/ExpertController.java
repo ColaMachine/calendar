@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.LinkedHashMap;
 import com.dozenx.util.*;
-import javax.annotation.Resource;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -37,9 +36,7 @@ import com.dozenx.web.core.rules.*;
 import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.base.BaseController;
 import com.dozenx.util.StringUtil;
-import com.dozenx.util.ValidateUtil;
 import com.dozenx.web.util.RequestUtil;
-import com.dozenx.web.message.ResultDTO;
 import com.dozenx.util.DateUtil;
 @Controller
 @RequestMapping("/expert")
@@ -405,7 +402,7 @@ public class ExpertController extends BaseController{
         vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         vu.add("updatetime", updatetime, "更新时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
         validStr = vu.validateString();
-        if(StringUtil.isNotEmpty(validStr)) {
+        if(StringUtil.isNotBlank(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
 
@@ -453,7 +450,7 @@ public class ExpertController extends BaseController{
                 return ResultUtil.getResult(302,validStr);
             }
             
-            if(StringUtil.isNotEmpty(validStr)) {
+            if(StringUtil.isNotBlank(validStr)) {
                 return ResultUtil.getResult(302,validStr);
             }
             idAry[i]=Long.valueOf(idStrAry[i]);

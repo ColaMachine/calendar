@@ -3,101 +3,95 @@
  */
 package com.dozenx.util;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.alibaba.fastjson.JSON;
 /**
  * json序列化及反序列化工具类。
+ *
  * @author awifi-core
  * @date 2015年1月7日 上午11:47:42
  */
 public class JsonUtils {
 
-	private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
     private JsonUtils() {
     }
 
-    public static ObjectMapper getInstance() {
-        return objectMapper;
-    }
-
     /**
-     * 使用Jackson 数据绑定 将对象转换为 json字符串 还可以 直接使用 JsonUtils.getInstance().writeValueAsString(Object obj)方式
-     * 
+     * 使用Jackson 数据绑定 将对象转换为 json字符串 还可以 直接使用
+     * JsonUtils.getInstance().writeValueAsString(Object obj)方式
+     *
      * @param obj
      * @return
      */
     public static String toJsonString(Object obj) {
-        try {
-            return objectMapper.writeValueAsString(obj);
-        } catch (JsonGenerationException e) {
-            logger.error("转换为json字符串失败" + e.toString());
-        } catch (JsonMappingException e) {
-            logger.error("转换为json字符串失败" + e.toString());
-        } catch (IOException e) {
-            logger.error("转换为json字符串失败" + e.toString());
-        }
-        return null;
+        return JSON.toJSONString(obj);
     }
 
     /**
-     * json字符串转化为 JavaBean 还可以直接JsonUtils.getInstance().readValue(String content,Class valueType)用这种方式
-     * 
+     * json字符串转化为 JavaBean 还可以直接JsonUtils.getInstance().readValue(String
+     * content,Class valueType)用这种方式
+     *
      * @param <T>
      * @param content
      * @param valueType
      * @return
      */
     public static <T> T toJavaBean(String content, Class<T> valueType) {
-        try {
-            return objectMapper.readValue(content, valueType);
-        } catch (JsonParseException e) {
-            logger.error("json字符串转化为 javabean失败" + e.toString());
-        } catch (JsonMappingException e) {
-            logger.error("json字符串转化为 javabean失败" + e.toString());
-        } catch (IOException e) {
-            logger.error("json字符串转化为 javabean失败" + e.toString());
-        }
-        return null;
+
+        return JSON.parseObject(content, valueType);
     }
 
+    public static <T> List<T> toList(String content, Class<T> valueType) throws IOException {
+        return JSON.parseArray(content, valueType);
+		/*
+		 * try {
+		 *
+		 * return objectMapper.readValue(content, typeReference); } catch
+		 * (JsonParseException e) { logger.error("json字符串转化为 list失败,原因:" +
+		 * e.toString()); throw new RuntimeException("json字符串转化为 list失败"); }
+		 * catch (JsonMappingException e) { logger.error("json字符串转化为 list失败,原因"
+		 * + e.toString()); throw new JsonMappingException("json字符串转化为 list失败");
+		 * } catch (IOException e) { logger.error("json字符串转化为 list失败,原因" +
+		 * e.toString()); throw new IOException("json字符串转化为 list失败"); }
+		 */
+    }
     /**
-     * json字符串转化为list 还可以 直接使用 JsonUtils.getInstance().readValue(String content, new TypeReference<List<T>>(){})方式
-     * 
+     * json字符串转化为list 还可以 直接使用 JsonUtils.getInstance().readValue(String content,
+     * new TypeReference<List<T>>(){})方式
+     *
      * @param <T>
      * @param content
      * @return
      * @throws IOException
      */
-    public static <T> List<T> toJavaBeanList(String content, TypeReference<List<T>> typeReference) throws IOException {
-        try {
-            return objectMapper.readValue(content, typeReference);
-        } catch (JsonParseException e) {
-            logger.error("json字符串转化为 list失败,原因:" + e.toString());
-            throw new RuntimeException("json字符串转化为 list失败");
-        } catch (JsonMappingException e) {
-            logger.error("json字符串转化为 list失败,原因" + e.toString());
-            throw new JsonMappingException("json字符串转化为 list失败");
-        } catch (IOException e) {
-            logger.error("json字符串转化为 list失败,原因" + e.toString());
-            throw new IOException("json字符串转化为 list失败");
-        }
-    }
+	/*
+	 * public static <T> List<T> toJavaBeanList123(String content,
+	 * TypeReference<List<T>> typeReference) throws IOException {
+	 *
+	 * try {
+	 *
+	 * return objectMapper.readValue(content, typeReference); } catch
+	 * (JsonParseException e) { logger.error("json字符串转化为 list失败,原因:" +
+	 * e.toString()); throw new RuntimeException("json字符串转化为 list失败"); } catch
+	 * (JsonMappingException e) { logger.error("json字符串转化为 list失败,原因" +
+	 * e.toString()); throw new JsonMappingException("json字符串转化为 list失败"); }
+	 * catch (IOException e) { logger.error("json字符串转化为 list失败,原因" +
+	 * e.toString()); throw new IOException("json字符串转化为 list失败"); } }
+	 */
 
     /**
      * 将一个参数Map转换成JSON字符串
@@ -189,7 +183,6 @@ public class JsonUtils {
         return String.valueOf(value);
     }
 
-
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
     public static final String YYYYMMDD = "yyyyMMdd";
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
@@ -198,20 +191,23 @@ public class JsonUtils {
 
     /**
      * 遍历一个对象的所有属性
+     *
      * @param clazz
      * @param list
      */
     public static void getAllFields(Class clazz, List<Field> list) {
-        for(Field f : clazz.getDeclaredFields()){
+        for (Field f : clazz.getDeclaredFields()) {
             list.add(f);
         }
         Class superClazz = clazz.getSuperclass();
-        if(superClazz != null){
+        if (superClazz != null) {
             getAllFields(superClazz, list);
         }
     }
+
     /**
      * object对象转json
+     *
      * @param model
      * @return
      * @throws NoSuchMethodException
@@ -220,86 +216,85 @@ public class JsonUtils {
      * @throws InvocationTargetException
      */
     public static String getJson(Object model)
-            throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-        Field[] field = model.getClass().getDeclaredFields();//获取实体类的所有属性，返回Field数组
+            throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Field[] field = model.getClass().getDeclaredFields();// 获取实体类的所有属性，返回Field数组
         StringBuffer buffer = new StringBuffer("");
-        for(int i=0 ; i<field.length ; i++){//遍历所有属性
+        for (int i = 0; i < field.length; i++) {// 遍历所有属性
             field[i].setAccessible(true);
-            String name = field[i].getName();//获取属性的名字
-            if(buffer.toString().equals("")){
-                buffer.append("\""+name+"\":");
-            }else{
-                buffer.append(",\""+name+"\":");
+            String name = field[i].getName();// 获取属性的名字
+            if (buffer.toString().equals("")) {
+                buffer.append("\"" + name + "\":");
+            } else {
+                buffer.append(",\"" + name + "\":");
             }
-            name = name.substring(0,1).toUpperCase()+name.substring(1);//将属性的首字符大写，方便构造get，set方法
-            String type = field[i].getGenericType().toString();//获取属性的类型
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);// 将属性的首字符大写，方便构造get，set方法
+            String type = field[i].getGenericType().toString();// 获取属性的类型
 
             Method m = null;
             try {
-                m = model.getClass().getMethod("get"+name);
+                m = model.getClass().getMethod("get" + name);
             } catch (Exception e) {
-                if(e instanceof NoSuchMethodException){
+                if (e instanceof NoSuchMethodException) {
                     continue;
                 }
             }
 
-            if(m != null){
+            if (m != null) {
                 m.setAccessible(true);
-                if(type.equals("class java.lang.String")){//如果type是类类型，则前面包含"class "，后面跟类名
-                    String value = (String) m.invoke(model);//调用getter方法获取属性值
-                    if(value != null){
-                        buffer.append("\""+value+"\"");
-                    }else{
+                if (type.equals("class java.lang.String")) {// 如果type是类类型，则前面包含"class
+                    // "，后面跟类名
+                    String value = (String) m.invoke(model);// 调用getter方法获取属性值
+                    if (value != null) {
+                        buffer.append("\"" + value + "\"");
+                    } else {
                         buffer.append("\"\"");
                     }
                 }
-                if(type.equals("class java.lang.Integer")){
+                if (type.equals("class java.lang.Integer")) {
                     Integer value = (Integer) m.invoke(model);
-                    if(value != null){
-                        buffer.append("\""+value+"\"");
-                    }else{
+                    if (value != null) {
+                        buffer.append("\"" + value + "\"");
+                    } else {
                         buffer.append("\"\"");
                     }
                 }
-                if(type.equals("class java.lang.Long")){
+                if (type.equals("class java.lang.Long")) {
                     Integer value = (Integer) m.invoke(model);
-                    if(value != null){
-                        buffer.append("\""+value+"\"");
-                    }else{
+                    if (value != null) {
+                        buffer.append("\"" + value + "\"");
+                    } else {
                         buffer.append("\"\"");
                     }
                 }
-                if(type.equals("class java.lang.Short")){
+                if (type.equals("class java.lang.Short")) {
                     Short value = (Short) m.invoke(model);
-                    if(value != null){
-                        buffer.append("\""+value+"\"");
-                    }else{
+                    if (value != null) {
+                        buffer.append("\"" + value + "\"");
+                    } else {
                         buffer.append("\"\"");
                     }
                 }
-                if(type.equals("class java.lang.Double")){
+                if (type.equals("class java.lang.Double")) {
                     Double value = (Double) m.invoke(model);
-                    if(value != null){
-                        buffer.append("\""+value+"\"");
-                    }else{
+                    if (value != null) {
+                        buffer.append("\"" + value + "\"");
+                    } else {
                         buffer.append("\"\"");
                     }
                 }
-                if(type.equals("class java.lang.Boolean")){
+                if (type.equals("class java.lang.Boolean")) {
                     Boolean value = (Boolean) m.invoke(model);
-                    if(value != null){
-                        buffer.append(""+value+"");
-                    }else{
+                    if (value != null) {
+                        buffer.append("" + value + "");
+                    } else {
                         buffer.append(Boolean.FALSE.toString());
                     }
                 }
-                if(type.equals("class java.util.Date")){
+                if (type.equals("class java.util.Date")) {
                     Date value = (Date) m.invoke(model);
-                    if(value != null){
-                        buffer.append("\""+
-                                new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).format(value)
-                                +"\"");
-                    }else{
+                    if (value != null) {
+                        buffer.append("\"" + new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).format(value) + "\"");
+                    } else {
                         buffer.append("\"\"");
                     }
                 }
@@ -311,81 +306,76 @@ public class JsonUtils {
 
     /**
      * parse object（include superclass）to json string
+     *
      * @param model
      * @return
      * @throws Exception
      */
-    public static String objectToJsonStr(Object model)
-            throws Exception{
-        //获取实体类的所有属性，返回Field数组
+    public static String objectToJsonStr(Object model) throws Exception {
+        // 获取实体类的所有属性，返回Field数组
         List<Field> fields = new ArrayList<Field>();
-        getAllFields(model.getClass(),fields);
+        getAllFields(model.getClass(), fields);
         StringBuffer buffer = new StringBuffer("{");
         Field field = null;
-        for(int i=0 ; i<fields.size() ; i++){//遍历所有属性
+        for (int i = 0; i < fields.size(); i++) {// 遍历所有属性
             field = fields.get(i);
             field.setAccessible(true);
-            String name = field.getName();//获取属性的名字
-            if(i>0){
+            String name = field.getName();// 获取属性的名字
+            if (i > 0) {
                 buffer.append(",");
             }
-            buffer.append("\""+name+"\":");
-            name = name.substring(0,1).toUpperCase()+name.substring(1);//将属性的首字符大写，方便构造get，set方法
-            String type = field.getGenericType().toString();//获取属性的类型
+            buffer.append("\"" + name + "\":");
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);// 将属性的首字符大写，方便构造get，set方法
+            String type = field.getGenericType().toString();// 获取属性的类型
 
             Method m = null;
             try {
-                m = model.getClass().getMethod("get"+name);
+                m = model.getClass().getMethod("get" + name);
             } catch (Exception e) {
-                if(e instanceof NoSuchMethodException){
+                if (e instanceof NoSuchMethodException) {
                     continue;
                 }
             }
-            if(m != null){
+            if (m != null) {
                 m.setAccessible(true);
-                if(type.equals("class java.lang.String")
-                        || type.equals("class java.lang.Integer")
-                        || type.equals("class java.lang.Long")
-                        || type.equals("class java.lang.Short")
-                        || type.equals("class java.lang.Float")
-                        || type.equals("class java.lang.Double")
-                        || type.equals("class java.lang.Byte")
-                        ){   //如果type是类类型，则前面包含"class "，后面跟类名
-                    Object value = m.invoke(model);//调用getter方法获取属性值
-                    if(value != null){
-                        buffer.append("\""+String.valueOf(value)+"\"");
-                    }else{
+                if (type.equals("class java.lang.String") || type.equals("class java.lang.Integer")
+                        || type.equals("class java.lang.Long") || type.equals("class java.lang.Short")
+                        || type.equals("class java.lang.Float") || type.equals("class java.lang.Double")
+                        || type.equals("class java.lang.Byte")) { // 如果type是类类型，则前面包含"class
+                    // "，后面跟类名
+                    Object value = m.invoke(model);// 调用getter方法获取属性值
+                    if (value != null) {
+                        buffer.append("\"" + String.valueOf(value) + "\"");
+                    } else {
                         buffer.append("\"\"");
                     }
-                }else if(type.equals("class java.lang.Boolean")){
+                } else if (type.equals("class java.lang.Boolean")) {
                     Boolean value = (Boolean) m.invoke(model);
-                    if(value != null){
+                    if (value != null) {
                         buffer.append(value);
-                    }else{
+                    } else {
                         buffer.append(false);
                     }
-                }else if(type.equals("class java.util.Date")){
+                } else if (type.equals("class java.util.Date")) {
                     Date value = (Date) m.invoke(model);
-                    if(value != null){
-                        buffer.append("\""+
-                                new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).format(value)
-                                +"\"");
-                    }else{
+                    if (value != null) {
+                        buffer.append("\"" + new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).format(value) + "\"");
+                    } else {
                         buffer.append("\"\"");
                     }
-                }else if(type.equals("interface java.util.List")){
+                } else if (type.equals("interface java.util.List")) {
                     List<Object> value = (List<Object>) m.invoke(model);
                     buffer.append(listToJson(value));
-                }else if(type.equals("class [Ljava.lang.String;")){//字符串数组类型
+                } else if (type.equals("class [Ljava.lang.String;")) {// 字符串数组类型
                     String[] value = (String[]) m.invoke(model);
                     StringBuffer valueStr = new StringBuffer("");
                     buffer.append("[");
-                    if(value != null){
-                        for(String str : value){
-                            if(valueStr.toString().equals("")){
-                                valueStr.append("\""+str+"\"");
-                            }else{
-                                valueStr.append(",\""+str+"\"");
+                    if (value != null) {
+                        for (String str : value) {
+                            if (valueStr.toString().equals("")) {
+                                valueStr.append("\"" + str + "\"");
+                            } else {
+                                valueStr.append(",\"" + str + "\"");
                             }
                         }
                         buffer.append(valueStr.toString());
@@ -401,15 +391,16 @@ public class JsonUtils {
 
     /**
      * parse list to json string
+     *
      * @param list
      * @return
      */
-    public static String listToJsonStr(List<Object> list){
+    public static String listToJsonStr(List<Object> list) {
         StringBuffer buffer = new StringBuffer("[");
         try {
-            if(list!=null && list.size()>0){
-                for(Object o : list){
-                    if(buffer.toString().length()>1){
+            if (list != null && list.size() > 0) {
+                for (Object o : list) {
+                    if (buffer.toString().length() > 1) {
                         buffer.append(",");
                     }
                     buffer.append(objectToJson(o));
@@ -424,55 +415,52 @@ public class JsonUtils {
 
     /**
      * parse object（include superclass）to json Object
+     *
      * @param model
      * @return
      * @throws Exception
      */
-    public static Map<String,Object> objectToJson(Object model)
-            throws Exception{
-        //获取实体类的所有属性，返回Field数组
+    public static Map<String, Object> objectToJson(Object model) throws Exception {
+        // 获取实体类的所有属性，返回Field数组
         List<Field> fields = new ArrayList<Field>();
-        getAllFields(model.getClass(),fields);
-        Map<String,Object> map = new HashMap<String,Object>();
+        getAllFields(model.getClass(), fields);
+        Map<String, Object> map = new HashMap<String, Object>();
         Field field = null;
-        for(int i=0 ; i<fields.size() ; i++){//遍历所有属性
+        for (int i = 0; i < fields.size(); i++) {// 遍历所有属性
             field = fields.get(i);
             field.setAccessible(true);
-            String name = field.getName();//获取属性的名字
-            String methodName = "get"+name.substring(0,1).toUpperCase()+name.substring(1);//将属性的首字符大写，方便构造get，set方法
-            String type = field.getGenericType().toString();//获取属性的类型
+            String name = field.getName();// 获取属性的名字
+            String methodName = "get" + name.substring(0, 1).toUpperCase() + name.substring(1);// 将属性的首字符大写，方便构造get，set方法
+            String type = field.getGenericType().toString();// 获取属性的类型
             Method m = null;
             try {
                 m = model.getClass().getMethod(methodName);
             } catch (Exception e) {
-                if(e instanceof NoSuchMethodException){
+                if (e instanceof NoSuchMethodException) {
                     continue;
                 }
             }
-            if(m != null){
+            if (m != null) {
                 m.setAccessible(true);
-                Object parseValue="";
-                if(m.invoke(model) != null){
-                    if(type.equals("class java.lang.String")
-                            || type.equals("class java.lang.Integer")
-                            || type.equals("class java.lang.Long")
-                            || type.equals("class java.lang.Short")
-                            || type.equals("class java.lang.Float")
-                            || type.equals("class java.lang.Double")
-                            || type.equals("class java.lang.Byte")
-                            ){   //如果type是类类型，则前面包含"class "，后面跟类名
-                        Object value = m.invoke(model);//调用getter方法获取属性值
-                        parseValue = value==null?"":String.valueOf(value);
-                    } else if (type.equals("class java.lang.Boolean")){
+                Object parseValue = "";
+                if (m.invoke(model) != null) {
+                    if (type.equals("class java.lang.String") || type.equals("class java.lang.Integer")
+                            || type.equals("class java.lang.Long") || type.equals("class java.lang.Short")
+                            || type.equals("class java.lang.Float") || type.equals("class java.lang.Double")
+                            || type.equals("class java.lang.Byte")) { // 如果type是类类型，则前面包含"class
+                        // "，后面跟类名
+                        Object value = m.invoke(model);// 调用getter方法获取属性值
+                        parseValue = value == null ? "" : String.valueOf(value);
+                    } else if (type.equals("class java.lang.Boolean")) {
                         Boolean value = (Boolean) m.invoke(model);
-                        parseValue = value==null?false:value;
-                    } else if (type.equals("class java.util.Date")){
+                        parseValue = value == null ? false : value;
+                    } else if (type.equals("class java.util.Date")) {
                         Date value = (Date) m.invoke(model);
-                        parseValue = value==null?"":new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).format(value);
-                    } else if (type.equals("interface java.util.List")){
+                        parseValue = value == null ? "" : new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).format(value);
+                    } else if (type.equals("interface java.util.List")) {
                         List<Object> value = (List<Object>) m.invoke(model);
                         parseValue = listToJson(value);
-                    } else if (type.equalsIgnoreCase("class [Ljava.lang.String;")){//字符串数组类型
+                    } else if (type.equalsIgnoreCase("class [Ljava.lang.String;")) {// 字符串数组类型
                         String[] value = (String[]) m.invoke(model);
                         parseValue = value;
                     }
@@ -482,16 +470,18 @@ public class JsonUtils {
         }
         return map;
     }
+
     /**
      * parse list to json Object
+     *
      * @param list
      * @return
      */
-    public static List<Map<String,Object>> listToJson(List<Object> list) throws Exception {
-        List<Map<String,Object>> resultList = new ArrayList<Map<String,Object>>();
+    public static List<Map<String, Object>> listToJson(List<Object> list) throws Exception {
+        List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 
-        if(list!=null && list.size()>0){
-            for(Object o : list){
+        if (list != null && list.size() > 0) {
+            for (Object o : list) {
                 resultList.add(objectToJson(o));
             }
         }
@@ -500,7 +490,7 @@ public class JsonUtils {
     }
 
     public static List<Map<String, Object>> arrayToJson(Object[] array) throws Exception {
-        List<Map<String,Object>> resultList = new ArrayList<Map<String,Object>>();
+        List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 
         if (array != null && array.length > 0) {
             for (Object o : array) {
@@ -511,12 +501,11 @@ public class JsonUtils {
         return resultList;
     }
 
-
     @SuppressWarnings("unchecked")
-    public static void Reflect_Object(Object o,String classPath){
+    public static void Reflect_Object(Object o, String classPath) {
         try {
             Class _class = Class.forName(classPath);// 加载类
-            recursive(o,_class);
+            recursive(o, _class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -524,21 +513,23 @@ public class JsonUtils {
 
     /**
      * 递归遍历类及父类的属性值
+     *
      * @param o
      * @param _class
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static Class recursive(Object o,Class _class){
-        if(_class==null){
+    public static Class recursive(Object o, Class _class) {
+        if (_class == null) {
             return null;
-        }else{
+        } else {
             Method[] methods = _class.getDeclaredMethods();// 获得类的方法集合
             // 遍历方法集合
             for (int i = 0; i < methods.length; i++) {
                 // 获取所有getXX()的返回值
                 if (methods[i].getName().startsWith("get")) {// 方法返回方法名
-                    methods[i].setAccessible(true);//允许private被访问(以避免private getXX())
+                    methods[i].setAccessible(true);// 允许private被访问(以避免private
+                    // getXX())
                     Object object;
                     try {
                         object = methods[i].invoke(o, null);
@@ -552,7 +543,7 @@ public class JsonUtils {
                     }
                 }
             }
-            return recursive(o,_class.getSuperclass());
+            return recursive(o, _class.getSuperclass());
         }
     }
 
@@ -563,29 +554,18 @@ public class JsonUtils {
     public static String convertToSafeString(String str) {
         return str == null || str.equalsIgnoreCase("null") ? "" : str;
     }
-/*
-
-	public static void main(String[] args) {
-		AccountWithBLOBs account = new AccountWithBLOBs();
-		String[] tags = {"123","456"};
-		account.setTags(tags);
-		account.setCreateDatetime(new Date());
-
-		try {
-			System.out.println(objectToJson(account));
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
-
-
+	/*
+	 *
+	 * public static void main(String[] args) { AccountWithBLOBs account = new
+	 * AccountWithBLOBs(); String[] tags = {"123","456"}; account.setTags(tags);
+	 * account.setCreateDatetime(new Date());
+	 *
+	 * try { System.out.println(objectToJson(account)); } catch
+	 * (NoSuchMethodException e) { e.printStackTrace(); } catch
+	 * (IllegalAccessException e) { e.printStackTrace(); } catch
+	 * (IllegalArgumentException e) { e.printStackTrace(); } catch
+	 * (InvocationTargetException e) { e.printStackTrace(); } catch (Exception
+	 * e) { e.printStackTrace(); } }
+	 */
 
 }

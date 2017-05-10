@@ -5,18 +5,18 @@ import com.dozenx.util.RandomValidateCode;
 import com.dozenx.util.ResultUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.util.ValidateUtil;
+import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.auth.service.AuthService;
 import com.dozenx.web.core.auth.service.UserService;
 import com.dozenx.web.core.auth.sysUser.bean.SysUser;
 import com.dozenx.web.core.auth.validcode.service.ValidCodeService;
 import com.dozenx.web.core.base.BaseController;
-import com.dozenx.web.core.log.ServiceMsg;
 import com.dozenx.web.core.rules.Length;
 import com.dozenx.web.core.rules.NotEmpty;
 import com.dozenx.web.core.rules.Required;
 import com.dozenx.web.core.rules.Rule;
-import com.dozenx.web.message.ResultDTO;
-import com.dozenx.web.util.ConfigUtil;
+import com.dozenx.web.core.log.ResultDTO;
+import com.dozenx.web.module.merchant.bean.SessionDTO;
 import com.dozenx.web.util.RequestUtil;
 import com.dozenx.web.util.TerminalUtil;
 import org.slf4j.Logger;
@@ -29,11 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -41,13 +37,15 @@ import javax.servlet.http.HttpSession;
 @Controller
 
 public class LoginController extends BaseController {
-    private final Logger log = LoggerFactory.getLogger(LoginController.class);
-
+    private final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    @Autowired
+    ValidCodeService validCodeService;
     @Autowired
     private AuthService authService;
 
     @Autowired
     private UserService userService;
+
     /*
      * @InitBinder // 此处的参数也可以是ServletRequestDataBinder类型 public void
      * initBinder(ServletRequestDataBinder binder) throws Exception { DateFormat
@@ -101,6 +99,49 @@ public class LoginController extends BaseController {
         return ResultUtil.getDataResult(userList);
     }*/
 
+    /**
+     * 说明:登录提交
+     *
+     * @param request
+     * @return
+     * @author dozen.zhang
+     * @date 2015年5月14日上午11:33:39
+     */
+    @RequestMapping(value = "/login/sms/request.json", method = RequestMethod.POST)
+    public @ResponseBody
+    ResultDTO sendSmsValidCode4LoginDirectRegister(HttpServletRequest request) throws Exception {
+        String ip =  RequestUtil.getIp(request);
+        String phone =request.getParameter("phone");
+        String helloSms = (String )request.getSession().getAttribute("hellosms");
+        return authService.sendSmsValidCode4LoginDirectRegister(ip,phone,helloSms);
+
+    }
+    /**
+     * 说明:登录提交
+     *
+     * @param request
+     * @return
+     * @author dozen.zhang
+     * @date 2015年5月14日上午11:33:39
+     */
+    @RequestMapping(value = "/login/sms/wifi/request.json", method = RequestMethod.POST)
+    public @ResponseBody
+    ResultDTO sendSmsValidCode4LoginDirectRegister4Wifi(HttpServletRequest request) throws Exception {
+        String ip =  RequestUtil.getIp(request);
+        String phone =request.getParameter("mobile");
+        SessionDTO sessionDTO = (SessionDTO)request.getSession().getAttribute(Constants.SESSION_DTO);
+        if(sessionDTO == null){
+            logger.error("cheater ip:"+   ip+" xforward "+"phone:"+phone);
+            return this.getResult("发送成功");
+        }
+        String helloSms = sessionDTO.getDeviceId();
+        ResultDTO result =  authService.sendSmsValidCode4LoginDirectRegister(ip,phone,helloSms);
+        if(result.isRight()){
+          result.setData("");
+
+        }
+        return result;
+    }
 
 
     /**
@@ -122,7 +163,7 @@ public class LoginController extends BaseController {
         String imgCaptcha = request.getParameter("picCaptcha");
         String smsCaptcha = request.getParameter("smsCaptcha");
         //String sessionid = request.getParameter("sessionid");
-        ValidCodeService validCodeService = new ValidCodeService();
+
 
         ResultDTO result = validCodeService.remoteValidSms(email, smsCaptcha);
         if (!result.isRight()) {
@@ -149,6 +190,8 @@ public class LoginController extends BaseController {
         //若果密码输入多次 增加 验证码 和锁定功能
         return result;
     }
+
+
 
     /**
      * 说明:转到注册页面
@@ -202,11 +245,10 @@ public class LoginController extends BaseController {
 
             return ResultUtil.getResult(302,"验证参数错误");
         }
-        if(StringUtil.isNotEmpty(validStr)) {
+        if(StringUtil.isNotBlank(validStr)) {
             return ResultUtil.getResult(302,validStr);
         }
 
-        ValidCodeService validCodeService = new ValidCodeService();
 
 
         SysUser user =new SysUser();
@@ -246,7 +288,6 @@ public class LoginController extends BaseController {
         }
         String phone =user.getTelno();
 
-        ValidCodeService validCodeService=new ValidCodeService();
 
         //status 位置标识 0000 新注册  冻结 邮箱验证  手机验证
         int status =user.getStatus();
@@ -299,7 +340,6 @@ public class LoginController extends BaseController {
         if(StringUtil.isBlank(smsCaptcha)||smsCaptcha.length()<4||smsCaptcha.length()>12 ){
             return ResultUtil.getResult(301,"请填写正确验证码");
         }
-        ValidCodeService validCodeService=new ValidCodeService();
         ResultDTO result = validCodeService.remoteValidSms(phone, smsCaptcha);
         if(!result.isRight()){
             return result;
@@ -348,7 +388,7 @@ public class LoginController extends BaseController {
     public String active(HttpServletRequest request) {
         String activeid = request.getParameter("activeid");
         ResultDTO result;
-        if (StringUtil.isNotEmpty(activeid)) {
+        if (StringUtil.isNotBlank(activeid)) {
             result = this.userService.updateUserActive(activeid);
         } else {
             request.setAttribute("msg", "激活url无效");
@@ -479,7 +519,7 @@ public class LoginController extends BaseController {
         }else if(StringUtil.isPhone(account)){
 
         }else{
-            return ResultUtil.getFailResult(ServiceMsg.ACCOUNT_FORMAT_ERR.toString());
+            return ResultUtil.getFailResult("ACCOUNT_FORMAT_ERR");
         }
         String pwd = request.getParameter("pwd");
         String code = request.getParameter("code");

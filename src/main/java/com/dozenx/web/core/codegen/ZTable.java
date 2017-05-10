@@ -14,6 +14,15 @@ import java.util.List;
 
 public class ZTable {
     private String pkg;
+    private String baseUrl;
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 
     public String getPkg() {
         return pkg;
@@ -52,7 +61,13 @@ public ZColum getPk() {
     return pk;
 }
 public void init(){
-    for( ZColum col : cols){
+    for(int i=cols.size()-1;i>=0;i--){
+        ZColum col =cols.get(i);
+        if(col==null){
+            System.out.print("not null");
+            cols.remove(i);
+            continue;
+        }
         if(col.isPk()){
             pk=col;
                     //break;

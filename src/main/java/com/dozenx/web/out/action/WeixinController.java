@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @Scope("prototype")
 @RequestMapping("/share")
-public class ShareController {
+public class WeixinController {
 	@RequestMapping(value = "/qq", method = RequestMethod.GET)
 	public String  qq(HttpServletRequest request){
 		String access_tocken ="I8DfWtWrTMlMqEnkS-0eobGLzkyPYxf4JV0LqqY1N0tVbQB8jKWLZUG-aOREFQ6DOxyUkLjki7gH9F2A_dhBUJS30-N-n1K_Tadfjq54Q7w";

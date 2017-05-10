@@ -3,14 +3,15 @@
 	font-size: 19px;
 	font-family:Tahoma;
 	cursor:pointer;
-	width:160px
+	width:160px;
+	background-color:white;
 
 }
 	
 .table_CalendarView tr{
 	height: 20px;
 }
-/* 迷你calendar 第一行上的年月日样式*/ 
+/* 锟斤拷锟斤拷calendar 锟斤拷一锟斤拷锟较碉拷锟斤拷锟斤拷锟斤拷锟斤拷式*/ 
 .table_CalendarView tr th{ 
 	width:90px;
 	/*background-color: #C3D9FF;*/
@@ -20,7 +21,7 @@
 }
 
 
-/* 迷你calendar 第二行*/ 
+/* 锟斤拷锟斤拷calendar 锟节讹拷锟斤拷*/ 
 .table_CalendarView .calendar-table-title  th { 
 	font-size: 12px;
 	text-align:center;

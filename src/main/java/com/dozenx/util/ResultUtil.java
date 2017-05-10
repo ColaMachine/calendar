@@ -9,12 +9,11 @@ package com.dozenx.util;
 
 
 /*import cola.machine.util.log.ServiceMsg;*/
+import com.dozenx.web.core.log.LogType;
 import com.dozenx.web.core.log.ServiceCode;
-import com.dozenx.web.core.log.ServiceMsg;
 import com.dozenx.web.core.page.Page;
-import com.dozenx.web.message.ErrorMessage;
-import com.dozenx.web.message.ErrorMsg;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ErrorMessage;
+import com.dozenx.web.core.log.ResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,10 +48,11 @@ public class ResultUtil {
 	/*public static  ResultDTO getResult(Object data){
 		return getResult(succ, data, null,null);
 	}*/
-	public static  ResultDTO getResult(ServiceMsg msg){
+	/*public static  ResultDTO getResult(ServiceMsg msg){
 		return getResult(fail,null,msg.toString(),null);
-	}
-	
+	}*/
+
+
 	public static ResultDTO getSuccResult(){
 		return getResult(succ, null, null,null);
 	}
@@ -155,12 +155,48 @@ public class ResultUtil {
 	public static  ResultDTO getResult(int result, Object data, String msg , Page page){
         return new ResultDTO(result, data, msg, page);
     }
-	public static ResultDTO getResultDetail(ServiceCode serviceCode, ErrorMsg paramError, int i, String msg) {
-		return getResult(serviceCode.ordinal()*100000+paramError.getId()*1000+i, null,msg,null);
+
+	/**
+	 * 返回成功，默认代码1
+	 * @return
+	 * @author 宋展辉
+	 */
+	public static ResultDTO getResult(String msg){
+		if(StringUtil.isNotBlank(msg)){
+			String result = ErrorMessage.getErrorMsg(msg);
+			if(StringUtil.isNotBlank(result)){
+				msg = result;
+			}
+		}
+		return getResult(fail, null, msg,null);
+	}
+
+
+	public static ResultDTO getResultDetail(ServiceCode serviceCode, LogType logType, int detail, String msg) {
+		if(StringUtil.isNotBlank(msg)){
+			String result = ErrorMessage.getErrorMsg(msg);
+			if(StringUtil.isNotBlank(result)){
+				msg = result;
+			}
+		}
+		return getResult(logType.getValue()*1000000+serviceCode.ordinal()*1000+detail, null,msg,null);
 
 	}
-	public static ResultDTO getResultDetail(ServiceCode serviceCode, ErrorMsg paramError, int i, ServiceMsg serviceCode_err) {
+/*	public static ResultDTO getResultDetail(ServiceCode serviceCode, LogType paramError, int detail, String msg) {
 		return getResult(serviceCode.ordinal()*100000+paramError.getId()*1000+i, null, serviceCode_err.toString(),null);
 
+	}*/
+
+	/**
+	 * @param serviceCode
+	 * @param type
+	 * @param result
+	 * @param data
+	 * @param msg
+	 * @return
+	 * @author dozen.zhang
+	 */
+	public static  ResultDTO getResult(ServiceCode serviceCode, LogType type, int result, Object data, String msg){
+		return getResult((serviceCode.ordinal()+1)*100000+(type.ordinal()+1)*1000+result, data, msg,null);
 	}
 }

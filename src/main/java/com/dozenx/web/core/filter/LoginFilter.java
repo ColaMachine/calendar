@@ -1,8 +1,12 @@
 package com.dozenx.web.core.filter;
 
+import com.dozenx.util.JsonUtils;
 import com.dozenx.util.ResultUtil;
 import com.dozenx.util.StringUtil;
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.Constants;
+import com.dozenx.web.core.log.ResultDTO;
+import com.dozenx.web.module.merchant.bean.SessionDTO;
+import com.dozenx.web.module.merchant.bean.SessionUser;
 import com.dozenx.web.util.RequestUtil;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
@@ -19,7 +23,7 @@ import java.util.StringTokenizer;
 
 /**
  * 说明:登录过滤器 判断是否登录和url是否是无需登录就可以访问
- * 
+ *
  * @author dozen.zhang
  * @date 2015年12月21日下午2:10:30
  */
@@ -33,7 +37,7 @@ public class LoginFilter implements Filter {
 
     /**
      * 说明:程序结束时候执行
-     * 
+     *
      * @return boolean
      * @author dozen.zhang
      * @date 2015年12月21日下午2:10:30
@@ -45,60 +49,73 @@ public class LoginFilter implements Filter {
 
     /*
      * 过滤
-     * 
+     *
      * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
      * javax.servlet.ServletResponse, javax.servlet.FilterChain)
-     * 
+     *
      * @author colamachine
      */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
-     * javax.servlet.ServletResponse, javax.servlet.FilterChain)
-     * 
-     * @author colamachine
-     */
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
+	 * javax.servlet.ServletResponse, javax.servlet.FilterChain)
+	 *
+	 * @author colamachine
+	 */
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
 
-        //StringBuffer strb = new StringBuffer();
+        // StringBuffer strb = new StringBuffer();
         servletRequest.setCharacterEncoding("utf-8");
-        /*
-         * BufferedReader in = new BufferedReader(new InputStreamReader(
-         * servletRequest.getInputStream()));
-         */
-        /*
-         * while (true) { String line = in.readLine(); if (line == null) {
-         * break; } line = URLDecoder.decode(line, "UTF-8"); strb.append(line);
-         * } System.out.println(strb);
-         */
+		/*
+		 * BufferedReader in = new BufferedReader(new InputStreamReader(
+		 * servletRequest.getInputStream()));
+		 */
+		/*
+		 * while (true) { String line = in.readLine(); if (line == null) {
+		 * break; } line = URLDecoder.decode(line, "UTF-8"); strb.append(line);
+		 * } System.out.println(strb);
+		 */
         // VIP Auto-generated method stub
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String path = request.getServletPath();
-        if(StringUtil.isNotEmpty(path)&&!"/".equals(path)&&path!=null && !path.endsWith(".json") && !path.endsWith(".htm")){
+
+        if (path != null && (path.endsWith(".js") && path.endsWith(".css"))) {
             filterChain.doFilter(request, response);
             return;
         }
+		/*
+		 * if(StringUtil.isNotEmpty(path)&&!"/".equals(path)&&path!=null &&
+		 * !path.endsWith(".json") && !path.endsWith(".htm")){
+		 * filterChain.doFilter(request, response); return; }
+		 */
         // 过滤器 判断是否登录
         HttpSession session = request.getSession();
         if (sessionKey == null) {
             filterChain.doFilter(request, response);
             return;
         }
-        //Object object = session.getAttribute(sessionKey);
+        // Object object = session.getAttribute(sessionKey);
         // 如果既不是放行url 也没有登录
-        if (session.getAttribute(sessionKey) == null&&(!checkRequestURIIntNotFilterList(request))  ) {
-            Gson gson = new Gson();
+        SessionDTO seesionDTO = (SessionDTO) session.getAttribute(Constants.SESSION_DTO);
+        SessionUser sessionUser = null;
+        if (seesionDTO != null) {
+            sessionUser = seesionDTO.getSessionUser();
+        }
+        if (session.getAttribute(sessionKey) == null && sessionUser == null
+                && (!checkRequestURIIntNotFilterList(request))) {
+
             ResultDTO result = ResultUtil.getNotLogging();
             // 如果是json 返回json结果
             if (RequestUtil.isAjaxRequest(request)) {
                 try {
-                    //String s = gson.toJson(result);
+                    // String s = gson.toJson(result);
                     response.setHeader("Cache-Control", "no-cache");
                     response.setCharacterEncoding("UTF-8");
                     response.setContentType("text/json;charset=UTF-8");
-                    response.getWriter().println(gson.toJson(result));
+                    response.getWriter().println(JsonUtils.toJsonString(result));
                     response.getWriter().flush();
                     response.getWriter().close();
                 } catch (IOException e) {
@@ -120,7 +137,7 @@ public class LoginFilter implements Filter {
 
     /**
      * 说明:检查url 是否在放行列表中
-     * 
+     *
      * @param request
      * @return
      * @return boolean
@@ -129,34 +146,33 @@ public class LoginFilter implements Filter {
      */
     private boolean checkRequestURIIntNotFilterList(HttpServletRequest request) {
         String uri = request.getServletPath() + (request.getPathInfo() == null ? "" : request.getPathInfo());
-        //System.out.println(uri + "\t exists:" + notCheckURLList.contains(uri));
+        // System.out.println(uri + "\t exists:" +
+        // notCheckURLList.contains(uri));
         // return notCheckURLList.contains(uri);
         for (String s : notCheckURLList) {
             if (uri.matches(s))
                 return true;
         }
-       // System.out.println(uri+" 该链接需要登录后才能访问验证 in controll");
+        // System.out.println(uri+" 该链接需要登录后才能访问验证 in controll");
         return false;
     }
 
     /**
      * 说明:初始化
-     * 
+     *
      * @author dozen.zhang
      * @date 2015年12月21日下午2:10:30
      */
     public void init(FilterConfig filterConfig) throws ServletException {
-
 
         this.filterConfig = filterConfig;
         redirectURL = filterConfig.getInitParameter("redirectURL");
         sessionKey = filterConfig.getInitParameter("checkSessionKey");
 
         String notCheckURLListStr = filterConfig.getInitParameter("notCheckURLList");
-        if(!StringUtil.isBlank(notCheckURLListStr)){
+        if (!StringUtil.isBlank(notCheckURLListStr)) {
             notCheckURLListStr = notCheckURLListStr.replaceAll("[\\r\\n\\s\\t]", "");
         }
-
 
         if (notCheckURLListStr != null) {
             StringTokenizer st = new StringTokenizer(notCheckURLListStr, ";");

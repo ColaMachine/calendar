@@ -2,7 +2,7 @@
  * 版权所有：公众信息
  * 项目名称:calendar
  * 创建者: dozen.zhang
- * 创建日期: 2015年11月15日
+ * 创建日期: @date ${.now}
  * 文件说明: 
  */
 
@@ -28,7 +28,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-
+import com.cpj.swagger.annotation.API;
+import com.cpj.swagger.annotation.APIs;
+import com.cpj.swagger.annotation.DataType;
+import com.cpj.swagger.annotation.Param;
 import ${table.pkg}.${abc}.service.${Abc}Service;
 import ${table.pkg}.${abc}.bean.${Abc};
 import com.dozenx.util.ResultUtil;
@@ -39,7 +42,8 @@ import com.dozenx.web.core.base.BaseController;
 import com.dozenx.util.StringUtil;
 import com.dozenx.util.ValidateUtil;
 import com.dozenx.web.util.RequestUtil;
-import com.dozenx.web.message.ResultDTO;
+import org.springframework.web.bind.annotation.*;
+import com.dozenx.web.core.log.ResultDTO;
 import com.dozenx.util.DateUtil;
 <#if table.mapper??>
 import cola.machine.bean.${table.mapper.mapper};
@@ -47,8 +51,9 @@ import cola.machine.service.${table.mapper.mapper}Service;
 import cola.machine.bean.${table.mapper.child};
 import cola.machine.service.${table.mapper.child}Service;
 </#if>
+@APIs(description = "${table.remark}")
 @Controller
-@RequestMapping("/${abc}")
+@RequestMapping("${table.baseUrl}")
 public class ${Abc}Controller extends BaseController{
     /** 日志 **/
     private Logger logger = LoggerFactory.getLogger(${Abc}Controller.class);
@@ -67,34 +72,26 @@ public class ${Abc}Controller extends BaseController{
     private <@getAbc>${table.mapper.child}</@getAbc>Service <@getabc>${table.mapper.child}</@getabc>Service;
 </#if>
     </#if>
+
+
     /**
-     * 说明: 跳转到角色列表页面
-     * 
-     * @return
+     * 说明:ajax请求${table.name}信息
+     * @author dozen.zhang
+     * @date ${.now}
      * @return String
-     * @author dozen.zhang
-     * @date 2015年11月15日下午12:30:45
      */
-    @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
-    public String list() {
-        return "/static/html/${Abc}List.html";
-    }
-
-    @RequestMapping(value = "/listMapper.htm", method = RequestMethod.GET)
-    public String listMapper() {
-        return "/static/html/${Abc}ListMapper.html";
-    }
-
-    /**
-     * 说明:ajax请求角色信息
-     * @return
-     * @return Object
-     * @author dozen.zhang
-     * @date 2015年11月15日下午12:31:55
-     */
-    @RequestMapping(value = "/list.json")
+       @API(summary="${table.remark}列表接口",
+                 description="${table.remark}列表接口",
+                 parameters={
+                 @Param(name="pageSize", description="分页大小", dataType= DataType.PHONE,required = true),
+                 @Param(name="curPage", description="当前页", dataType= DataType.CAPTCHA,required = true),
+                  <#list table.cols as col>
+                    @Param(name="${col.name}" , description="${col.remark}",dataType = DataType."${col.type}",required = ${col.nn?c}),
+                   </#list>
+         })
+    @RequestMapping(value = "/list" , method = RequestMethod.GET)
     @ResponseBody
-    public Object list(HttpServletRequest request) {
+    public ResultDTO list(HttpServletRequest request) throws Exception{
         Page page = RequestUtil.getPage(request);
         if(page ==null){
              return this.getWrongResultFromCfg("err.param.page");
@@ -107,59 +104,63 @@ ${getSearchParam}
     }
     
    /**
-    * 说明:ajax请求角色信息 无分页版本
-    * @return Object
+    * 说明:ajax请求${table.name}信息 无分页版本
+    * @return ResultDTO 返回结果
     * @author dozen.zhang
-    * @date 2015年11月15日下午12:31:55
+    * @date ${.now}
     */
     @RequestMapping(value = "/listAll.json")
     @ResponseBody
-    public Object listAll(HttpServletRequest request) {
+    public ResultDTO listAll(HttpServletRequest request) {
         ${getSearchParam}
         List<${Abc}> ${abc}s = ${abc}Service.listByParams(params);
         return ResultUtil.getDataResult(${abc}s);
     }
-    
-    /**
-     * @param request 发请求
-     * @return Object
-     */
-    @RequestMapping(value = "/edit.htm")
-    public Object edit( HttpServletRequest request) {
-        // 查找所有的角色
-        return "/static/html/${Abc}Edit.html";
-    }
-    @RequestMapping(value = "/view.htm")
-    public Object viewPage( HttpServletRequest request) {
-        return "/static/html/${Abc}View.html";
-    }
-   
-    @RequestMapping(value = "/view.json")
+
+   /**
+    * 说明:查看单条信息
+    * @param request 发请求
+    * @return String
+    * @author dozen.zhang
+    * @date ${.now}
+    */
+  @API( summary="根据id查询单个${table.remark}信息",
+           description = "根据id查询单个${table.remark}信息",
+           parameters={
+                   @Param(name="id" , description="${table.pk.name}",dataType= DataType.XXXX,required = true),
+           })
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     @ResponseBody
-    public Object view(HttpServletRequest request) {
+    public ResultDTO getById(@PathVariable <@javaType>${table.pk.type}</@javaType> ${table.pk.name},HttpServletRequest request) {
     ${controllerViewMethod}
       /*  String id = request.getParameter("id");
         ${Abc} bean = ${abc}Service.selectByPrimaryKey(<@javaType>${table.pk.type}</@javaType>.valueOf(id));
-        HashMap<String,Object> result =new HashMap<String,Object>();
+        HashMap<String,ResultDTO> result =new HashMap<String,ResultDTO>();
         result.put("bean", bean);
         return this.getResult(bean);*/
     }
 
     
     /**
-     * 说明:保存角色信息
+     * 说明:更新${table.name}信息
      * 
      * @param request
-     * @return
      * @throws Exception
-     * @return Object
+     * @return ResultDTO
      * @author dozen.zhang
-     * @date 2015年11月15日下午1:33:00
+     * @date ${.now}
      */
+      @API( summary="根据id更新单个${table.remark}信息",
+        description = "根据id更新单个${table.remark}信息",
+        parameters={
+          <#list table.cols as col>
+           @Param(name="${col.name}" , description="${col.remark}",type="${col.type}",required = ${col.nn?c}),
+          </#list>
+        })
     // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
-    @RequestMapping(value = "/save.json")
+    @RequestMapping(value = "{id}",method = RequestMethod.PUT)
     @ResponseBody
-    public Object save(HttpServletRequest request) throws Exception {
+    public ResultDTO update(@PathVariable <@javaType>${table.pk.type}</@javaType> id,HttpServletRequest request) throws Exception {
         ${Abc} ${abc} =new  ${Abc}();
         /*<#list table.cols as col>
         String ${col.name} = request.getParameter("${col.name}");
@@ -183,21 +184,77 @@ ${validCode}
         </#if>
        
     }
+
+
+        /**
+         * 说明:添加${table.name}信息
+         * @param request
+         * @throws Exception
+         * @return ResultDTO
+         * @author dozen.zhang
+         * @date ${.now}
+         */
+        // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
+        @API( summary="添加单个${table.remark}信息",
+            description = "添加单个${table.remark}信息",
+            parameters={
+              <#list table.cols as col>
+               @Param(name="${col.name}" , description="${col.remark}",dataType = DataType.${col.type},required = ${col.nn?c}),
+              </#list>
+            })
+        @RequestMapping(value = "",method = RequestMethod.POST)
+        @ResponseBody
+        public ResultDTO add(HttpServletRequest request) throws Exception {
+            ${Abc} ${abc} =new  ${Abc}();
+            /*<#list table.cols as col>
+            String ${col.name} = request.getParameter("${col.name}");
+            if(!StringUtil.isBlank(${col.name})){
+                ${abc}.set${col.name[0]?upper_case}${col.name[1..]}(<@javaType>${col.type}</@javaType>.valueOf(${col.name})) ;
+            }
+            </#list>*/
+    ${setParam}
+            //valid
+    ${validCode}
+              <#if table.mapper??>
+                <#if table.mapper.parent==table.name>
+            String childids = request.getParameter("childids");
+            return ${abc}Service.saveWithChilds(${abc},childids);
+            <#else>
+              return ${abc}Service.save(${abc});
+              </#if>
+
+            <#else>
+            return ${abc}Service.save(${abc});
+            </#if>
+
+        }
    <#if table.mapper??>
    <#if table.mapper.mapper==Abc>
     @RequestMapping(value = "/msave.json")
     @ResponseBody
-    public Object msave(HttpServletRequest request) throws Exception {
+    public ResultDTO msave(HttpServletRequest request) throws Exception {
         String ${table.mapper.parentid}s= request.getParameter("${table.mapper.parentid}s");
         String ${table.mapper.childid}s= request.getParameter("${table.mapper.childid}s");
         return ${table.name?uncap_first}Service.msave( ${table.mapper.parentid}s, ${table.mapper.childid}s);
     }
     </#if>
     </#if>
-
-    @RequestMapping(value = "/del.json")
+    /**
+     * 说明:删除${table.name}信息
+     * @param request
+     * @throws Exception
+     * @return ResultDTO
+     * @author dozen.zhang
+     * @date ${.now}
+     */
+     @API( summary="根据id删除单个${table.remark}信息",
+        description = "根据id删除单个${table.remark}信息",
+        parameters={
+         @Param(name="${table.pk.name}" , description="${table.pk.remark}",dataType= DataType.${table.pk.type},required = true),
+        })
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
     @ResponseBody
-    public Object delete(HttpServletRequest request) {
+    public ResultDTO delete(@PathVariable <@javaType>${table.pk.type}</@javaType> id,HttpServletRequest request) {
         String ${table.pk.name}Str = request.getParameter("${table.pk.name}");
         if(StringUtil.isBlank(${table.pk.name}Str)){
             return this.getWrongResultFromCfg("err.param.notnull");
@@ -214,7 +271,7 @@ ${validCode}
      */
     @RequestMapping(value = "/mdel.json")
     @ResponseBody
-    public Object multiDelete(HttpServletRequest request) {
+    public ResultDTO multiDelete(HttpServletRequest request) {
         String idStr = request.getParameter("${table.pk.name}s");
         if(StringUtil.isBlank(idStr)){
             return this.getWrongResultFromCfg("err.param.notnull");
@@ -250,7 +307,7 @@ ${validCode}
      */
     @RequestMapping(value = "/export.json")
     @ResponseBody   
-    public Object exportExcel(HttpServletRequest request){
+    public ResultDTO exportExcel(HttpServletRequest request){
        ${getSearchParam}
         // 查询list集合
         List<${Abc}> list =${abc}Service.listByParams(params);
@@ -273,7 +330,7 @@ ${validCode}
         <#list table.cols as col>
         colTitle.put("${col.name}", "${col.remark}");
         </#list>
-        List finalList = new ArrayList();
+        List<Map> finalList = new ArrayList<Map>();
         for (int i = 0; i < list.size(); i++) {
             ${Abc} sm = list.get(i);
             HashMap<String,Object> map = new HashMap<String,Object>();
@@ -300,5 +357,49 @@ ${validCode}
     @RequestMapping(value = "/import.json")
     public void importExcel(){
         
+    }
+
+
+      /**
+         * 说明: 跳转到${table.name}列表页面
+         *
+         * @return
+         * @return String
+         * @author dozen.zhang
+         * @date 2015年11月15日下午12:30:45
+         */
+        @RequestMapping(value = "/list.htm", method = RequestMethod.GET)
+        public String listHtml() {
+            return "/static/html/${Abc}List.html";
+        }
+
+        @RequestMapping(value = "/listMapper.htm", method = RequestMethod.GET)
+        public String listMapperHtml() {
+            return "/static/html/${Abc}ListMapper.html";
+        }
+
+
+    /**
+     * 说明:跳转编辑页面
+     * @param request 发请求
+     * @return String
+     * @author dozen.zhang
+     * @date ${.now}
+     */
+    @RequestMapping(value = "/edit.htm",method = RequestMethod.GET)
+    public String editHtml( HttpServletRequest request) {
+        // 查找所有的角色
+        return "/static/html/${Abc}Edit.html";
+    }
+    /**
+         * 说明:跳转查看页面
+         * @param request 发请求
+         * @return String
+         * @author dozen.zhang
+         * @date ${.now}
+         */
+    @RequestMapping(value = "/view.htm",method = RequestMethod.GET)
+    public String viewHtml( HttpServletRequest request) {
+        return "/static/html/${Abc}View.html";
     }
 }

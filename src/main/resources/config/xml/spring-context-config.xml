@@ -21,21 +21,15 @@
 
 	<bean id="propertyConfigurer"
 		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="properties">
+			<property name="properties">
 			 <bean id="remoteProperties" class="com.dozenx.web.core.properties.RemoteProperties"
-			  	p:url="jdbc:mysql://192.168.10.183:3306/awifiopms?Unicode=true&characterEncoding=utf8"
-			   p:driver="com.mysql.jdbc.Driver"
-			   p:password="awifi2B@#$"
-			   p:user="awifi2Badmin"
 			 />
-		</property>
-		<!--<property name="locations">
-			<list>
-				<value>classpath:properties/config.properties</value>
-				<value>classpath:properties/jdbc.properties</value>
 
-			</list>
-		</property>-->
+
+		</property>
+
+
+
 	</bean>
 
 	<!-- 配置注解扫描 -->
@@ -50,11 +44,16 @@
 	<bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
 
 	<!-- 缓存配置  -->
-	<cache:annotation-driven cache-manager="cacheManager"/> 
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcache"/> 
+	<cache:annotation-driven cache-manager="cacheManager"/>
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcache"/>
 	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="classpath:ehcache.xml"/>
 	<!-- 配置服务注册组件 -->
-	<bean id="serviceRegistry" class="com.xxx.rpc.registry.ServiceRegistry">
+	<!--<bean id="serviceRegistry" class="com.dozenx.test.rpc.ServiceRegistry">
 		<constructor-arg name="registryAddress" value="${registry.address}"/>
 	</bean>
+	&lt;!&ndash; 配置 RPC 服务器 &ndash;&gt;
+	<bean id="rpcServer" class="com.dozenx.test.rpc.server.RpcServer">
+		<constructor-arg name="serverAddress" value="${server.address}"/>
+		<constructor-arg name="serviceRegistry" ref="serviceRegistry"/>
+	</bean>-->
 </beans>
