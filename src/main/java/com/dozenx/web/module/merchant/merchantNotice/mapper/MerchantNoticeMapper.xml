@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.module.merchant.merchantNotice.dao.MerchantNoticeMapper">
+  <resultMap id="BaseResultMap" type="com.dozenx.web.module.merchant.merchantNotice.bean.MerchantNotice">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="slot" jdbcType="INTEGER" property="slot" />
+      <result column="content" jdbcType="VARCHAR" property="content" />
+      <result column="merid" jdbcType="BIGINT" property="merid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    merchant_notice.`id` ,merchant_notice.`slot` ,merchant_notice.`content` ,merchant_notice.`merid` 
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant_notice
+    where merchant_notice.id =   #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from merchant_notice
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.module.merchant.merchantNotice.bean.MerchantNotice" >
+
+    insert into merchant_notice (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=INTEGER}
+,#{slot,jdbcType=INTEGER}
+,#{content,jdbcType=VARCHAR}
+,#{merid,jdbcType=BIGINT}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="com.dozenx.web.module.merchant.merchantNotice.bean.MerchantNotice" >
+    insert into merchant_notice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="slot != null" >  
+           `slot`, 
+        </if>  
+        <if test="content != null" >  
+           `content`, 
+        </if>  
+        <if test="merid != null" >  
+           `merid`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=INTEGER},
+        </if>  
+        <if test="slot != null" >  
+          #{slot,jdbcType=INTEGER},
+        </if>  
+        <if test="content != null" >  
+          #{content,jdbcType=VARCHAR},
+        </if>  
+        <if test="merid != null" >  
+          #{merid,jdbcType=BIGINT},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.module.merchant.merchantNotice.bean.MerchantNotice" >
+    update merchant_notice
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=INTEGER},
+        </if>  
+        <if test="slot != null" >  
+             `slot`=#{slot,jdbcType=INTEGER},
+        </if>  
+        <if test="content != null" >  
+             `content`=#{content,jdbcType=VARCHAR},
+        </if>  
+        <if test="merid != null" >  
+             `merid`=#{merid,jdbcType=BIGINT},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dozenx.web.module.merchant.merchantNotice.bean.MerchantNotice" >
+    update merchant_notice
+    set 
+              `slot`=#{slot,jdbcType=INTEGER},  
+              `content`=#{content,jdbcType=VARCHAR},  
+              `merid`=#{merid,jdbcType=BIGINT}  
+where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant_notice where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="slot != null and slot != '' ">  
+           and `slot` = #{slot}
+        </if>  
+        <if test="content != null and content != '' ">  
+           and `content` = #{content}
+        </if>  
+        <if test="contentLike != null and contentLike != '' ">  
+             and `content` like "%"#{contentLike}"%"
+        </if>   
+        <if test="merid != null and merid != '' ">  
+           and `merid` = #{merid}
+        </if>  
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant_notice
+
+    where 1=1
+        <if test="id != null and id != '' ">  
+           and merchant_notice.`id` = #{id}
+        </if>  
+        <if test="slot != null and slot != '' ">  
+           and merchant_notice.`slot` = #{slot}
+        </if>  
+        <if test="content != null and content != '' ">  
+           and merchant_notice.`content` = #{content}
+        </if>  
+        <if test="contentLike != null and contentLike != '' ">  
+             and merchant_notice.`content` like "%"#{contentLike}"%"
+        </if>   
+        <if test="merid != null and merid != '' ">  
+           and merchant_notice.`merid` = #{merid}
+        </if>  
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from merchant_notice where 1=1
+        <if test="id != null and id != '' ">  
+           and merchant_notice.`id` = #{id}
+        </if>  
+        <if test="slot != null and slot != '' ">  
+           and merchant_notice.`slot` = #{slot}
+        </if>  
+        <if test="content != null and content != '' ">  
+           and merchant_notice.`content` = #{content}
+        </if>  
+        <if test="contentLike != null and contentLike != '' ">  
+             and merchant_notice.`content` like "%"#{contentLike}"%"
+        </if>   
+        <if test="merid != null and merid != '' ">  
+           and merchant_notice.`merid` = #{merid}
+        </if>  
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from merchant_notice where 1!=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="slot != null and slot != '' ">
+           or `slot` = #{slot}
+        </if>
+        <if test="content != null and content != '' ">
+           or `content` = #{content}
+        </if>
+        <if test="merid != null and merid != '' ">
+           or `merid` = #{merid}
+        </if>
+  </select>
+</mapper>

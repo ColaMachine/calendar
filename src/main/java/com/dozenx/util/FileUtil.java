@@ -8,14 +8,10 @@
 package com.dozenx.util;
 
 
-
-
-
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.SCPClient;
 import ch.ethz.ssh2.SFTPv3Client;
 import ch.ethz.ssh2.StreamGobbler;
-
 import com.dozenx.core.Path.PathManager;
 import org.slf4j.Logger;
 
@@ -50,25 +46,25 @@ public class FileUtil {
         return fileList;
     }
 
+    /**
+     * 读取文件内容
+     *
+     * @param path
+     * @return
+     * @throws IOException
+     */
     public static String readFile2Str(String path) throws IOException {
         File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
-        if (!file.exists()) {
-            //throw new IOException("path file not exist");
-            return "";
-        }
-        InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
-        BufferedReader br = new BufferedReader(isr);
-        String s;
-        StringBuffer templateStr = new StringBuffer();
-        while ((s = br.readLine()) != null) {
-            templateStr.append(s + "\r\n");
-        }
-        if (templateStr == null || templateStr.toString().length() == 0) {
-            throw new IOException("path file not exist");
-        }
-        return templateStr.toString();
+        return readFile2Str(file);
     }
 
+    /**
+     * 读取文件内容 忽略行注释
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
     public static String readFile2Str(File file) throws IOException {
         if (!file.exists()) {
             throw new IOException("path file not exist");
@@ -78,6 +74,11 @@ public class FileUtil {
         String s;
         StringBuffer templateStr = new StringBuffer();
         while ((s = br.readLine()) != null) {
+            //过滤掉注释内容
+            s = s.trim();
+            if (s.startsWith("//")) {
+                continue;
+            }
             templateStr.append(s + "\r\n");
         }
         if (templateStr == null || templateStr.toString().length() == 0) {
@@ -87,7 +88,13 @@ public class FileUtil {
     }
 
 
-
+    /**
+     * 写文件
+     *
+     * @param filePath
+     * @param content
+     * @throws IOException
+     */
     public static void writeFile(String filePath, String content) throws IOException {
         FileWriter fileWritter = null;
         File file = new File(filePath);
@@ -111,7 +118,7 @@ public class FileUtil {
             e.printStackTrace();
             throw e;
         } finally {
-			/*
+            /*
 			 * bufferWritter.flush(); if(bufferWritter!=null )
 			 * bufferWritter.close();
 			 */
@@ -123,14 +130,19 @@ public class FileUtil {
         }
     }
 
+    /**
+     * 写文件
+     *
+     * @param file
+     * @param content
+     * @throws IOException
+     */
     public static void writeFile(File file, String content) throws IOException {
         try {
-
             // if file doesnt exists, then create it
             if (!file.exists()) {
                 file.createNewFile();
             }
-
             // true = append file
             FileWriter fileWritter = new FileWriter(file, false);
             BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
@@ -221,24 +233,15 @@ public class FileUtil {
     }
 
 
-
-
-
     /**
      * 上传文件 uploadfile
      *
-     * @param localRootPath
-     *            c:/forder
-     * @param remoteRootPath
-     *            /folder
-     * @param relativePaths
-     *            a.txt
-     * @param userName
-     *            username
-     * @param pwd
-     *            password
-     * @param serverIp
-     *            192.168.11.231
+     * @param localRootPath  c:/forder
+     * @param remoteRootPath /folder
+     * @param relativePaths  a.txt
+     * @param userName       username
+     * @param pwd            password
+     * @param serverIp       192.168.11.231
      */
     public static void upload(String localRootPath, String remoteRootPath, String[] relativePaths, String userName,
                               String pwd, String serverIp) {

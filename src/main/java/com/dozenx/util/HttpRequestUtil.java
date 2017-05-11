@@ -106,13 +106,13 @@ public class HttpRequestUtil {
                 result.append(line);
             }
             Long endTime = System.currentTimeMillis();
-            logger.info("success to httpget \n"+urlNameString+"  cost time:"+(endTime-startTime)+"\n result:"+result);
+            logger.info("success to httpget \n"+urlNameString+" \n cost time:"+(endTime-startTime)+"\n result:"+result);
 
         } catch (Exception e) {
             // System.out.println("发送GET请求出现异常！" + e);
             Long endTime = System.currentTimeMillis();
-         //   logger.info("fail to httpget \n "+url+"   cost time:"+(endTime-startTime));
-           // logger.error("send http get error use url: "+url+"error :"+"cost time:"+(endTime-startTime),e);
+            //   logger.info("fail to httpget \n "+url+"   cost time:"+(endTime-startTime));
+            // logger.error("send http get error use url: "+url+"error :"+"cost time:"+(endTime-startTime),e);
             logger.error("send http get error ",e);
             return "400";
         }
@@ -129,6 +129,7 @@ public class HttpRequestUtil {
         }
         return result.toString();
     }
+
     public static String UrlRead(String url){
         StringBuffer result = new StringBuffer("");
         BufferedReader in = null;
@@ -187,8 +188,6 @@ public class HttpRequestUtil {
      * @return URL 所代表远程资源的响应结果
      */
     public static String sendGet(String url, String param) {
-
-
         try {
             if(!StringUtil.isBlank(param)){
 

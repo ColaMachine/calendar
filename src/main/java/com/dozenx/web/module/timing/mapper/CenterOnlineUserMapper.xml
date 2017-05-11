@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dozenx.web.module.timing.dao.CenterOnlineUserMapper">
+	<resultMap id="BaseOnlineDataMap" type="com.dozenx.web.module.timing.bean.OnlineUserObject">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="telephone" property="telephone" jdbcType="VARCHAR" />
+		<result column="process_flg" property="processFlg" jdbcType="VARCHAR" />
+		<result column="start_time" property="startTime" jdbcType="BIGINT" />
+		<result column="end_time" property="endTime" jdbcType="BIGINT" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+		<result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
+		<result column="merchant_name" property="merchantName" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="INTEGER" />
+		<result column="county" property="county" jdbcType="INTEGER" />
+		<result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+		<result column="city_name" property="cityName" jdbcType="VARCHAR" />
+		<result column="county_name" property="countyName" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="add" parameterType="com.dozenx.web.module.timing.bean.OnlineUserObject" useGeneratedKeys="true" keyColumn="ID" keyProperty="id">
+		<!-- <selectKey resultType="java.lang.Long" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey> -->
+		insert into center_merchant_vip_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="telephone != null">
+				telephone,
+			</if>
+			<if test="processFlg != null">
+				process_flg,
+			</if>
+			<if test="startTime > 0">
+				start_time,
+			</if>
+			<if test="endTime > 0">
+				end_time,
+			</if>
+			create_date,
+			modify_date,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="telephone != null">
+				#{telephone,jdbcType=VARCHAR},
+			</if>
+			<if test="processFlg != null">
+				#{processFlg,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime > 0">
+				#{startTime,jdbcType=BIGINT},
+			</if>
+			<if test="endTime > 0">
+				#{endTime,jdbcType=BIGINT},
+			</if>
+			now(),now(),
+		</trim>
+	</insert>
+	<update id="update" parameterType="com.dozenx.web.module.timing.bean.OnlineUserObject">
+		update center_merchant_vip_user
+		<set>
+			<if test="processFlg != null">
+				process_flg = #{processFlg,jdbcType=VARCHAR},
+			</if>
+			<if test="endTime > 0">
+				end_time = #{endTime,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<select id="queryOnlineUserCount" parameterType="hashmap" resultType="int">	
+		select count(1) from center_merchant_vip_user where telephone = #{telephone,jdbcType=VARCHAR}
+		<if test="nowTime != null and nowTime > 0">
+			<![CDATA[
+				and start_time <= #{nowTime,jdbcType=BIGINT} and (end_time is null or end_time >= #{nowTime,jdbcType=BIGINT})
+			]]>
+		</if>
+	</select>
+	<select id="queryLastOnlineUser" parameterType="hashmap" resultMap="BaseOnlineDataMap">
+		select id,telephone,start_time,end_time,create_date from center_merchant_vip_user
+		where telephone = #{telephone,jdbcType=VARCHAR} order by create_date desc limit 1
+	</select>
+	<select id="queryVipUserList" parameterType="hashmap" resultMap="BaseOnlineDataMap">
+		select v.id,v.telephone,v.start_time,v.end_time,v.create_date,v.merchant_id,v.modify_date,
+		m.province,m.city,m.county,m.merchant_name,
+		p.AREA_NAME province_name,
+		c.AREA_NAME city_name,
+		x.AREA_NAME county_name
+		from center_merchant_vip_user v left join center_pub_merchant m
+		on v.merchant_id = m.id 
+		left join center_pub_area p on m.province = p.id
+		left join center_pub_area c on m.city = c.id
+		left join center_pub_area x on m.county = x.id
+		where 1=1
+		<if test="telephone != null">
+			and v.telephone = #{telephone}
+		</if>
+		<if test="startTime != null">
+			and UNIX_TIMESTAMP(v.create_date) >= #{startTime}
+		</if>
+		<if test="endTime != null">
+			<![CDATA[
+			and  UNIX_TIMESTAMP(v.create_date) < #{endTime}
+			]]>
+		</if>
+		<if test="province != null">
+			and m.province = #{province}
+		</if>
+		<if test="city != null">
+			and m.city = #{city}
+		</if>
+		<if test="county != null">
+			and m.county = #{county}
+		</if>
+		<if test="merchantId != null">
+			and v.merchant_id = #{merchantId}
+		</if>
+		<if test="merchantName != null">
+			and m.merchant_name like CONCAT(#{merchantName},'%')
+		</if>
+		order by v.id desc
+		<if test="start != null and pageSize != null">
+   			limit ${start}, ${pageSize}
+   		</if>
+	</select>
+	<select id="queryVipUserCount" parameterType="hashmap" resultType="int">
+		select count(1) 
+		from center_merchant_vip_user v left join center_pub_merchant m
+		on v.merchant_id = m.id 
+		left join center_pub_area p on m.province = p.id
+		left join center_pub_area c on m.city = c.id
+		left join center_pub_area x on m.county = x.id
+		where 1=1
+		<if test="telephone != null">
+			and v.telephone = #{telephone}
+		</if>
+		<if test="startTime != null">
+			and UNIX_TIMESTAMP(v.create_date) >= #{startTime}
+		</if>
+		<if test="endTime != null">
+		<![CDATA[	
+			and  UNIX_TIMESTAMP(v.create_date) < #{endTime}
+		]]>
+		</if>
+		<if test="province != null">
+			and m.province = #{province}
+		</if>
+		<if test="city != null">
+			and m.city = #{city}
+		</if>
+		<if test="county != null">
+			and m.county = #{county}
+		</if>
+		<if test="merchantId != null">
+			and v.merchant_id = #{merchantId}
+		</if>
+		<if test="merchantName != null">
+			and m.merchant_name like CONCAT(#{merchantName},'%')
+		</if>
+		
+	</select>
+	<update id="updateVipUser" parameterType="com.dozenx.web.module.timing.bean.OnlineUserObject">
+		update center_merchant_vip_user set merchant_id = #{merchantId} where telephone=#{telephone} and merchant_id is null
+	</update>
+</mapper>

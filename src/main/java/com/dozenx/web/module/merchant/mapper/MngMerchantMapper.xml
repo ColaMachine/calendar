@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.module.merchant.dao.MngMerchantMapper">
+  <resultMap id="BaseResultMap" type="com.dozenx.web.module.merchant.bean.SysMngMerchant">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="uid" jdbcType="VARCHAR" property="uid" />
+      <result column="mid" jdbcType="VARCHAR" property="mid" />
+      <result column="uname" jdbcType="VARCHAR" property="uname" />
+      <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+     id,uid,mid,type, uname
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant_manager
+    where merchant_manager.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from merchant_manager
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.module.merchant.bean.SysMngMerchant" >
+    insert into merchant_manager ( uid,mid,uname,type)
+    values (#{uid,jdbcType=VARCHAR}
+		,#{mid,jdbcType=VARCHAR}
+		,#{uname,jdbcType=VARCHAR}
+		,#{type,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+   <insert id="insertSelective" parameterType="com.dozenx.web.module.merchant.bean.SysMngMerchant" >
+    insert into merchant_manager
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="uid != null" >  
+           `uid`, 
+        </if>  
+        <if test="mid != null" >  
+           `mid`, 
+        </if>  
+        <if test="uname != null" >  
+           `uname`, 
+        </if>  
+        <if test="type != null" >  
+           `type`, 
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=INTEGER},
+        </if>  
+        <if test="uid != null" >  
+          #{uid,jdbcType=VARCHAR},
+        </if>  
+        <if test="mid != null" >  
+          #{mid,jdbcType=VARCHAR},
+        </if>  
+        <if test="uname != null" >  
+          #{uname,jdbcType=VARCHAR},
+        </if>  
+        <if test="type != null" >  
+          #{type,jdbcType=VARCHAR},
+        </if>  
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.module.merchant.bean.SysMngMerchant" >
+    update merchant_manager
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=INTEGER},
+        </if>  
+        <if test="uid != null" >  
+             `uid`=#{uid,jdbcType=VARCHAR},
+        </if>  
+        <if test="mid != null" >  
+             `mid`=#{mid,jdbcType=VARCHAR},
+        </if>  
+        <if test="uname != null" >  
+             `uname`=#{uname,jdbcType=VARCHAR},
+        </if>  
+        <if test="type != null" >  
+             `type`=#{type,jdbcType=VARCHAR},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.dozenx.web.module.merchant.bean.SysMngMerchant" >
+    update merchant_manager
+    set 
+              `uid`=#{path,jdbcType=VARCHAR},  
+              `mid`=#{type,jdbcType=VARCHAR},  
+              `uname`=#{code,jdbcType=VARCHAR},  
+              `type`=#{param,jdbcType=VARCHAR},  
+              `createTime`=#{createTime,jdbcType=TIMESTAMP},  
+	where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="listByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant_manager where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="uid != null and uid != '' ">  
+           and `uid` = #{uid}
+        </if>  
+        <if test="mid != null and mid != '' ">  
+           and `mid` = #{mid}
+        </if>  
+        <if test="unameLike != null and unameLike != '' ">  
+           and `uname` like "%"#{unameLike}"%"
+        </if>   
+        <if test="type != null and type != '' ">  
+           and `type` = #{type}
+        </if> 
+  </select>
+  
+   <select id="listByParams4Page" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant_manager where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="uid != null and uid != '' ">
+           and `uid` = #{uid}
+        </if>  
+        <if test="mid != null and mid != '' ">  
+           and `mid` = #{mid}
+        </if>
+        <if test="unameLike != null and unameLike != '' ">  
+             and `uname` like "%"#{unameLike}"%"
+        </if>  
+        <if test="type != null and type != '' ">  
+           and `type` = #{type}
+        </if> 
+       	   order by id desc limit #{start}, #{pageSize} 
+  </select>
+  
+   <select id="countByParams" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from merchant_manager where 1=1
+        <if test="id != null and id != '' ">  
+           and  `id` = #{id}
+        </if>  
+        <if test="uid != null and uid != '' ">
+           and  `uid` = #{uid}
+        </if>  
+        <if test="mid != null and mid != '' ">  
+           and  `mid` = #{mid}
+        </if>
+        <if test="unameLike != null and unameLike != '' ">  
+           and  `uname` like "%"#{unameLike}"%"
+        </if>  
+        <if test="type != null and type != '' ">  
+           and  `type` = #{type}
+        </if>  
+  </select>
+  
+ <select id="countByOrParams" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from sys_log where 1!=1
+               <if test="id != null and id != '' ">  
+           or merchant_manager.`id` = #{id}
+        </if>  
+        <if test="uid != null and uid != '' ">
+           or merchant_manager.`uid` = #{uid}
+        </if>  
+        <if test="mid != null and mid != '' ">  
+           or merchant_manager.`mid` = #{mid}
+        </if>
+        <if test="unameLike != null and unameLike != '' ">  
+           or merchant_manager.`uname` like "%"#{unameLike}"%"
+        </if>  
+        <if test="type != null and type != '' ">  
+           or merchant_manager.`type` = #{type}
+        </if>  
+  </select>
+</mapper>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dozenx.web.module.timing.dao.CenterOrderMapper">
+	<resultMap id="BaseOrderMap"
+		type="com.dozenx.web.module.timing.bean.Order">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="order_id" property="orderId" jdbcType="VARCHAR" />
+		<result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
+		<result column="merchant_name" property="merchantName"
+			jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="auth_id" property="userName" jdbcType="VARCHAR" />
+		<result column="telephone" property="telephone" jdbcType="VARCHAR" />
+		<result column="package_id" property="packageId" jdbcType="BIGINT" />
+		<result column="package_num" property="packageNum" jdbcType="INTEGER" />
+		<result column="total_num" property="totalNum" jdbcType="DECIMAL" />
+		<result column="pay_num" property="payNum" jdbcType="DECIMAL" />
+		<result column="recharge_type" property="rechargeType"
+			jdbcType="INTEGER" />
+		<result column="recharge_account" property="rechargeAccount"
+			jdbcType="VARCHAR" />
+		<result column="recharge_work_order_id" property="paySno"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="status_remarks" property="statusRemarks"
+			jdbcType="VARCHAR" />
+		<result column="status_date" property="statusDate" jdbcType="TIMESTAMP" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="addOrder" parameterType="com.dozenx.web.module.timing.bean.Order" useGeneratedKeys="true" keyColumn="ID" keyProperty="id">
+		<!-- <selectKey resultType="java.lang.Long" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey> -->
+		insert into center_pub_merchant_user_recharge_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				order_id,
+			</if>
+			<if test="merchantId > 0">
+				merchant_id,
+			</if>
+			<if test="userId > 0">
+				user_id,
+			</if>
+			<if test="packageId > 0">
+				package_id,
+			</if>
+			<if test="packageNum > 0">
+				package_num,
+			</if>
+			<if test="totalNum > 0">
+				total_num,
+			</if>
+			<if test="payNum > 0">
+				pay_num,
+			</if>
+			<if test="rechargeType > 0">
+				recharge_type,
+			</if>
+			<if test="rechargeAccount != null">
+				recharge_account,
+			</if>
+			<if test="status > 0">
+				status,
+			</if>	
+			<if test="statusRemarks != null">
+				status_remarks,
+			</if>
+			status_date,create_date,
+			<if test="remarks != null">
+				remarks,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				#{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantId > 0">
+				#{merchantId,jdbcType=BIGINT},
+			</if>
+			<if test="userId > 0">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="packageId > 0">
+				#{packageId,jdbcType=BIGINT},
+			</if>
+			<if test="packageNum > 0">
+				#{packageNum,jdbcType=INTEGER},
+			</if>
+			<if test="totalNum > 0">
+				#{totalNum,jdbcType=DECIMAL},
+			</if>
+			<if test="payNum > 0">
+				#{payNum,jdbcType=DECIMAL},
+			</if>
+			<if test="rechargeType > 0">
+				#{rechargeType,jdbcType=INTEGER},
+			</if>
+			<if test="rechargeAccount != null">
+				#{rechargeAccount,jdbcType=VARCHAR},
+			</if>
+			<if test="status > 0">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="statusRemarks != null">
+				#{statusRemarks,jdbcType=VARCHAR},
+			</if>
+				now(),now(),
+			<if test="remarks != null">
+				#{remarks,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateOrder" parameterType="com.dozenx.web.module.timing.bean.Order">
+		update center_pub_merchant_user_recharge_order
+		<set>
+			<if test="packageId > 0">
+				package_id = #{packageId,jdbcType=BIGINT},
+			</if>
+			<if test="packageNum > 0">
+				package_num = #{packageNum,jdbcType=INTEGER},
+			</if>
+			<if test="totalNum > 0">
+				total_num = #{totalNum,jdbcType=DECIMAL},
+			</if>
+			<if test="payNum > 0">
+				pay_num = #{payNum,jdbcType=DECIMAL},
+			</if>
+			<if test="paySno != null">
+				recharge_work_order_id = #{paySno,jdbcType=VARCHAR},
+			</if>
+			<if test="status > 0">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="statusDate != null">
+				status_date = #{statusDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="statusRemarks != null">
+				status_remarks = #{statusRemarks,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remarks != null">
+				remarks = #{remarks,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where order_id = #{orderId,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="finishOrder" parameterType="com.dozenx.web.module.timing.bean.Order">
+		update center_pub_merchant_user_recharge_order 
+		set status = 3,status_date = now(),recharge_work_order_id = #{paySno}
+		where order_id = #{orderId}
+	</update>
+	
+	<select id="queryListByParam" parameterType="hashmap" resultMap="BaseOrderMap">
+		select
+		a.id id,
+		a.order_id,
+		a.merchant_id,
+		c.telphone telephone,
+		cpm.merchant_name,
+		a.user_id,
+		a.package_id,
+		a.package_num,
+		a.total_num,
+		a.pay_num,
+		a.recharge_type,
+		a.recharge_account,
+		a.recharge_work_order_id,
+		a.status,
+		a.status_remarks,
+		a.status_date,
+		a.create_date,
+		a.remarks
+		from center_pub_merchant_user_recharge_order a
+		left join (select * from
+		center_pub_merchant where industry = 'OCAB1901' and status = 1) cpm
+		on a.merchant_id =
+		cpm.id left join center_pub_user c on a.user_id = c.id
+		where 1=1
+		<if test="orderId != null">
+			and a.order_id = #{orderId}
+		</if>
+		<if test="merchantId != null">
+			and a.merchant_id = #{merchantId}
+		</if>
+		<if test="merchantName != null">
+		 	and cpm.merchant_name = #{merchantName}
+		</if>
+		<if test="merchantNameLike != null">
+			and cpm.merchant_name like CONCAT(#{merchantNameLike},'%')
+		</if>
+		<if test="province != null">
+			and cpm.province = #{province}
+		</if>
+		<if test="city != null">
+			and cpm.city = #{city}
+		</if>
+		<if test="county != null">
+			and cpm.county = #{county}
+		</if>
+		<if test="userId != null">
+			and a.user_id = #{userId}
+		</if>
+		<if test="rechargeType != null">
+			and a.recharge_type = #{rechargeType}
+		</if>
+		<if test="paySno != null">
+			and a.recharge_work_order_id = #{paySno}
+		</if>
+		<if test="createDateBegin != null and createDateEnd != null">
+			and a.create_date between #{createDateBegin} and #{createDateEnd}
+		</if>
+		<if test="statusDateBegin != null and  statusDateEnd != null">
+			and a.status_date between #{statusDateBegin} and #{statusDateEnd}
+		</if>
+		<if test="status != null">
+		 	and a.status = #{status}
+		</if>
+		order by cpm.merchant_name asc
+		<if test="start != null and pageSize != null">
+   			limit ${start}, ${pageSize}
+   		</if>
+	</select>
+	
+	<select id="queryCountByParam" parameterType="hashmap" resultType="int">
+		select count(1) from 
+		center_pub_merchant_user_recharge_order a
+		left join (select * from
+		center_pub_merchant where industry = 'OCAB1901' and status = 1) cpm
+		on a.merchant_id = cpm.id left join center_pub_user c on a.user_id = c.id
+		where 1=1
+		<if test="orderId != null">
+			and a.order_id = #{orderId}
+		</if>
+		<if test="merchantId != null">
+			and a.merchant_id = #{merchantId}
+		</if>
+		<if test="merchantName != null">
+		 	and cpm.merchant_name = #{merchantName}
+		</if>
+		<if test="merchantNameLike != null">
+			and cpm.merchant_name like CONCAT(#{merchantNameLike},'%')
+		</if>
+		<if test="province != null">
+			and cpm.province = #{province}
+		</if>
+		<if test="city != null">
+			and cpm.city = #{city}
+		</if>
+		<if test="county != null">
+			and cpm.county = #{county}
+		</if>
+		<if test="userId != null">
+			and a.user_id = #{userId}
+		</if>
+		<if test="rechargeType != null">
+			and a.recharge_type = #{rechargeType}
+		</if>
+		<if test="paySno != null">
+			and a.recharge_work_order_id = #{paySno}
+		</if>
+		<if test="createDateBegin != null and createDateEnd != null">
+			and a.create_date between #{createDateBegin} and #{createDateEnd}
+		</if>
+		<if test="statusDateBegin != null and  statusDateEnd != null">
+			and a.status_date between #{statusDateBegin} and #{statusDateEnd}
+		</if>
+		<if test="status != null">
+		 	and a.status = #{status}
+		</if>
+	</select>
+</mapper>

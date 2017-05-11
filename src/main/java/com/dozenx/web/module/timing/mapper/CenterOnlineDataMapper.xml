@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dozenx.web.module.timing.dao.CenterOnlineDataMapper">
+	<resultMap id="BaseOnlineDataMap" type="com.dozenx.web.module.timing.bean.OnlineDataObject">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="broadband_account" property="broadbandAccount" jdbcType="VARCHAR" />
+		<result column="merid" property="merid" jdbcType="VARCHAR" />
+		<result column="object_id" property="objectId" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="goods_code" property="goodsCode" jdbcType="VARCHAR" />
+		<result column="pkg_price" property="pkgPrice" jdbcType="VARCHAR" />
+		<result column="pkg_num" property="pkgNum" jdbcType="VARCHAR" />
+		<result column="amount" property="amount" jdbcType="VARCHAR" />
+		<result column="adddays" property="adddays" jdbcType="VARCHAR" />
+		<result column="pkg_detail" property="pkgDetail" jdbcType="VARCHAR" />
+		<result column="input_time" property="inputTime" jdbcType="VARCHAR" />
+		<result column="remark1" property="remark1" jdbcType="VARCHAR" />
+		<result column="remark2" property="remark2" jdbcType="VARCHAR" />
+		<result column="remark3" property="remark3" jdbcType="VARCHAR" />
+		<result column="sign" property="sign" jdbcType="VARCHAR" />
+		<result column="identity_code" property="identityCode" jdbcType="VARCHAR" />
+		<result column="now_time" property="nowTime" jdbcType="VARCHAR" />
+		<result column="process_flg" property="processFlg" jdbcType="VARCHAR" />
+		<result column="tel" property="tel" jdbcType="VARCHAR" />
+		<result column="start_time" property="startTime" jdbcType="VARCHAR" />
+		<result column="end_time" property="endTime" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="add" parameterType="com.dozenx.web.module.timing.bean.OnlineDataObject" useGeneratedKeys="true" keyColumn="ID" keyProperty="id">
+<!-- 		<selectKey resultType="java.lang.Long" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey> -->
+		insert into center_online_data
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="broadbandAccount != null">
+				broadband_account,
+			</if>
+			<if test="merid != null">
+				merid,
+			</if>
+			<if test="objectId != null">
+				object_id,
+			</if>
+			<if test="mobile != null">
+				mobile,
+			</if>
+			<if test="goodsCode != null">
+				goods_code,
+			</if>
+			<if test="pkgPrice != null">
+				pkg_price,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="adddays != null">
+				adddays,
+			</if>
+			<if test="pkgDetail != null">
+				pkg_detail,
+			</if>
+			<if test="inputTime != null">
+				input_time,
+			</if>
+			<if test="remark1 != null">
+				remark1,
+			</if>
+			<if test="remark2 != null">
+				remark2,
+			</if>
+			<if test="remark3 != null">
+				remark3,
+			</if>
+			<if test="sign != null">
+				sign,
+			</if>
+			<if test="identityCode != null">
+				identity_code,
+			</if>
+			<if test="nowTime != null">
+				now_time,
+			</if>
+			<if test="processFlg != null">
+				process_flg,
+			</if>
+			<if test="tel != null">
+				tel,
+			</if>
+			<if test="startTime != null">
+				start_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+			create_date,
+			<if test="pkgNum != null">
+				pkg_num,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="broadbandAccount != null">
+				#{broadbandAccount,jdbcType=VARCHAR},
+			</if>
+			<if test="merid != null">
+				#{merid,jdbcType=VARCHAR},
+			</if>
+			<if test="objectId != null">
+				#{objectId,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				#{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsCode != null">
+				#{goodsCode,jdbcType=VARCHAR},
+			</if>
+			<if test="pkgPrice != null">
+				#{pkgPrice,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=VARCHAR},
+			</if>
+			<if test="adddays != null">
+				#{adddays,jdbcType=VARCHAR},
+			</if>
+			<if test="pkgDetail != null">
+				#{pkgDetail,jdbcType=VARCHAR},
+			</if>
+			<if test="inputTime != null">
+				#{inputTime,jdbcType=VARCHAR},
+			</if>
+			<if test="remark1 != null">
+				#{remark1,jdbcType=VARCHAR},
+			</if>
+			<if test="remark2 != null">
+				#{remark2,jdbcType=VARCHAR},
+			</if>
+			<if test="remark3 != null">
+				#{remark3,jdbcType=VARCHAR},
+			</if>
+			<if test="sign != null">
+				#{sign,jdbcType=VARCHAR},
+			</if>
+			<if test="identityCode != null">
+				#{identityCode,jdbcType=VARCHAR},
+			</if>
+			<if test="nowTime != null">
+				#{nowTime,jdbcType=VARCHAR},
+			</if>
+			<if test="processFlg != null">
+				#{processFlg,jdbcType=VARCHAR},
+			</if>
+			<if test="tel != null">
+				#{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				#{startTime,jdbcType=VARCHAR},
+			</if>
+			<if test="endTime != null">
+				#{endTime,jdbcType=VARCHAR},
+			</if>
+			now(),
+			<if test="pkgNum != null">
+				#{pkgNum,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+</mapper>	

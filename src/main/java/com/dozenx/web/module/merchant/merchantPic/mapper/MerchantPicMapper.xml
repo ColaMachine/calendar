@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.module.merchant.merchantPic.dao.MerchantPicMapper">
+  <resultMap id="BaseResultMap" type="com.dozenx.web.module.merchant.merchantPic.bean.MerchantPic">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="slot" jdbcType="INTEGER" property="slot" />
+      <result column="path" jdbcType="VARCHAR" property="path" />
+      <result column="merid" jdbcType="BIGINT" property="merid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    merchant_pic.`id` ,merchant_pic.`slot` ,merchant_pic.`path` ,merchant_pic.`merid` 
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant_pic
+    where merchant_pic.id =   #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from merchant_pic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.module.merchant.merchantPic.bean.MerchantPic" >
+
+    insert into merchant_pic (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=INTEGER}
+,#{slot,jdbcType=INTEGER}
+,#{path,jdbcType=VARCHAR}
+,#{merid,jdbcType=BIGINT}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="com.dozenx.web.module.merchant.merchantPic.bean.MerchantPic" >
+    insert into merchant_pic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="slot != null" >  
+           `slot`, 
+        </if>  
+        <if test="path != null" >  
+           `path`, 
+        </if>  
+        <if test="merid != null" >  
+           `merid`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=INTEGER},
+        </if>  
+        <if test="slot != null" >  
+          #{slot,jdbcType=INTEGER},
+        </if>  
+        <if test="path != null" >  
+          #{path,jdbcType=VARCHAR},
+        </if>  
+        <if test="merid != null" >  
+          #{merid,jdbcType=BIGINT},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.module.merchant.merchantPic.bean.MerchantPic" >
+    update merchant_pic
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=INTEGER},
+        </if>  
+        <if test="slot != null" >  
+             `slot`=#{slot,jdbcType=INTEGER},
+        </if>  
+        <if test="path != null" >  
+             `path`=#{path,jdbcType=VARCHAR},
+        </if>  
+        <if test="merid != null" >  
+             `merid`=#{merid,jdbcType=BIGINT},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dozenx.web.module.merchant.merchantPic.bean.MerchantPic" >
+    update merchant_pic
+    set 
+              `slot`=#{slot,jdbcType=INTEGER},  
+              `path`=#{path,jdbcType=VARCHAR},  
+              `merid`=#{merid,jdbcType=BIGINT}  
+where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant_pic where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="slot != null and slot != '' ">  
+           and `slot` = #{slot}
+        </if>  
+        <if test="path != null and path != '' ">  
+           and `path` = #{path}
+        </if>  
+        <if test="pathLike != null and pathLike != '' ">  
+             and `path` like "%"#{pathLike}"%"
+        </if>   
+        <if test="merid != null and merid != '' ">  
+           and `merid` = #{merid}
+        </if>  
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant_pic
+
+    where 1=1
+        <if test="id != null and id != '' ">  
+           and merchant_pic.`id` = #{id}
+        </if>  
+        <if test="slot != null and slot != '' ">  
+           and merchant_pic.`slot` = #{slot}
+        </if>  
+        <if test="path != null and path != '' ">  
+           and merchant_pic.`path` = #{path}
+        </if>  
+        <if test="pathLike != null and pathLike != '' ">  
+             and merchant_pic.`path` like "%"#{pathLike}"%"
+        </if>   
+        <if test="merid != null and merid != '' ">  
+           and merchant_pic.`merid` = #{merid}
+        </if>  
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from merchant_pic where 1=1
+        <if test="id != null and id != '' ">  
+           and merchant_pic.`id` = #{id}
+        </if>  
+        <if test="slot != null and slot != '' ">  
+           and merchant_pic.`slot` = #{slot}
+        </if>  
+        <if test="path != null and path != '' ">  
+           and merchant_pic.`path` = #{path}
+        </if>  
+        <if test="pathLike != null and pathLike != '' ">  
+             and merchant_pic.`path` like "%"#{pathLike}"%"
+        </if>   
+        <if test="merid != null and merid != '' ">  
+           and merchant_pic.`merid` = #{merid}
+        </if>  
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from merchant_pic where 1!=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="slot != null and slot != '' ">
+           or `slot` = #{slot}
+        </if>
+        <if test="path != null and path != '' ">
+           or `path` = #{path}
+        </if>
+        <if test="merid != null and merid != '' ">
+           or `merid` = #{merid}
+        </if>
+  </select>
+</mapper>
