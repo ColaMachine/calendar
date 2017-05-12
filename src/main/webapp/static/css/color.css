@@ -5,8 +5,10 @@
 .bg-blue{
    background-color: #2E67B6;
 }
-
+.bg-black{
+   background-color: #000000;
+}
 .color-white{
-    color:white;
+    color:#FFFFFF;
 }
 

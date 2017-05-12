@@ -10,3 +10,21 @@ border-bottom: 1px dashed gray;
 
     font-size: 20px;
 }
+.zw-h-list{
+margin:0px;
+padding:0px;
+}
+.zw-h-list>li{
+float:left;
+padding:0 5px;
+     list-style-type: none;
+    border-right: 1px solid gray;
+}
+.zw-h-list>li:hover>.arrow-down {
+	transition: transform 0.3s ease-in-out 0s;
+	transform: rotate(0deg);
+}
+.zw-h-list>li>.arrow-down {
+transition: transform 0.3s ease-in-out 0s;
+	transform: rotate(180deg);
+}
