@@ -1,0 +1,66 @@
+﻿@CHARSET "UTF-8";
+.col-1{
+width:10%;
+}
+.col-2{
+width:20%;
+}
+
+.col-3{
+width:30%;
+}
+.col-4{
+width:40%;
+}
+.col-5{
+width:50%;
+}
+.col-6{
+width:60%;
+}
+.col-7{
+width:70%;
+}
+.col-8{
+width:80%;
+}
+.col-9{
+width:90%;
+}
+.col-10{
+width:100%;
+}
+.left-1{
+    margin-left:10%;
+}
+.right-1{
+    margin-right:10%;
+}
+
+.fix-width-midle{
+    margin-left: auto;
+       margin-right: auto;
+}
+/*.middle-center{
+
+    margin-left:auto;
+    margin-right:auto;
+
+
+}*/
+.horizon-center{
+     margin-left: auto;
+        margin-right: auto;
+}
+.vertical-center{
+ top:50%;
+  margin-top: -150px; /***常用的居中****/
+}
+
+.left{
+float:left;
+}
+.right{
+float:right;
+}
+

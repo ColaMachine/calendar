@@ -305,6 +305,7 @@ var menuList=[
 {id:6,name:"角色管理",url:"/auth/role/list.htm",pid:5},*/
 {id:7,name:"日历",url:"/static/html/CalendarView.html",icon:"fa fa-calendar",pid:0},
 {id:8,name:"组件库",url:"",icon:"fa fa-bug",pid:0},
+{id:"8-1-1",name:"头部",url:"/static/html/example/head.html",icon:"fa fa-spinner",pid:8},
 {id:"8-1",name:"按钮",url:"/static/html/example/button.html",icon:"fa fa-spinner",pid:8},
 
 {id:"8-2",name:"导航条",url:"/static/html/example/navbar.html",icon:"fa fa-spinner",pid:8},

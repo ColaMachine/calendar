@@ -1,0 +1,12 @@
+﻿@CHARSET "UTF-8";
+.zw-list{
+}
+.zw-list li{
+
+    list-style-type: none;
+border-bottom: 1px dashed gray;
+}
+.zw-list-item{
+
+    font-size: 20px;
+}
