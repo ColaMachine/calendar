@@ -1,11 +1,18 @@
-<link rel="stylesheet" type="text/css" href="/static/css/head.css" >
-<link rel="stylesheet" type="text/css" href="/static/css/color.css" >
-<link rel="stylesheet" type="text/css" href="/static/css/layout.css" >
-<link rel="stylesheet" type="text/css" href="/static/css/border.css" >
-<link rel="stylesheet" type="text/css" href="/static/css/size.css" >
-<link rel="stylesheet" type="text/css" href="/static/css/list.css" >
-<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.css" >
-<link rel="stylesheet" type="text/css" href="/static/css/window.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/head.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/color.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/layout.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/border.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/size.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/list.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/font-awesome.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/window.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/img.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/btn.css" >
+
+<script src="../../../static/js/jquery.min.js" type="text/javascript"
+            charset="utf-8"></script>
+            
+          
 <div class="zw-header bg-green colr-white">
     <div class="zw-header-wrap bdr-black fix-width-midle margin-auto">
         <span class="zw-header-title">园区api文档</span>
@@ -65,8 +72,19 @@
 
     <div class="heaer-center center-text col-8 left  height4" id="merchantname" style="">
 
-        <ul class="zw-h-list">
-            <li><a>  菜单1</a></li>
+        <ul class="nav nav-pills">
+            <li data-toggle="dropdown" haspopup="true">
+            <a >你好 <i class="arrow-down fa fa-caret-down"></i></a>
+      
+        <ul class="dropdown-menu  fnt-1  color-black  ">
+        	<li  ><a>你好 </a></li>
+        	<li ><a>你好 </a> </li>
+        	<li ><a>你好 </a> </li>
+        	<li ><a>你好 </a> </li>
+    	</ul>
+       	   
+		
+		</li>
             <li><a>  菜单1</a></li>
             <li><a>  菜单1</a></li>
             <li><a>  菜单1</a></li>
@@ -83,29 +101,175 @@
 </header>
 
 这是一个正常的列表
-<ul class="zw-list fnt-1">
-    <li >你好 </li>
-    <li >你好 </li>
-    <li >你好 </li>
-    <li >你好 </li>
+<ul class="list-group fnt-1">
+    <li class="list-group-item">你好 </li>
+    <li class="list-group-item">你好 </li>
+    <li class="list-group-item">你好 </li>
+    <li class="list-group-item">你好 </li>
  </ul>
 
-这是一个水平的列表
-<ul class="zw-h-list fnt-1">
+这是一个水平的导航标签 nav-pills
+<ul class="nav nav-pills fnt-1">
+    <li >你好 </li>
+    <li >你好 </li>
+    <li >你好 </li>
+    <li >你好 </li>
+</ul>
+导航标签 nav-pills 带栅栏
+<ul class="nav nav-pills fnt-1">
     <li >你好 </li>
     <li >你好 </li>
     <li >你好 </li>
     <li >你好 </li>
 </ul>
 <br>
-这是一个窗体
-<div class="window">123123123
-    </div>
+这是一个弹框
+<div class="zw-pop">
+    123123123
+</div>
 <br>
-这是一个下拉列表
-<ul class="zw-h-list fnt-1">
-    <li >你好 <i class="arrow-down fa fa-caret-down"></i></li>
-    <li >你好 </li>
-    <li >你好 </li>
-    <li >你好 </li>
-</ul>
+这是一个下拉菜单
+
+    <button  data-toggle="dropdown" haspopup="true">你好 <i class="arrow-down fa fa-caret-down"></i>
+      
+        <ul class="dropdown-menu  fnt-1  ">
+        <li  ><a>你好 </a></li>
+        <li ><a>你好 </a> </li>
+        <li ><a>你好 </a> </li>
+        <li ><a>你好 </a> </li>
+    </ul>
+        </button>	 
+        
+        <br>
+        图片
+        <div>
+        	<div class="col-3">
+        		<a href="#" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        		</a>
+        	</div>
+        	<div class="col-3">
+        		<a href="#" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        		</a>
+        	</div>
+        	<div class="col-3">
+        		<a href="#" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        		</a>
+        	</div>
+        </div>  
+        
+         <br>
+        带标题说明的图片
+        <div>
+        	<div class="col-3">
+        		<div href="#" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        			<div class="caption">
+        <h3>Thumbnail label</h3>
+        <p>...</p>
+        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+      </div>
+        		</div>
+        		
+        	</div>
+        	<div class="col-3">
+        		<a href="#" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        		</a>
+        	</div>
+        	<div class="col-3">
+        		<a href="#" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        		</a>
+        	</div>
+        </div>  
+        
+        
+        可以操作选中的图片
+        
+        
+         <div>
+        	<div class="col-3">
+        		<div href="#" onclick="chooseImgAndCount(this)" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        			<div class="caption">
+        				<h3>Thumbnail label</h3>
+        				<p>...</p>
+        				<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+      				</div>
+        		</div>
+        		
+        	</div>
+        	<div class="col-3">
+        		<div href="#" onclick="chooseImgAndCount(this)" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        			<div class="caption">
+        				<h3>Thumbnail label</h3>
+        				<p>...</p>
+        				<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+      				</div>
+        		</div>
+        		
+        	</div>
+        	<div class="col-3">
+        		<div href="#" onclick="chooseImgAndCount(this)" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        			<div class="caption">
+        				<h3>Thumbnail label</h3>
+        				<p>...</p>
+        				<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+      				</div>
+        		</div>
+        		
+        	</div>
+        	<div class="col-3">
+        		<div href="#" onclick="chooseImgAndCount(this)" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        			<div class="caption">
+        				<h3>Thumbnail label</h3>
+        				<p>...</p>
+        				<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+      				</div>
+        		</div>
+        		
+        	</div>
+        	<div class="col-3">
+        		<div href="#" onclick="chooseImgAndCount(this)" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        			<div class="caption">
+        				<h3>Thumbnail label</h3>
+        				<p>...</p>
+        				<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+      				</div>
+        		</div>
+        		
+        	</div>
+        	<div class="col-3">
+        		<div href="#" onclick="chooseImgAndCount(this)" class="thumbnail">
+        			<img src="../../../static/img/a0.jpg">
+        			<div class="caption">
+        				<h3>Thumbnail label</h3>
+        				<p>...</p>
+        				<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+      				</div>
+        		</div>
+        		
+        	</div>
+        </div>  
+        
+        <br>
+        底部浮框
+        <div class="footer fnt-2">
+        	<div class="col-7 text-right">
+        	物品x10&nbsp;价格:<span id="price">11.2</span>元
+        	</div>
+        	<div class="text-left col-2">
+        	<button  class="btn-primary fnt-2">购买</button>
+        	</div>
+        </div>
+
+  <script src="../../../static/js/common.js" type="text/javascript"
+            charset="utf-8"></script>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

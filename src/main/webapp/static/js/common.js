@@ -1118,6 +1118,62 @@ function LoadJS( id, fileUrl )
 /**
  * 对于模态框 tab页进行自动绑定触发事件
  */
+ $("*[data-toggle='modal']").each(function(){
+		if($(this).attr("data-target")){
+			$(this).on("click",function(){
+				dialog.showMask();
+				$($(this).attr("data-target")).show();
+			});
+		}
+		
+	});
+	$("*[data-toggle='dropdown']").each(function(){
+		if($(this).attr("haspopup")){
+			$(this).on("mouseover",function(){
+				$(this).addClass('open');
+			}).on("mouseout",function(){
+				$(this).removeClass('open');
+			});// .on("click",function(){
+// 				//dialog.showMask();
+// 				$($(this).find(".dropdown-menu")).show();
+// 				
+// 				$($(this).find(".dropdown-menu")).focus();
+// 				
+// 				
+// 			});
+		}
+		
+	});
+	$(document).click(function(){
+		//$(".dropdown-menu").hide();
+	})
+	
+	// $(".dropdown-menu").blur(function(){
+// 					$(this).hide();
+// 				});
+	
+	
+	$("*[data-dismiss='modal']").each(function(){
+		$(this).on("click",function(){
+		dialog.hideMask();
+		$(this).closest(".modal").hide();
+		});
+		
+	});
+	
+	$(".menu li").each(function(){
+		$(this).on("click",function(){
+			$(".select").removeClass("select");
+			$(this).addClass("select");
+		});
+	})
+	
+	$(".nav-tabs li").each(function(){
+		$(this).on("click",function(){
+			$(".active").removeClass("active");
+			$(this).addClass("active");
+		});
+	});
 function pageinit(){
 	$("*[data-toggle='modal']").each(function(){
 		if($(this).attr("data-target")){
@@ -2537,4 +2593,34 @@ function removeByValue(arr, val) {
       break;
     }
   }
+}
+
+function chooseImg(it){
+if($(it).find(".mask").length>0){
+	$(it).find(".mask").show();
+	return;
+}
+	$(it).append("<div class='mask'><div class='closeBtn fa fa-close'></div></div>");
+
+	$(it).find(".closeBtn").click(function(e){
+	$(it).find(".mask").hide();
+	e.stopPropagation();
+
+});
+}
+
+function chooseImgAndCount(it){
+if($(it).find(".mask").length>0){
+	$(it).find(".mask").show();
+	$(it).find(".mount").html(parseInt($(it).find(".mount").html())+1);
+	return;
+}
+	$(it).append("<div class='mask'><div class='closeBtn fa fa-close fnt-3' ></div><div class='mount color-white horizon-center vertical-center ' style='width:5rem;font-size:5rem;margin-top:-5rem'>1</div></div>");
+
+	$(it).find(".closeBtn").click(function(e){
+	$(it).find(".mask").hide();
+	$(it).find(".mount").html(0);
+	e.stopPropagation();
+
+});
 }
