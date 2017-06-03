@@ -1,7 +1,7 @@
 package com.dozenx.web.module.timing.service.impl;
 
 
-import com.dozenx.web.module.timing.bean.OnlineDataObject;
+import com.dozenx.web.module.buy.bean.OnlineData;
 import com.dozenx.web.module.timing.dao.CenterOnlineDataMapper;
 import com.dozenx.web.module.timing.service.ICenterOnlineDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class CenterOnlineDataServiceImpl implements ICenterOnlineDataService {
     private CenterOnlineDataMapper onlineDataMapper;
     
     @Override
-    public void add(OnlineDataObject onlineData) {
+    public void add(OnlineData onlineData) {
         onlineDataMapper.add(onlineData);
     }
 

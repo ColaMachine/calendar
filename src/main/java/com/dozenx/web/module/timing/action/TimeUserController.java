@@ -1,23 +1,16 @@
 package com.dozenx.web.module.timing.action;
 
 import com.cpj.swagger.annotation.*;
-import com.dozenx.core.exception.ParamException;
 import com.dozenx.util.JsonUtils;
 import com.dozenx.util.StringUtil;
-import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.base.BaseController;
-import com.dozenx.web.core.log.LogType;
 import com.dozenx.web.core.log.ResultDTO;
-import com.dozenx.web.module.merchant.bean.SessionDTO;
-import com.dozenx.web.module.merchant.bean.SessionUser;
-import com.dozenx.web.module.timing.bean.UserConsume;
+import com.dozenx.web.module.timing.bean.TimeConsume;
 import com.dozenx.web.module.timing.bean.UserCutoff;
 import com.dozenx.web.module.timing.service.UserConsumeWrapService;
 import com.dozenx.web.module.timing.service.UserCutoffWrapService;
 import com.dozenx.web.module.timing.service.impl.UserConsumeService;
-import org.codehaus.jackson.map.deser.ValueInstantiators;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -201,7 +194,7 @@ public class TimeUserController extends BaseController{
                 consume.put("cutoffDate", calendar.getTime());
             }
             try {
-                UserConsume userConsume = JsonUtils.toJavaBean(JsonUtils.toJsonString(consume), UserConsume.class);
+                TimeConsume userConsume = JsonUtils.toJavaBean(JsonUtils.toJsonString(consume), TimeConsume.class);
                 userConsumeWrapService.addCompConsume(userConsume);
             } catch (Exception e) {
                 logger.error("iUserConsumeService.addCompConsume fail", e);
@@ -231,7 +224,7 @@ public class TimeUserController extends BaseController{
     @RequestMapping(value="usertimes",method = RequestMethod.GET)
     @ResponseBody
     public ResultDTO queryListByParam(HttpServletRequest request){
-        List<UserConsume> consumeList = null;
+        List<TimeConsume> consumeList = null;
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("resultCode", 0);//返回成功
         Map<String,Object> map = new HashMap<String,Object>();

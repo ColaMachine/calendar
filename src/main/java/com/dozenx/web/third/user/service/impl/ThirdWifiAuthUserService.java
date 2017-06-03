@@ -11,7 +11,7 @@ import com.dozenx.web.module.merchant.bean.SessionDTO;
 import com.dozenx.web.module.merchant.bean.SessionUser;
 import com.dozenx.web.module.merchant.bean.SysMngMerchant;
 import com.dozenx.web.module.merchant.service.MngMerchantService;
-import com.dozenx.web.module.timing.bean.UserTimeInfo;
+import com.dozenx.web.module.timing.bean.UserTimeInfoDTO;
 import com.dozenx.web.module.timing.service.TimeBusService;
 import com.dozenx.web.third.dbcenter.bean.PubUser;
 import com.dozenx.web.third.dbcenter.bean.PubUserAuth;
@@ -263,7 +263,7 @@ public class ThirdWifiAuthUserService implements IThirdUserService {
             }
         }
 
-        UserTimeInfo userTimeInfo = timeBusService.getUserTimeInfo(sessionDTO.getSessionUser().getId(), phone, merchantId);
+        UserTimeInfoDTO userTimeInfo = timeBusService.getUserTimeInfo(sessionDTO.getSessionUser().getId(), phone, merchantId);
         sessionDTO.setTimeInfo(userTimeInfo);
            /*     if(userTimeInfo!=null && userTimeInfo.isCanGetFreePkg()){
                     RedisUtil.hset(Constants.REDIS_PKG_GET, sessionDTO.getSessionUser().getId() + "" + merchantId, "ok");

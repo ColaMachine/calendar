@@ -1,5 +1,6 @@
 package com.dozenx.web.util;
 
+import org.springframework.aop.Advisor;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -28,7 +29,7 @@ public class BeanUtil {
     public static Object getBean(String name) {
 
 
-        return getContext().getBean(name);
+        return getContext().getBean(name,Advisor.class);
     }
 
     /**

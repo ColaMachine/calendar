@@ -690,7 +690,7 @@ textarea {
 
 button {
 	border: 1px solid transparent;
-	height: inherit;
+/*	height: inherit;*/
 	line-height: inherit;
 	/*width: 100%;*/
 	/*padding: 0;*/

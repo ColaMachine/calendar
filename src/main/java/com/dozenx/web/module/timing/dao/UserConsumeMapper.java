@@ -1,6 +1,6 @@
 package com.dozenx.web.module.timing.dao;
 
-import com.dozenx.web.module.timing.bean.UserConsume;
+import com.dozenx.web.module.timing.bean.TimeConsume;
 
 import java.util.List;
 import java.util.Map;
@@ -10,19 +10,19 @@ import java.util.Map;
  */
 public interface UserConsumeMapper {
 
-    UserConsume selectByPrimaryKey(Integer id);
+    TimeConsume selectByPrimaryKey(Integer id);
     
-    int insertSelective(UserConsume consume);
+    int insertSelective(TimeConsume consume);
 
-    int updateByPrimaryKeySelective(UserConsume consume);
+    int updateByPrimaryKeySelective(TimeConsume consume);
 
-    List<UserConsume> listByParams(Map<String, Object> map);
+    List<TimeConsume> listByParams(Map<String, Object> map);
     
-    List<UserConsume> listByParams4Page(Map<String, Object> map);
+    List<TimeConsume> listByParams4Page(Map<String, Object> map);
     
     int countByParams(Map<String, Object> map);
     
-   List<UserConsume> unionListByParams4Page(Map<String, Object> map);
+   List<TimeConsume> unionListByParams4Page(Map<String, Object> map);
     
     int unionCountByParams(Map<String, Object> map);
 

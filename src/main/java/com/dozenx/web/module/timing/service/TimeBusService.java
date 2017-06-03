@@ -6,10 +6,10 @@ import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.log.ServiceCode;
 import com.dozenx.web.core.log.service.LogUtilService;
-import com.dozenx.web.module.timing.bean.OnlineUserObject;
-import com.dozenx.web.module.timing.bean.UserConsume;
+import com.dozenx.web.module.timing.bean.OnlineUser;
+import com.dozenx.web.module.timing.bean.TimeConsume;
 import com.dozenx.web.module.timing.bean.UserCutoff;
-import com.dozenx.web.module.timing.bean.UserTimeInfo;
+import com.dozenx.web.module.timing.bean.UserTimeInfoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -82,7 +82,7 @@ public class TimeBusService {
     public int update(Long merchantId, Long userId, int days, Long packageId, Integer packageNum, Float totalNum,
                       String orderId, Float payNum, int type, int payType) throws Exception {
 //        Map<String, Object> cutoff_date = new HashMap<String, Object>();
-        UserConsume consume = new UserConsume();
+        TimeConsume consume = new TimeConsume();
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (payType == 1) {
             if (StringUtil.isBlank(orderId)) {
@@ -280,7 +280,7 @@ public class TimeBusService {
     public boolean isFreeUser(String username) throws Exception {
 
 
-        OnlineUserObject onlineUser =new OnlineUserObject();
+        OnlineUser onlineUser =new OnlineUser();
         onlineUser.setTelephone(username);
         onlineUser.setNowTime(System.currentTimeMillis() / 1000);
         int flag =onlineService.queryOnlineUserCount(onlineUser);
@@ -289,13 +289,13 @@ public class TimeBusService {
     }
 
 
-    public UserTimeInfo getUserTimeInfo(Long userId,String phone,Long merchantId) throws Exception {
+    public UserTimeInfoDTO getUserTimeInfo(Long userId, String phone, Long merchantId) throws Exception {
         boolean isVipUser = isFreeUser(phone);
         boolean canGetFreePkg = userConsumeWrapService.canGetFreePkg(userId, merchantId);
         if(canGetFreePkg){
             RedisUtil.hset(Constants.REDIS_PKG_GET, userId+""+merchantId,"ok");
         }
-        UserTimeInfo userTimeInfo =new UserTimeInfo() ;
+        UserTimeInfoDTO userTimeInfo =new UserTimeInfoDTO() ;
         userTimeInfo.setCanGetFreePkg(canGetFreePkg);
         userTimeInfo.setVip(isVipUser);
        UserCutoff userCutoff=  userCutoffWrapService.merchantUserCutoffDate(merchantId, userId);

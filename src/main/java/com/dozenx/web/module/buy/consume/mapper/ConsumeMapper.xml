@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.module.buy.consume.dao.ConsumeMapper">
+  <resultMap id="BaseResultMap" type="com.dozenx.web.module.buy.consume.bean.Consume">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="merId" jdbcType="BIGINT" property="merId" />
+      <result column="userId" jdbcType="BIGINT" property="userId" />
+      <result column="money" jdbcType="INTEGER" property="money" />
+      <result column="orderId" jdbcType="BIGINT" property="orderId" />
+      <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+      <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    consume.`id` ,consume.`merId` ,consume.`userId` ,consume.`money` ,consume.`orderId` ,consume.`createtime` ,consume.`updatetime` 
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from consume
+    where consume.id =   #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from consume
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.module.buy.consume.bean.Consume" >
+
+    insert into consume (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=BIGINT}
+,#{merId,jdbcType=BIGINT}
+,#{userId,jdbcType=BIGINT}
+,#{money,jdbcType=INTEGER}
+,#{orderId,jdbcType=BIGINT}
+,#{createtime,jdbcType=TIMESTAMP}
+,#{updatetime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="com.dozenx.web.module.buy.consume.bean.Consume" >
+    insert into consume
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="merId != null" >  
+           `merId`, 
+        </if>  
+        <if test="userId != null" >  
+           `userId`, 
+        </if>  
+        <if test="money != null" >  
+           `money`, 
+        </if>  
+        <if test="orderId != null" >  
+           `orderId`, 
+        </if>  
+        <if test="createtime != null" >  
+           `createtime`, 
+        </if>  
+        <if test="updatetime != null" >  
+           `updatetime`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=BIGINT},
+        </if>  
+        <if test="merId != null" >  
+          #{merId,jdbcType=BIGINT},
+        </if>  
+        <if test="userId != null" >  
+          #{userId,jdbcType=BIGINT},
+        </if>  
+        <if test="money != null" >  
+          #{money,jdbcType=INTEGER},
+        </if>  
+        <if test="orderId != null" >  
+          #{orderId,jdbcType=BIGINT},
+        </if>  
+        <if test="createtime != null" >  
+          #{createtime,jdbcType=TIMESTAMP},
+        </if>  
+        <if test="updatetime != null" >  
+          #{updatetime,jdbcType=TIMESTAMP},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.module.buy.consume.bean.Consume" >
+    update consume
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=BIGINT},
+        </if>  
+        <if test="merId != null" >  
+             `merId`=#{merId,jdbcType=BIGINT},
+        </if>  
+        <if test="userId != null" >  
+             `userId`=#{userId,jdbcType=BIGINT},
+        </if>  
+        <if test="money != null" >  
+             `money`=#{money,jdbcType=INTEGER},
+        </if>  
+        <if test="orderId != null" >  
+             `orderId`=#{orderId,jdbcType=BIGINT},
+        </if>  
+        <if test="createtime != null" >  
+             `createtime`=#{createtime,jdbcType=TIMESTAMP},
+        </if>  
+        <if test="updatetime != null" >  
+             `updatetime`=#{updatetime,jdbcType=TIMESTAMP},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dozenx.web.module.buy.consume.bean.Consume" >
+    update consume
+    set 
+              `merId`=#{merId,jdbcType=BIGINT},  
+              `userId`=#{userId,jdbcType=BIGINT},  
+              `money`=#{money,jdbcType=INTEGER},  
+              `orderId`=#{orderId,jdbcType=BIGINT},  
+              `createtime`=#{createtime,jdbcType=TIMESTAMP},  
+              `updatetime`=#{updatetime,jdbcType=TIMESTAMP}  
+where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from consume where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="merId != null and merId != '' ">  
+           and `merId` = #{merId}
+        </if>  
+        <if test="userId != null and userId != '' ">  
+           and `userId` = #{userId}
+        </if>  
+        <if test="money != null and money != '' ">  
+           and `money` = #{money}
+        </if>  
+        <if test="orderId != null and orderId != '' ">  
+           and `orderId` = #{orderId}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and `createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and `createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and `createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and `createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and `createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="updatetime != null and updatetime != '' ">  
+           and `updatetime` = #{updatetime}
+        </if>  
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and `updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and `updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and `updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and `updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from consume
+
+    where 1=1
+        <if test="id != null and id != '' ">  
+           and consume.`id` = #{id}
+        </if>  
+        <if test="merId != null and merId != '' ">  
+           and consume.`merId` = #{merId}
+        </if>  
+        <if test="userId != null and userId != '' ">  
+           and consume.`userId` = #{userId}
+        </if>  
+        <if test="money != null and money != '' ">  
+           and consume.`money` = #{money}
+        </if>  
+        <if test="orderId != null and orderId != '' ">  
+           and consume.`orderId` = #{orderId}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and consume.`createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and consume.`createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and consume.`createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="updatetime != null and updatetime != '' ">  
+           and consume.`updatetime` = #{updatetime}
+        </if>  
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and consume.`updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and consume.`updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from consume where 1=1
+        <if test="id != null and id != '' ">  
+           and consume.`id` = #{id}
+        </if>  
+        <if test="merId != null and merId != '' ">  
+           and consume.`merId` = #{merId}
+        </if>  
+        <if test="userId != null and userId != '' ">  
+           and consume.`userId` = #{userId}
+        </if>  
+        <if test="money != null and money != '' ">  
+           and consume.`money` = #{money}
+        </if>  
+        <if test="orderId != null and orderId != '' ">  
+           and consume.`orderId` = #{orderId}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and consume.`createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and consume.`createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and consume.`createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="updatetime != null and updatetime != '' ">  
+           and consume.`updatetime` = #{updatetime}
+        </if>  
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and consume.`updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and consume.`updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from consume where 1!=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="merId != null and merId != '' ">
+           or `merId` = #{merId}
+        </if>
+        <if test="userId != null and userId != '' ">
+           or `userId` = #{userId}
+        </if>
+        <if test="money != null and money != '' ">
+           or `money` = #{money}
+        </if>
+        <if test="orderId != null and orderId != '' ">
+           or `orderId` = #{orderId}
+        </if>
+        <if test="createtime != null and createtime != '' ">
+           or `createtime` = #{createtime}
+        </if>
+        <if test="updatetime != null and updatetime != '' ">
+           or `updatetime` = #{updatetime}
+        </if>
+  </select>
+</mapper>

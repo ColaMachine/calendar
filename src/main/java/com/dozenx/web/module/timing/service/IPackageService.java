@@ -1,6 +1,6 @@
 package com.dozenx.web.module.timing.service;
 
-import com.dozenx.web.module.timing.bean.MerchantPackage;
+import com.dozenx.web.module.timing.bean.TimePackage;
 
 import java.util.List;
 import java.util.Map;
@@ -8,13 +8,13 @@ import java.util.Map;
 
 public interface IPackageService {
     
-    List<MerchantPackage> queryListByParam(Map map)throws Exception;
+    List<TimePackage> queryListByParam(Map map)throws Exception;
      
-     MerchantPackage queryById(Long id)throws Exception;
+     TimePackage queryById(Long id)throws Exception;
      
-     int add(MerchantPackage merchantPackage)throws Exception;
+     int add(TimePackage merchantPackage)throws Exception;
      
-     int update(MerchantPackage merchantPackage)throws Exception;
+     int update(TimePackage merchantPackage)throws Exception;
      
      int delete(Map map)throws Exception;
     

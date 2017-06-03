@@ -1,0 +1,230 @@
+<br>
+<br><br><br><br><br><br>
+<div class="form-inline">
+    <div class="form-group ">
+        <label>x:</label>
+        <input id="x" value="16" class="form-control"/>
+    </div>
+    <div class="form-group ">
+        <label>y:</label>
+        <input id="y" value="16" class="form-control"/>
+
+    </div>
+    <div class="form-group ">
+        <button class="btn btn-primary" onclick="changeSize()">改变格子大小</button>
+    </div>
+    <div class="form-group ">
+        <button class="btn btn-primary" onclick="paint()">从td保存图像</button>
+    </div>
+    <div class="form-group ">
+        <button class="btn btn-primary" onclick="paintFromCanvas()">从canvas保存图像</button>
+    </div>
+    <div id="loadImageDiv" class="form-group ">
+        <input id="loadImageInput" />
+
+
+    </div>
+</div>
+<div class="form-inline" >
+   <label> 当前颜色:</label><input id="nowColorText" value="#FFFFFF"/>
+    <div id="nowColor" style="width:150px;height:150px;background-color:white">点击选择颜色</div>
+
+   <!-- <button class="btn btn-primary" onclick="fangda()">+</button>
+    <button class="btn btn-primary" onclick="缩小()">-</button>-->
+    <canvas id="myCanvas" width="16" height="16"></canvas>
+    <canvas id="myCanvas2" width="16" height="16"></canvas>
+</div>
+<div id="canvas" class="zw-paint-grid noselect" style="color:white;"></div>
+
+
+
+<style>
+.zw-paint-grid td{
+    border:1px solid gray;
+    color:white;
+    width:20px;
+    height:20px;
+    background-color:black;
+padding:0px;
+    margin:0px;
+    }
+    .zw-paint-grid table{
+    border-collapse:collapse;
+    border-spacing: 0px;
+    cellpadding:0px;
+    cell-spacing:0px;
+    }
+    </style>
+<script>
+
+function generate(x,y){
+/*$("#canvas").css("width",20*x)
+var html="<table style='cellspacing:0px'>";
+    for(var i =0 ;i<y;i++){
+
+        for(var j =0 ;j<x;j++){
+        var value="";
+         if(i==0){
+         // value=j;
+         }
+         if(j==0){
+        // value=i;
+            html+="<tr>";
+        }
+
+            html+="<td style='' onclick='setBgColorRight(this)' onmouseover='setBgColor(this)'>"+value+"</td>";
+             if(j>=x-1){
+
+            html+="</tr>";
+        }
+        }
+
+
+    }
+    html+="</table>";
+     $("#canvas").html("");
+    $("#canvas").html(html);
+     var c=document.getElementById("myCanvas");*/
+     canvasMain.width=x;
+     canvasMain.height=x;
+     canvasBak
+     canvasBak.width=x*beishu;
+     canvasBak.height=y*beishu;
+
+}
+
+
+$("#nowColor").colorpicker({
+    fillcolor:true,
+
+
+      success:function(o,color){
+        $("#nowColor").css("background-color",color);
+          $("#nowColor").css("color","black");
+         $("#nowColorText").val(color);
+         nowColor = color;
+    }
+});
+/*function setBgColorRight(it){
+   $( it).css("background-color",$("#nowColorText").val());
+}
+function setBgColor(it){
+if(press){
+   $( it).css("background-color",$("#nowColorText").val());
+   }
+}*/
+/*var press =false;
+$(document).mousedown(function(e){
+press=true;
+});
+$(document).mouseup(function(e){
+press=false;
+});*/
+
+function changeSize(){
+    var x = $("#x").val();
+    var y = $("#y").val();
+    generate(x,y);
+}
+var isDown =false;
+var canvasMain =document.getElementById("myCanvas");
+var ctxMain =canvasMain .getContext("2d");
+var canvasBak =document.getElementById("myCanvas2");alert(canvasBak);
+var ctxBak  =canvasBak .getContext("2d");
+var scrollTop=$("body")[0].scrollTop;
+   var offsetLeft =$(canvasBak).offset().left;
+    var offsetTop = $(canvasBak).offset().top;
+$(document).mousedown(function(){
+    isDown=true;
+     scrollTop=$("body")[0].scrollTop;
+    console.log(scrollTop);
+   offsetLeft =$(canvasBak).offset().left;
+     offsetTop = $(canvasBak).offset().top-scrollTop;
+});
+$(document).mouseup(function(){
+    isDown=false;
+});
+//var offsetTop = $(canvasBak).offset().top+100;
+$(canvasBak).mousemove(function(event){
+if(isDown){
+
+     var event = event || window.event;
+    var x = event.clientX;//鼠标滑动时的X轴
+    var y = event.clientY;//鼠标滑动时的Y轴
+
+             ctxBak.fillStyle=nowColor;
+            //console.log(color);
+//console.log(x-offsetLeft+":"+(y-offsetTop));
+//console.log(((x-offsetLeft)/beishu)*beishu+":"+(y-offsetTop));
+  ctxBak.fillRect(parseInt((x-offsetLeft)/beishu)*beishu,parseInt((y-offsetTop)/beishu)*beishu,beishu,beishu);
+          //  ctxBak.fillRect(x-offsetLeft,y-offsetTop,5,5);
+            }
+
+});
+var beishu =15;
+var nowColor="#ffffff";
+function paintFromCanvas(){
+    canvasMain.width =canvasBak.width/beishu;
+    canvasMain.height =canvasBak.height/beishu;
+
+
+
+    var width =canvasMain.width ;
+    var height = canvasMain.height;
+    for(var y =0 ;y<height;y++){
+        for(var x =0 ;x<width;x++){
+
+
+            var c = ctxBak.getImageData(x*beishu, y*beishu, 1, 1).data;
+            var red = c[0];
+            var green = c[1];
+            var blue = c[2];
+            var hex = red.toString(16)+""+green.toString(16)+""+blue.toString(16);
+            ctxMain.fillStyle="#"+hex;
+            console.log(hex);
+            ctxMain.fillRect(x,y,1,1);
+
+        }
+    }
+}
+/*function paint(){
+    canvasMain.width =$("#x").val();
+    canvasMain.height =$("#y").val();
+    canvasBak.width =$("#x").val()*beishu;
+    canvasBak.height =$("#y").val()*beishu;
+
+    var tds = $("#canvas").find("td");
+    var width = $("#x").val();
+    var height = $("#y").val();
+    for(var y =0 ;y<height;y++){
+        for(var x =0 ;x<width;x++){
+            //console.log(i+":"+j);
+            var td = tds[y*width+x];
+            var color =$(td).css("background-color");
+            ctxMain.fillStyle=color;
+             ctxBak.fillStyle=color;
+            //console.log(color);
+            ctxMain.fillRect(x,y,1,1);
+            ctxBak.fillRect((x/beishu)*beishu*beishu,(y/beishu)*beishu*beishu,beishu,beishu);
+        }
+    }
+}*/
+/*function fangda(){
+
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+ctx.scale(2,2);
+
+}
+function suoxiao(){
+
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+ctx.scale(0.5,0.5);
+
+}*/
+var imageUtil=new zImageUtil3({"input":"loadImageInput"});
+generate(16,16);
+
+
+</script>

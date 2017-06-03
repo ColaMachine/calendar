@@ -7,6 +7,7 @@
  */
 package com.dozenx.web.core.codegen;
 
+import com.cpj.swagger.support.struts2.ApiAction;
 import com.dozenx.core.Path.PathManager;
 import com.dozenx.util.StringUtil;
 import com.google.gson.*;
@@ -17,6 +18,7 @@ import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -27,8 +29,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Generator {
+
+
     ZTable table;
-    HashMap<String ,ZTable> allTable =new HashMap<String ,ZTable>();
+    static HashMap<String ,ZTable> allTable =new HashMap<String ,ZTable>();
     String fatherPackage = "";
     private String ctrl = "\r\n";
     private String tab = "    ";
@@ -49,6 +53,7 @@ public class Generator {
         /* registerTypeAdapter(ZTable.class, new ZTable.Handler()).*/ registerTypeAdapter(ZColum.class, new ZColum.Handler()).create();
 
     }
+
     /**
      * 两个jsonobject 合并
      *
@@ -77,7 +82,7 @@ public class Generator {
 
         logger.info("read config file{}", fromFile);
         if (!fromFile.toFile().exists()) {
-            logger.info("code.cfg not exists");
+            logger.info("code "+fromFile+".cfg not exists");
             return null;
         }
         try (Reader reader = Files.newBufferedReader(fromFile, Charset.forName("UTF-8"))) {
@@ -99,6 +104,7 @@ public class Generator {
 
 
     public void init(String code ) throws IOException {
+        root.put("apiType", new ApiTypeDirective());
         root.put("javaType", new JavaTypeDirective());
         root.put("jdbcType", new JdbcTypeDirective());
         root.put("getabc", new abcDirective());
@@ -1132,7 +1138,8 @@ return ymd;
        // Generator.generate(new String[]{"SysLogTag" });
        //Generator.generate(new String[]{"SmsRecord" });
         //Generator.generate(new String[]{"Activity" });
-        Generator.generate(new String[]{"MerchantPic","MerchantNews","MerchantNotice" });
+        //Generator.generate(new String[]{"MerchantPic","MerchantNews","MerchantNotice" });
+        Generator.generate(new String[]{"Consume","Order","OrderDetail","Item","ItemInfo" ,"Merchant"});
     }
 
   

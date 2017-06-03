@@ -47,28 +47,3 @@ transition: transform 0.3s ease-in-out 0s;
  	list-style-type: none;
 	border-bottom: 1px dashed gray;
 }
-.nav{
-	padding-left: 0;
-    margin: 0;
-    list-style: none;
-}
-.nav:after{
-
-    content:".";display:block;height:0;clear:both;visibility:hidden;
-    
-}
-.nav-pills>*{
-	
-	float:left;
-	display:block;
-	padding:5px;
-	
-}
-.nav-pills>li:hover{
-	/* background-color:#f7f7f9; */
-	/* opacity:0.5; */
-	
-}
-.nav-tabs{
-	border-bottom: 1px solid #ddd;
-}

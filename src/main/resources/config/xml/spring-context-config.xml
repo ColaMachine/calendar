@@ -22,14 +22,8 @@
 	<bean id="propertyConfigurer"
 		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 			<property name="properties">
-			 <bean id="remoteProperties" class="com.dozenx.web.core.properties.RemoteProperties"
-			 />
-
-
+			 <bean id="remoteProperties" class="com.dozenx.web.core.properties.RemoteProperties" />
 		</property>
-
-
-
 	</bean>
 
 	<!-- 配置注解扫描 -->

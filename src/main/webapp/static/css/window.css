@@ -151,54 +151,21 @@
 #jDialog .jDialog-Buttons button {display:block;font-size:12px;line-height:22px;background-color:#fff;color:#24786b;width:60px;height:24px;margin:0 0 0 15px;border:1px solid #24786b;float:right;cursor:pointer;}
 #jDialog .jDialog-Buttons button:hover {background-color:#5497bb;color:#fff;}
 
-.dropdown-menu{
-
-   min-width:155px;
-
-    position:absolute;
-    /*top:25px;*/
-     display:none; 
-     list-style: none;
-    padding:5px 0px;
-        background-color: #fff;
-   margin:2px 0px 0px;
-     border:1px solid #F0F0EE;
-    box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    text-align:left;
-    z-index:1000;
-}
-.dropdown-menu>li{
-	line-height:1rem;
-	margin:0px;
-	padding:0px;
-	border-bottom:1px dashed #a79595;
-	
-}
-.dropdown-menu>li:last-child{
-	border-bottom:none;
-	
-}
-.dropdown-menu>li>a{
-	cursor:pointer;
-	display:block;
-	width:100%;
-	
-}
-.dropdown-menu>li:hover{
-	background-color:#f9f9f9;
-}
-.open>.dropdown-menu{
-	  display:block; 
-}
-
-.dropdown-menu>*{
-   
-}
 .arrow-down {
 transition: transform 0.3s ease-in-out 0s;
 	transform: rotate(180deg);
 }
-.arrow-down:hover {
+{
+    transition: transform 0.3s ease-in-out 0s;
+    transform: rotate(0deg);
+
+}
+/*.dropdown:hover .arrow-down {
+    transition: transform 0.3s ease-in-out 0s;
+    transform: rotate(0deg);
+
+}*/
+.open .arrow-down  ,.arrow-down:hover {
 	transition: transform 0.3s ease-in-out 0s;
 	transform: rotate(0deg);
 

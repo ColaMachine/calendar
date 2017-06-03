@@ -172,6 +172,7 @@ var zMenu = {
 
 	},
 	loadPage: function(url, fun) {
+
 		window.data = {};
 		//截取参数
 		var position = url.indexOf("?");
@@ -199,9 +200,12 @@ var zMenu = {
             window.open(url.replace("window:",""));
         }else{
         	if(url.substr(0,1)=="/"){
+        		}else if(url.substr(0,3)=="../"){
+
         		}else{
-        		    url="/"+url;
+        		url="/"+url;
         		}
+
             Ajax.get(PATH+url, null, function(data) {
 
 

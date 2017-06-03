@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dozenx.web.module.timing.dao.PackageMapper">
 	<resultMap id="BaseResultMap"
-		type="com.dozenx.web.module.timing.bean.MerchantPackage">
+		type="com.dozenx.web.module.timing.bean.TimePackage">
 		<id column="id" jdbcType="BIGINT" property="id" />
 		<result column="merchant_id" jdbcType="BIGINT" property="merchantId" />
 		<result column="package_type" jdbcType="INTEGER" property="packageType" />
@@ -80,7 +80,7 @@
     	where id = #{id,jdbcType=BIGINT}
   </select>
   
-  <insert id="add" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.module.timing.bean.MerchantPackage" >
+  <insert id="add" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.module.timing.bean.TimePackage" >
     insert into center_pub_merchant_package 
     	(merchant_id,package_type,package_key,
 		package_value,effect_datetime,expired_datetime,
@@ -99,7 +99,7 @@
   </insert>
   
   
-  <update id="update" parameterType="com.dozenx.web.module.timing.bean.MerchantPackage" >
+  <update id="update" parameterType="com.dozenx.web.module.timing.bean.TimePackage" >
     update center_pub_merchant_package
     set 
               `package_type`=#{packageType,jdbcType=INTEGER}, 
@@ -113,7 +113,7 @@
   </update>
   
   
-  <update id="delete" parameterType="com.dozenx.web.module.timing.bean.MerchantPackage" >
+  <update id="delete" parameterType="com.dozenx.web.module.timing.bean.TimePackage" >
     update center_pub_merchant_package
     set 
               `status`=#{status,jdbcType=INTEGER}, 

@@ -1,7 +1,7 @@
 package com.dozenx.web.module.timing.service;
 
 
-import com.dozenx.web.module.timing.bean.OnlineDataObject;
+import com.dozenx.web.module.buy.bean.OnlineData;
 
 /**
  * 推送数据记录操作服务
@@ -15,5 +15,5 @@ public interface ICenterOnlineDataService {
      * 推送数据对象
      * @return
      */
-    void add(OnlineDataObject onlineData);
+    void add(OnlineData onlineData);
 }

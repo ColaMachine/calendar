@@ -1,11 +1,13 @@
-package com.dozenx.web.module.timing.bean;
+package com.dozenx.web.module.buy.bean;
 
+
+import com.dozenx.web.module.timing.bean.BaseEntity;
 
 import java.io.Serializable;
 import java.util.Date;
 
 
-public class OnlineDataObject extends BaseEntity implements Serializable {
+public class OnlineData extends BaseEntity implements Serializable {
 
     /**
      * 序列化

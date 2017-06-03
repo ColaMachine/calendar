@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dozenx.web.module.timing.dao.CenterOnlineUserMapper">
-	<resultMap id="BaseOnlineDataMap" type="com.dozenx.web.module.timing.bean.OnlineUserObject">
+	<resultMap id="BaseOnlineDataMap" type="com.dozenx.web.module.timing.bean.OnlineUser">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="telephone" property="telephone" jdbcType="VARCHAR" />
 		<result column="process_flg" property="processFlg" jdbcType="VARCHAR" />
@@ -18,7 +18,7 @@
 		<result column="city_name" property="cityName" jdbcType="VARCHAR" />
 		<result column="county_name" property="countyName" jdbcType="VARCHAR" />
 	</resultMap>
-	<insert id="add" parameterType="com.dozenx.web.module.timing.bean.OnlineUserObject" useGeneratedKeys="true" keyColumn="ID" keyProperty="id">
+	<insert id="add" parameterType="com.dozenx.web.module.timing.bean.OnlineUser" useGeneratedKeys="true" keyColumn="ID" keyProperty="id">
 		<!-- <selectKey resultType="java.lang.Long" keyProperty="id"
 			order="AFTER">
 			SELECT LAST_INSERT_ID()
@@ -56,7 +56,7 @@
 			now(),now(),
 		</trim>
 	</insert>
-	<update id="update" parameterType="com.dozenx.web.module.timing.bean.OnlineUserObject">
+	<update id="update" parameterType="com.dozenx.web.module.timing.bean.OnlineUser">
 		update center_merchant_vip_user
 		<set>
 			<if test="processFlg != null">
@@ -159,7 +159,7 @@
 		</if>
 		
 	</select>
-	<update id="updateVipUser" parameterType="com.dozenx.web.module.timing.bean.OnlineUserObject">
+	<update id="updateVipUser" parameterType="com.dozenx.web.module.timing.bean.OnlineUser">
 		update center_merchant_vip_user set merchant_id = #{merchantId} where telephone=#{telephone} and merchant_id is null
 	</update>
 </mapper>

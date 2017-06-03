@@ -14,7 +14,7 @@ import com.dozenx.web.core.log.ServiceCode;
 import com.dozenx.web.core.log.service.LogUtilService;
 import com.dozenx.web.module.merchant.bean.SessionDTO;
 import com.dozenx.web.module.merchant.bean.SessionUser;
-import com.dozenx.web.module.timing.bean.MerchantPackage;
+import com.dozenx.web.module.timing.bean.TimePackage;
 import com.dozenx.web.module.timing.service.PackageWrapService;
 import com.dozenx.web.module.timing.service.TimeBusService;
 import com.dozenx.web.third.access.service.AccessAuth;
@@ -98,13 +98,13 @@ public class TimePackageController extends BaseController {
 			    return getWrongResultFromCfg("err.pkg.get.again");
 			} */
 			// 套餐包id获取
-			List<MerchantPackage> freePkg = packageWrapService.packageListSearch(
+			List<TimePackage> freePkg = packageWrapService.packageListSearch(
 					merchantId, 2);
 			if (freePkg.size() < 1) {
 				return getWrongResultFromCfg("err.pkg.null");
 			}
 //			Long id = freePkg.get(0).getId();
-			MerchantPackage merchantPackage = freePkg.get(0);
+			TimePackage merchantPackage = freePkg.get(0);
 //					packageWrapService.packageSearch(id);
 			 LogUtil.track(serviceCode,105, ""+ merchantId+ userId
                      +":"+(int) (merchantPackage.getPackageValue().floatValue())+":"+ merchantPackage.getId(), "begin get package ",null);
@@ -151,12 +151,12 @@ public class TimePackageController extends BaseController {
 
             Long merchantId = Long.valueOf( request.getParameter("merchantId"));
             Integer days = Integer.valueOf(request.getParameter("day"));
-            MerchantPackage pkg = packageWrapService.getFreePkg(merchantId);
+            TimePackage pkg = packageWrapService.getFreePkg(merchantId);
             if(pkg!=null &&  pkg.getId()!=null && pkg.getId()!=0){//更新
                 pkg.setPackageValue(days.floatValue());
                 packageWrapService.update(pkg);
             }else{//新增
-                MerchantPackage merPac = new MerchantPackage();
+                TimePackage merPac = new TimePackage();
                 merPac.setMerchantId(merchantId);
                 merPac.setCreateDate(new Date());
                 merPac.setPackageType(2);
@@ -193,7 +193,7 @@ public class TimePackageController extends BaseController {
 
             Long merchantId = Long.valueOf( request.getParameter("merchantId"));
             Integer packageType = Integer.valueOf(request.getParameter("packageType"));
-            List<MerchantPackage> list = packageWrapService.queryListByParam(merchantId, packageType);
+            List<TimePackage> list = packageWrapService.queryListByParam(merchantId, packageType);
             return getResult(0,list,null,null);
 
     }

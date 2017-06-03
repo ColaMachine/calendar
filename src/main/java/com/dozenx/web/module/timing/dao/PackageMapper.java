@@ -1,6 +1,6 @@
 package com.dozenx.web.module.timing.dao;
 
-import com.dozenx.web.module.timing.bean.MerchantPackage;
+import com.dozenx.web.module.timing.bean.TimePackage;
 
 import java.util.List;
 import java.util.Map;
@@ -9,15 +9,15 @@ import java.util.Map;
 
 public interface PackageMapper {
     
-    List<MerchantPackage> queryListByParam(Map map);
+    List<TimePackage> queryListByParam(Map map);
     
-    MerchantPackage queryById(Long id);
+    TimePackage queryById(Long id);
     
-    int add(MerchantPackage merchantPackage);
+    int add(TimePackage merchantPackage);
     
-    int update(MerchantPackage merchantPackage);
+    int update(TimePackage merchantPackage);
     
-    int delete(MerchantPackage merchantPackage);
+    int delete(TimePackage merchantPackage);
      
     int queryCountByParam(Map map);
     

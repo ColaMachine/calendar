@@ -2,7 +2,7 @@ package com.dozenx.web.module.merchant.bean;
 
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.module.timing.bean.UserCutoff;
-import com.dozenx.web.module.timing.bean.UserTimeInfo;
+import com.dozenx.web.module.timing.bean.UserTimeInfoDTO;
 import com.dozenx.web.third.access.bean.AuthResult;
 import com.dozenx.web.third.dbcenter.bean.PubDeviceQueryResult;
 
@@ -17,7 +17,7 @@ public class SessionDTO {
     String userType ;
     String token ;
     String url ;
-    UserTimeInfo timeInfo ;
+    UserTimeInfoDTO timeInfo ;
     private static final long serialVersionUID = 350504050668708L;
     String callback;
 
@@ -241,11 +241,11 @@ public class SessionDTO {
 
 
 
-    public UserTimeInfo getTimeInfo() {
+    public UserTimeInfoDTO getTimeInfo() {
         return timeInfo;
     }
 
-    public void setTimeInfo(UserTimeInfo timeInfo) {
+    public void setTimeInfo(UserTimeInfoDTO timeInfo) {
         this.timeInfo = timeInfo;
     }
 

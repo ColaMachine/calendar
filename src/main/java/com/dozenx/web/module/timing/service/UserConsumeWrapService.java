@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-import com.dozenx.web.module.timing.bean.UserConsume;
+import com.dozenx.web.module.timing.bean.TimeConsume;
 import com.dozenx.web.module.timing.service.impl.UserConsumeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ public class UserConsumeWrapService {
         }
     }
 
-    public void addCompConsume(UserConsume consume) throws Exception {
+    public void addCompConsume(TimeConsume consume) throws Exception {
         // TODO Auto-generated method stub
         iUserConsumeService.addCompConsume(consume);
     }

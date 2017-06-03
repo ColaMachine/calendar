@@ -1,7 +1,7 @@
 package com.dozenx.web.module.timing.dao;
 
 
-import com.dozenx.web.module.timing.bean.OnlineUserObject;
+import com.dozenx.web.module.timing.bean.OnlineUser;
 
 import java.util.List;
 import java.util.Map;
@@ -21,13 +21,13 @@ public interface CenterOnlineUserMapper {
      * 推送用户对象
      * @return 成功数
      */
-    long add(OnlineUserObject onlineUser);
+    long add(OnlineUser onlineUser);
     /**
      * 更新推送用户数据
      * @param onlineUser
      * 推送数据对象
      */
-    void  update(OnlineUserObject onlineUser);
+    void  update(OnlineUser onlineUser);
     /**
      * 根据手机号、时间查询有效记录数
      * @param map
@@ -44,7 +44,7 @@ public interface CenterOnlineUserMapper {
      * @return
      * OnlineUserObject 推送用户数据对象
      */
-    OnlineUserObject queryLastOnlineUser(Map<String, Object> map);
+    OnlineUser queryLastOnlineUser(Map<String, Object> map);
     /**
      * 根据条件查询电渠用户数据列表
      * @param map 
@@ -52,7 +52,7 @@ public interface CenterOnlineUserMapper {
      * @return
      * List<OnlineUserObject>
      */
-    List<OnlineUserObject> queryVipUserList(Map<String, Object> map);
+    List<OnlineUser> queryVipUserList(Map<String, Object> map);
     /**
      * 根据条件查询电渠用户记录数
      * @param map
@@ -68,5 +68,5 @@ public interface CenterOnlineUserMapper {
      * @return
      * int 更新记录数
      */
-    int updateVipUser(OnlineUserObject onlineUser);
+    int updateVipUser(OnlineUser onlineUser);
 }

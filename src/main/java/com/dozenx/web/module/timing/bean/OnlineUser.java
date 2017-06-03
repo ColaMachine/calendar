@@ -6,7 +6,7 @@ import java.util.Date;
 
 
 
-public class OnlineUserObject  extends BaseEntity implements Serializable {
+public class OnlineUser extends BaseEntity implements Serializable {
 
     /**
      * 序列化

@@ -15,7 +15,7 @@ import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.log.ResultDTO;
 import com.dozenx.web.module.question.bean.QuestionnaireStatus;
 import com.dozenx.web.module.question.bean.QuestionnaireUserInfo;
-import com.dozenx.web.module.timing.bean.UserConsume;
+import com.dozenx.web.module.timing.bean.TimeConsume;
 import com.dozenx.web.module.timing.service.TimeBusService;
 import com.dozenx.web.module.timing.service.impl.UserConsumeService;
 
@@ -71,7 +71,7 @@ public class QuestionnaireService {
             map.put("pageSize", 1);
             
             
-            List<UserConsume> list = userConsumeService.queryListByParam(map);
+            List<TimeConsume> list = userConsumeService.queryListByParam(map);
             
             logger.info("userConsumeService.queryListByParam"+JSON.toJSONString(map));
            // System.out.println(list.get(0).getCreateDate());
@@ -169,7 +169,7 @@ public class QuestionnaireService {
             questUserInfoService.update(userInfo);
             logger.info("questUserInfoService.update"+JSON.toJSONString(userInfo));
             //增加到消费记录表
-            UserConsume userConsume = new UserConsume();
+            TimeConsume userConsume = new TimeConsume();
             
             
             userWifiTimeService.update(merchangId, userId, level, Constants.QUESTIONNAIRE_RED_PACKAGE, 1, 0F, null, 0.0F, 0, 2);

@@ -34,6 +34,7 @@
 
 	<context:component-scan base-package="core.log">
 	</context:component-scan>
+	<context:component-scan base-package="com.dozenx.web.core.api.annotation" />
 	<aop:aspectj-autoproxy />
 	<mvc:view-controller path="/" view-name="index" />
 
@@ -98,7 +99,7 @@
 		</property>
 	</bean> -->
 
-
+	<bean id="springBeanFactoryUtils" class="com.dozenx.web.util.SpringBeanFactoryUtils"/>
 
 	<!-- 开启mvc注解 -->
 	<mvc:annotation-driven validator="validator"

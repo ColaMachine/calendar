@@ -4,7 +4,7 @@ package com.dozenx.web.module.timing.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import com.dozenx.web.module.timing.bean.OnlineUserObject;
+import com.dozenx.web.module.timing.bean.OnlineUser;
 import com.dozenx.web.module.timing.dao.CenterOnlineUserMapper;
 import com.dozenx.web.module.timing.service.ICenterOnlineUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +22,12 @@ public class CenterOnlineUserServiceImpl implements ICenterOnlineUserService {
     private CenterOnlineUserMapper onlineUserMapper;
    
     @Override
-    public long add(OnlineUserObject onlineUser) {
+    public long add(OnlineUser onlineUser) {
         return onlineUserMapper.add(onlineUser);
     }
     
     @Override
-    public void update(OnlineUserObject onlineUser) {
+    public void update(OnlineUser onlineUser) {
         onlineUserMapper.update(onlineUser);
     }
 
@@ -37,12 +37,12 @@ public class CenterOnlineUserServiceImpl implements ICenterOnlineUserService {
     }
 
     @Override
-    public OnlineUserObject queryLastOnlineUser(Map<String, Object> map) {
+    public OnlineUser queryLastOnlineUser(Map<String, Object> map) {
         return onlineUserMapper.queryLastOnlineUser(map);
     }
 
     @Override
-    public List<OnlineUserObject> queryVipUserList(Map<String, Object> map) { 
+    public List<OnlineUser> queryVipUserList(Map<String, Object> map) {
         return onlineUserMapper.queryVipUserList(map);
     }
 
@@ -52,7 +52,7 @@ public class CenterOnlineUserServiceImpl implements ICenterOnlineUserService {
     }
 
     @Override
-    public int updateVipUser(OnlineUserObject onlineUser) {
+    public int updateVipUser(OnlineUser onlineUser) {
         return onlineUserMapper.updateVipUser(onlineUser);
     }
 

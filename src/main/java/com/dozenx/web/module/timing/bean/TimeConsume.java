@@ -7,7 +7,7 @@ import java.util.Date;
  * @author xhb
  *
  */
-public class UserConsume {
+public class TimeConsume {
     /** * center_pub_merchant_user_consume.id */
     private Long id;
     /** * center_pub_merchant_user_consume.merchantId 商户id */

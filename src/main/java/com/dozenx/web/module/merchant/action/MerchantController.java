@@ -17,7 +17,7 @@ import com.dozenx.web.module.merchant.bean.SessionDTO;
 import com.dozenx.web.module.merchant.bean.SessionUser;
 import com.dozenx.web.module.merchant.service.MerchantPictureService;
 import com.dozenx.web.module.merchant.service.MerchantService;
-import com.dozenx.web.module.timing.bean.UserTimeInfo;
+import com.dozenx.web.module.timing.bean.UserTimeInfoDTO;
 import com.dozenx.web.third.access.bean.AuthResult;
 import com.dozenx.web.third.dbcenter.bean.PubDeviceQueryResult;
 import com.dozenx.web.third.dbcenter.service.MerchantDeviceBaseService;
@@ -74,7 +74,7 @@ public class MerchantController  extends BaseController {
     HashMap result =new HashMap();
     SessionUser user  = sessionDTO.getSessionUser();
     PubDeviceQueryResult merchant =sessionDTO.getMerchant();
-    UserTimeInfo timeInfo = sessionDTO.getTimeInfo();
+    UserTimeInfoDTO timeInfo = sessionDTO.getTimeInfo();
     AuthResult auth =sessionDTO.getAuthResult();
     if(merchant!=null){//商户信息
         HashMap<String,Object> merchantMap = new HashMap<>();

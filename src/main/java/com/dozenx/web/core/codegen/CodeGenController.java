@@ -2,12 +2,6 @@ package com.dozenx.web.core.codegen;
 
 import com.cpj.swagger.annotation.API;
 import com.cpj.swagger.annotation.APIs;
-import com.dozenx.util.RedisUtil;
-import com.dozenx.web.core.Constants;
-import com.dozenx.web.core.log.ResultDTO;
-import com.dozenx.web.module.merchant.bean.SessionDTO;
-import com.dozenx.web.module.merchant.bean.SessionUser;
-import com.dozenx.web.module.timing.bean.MerchantPackage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dozen.zhang on 2017/3/21.

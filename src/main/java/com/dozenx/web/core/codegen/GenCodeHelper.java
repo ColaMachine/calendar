@@ -7,12 +7,51 @@
  */
 package com.dozenx.web.core.codegen;
 
+import com.dozenx.util.DateUtil;
+import com.dozenx.util.ReflactorUtil;
 import com.dozenx.util.StringUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 public class GenCodeHelper {
-
+    public static <T> T getValidBean(HttpServletRequest request, String name,Class<T> clzz) throws IllegalAccessException, InstantiationException, NoSuchFieldException {
+        //利用反射创建一个类
+        T object = clzz.newInstance();
+        //取出ztable
+        ZTable table = Generator.allTable.get(name);
+        HashMap map  = new HashMap();
+        //通过名称的方式反射得到值 并塞入 map 或者 bean
+        for(ZColum col :table.getCols()){
+            String colName =col.getName();
+            String type = col.getType().toLowerCase();
+            String value = request.getParameter(colName);
+            if(!StringUtil.isBlank(value)){
+                if(type.startsWith("date")||type.startsWith("timestamp")||type.startsWith("datetime")){
+                    if(StringUtil.checkNumeric(value)){
+                        map.put(colName,new Timestamp(Long.valueOf(value)));
+                        ReflactorUtil.setValue(object,new Timestamp(Long.valueOf(value)),colName);
+                    }
+                    else{
+                        if(type.startsWith("timestamp")){
+                            map.put(colName,new Timestamp(DateUtil.parseToDate( value,"yyyy-MM-dd" ).getTime()));
+                            ReflactorUtil.setValue(object,new Timestamp(DateUtil.parseToDate( value,"yyyy-MM-dd" ).getTime()),colName);
+                        }
+                        if(type.startsWith("date")){
+                            map.put(colName,DateUtil.parseToDate( value,"yyyy-MM-dd" ));
+                            ReflactorUtil.setValue(object,DateUtil.parseToDate( value,"yyyy-MM-dd" ),colName);
+                        }
+                    }
+                }else{
+                    map.put(colName,value);
+                    ReflactorUtil.setValue(object,value,colName);
+                }
+            }
+        }
+        return object;
+    }
     /**
      * 代码字符串  new Timestamp(DateUtil.parseToDate(startTime,"yyyy-MM-dd").getTime())
      * @param type
@@ -92,5 +131,32 @@ public static Integer getIntFromKuoHao(String str){
     }
     return typeName;
 }
+    public static String changeMySqlType2ApiType(String type) {
+        String typeName = null;
+        type = type.toLowerCase();
+        if (type.startsWith("varchar")) {
+            typeName = "STRING";
+        } else if (type.startsWith("int")) {
+            typeName = "INTEGER";
+        } else if (type.startsWith("bigint")) {
+            typeName = "LONG";
+        } else if (type.startsWith("float")) {
+            typeName = "FLOAT";
+        } else if (type.startsWith("double")) {
+            typeName = "DOUBLE";
+        } else if (type.startsWith("date")) {
+            typeName = "DATE";
+        } else if (type.startsWith("timestamp")) {
+            typeName = "TIMESTAMP";
+        } else if (type.startsWith("text")) {
+            typeName = "STRING";
+        }
+        else if (type.startsWith("char")) {
+            typeName = "STRING";
+        } else if (type.startsWith("tinyint")) {
+            typeName = "BYTE";
+        }
+        return typeName;
+    }
 
 }

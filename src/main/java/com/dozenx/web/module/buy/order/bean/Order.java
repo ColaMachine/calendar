@@ -1,4 +1,4 @@
-package com.dozenx.web.module.timing.bean;
+package com.dozenx.web.module.buy.order.bean;
 
 
 import java.io.Serializable;

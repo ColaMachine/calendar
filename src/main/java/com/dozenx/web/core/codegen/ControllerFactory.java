@@ -236,7 +236,7 @@ public class ControllerFactory extends DefaultGenCodeFactory {
            lineBack(jsmsg,"},");
        }
        sb.append(tab2+"validStr = vu.validateString();").append(ctrl);
-       sb.append(tab2+"if(StringUtil.isNotEmpty(validStr)) {").append(ctrl);
+       sb.append(tab2+"if(StringUtil.isNotBlank(validStr)) {").append(ctrl);
        sb.append(tab3+String.format("return ResultUtil.getResult(%d,%s);",302,"validStr")).append(ctrl);
        sb.append(tab2+"}").append(ctrl);
        root.put("jsrules", jssb.toString());

@@ -1,7 +1,7 @@
 package com.dozenx.web.module.timing.dao;
 
 
-import com.dozenx.web.module.timing.bean.OnlineDataObject;
+import com.dozenx.web.module.buy.bean.OnlineData;
 
 /**
  * 保存电渠推送数据记录
@@ -15,5 +15,5 @@ public interface CenterOnlineDataMapper {
      * 推送数据对象
      * @return
      */
-    void add(OnlineDataObject onlineData);
+    void add(OnlineData onlineData);
 }

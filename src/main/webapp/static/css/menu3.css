@@ -28,6 +28,11 @@
 	right: 11px;
 }
 /*********************************Box-model 盒子模型**/
+.menu-wrap .menu>ul>li {
+    list-style-type: none;
+    position: relative;
+    border-bottom: 1px solid #e7e7eb;
+}
 /*div ,ul,li,a {
     margin: 0px 0px 0px 0px;
   	padding: 0px 0px 0px 0px;
@@ -161,6 +166,17 @@ i.undefined {
  .menu>ul>li:hover>a,  .menu>ul>li.open>a {
     box-sizing:border-box;
     border-left: 5px solid #3c8dbc !important;
+}
+
+.menu-white ul,.menu-white ,.menu-white  a{
+    color:#555;
+	background-color: #FFF;
+}
+
+.menu-white .menu>ul.nav>li.open>a,.menu-white .menu li>a:hover  {
+/*	opacity: 1;*/
+    color: #111;
+    background:#f8f3f3;
 }
 
 /*************************************************************** misc 杂项 */

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.dozenx.web.module.timing.bean.MerchantPackage;
+import com.dozenx.web.module.timing.bean.TimePackage;
 import com.dozenx.web.module.timing.dao.PackageMapper;
 import com.dozenx.web.module.timing.service.IPackageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class PackageServiceImpl implements IPackageService {
      * @author w049
      * @date 2016年11月30日 下午4:18:19
      */
-    public List<MerchantPackage> queryListByParam(Map map) throws Exception {
+    public List<TimePackage> queryListByParam(Map map) throws Exception {
         if (map == null) {
             throw new Exception("套餐查询参数为空");
         }
@@ -82,7 +82,7 @@ public class PackageServiceImpl implements IPackageService {
      * @author w049
      * @date 2016年11月30日 下午4:48:54
      */
-    public MerchantPackage queryById(Long id) throws Exception {
+    public TimePackage queryById(Long id) throws Exception {
 
         if (id <= 0) {
             throw new Exception("根据主键查询套餐出错:主键参数错误");
@@ -92,7 +92,7 @@ public class PackageServiceImpl implements IPackageService {
     /**
      * 增加套餐
      */
-    public int add(MerchantPackage merchantPackage) throws Exception {
+    public int add(TimePackage merchantPackage) throws Exception {
         if (merchantPackage == null) {
             throw new Exception("新增套餐出错:参数为空");
         }
@@ -111,7 +111,7 @@ public class PackageServiceImpl implements IPackageService {
     /**
      * 
      */
-    public int update(MerchantPackage merchantPackage) throws Exception {
+    public int update(TimePackage merchantPackage) throws Exception {
 
         if (merchantPackage.getMerchantId() <= 0) {
             throw new Exception("更新套餐出错:缺少必要参数");
@@ -134,7 +134,7 @@ public class PackageServiceImpl implements IPackageService {
         } catch (Exception e) {
             throw new Exception("删除套餐出错:参数错误");
         }
-        MerchantPackage merchantPackage = new MerchantPackage();
+        TimePackage merchantPackage = new TimePackage();
         merchantPackage.setId(id);
         merchantPackage.setStatus(9);
         merchantPackage.setStatusDate(new Date());

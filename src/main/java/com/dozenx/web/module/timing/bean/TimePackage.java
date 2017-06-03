@@ -7,7 +7,7 @@ import java.util.Date;
  * @author xhb
  *
  */
-public class MerchantPackage {
+public class TimePackage {
 	/** *  center_pub_merchant_package.id 编号 */
 	private Long id;
 	/** *  center_pub_merchant_package.merchant_id 商户编号 */

@@ -6,19 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
-import com.dozenx.web.module.timing.bean.MerchantPackage;
-import com.dozenx.web.module.timing.dao.PackageMapper;
+import com.dozenx.web.module.timing.bean.TimePackage;
 import com.dozenx.web.util.ConfigUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import com.alibaba.fastjson.JSON;
 
 
 @Service
@@ -40,7 +34,7 @@ public class PackageWrapService {
      * @return
      * @throws Exception
      */
-    public List<MerchantPackage> queryListByParam(Long merchantId , Integer packageType) throws Exception{
+    public List<TimePackage> queryListByParam(Long merchantId , Integer packageType) throws Exception{
         Map<String, Object> parm = new HashMap<String, Object>();
         if (merchantId == null) {
             return null;
@@ -64,7 +58,7 @@ public class PackageWrapService {
      * @author xhb
      * @throws Exception
      */
-    public List<MerchantPackage> packageListSearch(Long merchantId, Integer packageType) throws Exception {
+    public List<TimePackage> packageListSearch(Long merchantId, Integer packageType) throws Exception {
         Map<String, Object> parm = new HashMap<String, Object>();
         if (merchantId == null) {
             return null;
@@ -75,9 +69,9 @@ public class PackageWrapService {
         if (packageType == 2) {
             parm.put("packageKey", "201");
         }
-        List<MerchantPackage> pkg = packageService.queryListByParam(parm);
-        List<MerchantPackage> result = new ArrayList<MerchantPackage>();
-        for (MerchantPackage ret : pkg) {
+        List<TimePackage> pkg = packageService.queryListByParam(parm);
+        List<TimePackage> result = new ArrayList<TimePackage>();
+        for (TimePackage ret : pkg) {
             if (((new Date().getTime()) > (ret.getEffectDatetime().getTime()))
                     && ((ret.getExpiredDatetime().getTime()) > (new Date().getTime()))) {
                 result.add(ret);
@@ -92,7 +86,7 @@ public class PackageWrapService {
                 parm.put("packageKey", "201");
             }
             pkg = packageService.queryListByParam(parm);
-            for (MerchantPackage ret : pkg) {
+            for (TimePackage ret : pkg) {
                result.add(ret);
             }
         }
@@ -109,7 +103,7 @@ public class PackageWrapService {
      * @author xhb
      * @throws Exception
      */
-    public MerchantPackage packageSearch(Long id) throws Exception {
+    public TimePackage packageSearch(Long id) throws Exception {
         return packageService.queryById(id);
     }
 
@@ -136,7 +130,7 @@ public class PackageWrapService {
      * @author xhb
      * @throws Exception
      */
-    public MerchantPackage getFreePkg(Long merchantId) throws Exception {
+    public TimePackage getFreePkg(Long merchantId) throws Exception {
         Map<String, Object> parm = new HashMap<String, Object>();
         if (merchantId == null) {
             return null;
@@ -146,7 +140,7 @@ public class PackageWrapService {
         parm.put("packageType", 2);
         
         parm.put("packageKey", "201");
-        List<MerchantPackage> pkgList = packageService.queryListByParam(parm);
+        List<TimePackage> pkgList = packageService.queryListByParam(parm);
         if(pkgList!=null && pkgList.size()>0){
             if(pkgList.size()>1){
                logger.error("merchantid:"+merchantId+"has more than one freepackage"); 
@@ -157,18 +151,18 @@ public class PackageWrapService {
         return null;
     }
 
-    public void update(MerchantPackage pkg) throws Exception {
+    public void update(TimePackage pkg) throws Exception {
         // TODO Auto-generated method stub
         this.packageService.update(pkg);
     }
 
-    public void insert(MerchantPackage pkg) throws Exception {
+    public void insert(TimePackage pkg) throws Exception {
         // TODO Auto-generated method stub
         this.packageService.add(pkg);
     }
     
     public int logicDelete(Long packageId)throws Exception{
-        MerchantPackage pkg = null;
+        TimePackage pkg = null;
             pkg = packageService.queryById(packageId);
             if(pkg==null){
                 throw new Exception("套餐不存在");

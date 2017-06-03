@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.dozenx.util.StringUtil;
-import com.dozenx.web.module.timing.bean.OnlineDataObject;
-import com.dozenx.web.module.timing.bean.OnlineUserObject;
+import com.dozenx.web.module.buy.bean.OnlineData;
+import com.dozenx.web.module.timing.bean.OnlineUser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +86,7 @@ public class OnlineWrapService {
     @Resource(name="CenterOnlineUserService")
     private ICenterOnlineUserService onlineUserService;
 
-    public void saveOnlineUserData(OnlineUserObject onlineUser)
+    public void saveOnlineUserData(OnlineUser onlineUser)
         throws Exception {
         Long logBeginDate = System.currentTimeMillis();
         
@@ -113,7 +113,7 @@ public class OnlineWrapService {
             // 发送错误日志 抛出异常
             throw new Exception(detail);
         } else {
-            OnlineUserObject existUserObject = null;
+            OnlineUser existUserObject = null;
             long existEndTime = 0;
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("telephone", telephone);
@@ -249,7 +249,7 @@ public class OnlineWrapService {
     }
     
     
-    public int queryOnlineUserCount(OnlineUserObject onlineUser)
+    public int queryOnlineUserCount(OnlineUser onlineUser)
         throws Exception {
         Long logBeginDate = System.currentTimeMillis();
       
@@ -298,7 +298,7 @@ public class OnlineWrapService {
     }
     
     
-    public void saveOnlineData(OnlineDataObject onlineData)
+    public void saveOnlineData(OnlineData onlineData)
         throws Exception {
         Long logBeginDate = System.currentTimeMillis();
         String globalKey = null;
@@ -335,7 +335,7 @@ public class OnlineWrapService {
             
     }
     
-    public String queryVipUserList(OnlineUserObject onlineUser)
+    public String queryVipUserList(OnlineUser onlineUser)
         throws Exception {
         Long logBeginDate = System.currentTimeMillis();
         String resJson = null;
@@ -345,7 +345,7 @@ public class OnlineWrapService {
         Integer pageNum = null;
         Integer pageSize = null;
         Map<String, Object> map = new HashMap<String, Object>();
-        List<OnlineUserObject> list = new ArrayList<OnlineUserObject>();
+        List<OnlineUser> list = new ArrayList<OnlineUser>();
         
         if (onlineUser != null) {
            
@@ -402,7 +402,7 @@ public class OnlineWrapService {
         return resJson;
     }
     
-    public int queryVipUserCount(OnlineUserObject onlineUser)
+    public int queryVipUserCount(OnlineUser onlineUser)
         throws Exception {
         Long logBeginDate = System.currentTimeMillis();
         int count = 0;
@@ -461,7 +461,7 @@ public class OnlineWrapService {
         return count;
     }
     
-    public int updateVipUser(OnlineUserObject onlineUser)
+    public int updateVipUser(OnlineUser onlineUser)
         throws Exception {
         Long logBeginDate = System.currentTimeMillis();
         int updateCount = 0;

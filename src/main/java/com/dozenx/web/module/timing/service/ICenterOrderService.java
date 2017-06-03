@@ -1,7 +1,7 @@
 package com.dozenx.web.module.timing.service;
 
 
-import com.dozenx.web.module.timing.bean.Order;
+import com.dozenx.web.module.buy.order.bean.Order;
 
 import java.util.List;
 import java.util.Map;

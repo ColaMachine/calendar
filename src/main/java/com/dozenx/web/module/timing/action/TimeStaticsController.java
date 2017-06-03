@@ -1,12 +1,9 @@
 package com.dozenx.web.module.timing.action;
 
 import com.cpj.swagger.annotation.*;
-import com.dozenx.util.JsonUtils;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.base.BaseController;
 import com.dozenx.web.core.log.ResultDTO;
-import com.dozenx.web.module.timing.bean.UserConsume;
-import com.dozenx.web.module.timing.bean.UserCutoff;
 import com.dozenx.web.module.timing.service.UserConsumeWrapService;
 import com.dozenx.web.module.timing.service.UserCutoffWrapService;
 import com.dozenx.web.module.timing.service.impl.UserConsumeService;

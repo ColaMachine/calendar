@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dozenx.web.module.timing.dao.CenterOnlineDataMapper">
-	<resultMap id="BaseOnlineDataMap" type="com.dozenx.web.module.timing.bean.OnlineDataObject">
+	<resultMap id="BaseOnlineDataMap" type="com.dozenx.web.module.buy.bean.OnlineData">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="broadband_account" property="broadbandAccount" jdbcType="VARCHAR" />
 		<result column="merid" property="merid" jdbcType="VARCHAR" />
@@ -26,7 +26,7 @@
 		<result column="end_time" property="endTime" jdbcType="VARCHAR" />
 		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
 	</resultMap>
-	<insert id="add" parameterType="com.dozenx.web.module.timing.bean.OnlineDataObject" useGeneratedKeys="true" keyColumn="ID" keyProperty="id">
+	<insert id="add" parameterType="com.dozenx.web.module.buy.bean.OnlineData" useGeneratedKeys="true" keyColumn="ID" keyProperty="id">
 <!-- 		<selectKey resultType="java.lang.Long" keyProperty="id"
 			order="AFTER">
 			SELECT LAST_INSERT_ID()

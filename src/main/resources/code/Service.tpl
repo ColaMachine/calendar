@@ -42,7 +42,7 @@ import ${table.pkg}.${abc}.dao.${table.mapper.parent}Mapper;
 import ${table.pkg}.${abc}.dao.${table.mapper.child}Mapper;
     </#if>
         </#if>
-import com.dozenx.web.message.ResultDTO;
+import com.dozenx.web.core.log.ResultDTO;
 
 @Service("${abc}Service")
 public class ${Abc}Service extends BaseService {

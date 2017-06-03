@@ -18,6 +18,8 @@ import com.dozenx.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.dozenx.web.util.ConfigUtil;
+import com.dozenx.web.util.SpringBeanFactoryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +77,9 @@ public class SysUserController extends BaseController{
     @RequestMapping(value = "/list.json")
     @ResponseBody
     public Object list(HttpServletRequest request) {
+        Object obj = SpringBeanFactoryUtils.getBean("SysConfigService");
+
+        ConfigUtil.getConfig("SysConfigService");
         Page page = RequestUtil.getPage(request);
         if(page ==null){
              return this.getWrongResultFromCfg("err.param.page");

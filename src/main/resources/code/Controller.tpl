@@ -86,7 +86,7 @@ public class ${Abc}Controller extends BaseController{
                  @Param(name="pageSize", description="分页大小", dataType= DataType.PHONE,required = true),
                  @Param(name="curPage", description="当前页", dataType= DataType.CAPTCHA,required = true),
                   <#list table.cols as col>
-                    @Param(name="${col.name}" , description="${col.remark}",dataType = DataType."${col.type}",required = ${col.nn?c}),
+                    @Param(name="${col.name}" , description="${col.remark}",dataType = DataType.<@apiType>${col.type}</@apiType>,required = ${col.nn?c}),
                    </#list>
          })
     @RequestMapping(value = "/list" , method = RequestMethod.GET)
@@ -127,7 +127,7 @@ ${getSearchParam}
   @API( summary="根据id查询单个${table.remark}信息",
            description = "根据id查询单个${table.remark}信息",
            parameters={
-                   @Param(name="id" , description="${table.pk.name}",dataType= DataType.XXXX,required = true),
+                   @Param(name="id" , description="${table.pk.name}",dataType= DataType.LONG,required = true),
            })
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     @ResponseBody
@@ -154,7 +154,7 @@ ${getSearchParam}
         description = "根据id更新单个${table.remark}信息",
         parameters={
           <#list table.cols as col>
-           @Param(name="${col.name}" , description="${col.remark}",type="${col.type}",required = ${col.nn?c}),
+           @Param(name="${col.name}" , description="${col.remark}",type="<@apiType>${col.type}</@apiType>",required = ${col.nn?c}),
           </#list>
         })
     // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
@@ -199,7 +199,7 @@ ${validCode}
             description = "添加单个${table.remark}信息",
             parameters={
               <#list table.cols as col>
-               @Param(name="${col.name}" , description="${col.remark}",dataType = DataType.${col.type},required = ${col.nn?c}),
+               @Param(name="${col.name}" , description="${col.remark}",dataType = DataType.<@apiType>${col.type}</@apiType>,required = ${col.nn?c}),
               </#list>
             })
         @RequestMapping(value = "",method = RequestMethod.POST)
@@ -250,7 +250,7 @@ ${validCode}
      @API( summary="根据id删除单个${table.remark}信息",
         description = "根据id删除单个${table.remark}信息",
         parameters={
-         @Param(name="${table.pk.name}" , description="${table.pk.remark}",dataType= DataType.${table.pk.type},required = true),
+         @Param(name="${table.pk.name}" , description="${table.pk.remark}",dataType= DataType.<@apiType>${table.pk.type}</@apiType>,required = true),
         })
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
     @ResponseBody

@@ -22,4 +22,11 @@ public class ReflactorUtil {
 
         System.out.format("Everything is %s", false); // "Everything is true"
     }
+
+    public static void setValue(Object obj,Object val,String name) throws NoSuchFieldException, IllegalAccessException {
+        Class  clz = obj.getClass();
+        Field field = clz.getDeclaredField(name);
+        field.set(obj,val);
+
+    }
 }

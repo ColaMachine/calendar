@@ -142,7 +142,10 @@ public class ApiAspect {
         }
         Method method=null;
         try {
-            method=pjp.getTarget().getClass().getMethod(pjp.getSignature().getName(),argTypes);
+
+            Class[] parameterTypes = ((MethodSignature)pjp.getSignature()).getMethod().getParameterTypes();
+            method=pjp.getTarget().getClass().getMethod(pjp.getSignature().getName(),parameterTypes);
+         //   method=pjp.getTarget().getClass().getMethod(pjp.getSignature().getName(),argTypes);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (SecurityException e) {

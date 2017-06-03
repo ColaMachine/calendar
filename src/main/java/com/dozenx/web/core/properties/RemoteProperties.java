@@ -107,19 +107,30 @@ public class RemoteProperties implements InitializingBean, FactoryBean<Propertie
        // this.properties = propertiesFromFile;
         String readFrom = (String)properties.get("readfrom");
         if(StringUtil.isNotBlank(readFrom)){
-            String[] readFromAry = readFrom.split(",");
+            String[] readFromAry = readFrom.split(",");//一般有两个值config 或者db config 表示从properties 文件获取 db表示从数据库获取
 
             for(String s : readFromAry){
                 if(s.equals("config")){
                     String basePropertiesPath =  (String)properties.get("basePropertiesPath");
+                    String addPropertiesPath =  (String)properties.get("addPropertiesPath");
                     try {
-                       // String basePropertiesPathReal = PathManager.getInstance().getClassPath().resolve(basePropertiesPath).toString();
                         List<File> files = com.dozenx.util.FileUtil.listFile(PathManager.getInstance().getClassPath().resolve(basePropertiesPath).toFile());
                         for(File file : files){
-                             properties.load(new FileInputStream(file));
+                            properties.load(new FileInputStream(file));
                             //need to test if override add the add File content
-                           // properties.putAll(properties);
+                            // properties.putAll(properties);
                         }
+                        if(StringUtil.isNotBlank(addPropertiesPath)){
+                            //先从主文件获取配置文件
+                            // String basePropertiesPathReal = PathManager.getInstance().getClassPath().resolve(basePropertiesPath).toString();
+                            files = com.dozenx.util.FileUtil.listFile(PathManager.getInstance().getClassPath().resolve(addPropertiesPath).toFile());
+                            for(File file : files){
+                                properties.load(new FileInputStream(file));
+                                //need to test if override add the add File content
+                                // properties.putAll(properties);
+                            }
+                        }
+
 
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 
 import com.dozenx.util.DateUtil;
 import com.dozenx.util.StringUtil;
-import com.dozenx.web.module.timing.bean.UserConsume;
+import com.dozenx.web.module.timing.bean.TimeConsume;
 import com.dozenx.web.module.timing.bean.UserCutoff;
 import com.dozenx.web.module.timing.dao.UserConsumeMapper;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class UserConsumeService{
      * @param consumeObject
      * @return 
      */
-    public int add(UserConsume consumeObject) throws Exception {
+    public int add(TimeConsume consumeObject) throws Exception {
         if (consumeObject.getMerchantId() == null || consumeObject.getUserId() == null
                 || consumeObject.getConsumeType() == null) {
             throw new Exception("新增消费数据出错,必要参数缺少");
@@ -54,8 +54,8 @@ public class UserConsumeService{
      * @param map
      * @return
      */
-    public List<UserConsume> queryListByParam(Map<String,Object> map) throws Exception{
-        List<UserConsume> consumeList = null;
+    public List<TimeConsume> queryListByParam(Map<String,Object> map) throws Exception{
+        List<TimeConsume> consumeList = null;
         String consumeType = map.get("consumeType")+"";
         if(!"2".equals(consumeType)&&!"3".equals(consumeType)){
             throw new Exception("根据条件查询消费数据出错:consumeType参数目前仅支持值为2或者3");
@@ -93,8 +93,8 @@ public class UserConsumeService{
      * @param UserConsume
      * @return
      */
-    public List<UserConsume> queryListByParam(UserConsume consumeObject) throws Exception{
-        List<UserConsume> consumeList = null;
+    public List<TimeConsume> queryListByParam(TimeConsume consumeObject) throws Exception{
+        List<TimeConsume> consumeList = null;
         if(consumeObject==null){
         	throw new Exception("传入的对象为空");
         }
@@ -131,7 +131,7 @@ public class UserConsumeService{
      * @param UserConsume
      * @return
      */
-    public int queryCountByParam(UserConsume consumeObject) throws Exception{
+    public int queryCountByParam(TimeConsume consumeObject) throws Exception{
         if(consumeObject==null){
         	throw new Exception("传入的对象为空");
         }
@@ -191,7 +191,7 @@ public class UserConsumeService{
      * 增加消费记录并更新上网时限表
      * @param map
      */
-    public void addCompConsume(UserConsume userConsume) throws Exception{
+    public void addCompConsume(TimeConsume userConsume) throws Exception{
     	if (userConsume.getMerchantId() == null || userConsume.getUserId() == null || userConsume.getConsumeType() == null || userConsume.getEndDate() == null) {
     		throw new Exception("保存消费记录出错，缺少必要参数");
     	}

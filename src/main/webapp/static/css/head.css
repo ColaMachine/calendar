@@ -251,6 +251,9 @@ li {
     right: 0;*/
   /*  z-index: 10;*/
 }
+.header .nav-pills>li{
+	border-right:1px solid gray;
+}
 .head-center{
 white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
 }
@@ -288,3 +291,6 @@ white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
 .zw-header-title{
 
 }
+
+
+

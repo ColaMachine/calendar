@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dozenx.web.module.timing.dao.UserConsumeMapper">
-  <resultMap id="BaseResultMap" type="com.dozenx.web.module.timing.bean.UserConsume">
+  <resultMap id="BaseResultMap" type="com.dozenx.web.module.timing.bean.TimeConsume">
       <id column="ID" jdbcType="BIGINT" property="id" />
       <result column="MERCHANT_ID" jdbcType="BIGINT" property="merchantId" />
       <result column="USER_ID" jdbcType="BIGINT" property="userId" />
@@ -100,7 +100,7 @@
     where ID = #{id,jdbcType=BIGINT}
   </select>
   
-   <insert id="insertSelective" parameterType="com.dozenx.web.module.timing.bean.UserConsume" >
+   <insert id="insertSelective" parameterType="com.dozenx.web.module.timing.bean.TimeConsume" >
     insert into center_pub_merchant_user_consume
     <trim prefix="(" suffix=")" suffixOverrides="," >
         <if test="id != null" >  
@@ -210,7 +210,7 @@
     </trim>
   </insert>
   
-  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.module.timing.bean.UserConsume" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.module.timing.bean.TimeConsume" >
     update center_pub_merchant_user_consume
     <set >
         <if test="id != null" >  

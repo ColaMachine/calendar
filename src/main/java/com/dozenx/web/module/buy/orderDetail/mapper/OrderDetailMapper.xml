@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.module.buy.orderDetail.dao.OrderDetailMapper">
+  <resultMap id="BaseResultMap" type="com.dozenx.web.module.buy.orderDetail.bean.OrderDetail">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="orderId" jdbcType="BIGINT" property="orderId" />
+      <result column="goodId" jdbcType="BIGINT" property="goodId" />
+      <result column="num" jdbcType="INTEGER" property="num" />
+      <result column="price" jdbcType="INTEGER" property="price" />
+      <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+      <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_detail.`id` ,order_detail.`orderId` ,order_detail.`goodId` ,order_detail.`num` ,order_detail.`price` ,order_detail.`createtime` ,order_detail.`updatetime` 
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_detail
+    where order_detail.id =   #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from order_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.module.buy.orderDetail.bean.OrderDetail" >
+
+    insert into order_detail (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=BIGINT}
+,#{orderId,jdbcType=BIGINT}
+,#{goodId,jdbcType=BIGINT}
+,#{num,jdbcType=INTEGER}
+,#{price,jdbcType=INTEGER}
+,#{createtime,jdbcType=TIMESTAMP}
+,#{updatetime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="com.dozenx.web.module.buy.orderDetail.bean.OrderDetail" >
+    insert into order_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="orderId != null" >  
+           `orderId`, 
+        </if>  
+        <if test="goodId != null" >  
+           `goodId`, 
+        </if>  
+        <if test="num != null" >  
+           `num`, 
+        </if>  
+        <if test="price != null" >  
+           `price`, 
+        </if>  
+        <if test="createtime != null" >  
+           `createtime`, 
+        </if>  
+        <if test="updatetime != null" >  
+           `updatetime`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=BIGINT},
+        </if>  
+        <if test="orderId != null" >  
+          #{orderId,jdbcType=BIGINT},
+        </if>  
+        <if test="goodId != null" >  
+          #{goodId,jdbcType=BIGINT},
+        </if>  
+        <if test="num != null" >  
+          #{num,jdbcType=INTEGER},
+        </if>  
+        <if test="price != null" >  
+          #{price,jdbcType=INTEGER},
+        </if>  
+        <if test="createtime != null" >  
+          #{createtime,jdbcType=TIMESTAMP},
+        </if>  
+        <if test="updatetime != null" >  
+          #{updatetime,jdbcType=TIMESTAMP},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.module.buy.orderDetail.bean.OrderDetail" >
+    update order_detail
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=BIGINT},
+        </if>  
+        <if test="orderId != null" >  
+             `orderId`=#{orderId,jdbcType=BIGINT},
+        </if>  
+        <if test="goodId != null" >  
+             `goodId`=#{goodId,jdbcType=BIGINT},
+        </if>  
+        <if test="num != null" >  
+             `num`=#{num,jdbcType=INTEGER},
+        </if>  
+        <if test="price != null" >  
+             `price`=#{price,jdbcType=INTEGER},
+        </if>  
+        <if test="createtime != null" >  
+             `createtime`=#{createtime,jdbcType=TIMESTAMP},
+        </if>  
+        <if test="updatetime != null" >  
+             `updatetime`=#{updatetime,jdbcType=TIMESTAMP},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dozenx.web.module.buy.orderDetail.bean.OrderDetail" >
+    update order_detail
+    set 
+              `orderId`=#{orderId,jdbcType=BIGINT},  
+              `goodId`=#{goodId,jdbcType=BIGINT},  
+              `num`=#{num,jdbcType=INTEGER},  
+              `price`=#{price,jdbcType=INTEGER},  
+              `createtime`=#{createtime,jdbcType=TIMESTAMP},  
+              `updatetime`=#{updatetime,jdbcType=TIMESTAMP}  
+where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_detail where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="orderId != null and orderId != '' ">  
+           and `orderId` = #{orderId}
+        </if>  
+        <if test="goodId != null and goodId != '' ">  
+           and `goodId` = #{goodId}
+        </if>  
+        <if test="num != null and num != '' ">  
+           and `num` = #{num}
+        </if>  
+        <if test="price != null and price != '' ">  
+           and `price` = #{price}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and `createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and `createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and `createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and `createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and `createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="updatetime != null and updatetime != '' ">  
+           and `updatetime` = #{updatetime}
+        </if>  
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and `updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and `updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and `updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and `updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_detail
+
+    where 1=1
+        <if test="id != null and id != '' ">  
+           and order_detail.`id` = #{id}
+        </if>  
+        <if test="orderId != null and orderId != '' ">  
+           and order_detail.`orderId` = #{orderId}
+        </if>  
+        <if test="goodId != null and goodId != '' ">  
+           and order_detail.`goodId` = #{goodId}
+        </if>  
+        <if test="num != null and num != '' ">  
+           and order_detail.`num` = #{num}
+        </if>  
+        <if test="price != null and price != '' ">  
+           and order_detail.`price` = #{price}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and order_detail.`createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and order_detail.`createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and order_detail.`createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="updatetime != null and updatetime != '' ">  
+           and order_detail.`updatetime` = #{updatetime}
+        </if>  
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and order_detail.`updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and order_detail.`updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from order_detail where 1=1
+        <if test="id != null and id != '' ">  
+           and order_detail.`id` = #{id}
+        </if>  
+        <if test="orderId != null and orderId != '' ">  
+           and order_detail.`orderId` = #{orderId}
+        </if>  
+        <if test="goodId != null and goodId != '' ">  
+           and order_detail.`goodId` = #{goodId}
+        </if>  
+        <if test="num != null and num != '' ">  
+           and order_detail.`num` = #{num}
+        </if>  
+        <if test="price != null and price != '' ">  
+           and order_detail.`price` = #{price}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and order_detail.`createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and order_detail.`createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and order_detail.`createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="updatetime != null and updatetime != '' ">  
+           and order_detail.`updatetime` = #{updatetime}
+        </if>  
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and order_detail.`updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and order_detail.`updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from order_detail where 1!=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="orderId != null and orderId != '' ">
+           or `orderId` = #{orderId}
+        </if>
+        <if test="goodId != null and goodId != '' ">
+           or `goodId` = #{goodId}
+        </if>
+        <if test="num != null and num != '' ">
+           or `num` = #{num}
+        </if>
+        <if test="price != null and price != '' ">
+           or `price` = #{price}
+        </if>
+        <if test="createtime != null and createtime != '' ">
+           or `createtime` = #{createtime}
+        </if>
+        <if test="updatetime != null and updatetime != '' ">
+           or `updatetime` = #{updatetime}
+        </if>
+  </select>
+</mapper>

@@ -8,10 +8,8 @@
 package com.dozenx.web.core.auth.service;
 
 import com.dozenx.util.PermissionUtil;
-import com.dozenx.util.RedisUtil;
 import com.dozenx.util.ResultUtil;
 import com.dozenx.util.StringUtil;
-import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.auth.dao.SysAuthMapper;
 import com.dozenx.web.core.auth.sysMenu.bean.SysMenu;
 import com.dozenx.web.core.auth.sysMenu.service.SysMenuService;
@@ -22,14 +20,8 @@ import com.dozenx.web.core.log.LogType;
 import com.dozenx.web.core.log.ResultDTO;
 import com.dozenx.web.core.log.ServiceCode;
 import com.dozenx.web.core.log.service.LogUtilService;
-import com.dozenx.web.module.merchant.bean.CenterPubMerchant;
 import com.dozenx.web.module.merchant.bean.SessionDTO;
 import com.dozenx.web.module.merchant.bean.SessionUser;
-import com.dozenx.web.module.merchant.bean.SysMngMerchant;
-import com.dozenx.web.module.merchant.service.MngMerchantService;
-import com.dozenx.web.module.timing.bean.UserTimeInfo;
-import com.dozenx.web.module.timing.service.TimeBusService;
-import com.dozenx.web.third.dbcenter.service.MerchantBaseService;
 import com.dozenx.web.third.dbcenter.service.UserAuthService;
 import com.dozenx.web.third.dbcenter.service.UserBaseService;
 import com.dozenx.web.third.user.service.IThirdUserService;

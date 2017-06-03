@@ -3,7 +3,7 @@ package com.dozenx.web.module.timing.bean;
 /**
  * Created by dozen.zhang on 2017/3/2.
  */
-public class UserTimeInfo {
+public class UserTimeInfoDTO {
     boolean vip;
     boolean canGetFreePkg;//free_pkg_get
 
