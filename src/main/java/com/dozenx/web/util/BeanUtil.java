@@ -4,8 +4,6 @@ import org.springframework.aop.Advisor;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.ServletContext;
-
 /**
  * @Description: Bean 工具类，作用：从 spring上下文 获取bean
  * @Title: BeanUtil.java

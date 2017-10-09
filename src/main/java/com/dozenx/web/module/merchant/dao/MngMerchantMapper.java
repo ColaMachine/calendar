@@ -1,8 +1,8 @@
 package com.dozenx.web.module.merchant.dao;
 
- import com.dozenx.web.module.merchant.bean.SysMngMerchant;
+import com.dozenx.web.module.merchant.bean.SysMngMerchant;
 
- import java.util.HashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

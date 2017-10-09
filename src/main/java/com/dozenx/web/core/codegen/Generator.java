@@ -7,7 +7,6 @@
  */
 package com.dozenx.web.core.codegen;
 
-import com.cpj.swagger.support.struts2.ApiAction;
 import com.dozenx.core.Path.PathManager;
 import com.dozenx.util.StringUtil;
 import com.google.gson.*;
@@ -18,7 +17,6 @@ import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -1139,7 +1137,9 @@ return ymd;
        //Generator.generate(new String[]{"SmsRecord" });
         //Generator.generate(new String[]{"Activity" });
         //Generator.generate(new String[]{"MerchantPic","MerchantNews","MerchantNotice" });
-        Generator.generate(new String[]{"Consume","Order","OrderDetail","Item","ItemInfo" ,"Merchant"});
+       // Generator.generate(new String[]{"Consume","Order","OrderDetail","Item","ItemInfo" ,"Merchant"});
+
+        Generator.generate(new String[]{"OperLog"});
     }
 
   

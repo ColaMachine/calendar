@@ -16,13 +16,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.hibernate.validator.internal.util.logging.LoggerFactory;
 import org.slf4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.*;
-import java.nio.ByteBuffer;
 import java.util.*;
 
 public class HttpRequestUtil {
@@ -34,6 +32,47 @@ public class HttpRequestUtil {
     }
 
 
+    public static HttpURLConnection sendPostRequest(String path, String params) throws Exception{
+        byte[] paramData = params.getBytes();
+        URL url = new URL(path);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        // 设定请求的方法为"POST"，默认是GET
+        conn.setRequestMethod("POST");
+        // 设置是否向httpUrlConnection输出，因为这个是post请求，参数要放在
+        // http正文内，因此需要设为true, 默认情况下是false;
+        conn.setDoOutput(true);
+        // 设定传送的内容类型
+        conn.setRequestProperty("Content-Type", "image/jpeg");
+        conn.setRequestProperty("Content-Length", String.valueOf(paramData.length));
+        // Post 请求不能使用缓存
+        conn.setUseCaches(false);
+        // 设置 连接主机超时（单位：毫秒）
+        conn.setConnectTimeout(10000);
+        // 设置从主机读取数据超时（单位：毫秒）
+        conn.setReadTimeout(10000);
+        OutputStream outputStream = conn.getOutputStream();
+        outputStream.write(paramData);
+        outputStream.flush();
+        outputStream.close();
+        return conn;
+    }
+
+    public static HttpURLConnection sendGetRequest(String path) throws Exception{
+        URL url = new URL(path);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        // 默认情况下是false;
+        conn.setDoOutput(false);
+        // 设置是否从httpUrlConnection读入，默认情况下是true
+        conn.setDoInput(true);
+        // Get 请求不能使用缓存
+        conn.setUseCaches(false);
+        conn.setRequestMethod("GET");
+        // 设置 连接主机超时（单位：毫秒）
+        conn.setConnectTimeout(10000);
+        // 设置从主机读取数据超时（单位：毫秒）
+        conn.setReadTimeout(10000);
+        return conn;
+    }
     /**
      * 向指定URL发送GET方法的请求
      * 
@@ -59,8 +98,92 @@ public class HttpRequestUtil {
             }
             return UrlRead(url);
         } catch (Exception e) {
+            e.printStackTrace();
             return "400";
         }
+
+    }
+
+
+    /**
+     * 向指定URL发送GET方法的请求
+     *
+     * @modificationHistory.
+     * @param url
+     *            发送请求的URL
+     * @param map
+     *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
+     * @return URL 所代表远程资源的响应结果
+     */
+    public static String sendDelete(String urlStr, Map map ) {
+        try {
+            URL url = new URL(urlStr);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            //connection.setRequestProperty("name", "robben");
+            connection.setRequestProperty("content-type", "text/html");
+            OutputStreamWriter out = new OutputStreamWriter(
+                    connection.getOutputStream(), "UTF-8");
+            // 将要传递的集合转换成JSON格式
+
+            // 组织要传递的参数
+            out.write("" + map);
+            out.flush();
+            out.close();
+            // 获取返回的数据
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String line = null;
+            StringBuffer content = new StringBuffer();
+            while ((line = in.readLine()) != null) {
+                // line 为返回值，这就可以判断是否成功
+                content.append(line);
+            }
+            in.close();
+            return content.toString();
+        }catch (Exception e ){
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
+    public static String sendPut(String urlStr, Map map ) {
+        try {
+            URL url = new URL(urlStr);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            //connection.setRequestProperty("name", "robben");
+            connection.setRequestProperty("content-type", "text/html");
+            OutputStreamWriter out = new OutputStreamWriter(
+                    connection.getOutputStream(), "UTF-8");
+            // 将要传递的集合转换成JSON格式
+
+            // 组织要传递的参数
+            out.write("" + map);
+            out.flush();
+            out.close();
+            // 获取返回的数据
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String line = null;
+            StringBuffer content = new StringBuffer();
+            while ((line = in.readLine()) != null) {
+                // line 为返回值，这就可以判断是否成功
+                content.append(line);
+            }
+            in.close();
+            return content.toString();
+        }catch (Exception e ){
+            e.printStackTrace();
+
+        }
+        return null;
 
     }
     /**
@@ -139,6 +262,8 @@ public class HttpRequestUtil {
         // 打开和URL之间的连接
         URLConnection connection = realUrl.openConnection();
         // 设置通用的请求属性
+
+
         connection.setRequestProperty("accept", "*/*");
         connection.setRequestProperty("connection", "Keep-Alive");
         connection.setRequestProperty("user-agent",
@@ -249,6 +374,128 @@ public class HttpRequestUtil {
             
             conn.setRequestProperty("Accept-Encoding", "identity");
             
+            conn.setRequestProperty("Accept-Charset", "utf-8");
+            conn.setRequestProperty("contentType", "utf-8");
+            // 发送POST请求必须设置如下两行
+            conn.setDoOutput(true);
+            out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+            // 发送请求参数
+            out.write(param);
+            // flush输出流的缓冲
+            out.flush();
+            out.close();
+            // 定义BufferedReader输入流来读取URL的响应
+            if (conn.getResponseCode() != 200) {
+                return "400";
+            }
+            in = new BufferedReader(new InputStreamReader(
+                    conn.getInputStream(), "UTF-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result.append(line);
+            }
+            conn.disconnect();
+        } catch (Exception e) {
+            // //System.out.println("发送 POST 请求出现异常！" + e);
+            e.printStackTrace();
+            return "400";
+        }
+        // 使用finally块来关闭输出流、输入流
+        finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return result.toString();
+    }
+
+
+    public static String sendPost(String url, String param,String contentType) {
+        OutputStreamWriter out = null;
+        BufferedReader in = null;
+        StringBuffer result = new StringBuffer("");
+        try {
+            URL realUrl = new URL(url);
+            // 打开和URL之间的连接
+            HttpURLConnection conn = (HttpURLConnection) realUrl
+                    .openConnection();
+            // 设置通用的请求属性
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            conn.setRequestProperty("Content-type", contentType);
+
+            conn.setRequestProperty("Accept-Encoding", "identity");
+
+            conn.setRequestProperty("Accept-Charset", "utf-8");
+            conn.setRequestProperty("contentType", "utf-8");
+            // 发送POST请求必须设置如下两行
+            conn.setDoOutput(true);
+            out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+            // 发送请求参数
+            out.write(param);
+            // flush输出流的缓冲
+            out.flush();
+            out.close();
+            // 定义BufferedReader输入流来读取URL的响应
+            if (conn.getResponseCode() != 200) {
+                return "400";
+            }
+            in = new BufferedReader(new InputStreamReader(
+                    conn.getInputStream(), "UTF-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result.append(line);
+            }
+            conn.disconnect();
+        } catch (Exception e) {
+            // //System.out.println("发送 POST 请求出现异常！" + e);
+            e.printStackTrace();
+            return "400";
+        }
+        // 使用finally块来关闭输出流、输入流
+        finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return result.toString();
+    }
+
+    public static String sendX(String url, String param,String contentType,String httpType) {
+        OutputStreamWriter out = null;
+        BufferedReader in = null;
+        StringBuffer result = new StringBuffer("");
+        try {
+            URL realUrl = new URL(url);
+            // 打开和URL之间的连接
+            HttpURLConnection conn = (HttpURLConnection) realUrl
+                    .openConnection();
+            // 设置通用的请求属性
+            conn.setRequestMethod(httpType);
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            conn.setRequestProperty("Content-type", contentType);
+
+            conn.setRequestProperty("Accept-Encoding", "identity");
+
             conn.setRequestProperty("Accept-Charset", "utf-8");
             conn.setRequestProperty("contentType", "utf-8");
             // 发送POST请求必须设置如下两行
@@ -789,7 +1036,7 @@ public class HttpRequestUtil {
         // System.out.println("get开始接收数据");
         logger.info("get begin receive , timelapse:"+(System.currentTimeMillis()-startTime));
         while(null!= (s=bufferedReader.readLine())){
-
+            logger.info(s);
             //logger.info("请求返回结果:"+s);
             //logger.info("get receive:" + s);
             if(StringUtil.checkAlphaNumeric(s) &&  s.length()==4){
@@ -799,7 +1046,7 @@ public class HttpRequestUtil {
                 if(chunked){
                     String numStr = s;
                     if(!StringUtil.checkAlphaNumeric(s) || s.length()!=4){
-                        logger.error("应该是数字却捕捉到非数字字符串 in chunked:"+s);
+                       // logger.error("应该是数字却捕捉到非数字字符串 in chunked:"+s);
                         continue;
                     }else{
                         int num = Integer.parseInt(numStr, 16);
@@ -1164,5 +1411,53 @@ public class HttpRequestUtil {
         os.close();
         is.close();
     }
+    /**
+     * 描述:获取 post 请求的 byte[] 数组
+     * <pre>
+     * 举例：
+     * </pre>
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    public static byte[] getRequestPostBytes(HttpServletRequest request)
+            throws IOException {
+        int contentLength = request.getContentLength();
+        if(contentLength<0){
+            return null;
+        }
+        byte buffer[] = new byte[contentLength];
+        for (int i = 0; i < contentLength;) {
 
+            int readlen = request.getInputStream().read(buffer, i,
+                    contentLength - i);
+            if (readlen == -1) {
+                break;
+            }
+            i += readlen;
+        }
+        return buffer;
+    }
+
+    /**
+     * 描述:获取 post 请求内容
+     * <pre>
+     * 举例：
+     * </pre>
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    public static String getRequestPostStr(HttpServletRequest request)
+            throws IOException {
+
+        String contentType = request.getContentType();
+
+        byte buffer[] = getRequestPostBytes(request);
+        String charEncoding = request.getCharacterEncoding();
+        if (charEncoding == null) {
+            charEncoding = "UTF-8";
+        }
+        return new String(buffer, charEncoding);
+    }
 }

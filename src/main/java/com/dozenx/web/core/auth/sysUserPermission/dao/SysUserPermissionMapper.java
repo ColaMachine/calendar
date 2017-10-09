@@ -1,9 +1,10 @@
 package com.dozenx.web.core.auth.sysUserPermission.dao;
+
+import com.dozenx.web.core.auth.sysUserPermission.bean.SysUserPermission;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.core.auth.sysUserPermission.bean.SysUserPermission;
 
 public interface SysUserPermissionMapper {
     

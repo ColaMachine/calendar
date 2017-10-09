@@ -1,16 +1,11 @@
 package com.dozenx.web.core.auth.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.mail.MessagingException;
-
-
 import com.dozenx.util.*;
-import com.dozenx.web.core.auth.bean.*;
-import com.dozenx.web.core.auth.dao.*;
+import com.dozenx.web.core.auth.bean.Active;
+import com.dozenx.web.core.auth.bean.Pwdrst;
+import com.dozenx.web.core.auth.dao.ActiveMapper;
+import com.dozenx.web.core.auth.dao.PwdrstMapper;
+import com.dozenx.web.core.auth.dao.UserMapper;
 import com.dozenx.web.core.auth.sysRole.bean.SysRole;
 import com.dozenx.web.core.auth.sysRole.dao.SysRoleMapper;
 import com.dozenx.web.core.auth.sysUser.bean.SysUser;
@@ -19,11 +14,20 @@ import com.dozenx.web.core.auth.sysUser.service.SysUserService;
 import com.dozenx.web.core.auth.sysUserRole.bean.SysUserRole;
 import com.dozenx.web.core.auth.sysUserRole.dao.SysUserRoleMapper;
 import com.dozenx.web.core.auth.validcode.service.ValidCodeService;
-import com.dozenx.web.core.log.*;
+import com.dozenx.web.core.log.LogType;
+import com.dozenx.web.core.log.LogUtilFeichu;
+import com.dozenx.web.core.log.ResultDTO;
+import com.dozenx.web.core.log.ServiceCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author colamachine
@@ -94,41 +98,42 @@ public class UserService extends SysUserService {
 	 */
 	public ResultDTO loginValid(String email, String UnencryptedPwd) {
 		// / this.userMapper.getUsersByParam(map)
-	String pwd = MD5Utils.MD5Encode(UnencryptedPwd);
+		String pwd = MD5Utils.MD5Encode(UnencryptedPwd);
 		if (StringUtil.isBlank(email) || StringUtil.isBlank(UnencryptedPwd)) {
 			return ResultUtil.getWrongResultFromCfg("err.account.empty");
 		}
 		
-			HashMap<String, String> params = new HashMap<String, String>();
-			if(StringUtil.isEmail(email)){
-	            //是手机号码
-			    params.put("email", email);
-	        }else if(StringUtil.isPhone(email)){
-	            params.put("telno", email);
-	        }else{
-	            return ResultUtil.getResult(ResultUtil.fail,"既不是手机号也不是邮箱");
-	        }
-			
-			params.put("password", pwd);
-			List list = sysUserMapper.listByParams(params);
-			if (list != null && list.size() > 0) {
-				SysUser  user = (SysUser) list.get(0);
+		HashMap<String, String> params = new HashMap<String, String>();
+		if(StringUtil.isEmail(email)){
+			//是手机号码
+			params.put("email", email);
+		}else if(StringUtil.isPhone(email)){
+			params.put("telno", email);
+		}else{
+			params.put("username", email);
+			//return ResultUtil.getResult(ResultUtil.fail,"既不是手机号也不是邮箱");
+		}
+
+		params.put("password", pwd);
+		List list = sysUserMapper.listByParams(params);
+		if (list != null && list.size() > 0) {
+			SysUser  user = (SysUser) list.get(0);
 //				returnMap.putAll(userMap);
-				
-				/* SysUser user =new SysUser();
-				  user.setEmail(MapUtils.getString(userMap, "email"));
-				  user.setTelno(MapUtils.getString(userMap, "telno"));
-				  user.setUsername(MapUtils.getString(userMap, "username"));
-				  user.setId(MapUtils.getLong(userMap, "userid"));
-				  user.setStatus(MapUtils.getIntValue(userMap, "active"));*/
-				  
-				ResultDTO result = ResultUtil.getSuccResult();
-				result.setData(user);
-				return result;
-			} else {
-				return ResultUtil
-						.getWrongResultFromCfg("err.accountorpwd.wrong");
-			}
+
+			/* SysUser user =new SysUser();
+			  user.setEmail(MapUtils.getString(userMap, "email"));
+			  user.setTelno(MapUtils.getString(userMap, "telno"));
+			  user.setUsername(MapUtils.getString(userMap, "username"));
+			  user.setId(MapUtils.getLong(userMap, "userid"));
+			  user.setStatus(MapUtils.getIntValue(userMap, "active"));*/
+
+			ResultDTO result = ResultUtil.getSuccResult();
+			result.setData(user);
+			return result;
+		} else {
+			return ResultUtil
+					.getWrongResultFromCfg("err.accountorpwd.wrong");
+		}
 	}
 
 	/**

@@ -460,8 +460,10 @@ li.open>ul{
    min-width:155px;
 
     position:absolute;
-    /*top:25px;*/
-   display:none;
+    /*top:25px;
+      display:none;
+    */
+
      list-style: none;
     padding:5px 0px;
         background-color: #fff;

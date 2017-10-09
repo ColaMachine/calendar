@@ -9,7 +9,6 @@ import com.dozenx.web.module.calendar.bean.Activity;
 import com.dozenx.web.module.calendar.service.ActivityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;

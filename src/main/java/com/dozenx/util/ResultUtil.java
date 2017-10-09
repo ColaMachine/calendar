@@ -9,11 +9,12 @@ package com.dozenx.util;
 
 
 /*import cola.machine.util.log.ServiceMsg;*/
+
+import com.dozenx.web.core.log.ErrorMessage;
 import com.dozenx.web.core.log.LogType;
+import com.dozenx.web.core.log.ResultDTO;
 import com.dozenx.web.core.log.ServiceCode;
 import com.dozenx.web.core.page.Page;
-import com.dozenx.web.core.log.ErrorMessage;
-import com.dozenx.web.core.log.ResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

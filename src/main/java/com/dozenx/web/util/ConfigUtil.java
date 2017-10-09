@@ -4,9 +4,7 @@ import com.dozenx.util.CacheUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.sysConfig.bean.SysConfig;
 import com.dozenx.web.core.sysConfig.service.SysConfigService;
-import org.hibernate.validator.internal.util.logging.LoggerFactory;
 import org.slf4j.Logger;
-import org.springframework.aop.Advisor;
 
 import java.util.Properties;
 

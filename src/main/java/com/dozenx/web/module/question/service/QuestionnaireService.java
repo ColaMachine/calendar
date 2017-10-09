@@ -1,14 +1,6 @@
 package com.dozenx.web.module.question.service;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSON;
 import com.dozenx.util.DateUtil;
 import com.dozenx.util.RedisUtil;
 import com.dozenx.web.core.Constants;
@@ -18,14 +10,16 @@ import com.dozenx.web.module.question.bean.QuestionnaireUserInfo;
 import com.dozenx.web.module.timing.bean.TimeConsume;
 import com.dozenx.web.module.timing.service.TimeBusService;
 import com.dozenx.web.module.timing.service.impl.UserConsumeService;
-
 import com.dozenx.web.util.ConfigUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Service

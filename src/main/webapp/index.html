@@ -1,1 +1,43 @@
-<!DOCTYPE html><html lang="zh-cn" data-ng-app="indexApp"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"><meta name="format-detection" content="telephone=no"><title>爱WiFi行业客户运营管理平台</title><link rel="stylesheet" type="text/css" href="css/awifi_toe_lib.min.css"><link rel="stylesheet" type="text/css" href="css/awifi_toe.min.css"></head><body><div class="nav on" data-ng-controller="leftMenuController"><div class="on-off"><div class="min"></div></div><div class="nav-wrap"><div class="nav-item icon-index branch" style="display: block"><a href="#/" class="nav-title" title="平台首页"><i class="icon"></i><span style="background-image: none">平台首页</span></a></div><div class="nav-item icon-platform branch" permissionmenu="platform"><a href="javascript:void(0);" class="nav-title" title="测试父菜单"><i class="icon"></i><span>测试父菜单</span></a><ul><li><a href="#/mspdevice/list" permissionmenu="platform"><span>测试子菜单</span></a></li></ul></div><div class="nav-item icon-platform branch" permissionmenu="platform"><a href="javascript:void(0);" class="nav-title" title="平台管理"><i class="icon"></i><span>平台管理</span></a><ul><li><a href="#/platform/list" permissionmenu="platform_list"><span>平台列表</span></a></li></ul></div><div class="nav-item icon-project branch" permissionmenu="project"><a href="javascript:void(0);" class="nav-title" title="项目管理"><i class="icon"></i><span>项目管理</span></a><ul><li><a href="#/project/list" permissionmenu="project_list"><span>项目列表</span></a></li></ul></div><div class="nav-item icon-home branch" permissionmenu="customer_manager"><a href="javascript:void(0);" class="nav-title" title="客户管理"><i class="icon"></i><span>客户管理</span></a><ul><li><a href="#/customer/list" permissionmenu="customer_manager_list"><span>客户列表</span></a></li></ul></div><div class="nav-item icon-accounts branch" permissionmenu="account_manager"><a href="javascript:void(0);" class="nav-title" title="账号管理"><i class="icon"></i><span>账号管理</span></a><ul><li><a href="#/account/customerList" permissionmenu="account_manager_customer"><span>客户侧账号</span></a></li><li><a href="#/account/telecomList" permissionmenu="account_manager_telecom"><span>电信侧账号</span></a></li></ul></div><div class="nav-item icon-grid branch" permissionmenu="device_manager"><a href="javascript:void(0);" class="nav-title" title="设备管理"><i class="icon"></i><span>设备管理</span></a><ul><li><a href="#/device/list" permissionmenu="device_manager_list"><span>设备分配</span></a></li></ul></div><div class="nav-item icon-users branch" permissionmenu="user_manager"><a href="javascript:void(0);" class="nav-title" title="用户管理"><i class="icon"></i><span>用户管理</span></a><ul><li><a href="#/staticUser/staticUserList" permissionmenu="user_manager_list"><span>用户列表</span></a></li><li><a href="#/staticuser/blackUserList" permissionmenu="user_manager_blacklist"><span>黑名单管理</span></a></li><li><a href="#/staticuser/whiteUserList" permissionmenu="user_manager_whitelist"><span>白名单管理</span></a></li></ul></div><div class="nav-item icon-siteTemplate branch" permissionmenu="templet_manager"><a href="javascript:void(0);" class="nav-title" title="模板管理"><i class="icon"></i><span>模板管理</span></a><ul><li><a href="#/portal/template/templateList" permissionmenu="templet_manager_list"><span>模板列表</span></a></li></ul></div><div class="nav-item icon-page branch" permissionmenu="site_manager"><a href="javascript:void(0);" class="nav-title" title="站点管理"><i class="icon"></i><span>站点管理</span></a><ul><li><a href="#/portal/site/siteList" permissionmenu="site_manager_list"><span>站点列表</span></a></li><li><a href="#/portal/site/defaultSiteList" permissionmenu="site_manager_default"><span>默认站点</span></a></li></ul></div><div class="nav-item icon-strategy branch" permissionmenu="strategy_manager"><a href="javascript:void(0);" class="nav-title" title="推送策略"><i class="icon"></i><span>推送策略</span></a><ul><li><a href="#/portal/strategy/strategyList" permissionmenu="strategy_manager_list"><span>策略列表</span></a></li></ul></div><div class="nav-item icon-legend branch" permissionmenu="statistical_analysis"><a href="javascript:void(0);" class="nav-title" title="统计分析"><i class="icon"></i><span>统计分析</span></a><ul><li><a href="#/report/portalReportList" permissionmenu="statistical_analysis_portal"><span>portal统计</span></a></li><li><a href="#/report/deviceReportList" permissionmenu="statistical_analysis_device"><span>设备统计</span></a></li></ul></div><div class="nav-item icon-platform branch" style="display: block"><a href="javascript:void(0);" class="nav-title" title="应用管理"><i class="icon"></i><span>应用管理</span></a><ul style="display: none"><li><a href="http://119.6.241.112:8082/logincallback.do?accid=3" target="_blank" class="show" style="display: inline"><span>客流分析应用</span></a></li></ul></div><div class="nav-item icon-log branch" permissionmenu="log_manager"><a href="javascript:void(0);" class="nav-title" title="系统配置"><i class="icon"></i><span>系统配置</span></a><ul><li><a href="#/sysconfig/list" permissionmenu="log_manager_sysconfiger"><span>系统参数配置</span></a></li><li><a href="#/noperception/list" permissionmenu="log_manager_noperception"><span>无感知配置</span></a></li><li><a href="#/themeStrategy/list" permissionmenu="log_manager_theme"><span>换肤配置</span></a></li><li><a href="#/exceptionlog/list" permissionmenu="log_manager_exceptionlog"><span>异常日志</span></a></li><li><a href="#/requestLog/list" permissionmenu="log_manager_requestlog"><span>请求日志</span></a></li></ul></div></div></div><div class="header"><div class="header-left-text">爱WiFi行业客户运营管理平台</div><div class="header-right" data-ng-controller="topMenuController"><div class="header-icon-border"><img src="images/akamaru.jpg"></div><div class="header-user" data-ng-bind="userName"></div><div class="header-profile"><ul><li><a class="icon-pencil" href="#/account/infoModify" lhref="">账号信息</a></li><li><a class="icon-pencil" href="#/account/pwdEdit" lhref="">修改密码</a></li><li><a class="icon-power" href="/j_spring_security_logout">退出系统</a></li></ul></div></div></div><div class="main-layout"><div class="bodycontentright" data-ng-view=""></div></div><script type="text/javascript" src="js/awifi_toe_lib.min.js"></script><script type="text/javascript" src="js/awifi_toe.min.js"></script></body></html>
+<link rel="stylesheet" type="text/css" href="../../../static/css/head.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/color.css" >
+
+<link rel="stylesheet" type="text/css" href="../../../static/css/border.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/size.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/list.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/font-awesome.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/window.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/img.css" >
+
+<link rel="stylesheet" type="text/css" href="../../../static/css/form.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/nav.css" >
+
+<link rel="stylesheet" type="text/css" href="../../../static/css/page.css" >
+<link rel="stylesheet" type="text/css" href="../../../static/css/other.css" >
+<script src="../../../static/js/jquery.min.js" type="text/javascript"
+            charset="utf-8"></script>
+
+
+
+
+
+
+
+
+<div>
+
+    <section id="head"></section>
+
+
+</div>
+
+  <script src="../../../static/js/common.js" type="text/javascript"
+            charset="utf-8"></script>
+
+
+<script src="../../../static/js/jquery.colorpicker.js" type="text/javascript"
+        charset="utf-8"></script>
+<!--<script src="http://192.168.3.15:7000/assets/bundle.js"></script>-->
+<script src="/static/js/bundle.js"></script>
+<script src="../../../static/js/jquery.form.js" type="text/javascript"
+        charset="utf-8"></script>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

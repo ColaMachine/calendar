@@ -296,6 +296,11 @@ function changeForm2JsoTemp(formId) {
 		if (typeof ele != 'undefineded') {
 			if (ele.tagName.toUpperCase() == 'INPUT') {
 				jso[ele.id] = ele.value;
+				if(ele.value){
+				if(ele.value.indexOf("[")!=-1){
+				    jso[ele.id] = eval('('+ele.value+')');
+				}
+				}
 			} else if (ele.tagName.toUpperCase() == 'SELECT') {
 				jso[ele.id] = ele.value;
 			} else if (ele.tagName.toUpperCase() == 'CHECKBOX') {
@@ -2438,10 +2443,10 @@ function zImageUtil3(config) {
                                                    var green = c[1];
                                                    var blue = c[2];
                                       var hex = red.toString(16)+""+green.toString(16)+""+blue.toString(16);
-                                      ctxBak.fillStyle="#"+hex;
+                                      ctxBak[selectedLayer].fillStyle="#"+hex;
                                       console.log();
                                     // $(tds[y*canvas.width+x]).css("background-color",red.toString(16)+""+green.toString(16)+""+blue.toString(16));
-                                         ctxBak.fillRect(x*beishu,y*beishu,beishu,beishu);
+                                         ctxBak[selectedLayer].fillRect(x*beishu,y*beishu,beishu,beishu);
                                }
                         }
                        //    ctxMain .drawImage(_this.imgDom[0], 0, 0);
@@ -2754,3 +2759,5 @@ if($(it).find(".mask").length>0){
 
 });
 }
+
+var _CUSTOMER_ID="";

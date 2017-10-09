@@ -6,8 +6,6 @@
  * 文件说明: 
  */
 package com.dozenx.web.module.merchant.merchantNews.bean;
-import java.sql.Timestamp;
-import java.util.Date;
 
 public class MerchantNews {
     /**编号**/

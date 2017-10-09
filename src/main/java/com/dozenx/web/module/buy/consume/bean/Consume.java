@@ -6,8 +6,8 @@
  * 文件说明: 
  */
 package com.dozenx.web.module.buy.consume.bean;
+
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class Consume {
     /**主键**/

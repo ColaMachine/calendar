@@ -6,8 +6,8 @@
  * 文件说明: 
  */
 package com.dozenx.web.module.buy.orderDetail.bean;
+
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class OrderDetail {
     /**主键**/

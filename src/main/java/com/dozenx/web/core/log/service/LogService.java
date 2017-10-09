@@ -7,14 +7,6 @@
  */
 package com.dozenx.web.core.log.service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.log.bean.AppExceptionLog;
 import com.dozenx.web.core.log.bean.AppExceptionLogExample;
@@ -22,12 +14,16 @@ import com.dozenx.web.core.log.bean.FwLog;
 import com.dozenx.web.core.log.bean.FwLogExample;
 import com.dozenx.web.core.log.dao.AppExceptionLogMapper;
 import com.dozenx.web.core.log.dao.FwLogMapper;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-import com.google.gson.Gson;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Date;
+import java.util.List;
 @Transactional
 @Service("logService")
 public class LogService {

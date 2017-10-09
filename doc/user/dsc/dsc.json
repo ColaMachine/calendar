@@ -1,0 +1,28 @@
+{
+  //描述
+  moduleName:"用户列表",
+  //
+  view:[
+    {
+      type:"search-bar",
+      child:[
+        {
+          type:"input-text",
+          name:"userName",
+          label:"用户名"
+        },
+        {
+          type:"input-text",
+          name:"nick",
+          label:"昵称"
+        },
+        {
+          type:"input-text",
+          name:"nick",
+          label:"昵称"
+        },
+      ]
+    }
+
+  ]
+}

@@ -2,25 +2,17 @@ package com.dozenx.util;
 
 import com.alibaba.fastjson.JSON;
 
-import com.alibaba.fastjson.JSON;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class LocationUtil {
 	public static HashMap<Integer,Integer>  map = new HashMap<Integer,Integer>();

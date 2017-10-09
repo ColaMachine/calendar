@@ -1,7 +1,8 @@
 package pachong;
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -9,10 +10,10 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 /**
  * Created by colamachine on 16-4-22.
  */

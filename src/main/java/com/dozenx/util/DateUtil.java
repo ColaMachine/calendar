@@ -65,7 +65,8 @@ public final class DateUtil {
 	public static String getNow() {
 		return formatToString(new Date(), YYYY_MM_DD_HH_MM_SS);
 	}
-	
+
+
 	/**
 	 * 说明: 得到当前时间 去掉 毫秒
 	 * @return
@@ -330,6 +331,8 @@ public final class DateUtil {
 
 	}
 	public static void main(String[] args) {
+
+		System.out.println(DateUtil.toDateStr(1496997617l*1000));
 		System.out.println(DateUtil.toDateStr(1491038114l*1000));
 		System.out.println(DateUtil.toDateStr(1490862198l*1000));
 		DateUtil.printTimestampby60(24355980);

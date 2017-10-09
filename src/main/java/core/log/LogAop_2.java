@@ -3,8 +3,6 @@ package core.log;
 /**
  * Created by dozen.zhang on 2016/5/13.
  */
-import java.lang.reflect.Method;
-import java.util.UUID;
 
 import com.dozenx.util.RedisUtil;
 import core.redis.annotation.JedisManageSupport;
@@ -16,6 +14,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
+
+import java.lang.reflect.Method;
+import java.util.UUID;
 
 
 @Aspect

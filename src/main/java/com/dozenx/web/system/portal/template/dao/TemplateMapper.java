@@ -1,9 +1,10 @@
 package com.dozenx.web.system.portal.template.dao;
+
+import com.dozenx.web.system.portal.template.bean.Template;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.system.portal.template.bean.Template;
 
 public interface TemplateMapper {
     

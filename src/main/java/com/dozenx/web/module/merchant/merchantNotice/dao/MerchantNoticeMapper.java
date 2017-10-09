@@ -1,9 +1,10 @@
 package com.dozenx.web.module.merchant.merchantNotice.dao;
+
+import com.dozenx.web.module.merchant.merchantNotice.bean.MerchantNotice;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.module.merchant.merchantNotice.bean.MerchantNotice;
 
 public interface MerchantNoticeMapper {
     

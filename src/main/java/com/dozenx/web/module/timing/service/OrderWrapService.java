@@ -1,13 +1,6 @@
 package com.dozenx.web.module.timing.service;
 
 
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.module.buy.order.bean.Order;
 import org.slf4j.Logger;
@@ -15,6 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 @Service("localOrderService")

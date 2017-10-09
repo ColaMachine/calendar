@@ -7,25 +7,25 @@
  */
 
 package com.dozenx.web.system.portal.editorTempComp.service;
-import java.util.*;
 
-import javax.annotation.Resource;
-
+import com.dozenx.util.ResultUtil;
+import com.dozenx.util.StringUtil;
+import com.dozenx.web.core.base.BaseService;
+import com.dozenx.web.core.log.ResultDTO;
 import com.dozenx.web.system.portal.component.bean.Component;
 import com.dozenx.web.system.portal.component.dao.ComponentMapper;
+import com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp;
+import com.dozenx.web.system.portal.editorTempComp.dao.EditorTempCompMapper;
 import com.dozenx.web.system.portal.template.bean.Template;
 import com.dozenx.web.system.portal.template.dao.TemplateMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp;
-import com.dozenx.web.system.portal.editorTempComp.dao.EditorTempCompMapper;
-import com.dozenx.util.ResultUtil;
-import com.dozenx.util.StringUtil;
-import com.dozenx.web.core.base.BaseService;
-
-import com.dozenx.web.core.log.ResultDTO;
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Service("editorTempCompService")
 public class EditorTempCompService extends BaseService {

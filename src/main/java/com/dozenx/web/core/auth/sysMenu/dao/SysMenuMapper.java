@@ -1,9 +1,10 @@
 package com.dozenx.web.core.auth.sysMenu.dao;
+
+import com.dozenx.web.core.auth.sysMenu.bean.SysMenu;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.core.auth.sysMenu.bean.SysMenu;
 
 public interface SysMenuMapper {
     

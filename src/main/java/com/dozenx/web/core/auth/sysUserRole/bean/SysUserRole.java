@@ -6,8 +6,6 @@
  * 文件说明: 
  */
 package com.dozenx.web.core.auth.sysUserRole.bean;
-import java.sql.Timestamp;
-import java.util.Date;
 
 public class SysUserRole {
     /**主键**/

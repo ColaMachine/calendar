@@ -1,12 +1,10 @@
 package com.dozenx.web.core.base;
 
 
-
 import com.dozenx.util.JsonUtils;
 import com.dozenx.util.StringUtil;
-import com.dozenx.web.core.log.service.LogService;
-//import com.dozenx.web.message.ErrorMessage;
 import com.dozenx.web.core.log.ResultDTO;
+import com.dozenx.web.core.log.service.LogService;
 import com.dozenx.web.util.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+//import com.dozenx.web.message.ErrorMessage;
 
 public class BaseController extends ResultAction {
 	@Autowired
@@ -88,6 +88,7 @@ public class BaseController extends ResultAction {
 				response.setCharacterEncoding("UTF-8");
 				response.setContentType("text/json;charset=UTF-8");
 				response.setContentType("text/json;charset=UTF-8");
+
 				response.getWriter().println(resultStr);
 				response.getWriter().flush();
 				response.getWriter().close();

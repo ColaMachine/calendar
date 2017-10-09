@@ -1,10 +1,5 @@
 package com.dozenx.web.module.question.action;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.base.BaseController;
 import com.dozenx.web.core.log.ResultDTO;
@@ -19,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.HashMap;
 
 
 

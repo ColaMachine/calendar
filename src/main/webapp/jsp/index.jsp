@@ -19,6 +19,7 @@
 
 <script type="text/javascript" src="${path}/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="${path}/static/js/common.js"></script>
+<script type="text/javascript" src="${path}/static/js/router.js"></script>
 <script type="text/javascript" src="${path}/static/js/menu.js"></script>
 <script type="text/javascript" src="${path}/static/js/slider.js"></script>
 <script src="/static/js/vue.js"></script>

@@ -7,41 +7,36 @@
  */
 
 package com.dozenx.web.module.merchant.merchantPic.action;
-import java.io.File;
-import java.sql.Timestamp;
-import java.util.*;
 
-import com.dozenx.util.*;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import com.cpj.swagger.annotation.API;
 import com.cpj.swagger.annotation.APIs;
 import com.cpj.swagger.annotation.DataType;
 import com.cpj.swagger.annotation.Param;
-import com.dozenx.web.module.merchant.merchantPic.service.MerchantPicService;
-import com.dozenx.web.module.merchant.merchantPic.bean.MerchantPic;
-import com.dozenx.util.ResultUtil;
-import com.dozenx.util.ValidateUtil;
-import com.dozenx.web.core.rules.*;
-import com.dozenx.web.core.page.Page;
+import com.dozenx.util.*;
 import com.dozenx.web.core.base.BaseController;
-import com.dozenx.util.StringUtil;
-import com.dozenx.util.ValidateUtil;
-import com.dozenx.web.util.RequestUtil;
-import org.springframework.web.bind.annotation.*;
 import com.dozenx.web.core.log.ResultDTO;
-import com.dozenx.util.DateUtil;
+import com.dozenx.web.core.page.Page;
+import com.dozenx.web.core.rules.Digits;
+import com.dozenx.web.core.rules.Length;
+import com.dozenx.web.core.rules.NotEmpty;
+import com.dozenx.web.core.rules.Rule;
+import com.dozenx.web.module.merchant.merchantPic.bean.MerchantPic;
+import com.dozenx.web.module.merchant.merchantPic.service.MerchantPicService;
+import com.dozenx.web.util.RequestUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.*;
 @APIs(description = "商户滚动图片")
 @Controller
 @RequestMapping("/merchantPic")

@@ -2,7 +2,8 @@ var globalEntity={};
 var RightBar = React.createClass({displayName: "RightBar",
 	getInitialState: function() {
 	    return {
-            components:[]
+            components:[],
+            pageNo:1
 	    };
     },
     selectBlcok:function(component){
@@ -98,13 +99,26 @@ loadStyles("/tmp/component"+component.id+".css");
                 }*/
     },
     request:function(){
-        Ajax.getJSON("/component/list.json",null,function(result){
+        Ajax.getJSON("/component/list.json",{curPage:this.state.pageNo},function(result){
         for( var i=0;i<result.data.length;i++){
             result.data[i].face="/"+ result.data[i].face;
         }
                // alert(result.data.length);
             this.setState({components:result.data});
         }.bind(this))
+    },
+    goPrev:function(){
+
+        if(this.state>=0){
+            this.state.pageNo--;
+        }
+          this.request();
+
+    },
+    goNext:function(){
+         this.state.pageNo++;
+         this.request();
+
     },
     render: function() {
 
@@ -122,6 +136,7 @@ loadStyles("/tmp/component"+component.id+".css");
 
 
             React.createElement("div", {className: "right-bar"}, 
+            React.createElement("div", null, " ", React.createElement("button", {onClick: this.goPrev}, "prev"), React.createElement("button", {onClick: this.goNext}, "next")), 
             React.createElement("div", {id: "config-wrap", className: "config-wrap"}
                        		    ), 
                 this.state.components.map(function(component,index){

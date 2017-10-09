@@ -23,6 +23,7 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URLDecoder;
 import java.nio.file.Path;
 
@@ -34,6 +35,76 @@ import java.nio.file.Path;
 public class ImageUtil {
     private static final Logger logger = LoggerFactory.getLogger(ImageUtil.class);
     private static BufferedImage templateImage;
+
+    public static void saveFileFromUrl (String url,String filePath) throws Exception {
+        //  url = "http://open.e.189.cn/api/account/generateQrcodeImg.do?clientType=1&appId=8138110044&format=&sign=2F26885DE0BAA8CDEBD45AD4F38942ECAFA9B4C9&paras=0E6F1099785CE61B794B8F49C8D8754EECDA0E5650768AAA3C3CBF18016505FD865475F300D72A5A825404A3E5534480B0C1017A0466596CBE3EBE8175EB6F06C1B1FE296AE40EF96E3405095F5A7D3123B28F400C91F23F0BE3CF961636FE57319AF8E93330A3A070685F19&version=&uuid=https%3A%2F%2Fopen.e.189.cn%2Fapi%2Faccount%2FqrClinentLogin.do%3Fparas%3Dnew_uuid%253Dcb7c0zapglauzgsv%257C8138110044";
+
+        HttpURLConnection connection = HttpRequestUtil.sendGetRequest(url);
+        InputStream is = connection.getInputStream();
+        int responseCode =  connection.getResponseCode();
+        System.out.println("responseCode=" + responseCode);
+
+
+
+        byte[] byteAry = new byte[1024];
+
+
+        // sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
+        //String fileStr =  encoder.encode(fileBytes);
+        // 对字节数组Base64编码
+        // System.out.println(fileStr);
+
+        System.out.println("------------------------");
+
+        //System.out.println(new String(fileBytes));
+
+        File outFile = new File(filePath);
+        OutputStream os = new FileOutputStream(outFile);
+
+        int count = 0;
+        while((count=is.read(byteAry))>0){
+            os.write(byteAry, 0, count);
+        }
+
+        os.close();
+        is.close();
+
+    }
+
+    public static void getBase64FromUrl (String url) throws Exception {
+        //  url = "http://open.e.189.cn/api/account/generateQrcodeImg.do?clientType=1&appId=8138110044&format=&sign=2F26885DE0BAA8CDEBD45AD4F38942ECAFA9B4C9&paras=0E6F1099785CE61B794B8F49C8D8754EECDA0E5650768AAA3C3CBF18016505FD865475F300D72A5A825404A3E5534480B0C1017A0466596CBE3EBE8175EB6F06C1B1FE296AE40EF96E3405095F5A7D3123B28F400C91F23F0BE3CF961636FE57319AF8E93330A3A070685F19&version=&uuid=https%3A%2F%2Fopen.e.189.cn%2Fapi%2Faccount%2FqrClinentLogin.do%3Fparas%3Dnew_uuid%253Dcb7c0zapglauzgsv%257C8138110044";
+
+        HttpURLConnection connection = HttpRequestUtil.sendGetRequest(url);
+        InputStream is = connection.getInputStream();
+        int responseCode =  connection.getResponseCode();
+        System.out.println("responseCode=" + responseCode);
+
+
+
+        byte[] byteAry = new byte[1024];
+
+
+        // sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
+        //String fileStr =  encoder.encode(fileBytes);
+        // 对字节数组Base64编码
+        // System.out.println(fileStr);
+
+        System.out.println("------------------------");
+
+        //System.out.println(new String(fileBytes));
+        File outFile = new File("c");
+
+        OutputStream os = new FileOutputStream(outFile);
+
+        int count = 0;
+        while((count=is.read(byteAry))>0){
+            os.write(byteAry, 0, count);
+        }
+
+        os.close();
+        is.close();
+
+    }
 
     /**
      * 图像放大
@@ -316,7 +387,8 @@ public class ImageUtil {
                     session.close();
                     logger.debug(
                             "local image file :" + localPath);
-                } scpClient.put(localPath, theDir); //从本地复制文件到远程目录
+                }
+                scpClient.put(localPath, theDir); //从本地复制文件到远程目录
             } con.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -460,6 +532,9 @@ public class ImageUtil {
                 imageData = imageData.substring(1);
             }
             imageData = imageData.substring(imageData.indexOf("iVBO"));
+            if(imageData.indexOf("base64")>0){
+                imageData = imageData.substring(imageData.indexOf("base64")+7);
+            }
             // 去除开头不合理的数据
             // imageData = URLDecoder.decode(imageData, "UTF-8");
             // imageData = imageData.substring(30);
@@ -485,6 +560,11 @@ public class ImageUtil {
     // references: http://blog.csdn.net/remote_roamer/article/details/2979822
     private static boolean saveImageToDisk(byte[] data, String path, String imageName) throws IOException {
         int len = data.length;
+
+        File file =new File(path);
+        if(!file.exists()){
+            file.mkdirs();
+        }
         // 写入到文件
    /*     System.out.println(data);
         for(int i=0;i<data.length;i++){

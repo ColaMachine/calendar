@@ -7,39 +7,28 @@
  */
 
 package com.dozenx.web.core.auth.sysUser.action;
-import java.io.File;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.LinkedHashMap;
+
 import com.dozenx.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.dozenx.web.util.ConfigUtil;
-import com.dozenx.web.util.SpringBeanFactoryUtils;
+import com.dozenx.web.core.auth.sysUser.bean.SysUser;
+import com.dozenx.web.core.auth.sysUser.service.SysUserService;
+import com.dozenx.web.core.base.BaseController;
+import com.dozenx.web.core.page.Page;
+import com.dozenx.web.core.rules.*;
+import com.dozenx.web.util.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 
-import com.dozenx.web.core.auth.sysUser.service.SysUserService;
-import com.dozenx.web.core.auth.sysUser.bean.SysUser;
-import com.dozenx.util.ResultUtil;
-import com.dozenx.util.ValidateUtil;
-import com.dozenx.web.core.rules.*;
-import com.dozenx.web.core.page.Page;
-import com.dozenx.web.core.base.BaseController;
-import com.dozenx.util.StringUtil;
-import com.dozenx.web.util.RequestUtil;
-import com.dozenx.util.DateUtil;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.sql.Timestamp;
+import java.util.*;
 @Controller
 @RequestMapping("/sysUser")
 public class SysUserController extends BaseController{
@@ -77,9 +66,9 @@ public class SysUserController extends BaseController{
     @RequestMapping(value = "/list.json")
     @ResponseBody
     public Object list(HttpServletRequest request) {
-        Object obj = SpringBeanFactoryUtils.getBean("SysConfigService");
+        //Object obj = SpringBeanFactoryUtils.getBean("SysConfigService");
 
-        ConfigUtil.getConfig("SysConfigService");
+        //ConfigUtil.getConfig("SysConfigService");
         Page page = RequestUtil.getPage(request);
         if(page ==null){
              return this.getWrongResultFromCfg("err.param.page");

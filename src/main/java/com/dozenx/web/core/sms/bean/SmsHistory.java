@@ -1,8 +1,6 @@
 package com.dozenx.web.core.sms.bean;
 
-import com.alibaba.fastjson.JSON;
-
-import java.util.*;
+import java.util.LinkedList;
 
 /**
  * 主要存放在缓存用来比较验证码的正确性及有效性

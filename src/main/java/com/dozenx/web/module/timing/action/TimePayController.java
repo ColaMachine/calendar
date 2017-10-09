@@ -1,6 +1,8 @@
 package com.dozenx.web.module.timing.action;
 
-import com.cpj.swagger.annotation.*;
+import com.cpj.swagger.annotation.API;
+import com.cpj.swagger.annotation.APIResponse;
+import com.cpj.swagger.annotation.APITag;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.base.BaseController;

@@ -1,9 +1,9 @@
 package com.dozenx.web.core.log.dao;
- import com.dozenx.web.core.log.bean.SysLog;
 
- import java.util.HashMap;
+import com.dozenx.web.core.log.bean.SysLog;
+
+import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
 
 

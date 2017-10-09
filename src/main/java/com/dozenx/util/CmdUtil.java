@@ -7,14 +7,12 @@
  */
 package com.dozenx.util;
 
-import ch.ethz.ssh2.Connection;
-import ch.ethz.ssh2.SCPClient;
-import ch.ethz.ssh2.SFTPv3Client;
-import ch.ethz.ssh2.StreamGobbler;
-import com.dozenx.core.Path.PathManager;
 import org.slf4j.Logger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class CmdUtil {
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(CmdUtil.class);

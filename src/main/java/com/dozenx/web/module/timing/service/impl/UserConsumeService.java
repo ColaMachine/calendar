@@ -1,11 +1,5 @@
 package com.dozenx.web.module.timing.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
 import com.dozenx.util.DateUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.module.timing.bean.TimeConsume;
@@ -14,6 +8,11 @@ import com.dozenx.web.module.timing.dao.UserConsumeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**

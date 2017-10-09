@@ -1,8 +1,8 @@
 package com.dozenx.util;
 
-import com.dozenx.web.core.rules.Rule;
 import com.dozenx.web.core.log.ErrorMessage;
 import com.dozenx.web.core.log.ResultDTO;
+import com.dozenx.web.core.rules.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

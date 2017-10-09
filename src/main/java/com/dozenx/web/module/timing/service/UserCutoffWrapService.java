@@ -1,22 +1,20 @@
 package com.dozenx.web.module.timing.service;
 
+import com.dozenx.web.core.log.ServiceCode;
+import com.dozenx.web.core.log.service.LogUtilService;
+import com.dozenx.web.module.timing.bean.UserCutoff;
+import com.dozenx.web.module.timing.service.impl.UserCutoffService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-
-import com.dozenx.web.core.log.ServiceCode;
-import com.dozenx.web.core.log.service.LogUtilService;
-
-import com.dozenx.web.module.timing.bean.UserCutoff;
-import com.dozenx.web.module.timing.service.impl.UserCutoffService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 @Service
 public class UserCutoffWrapService {

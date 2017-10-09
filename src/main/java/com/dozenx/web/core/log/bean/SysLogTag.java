@@ -6,8 +6,6 @@
  * 文件说明: 
  */
 package com.dozenx.web.core.log.bean;
-import java.sql.Timestamp;
-import java.util.Date;
 
 public class SysLogTag {
     /**编号**/

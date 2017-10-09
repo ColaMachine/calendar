@@ -50,14 +50,14 @@ public class MapUtils {
 	public static String join(Map map ,String seprator){
 		StringBuffer sb =new StringBuffer();
 
-		Iterator it = map.keySet().iterator();
+		Iterator it = map.entrySet().iterator();
 		while(it.hasNext()){
 			Map.Entry<String, Object> entry = (Map.Entry<String, Object>)it.next();
 			String key = entry.getKey();
 			String value =entry.getValue()+"";
 			sb.append(key+"="+value+seprator);
 		}
-		return sb.substring(0,sb.length()-2);
+		return sb.substring(0,sb.length()-1);
 
 	}
 	public static HashMap request2Map(HttpServletRequest request) {

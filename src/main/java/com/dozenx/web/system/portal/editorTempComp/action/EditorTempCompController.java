@@ -7,35 +7,32 @@
  */
 
 package com.dozenx.web.system.portal.editorTempComp.action;
-import java.io.File;
-import java.util.*;
 
 import com.alibaba.fastjson.JSON;
 import com.dozenx.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.dozenx.web.core.base.BaseController;
+import com.dozenx.web.core.page.Page;
+import com.dozenx.web.core.rules.Digits;
+import com.dozenx.web.core.rules.Length;
+import com.dozenx.web.core.rules.NotEmpty;
+import com.dozenx.web.core.rules.Rule;
 import com.dozenx.web.system.portal.component.service.ComponentService;
+import com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp;
+import com.dozenx.web.system.portal.editorTempComp.service.EditorTempCompService;
+import com.dozenx.web.util.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 
-import com.dozenx.web.system.portal.editorTempComp.service.EditorTempCompService;
-import com.dozenx.web.system.portal.editorTempComp.bean.EditorTempComp;
-import com.dozenx.util.ResultUtil;
-import com.dozenx.util.ValidateUtil;
-import com.dozenx.web.core.rules.*;
-import com.dozenx.web.core.page.Page;
-import com.dozenx.web.core.base.BaseController;
-import com.dozenx.util.StringUtil;
-import com.dozenx.web.util.RequestUtil;
-import com.dozenx.util.DateUtil;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.*;
 
 @Controller
 @RequestMapping("/editorTempComp")

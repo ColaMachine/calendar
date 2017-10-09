@@ -7,22 +7,21 @@
  */
 
 package com.dozenx.web.module.goods.service;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
-import javax.annotation.Resource;
-
+import com.dozenx.util.ResultUtil;
+import com.dozenx.web.core.base.BaseService;
+import com.dozenx.web.core.log.ResultDTO;
+import com.dozenx.web.module.goods.bean.Goods;
+import com.dozenx.web.module.goods.dao.GoodsMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.dozenx.web.module.goods.bean.Goods;
-import com.dozenx.web.module.goods.dao.GoodsMapper;
-import com.dozenx.util.ResultUtil;
-import com.dozenx.web.core.base.BaseService;
-import com.dozenx.web.core.log.ResultDTO;
+import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 @Service("goodsService")
 public class GoodsService extends BaseService {

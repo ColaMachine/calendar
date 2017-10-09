@@ -6,8 +6,6 @@
  * 文件说明: 
  */
 package com.dozenx.web.core.sysConfig.bean;
-import java.sql.Timestamp;
-import java.util.Date;
 
 public class SysConfig {
     /**编号**/

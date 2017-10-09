@@ -1,19 +1,25 @@
 package com.dozenx.util;
 
 import com.dozenx.core.Path.PathManager;
-import com.google.gson.Gson;
+
+
+
 import org.apache.commons.codec.binary.Hex;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-//import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
 
 import java.io.*;
 import java.lang.reflect.Field;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+//import org.apache.poi.ss.usermodel.DateUtil;
 
 public class ExcelUtil {
 
@@ -288,6 +294,55 @@ public class ExcelUtil {
         }
     }
 
+    public static Workbook getExcelBookFromMap(List<Map<String, String>> data,
+                                           LinkedHashMap<String, String> colTitle) throws IOException {
+        if (data == null || data.size() == 0) {
+            return null;
+        } else {
+            Workbook wb = null;
+
+                wb = new HSSFWorkbook();
+
+            Sheet sheet = wb.createSheet("sheet1");
+            // 先创建表头,将表头内容居中
+            Row row = sheet.createRow(0);
+            CellStyle style = wb.createCellStyle();
+            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            // 表头的列值集合
+            List<String> keyList = new ArrayList<String>();
+            int c = 0;
+            // 如果有匹配的列名则完全按照提供的列名键对值进行列填充，反之则用原数据
+            if (colTitle != null && colTitle.size() > 0) {
+                for (String key : colTitle.keySet()) {
+                    keyList.add(key);
+                    Cell cell = row.createCell(c++);
+                    cell.setCellValue(colTitle.get(key));
+                    cell.setCellStyle(style);
+                }
+            } else {
+                for (String key : data.get(0).keySet()) {
+                    keyList.add(key);
+                    Cell cell = row.createCell(c++);
+                    cell.setCellValue(key);
+                    cell.setCellStyle(style);
+                }
+            }
+            // 生成各行对应数据
+            for (int i = 0; i < data.size(); i++) {
+                row = sheet.createRow(i + 1);
+                Map<String, String> map = data.get(i);
+                for (int j = 0; j < keyList.size(); j++) {
+                    row.createCell(j).setCellValue(map.get(keyList.get(j)));
+                }
+            }
+            // 输出Excel文件
+
+           return wb;
+
+
+        }
+    }
+
     /**
      * @param cell
      *            参数
@@ -410,7 +465,7 @@ public class ExcelUtil {
      * @throws IOException
      *             抛出IO异常
      */
-    public static void main(String[] args) throws IOException {
+    public static void main1(String[] args) throws IOException {
 		/*
 		 * List<Map<String, String>> list = new ArrayList<Map<String,
 		 * String>>(); for (int i = 0; i < 10; i++) { Map<String, String> map =
@@ -426,6 +481,28 @@ public class ExcelUtil {
         for (int i = 0; i < listMap.size(); i++) {
             Map<String, String> map = listMap.get(i);
             System.out.println("," + map.get("a"));
+        }
+
+    }
+
+
+    public static void main(String args[]){
+        ByteArrayOutputStream outputStream =new ByteArrayOutputStream();
+        List<Map<String,String>> dataList =new ArrayList<>();
+
+        Map<String,String> map =new HashMap<String ,String>();
+        map.put("a","1");
+
+        dataList.add(map);
+        LinkedHashMap titleMap =new LinkedHashMap();
+        titleMap.put("a","你好");
+        try {
+            ExcelUtil.getExcelBookFromMap(dataList,titleMap).write(outputStream);
+            InputStream is =new StreamUtil().parse(outputStream);
+            MockMultipartFile file123 = new MockMultipartFile("file","1.gif","image/jpeg",is);
+            MockMultipartHttpServletRequest request123 = new MockMultipartHttpServletRequest() ;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

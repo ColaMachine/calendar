@@ -7,10 +7,6 @@
  */
 package com.dozenx.web.core.auth.action;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-
 import com.dozenx.util.ResultUtil;
 import com.dozenx.web.core.auth.service.AuthService;
 import com.dozenx.web.core.auth.service.UserService;
@@ -23,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 
 @Controller

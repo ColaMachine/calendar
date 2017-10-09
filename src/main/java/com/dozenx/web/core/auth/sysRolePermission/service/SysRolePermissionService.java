@@ -7,26 +7,24 @@
  */
 
 package com.dozenx.web.core.auth.sysRolePermission.service;
-import java.util.HashMap;
-import java.util.List;
 
-import javax.annotation.Resource;
-
+import com.dozenx.util.ResultUtil;
+import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.auth.sysPermission.bean.SysPermission;
 import com.dozenx.web.core.auth.sysPermission.dao.SysPermissionMapper;
 import com.dozenx.web.core.auth.sysRole.bean.SysRole;
 import com.dozenx.web.core.auth.sysRole.dao.SysRoleMapper;
+import com.dozenx.web.core.auth.sysRolePermission.bean.SysRolePermission;
+import com.dozenx.web.core.auth.sysRolePermission.dao.SysRolePermissionMapper;
+import com.dozenx.web.core.base.BaseService;
+import com.dozenx.web.core.log.ResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.dozenx.web.core.auth.sysRolePermission.bean.SysRolePermission;
-import com.dozenx.web.core.auth.sysRolePermission.dao.SysRolePermissionMapper;
-import com.dozenx.util.ResultUtil;
-import com.dozenx.util.StringUtil;
-import com.dozenx.web.core.base.BaseService;
-
-import com.dozenx.web.core.log.ResultDTO;
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
 
 @Service("sysRolePermissionService")
 public class SysRolePermissionService extends BaseService {

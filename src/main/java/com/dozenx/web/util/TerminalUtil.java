@@ -1,9 +1,9 @@
 package com.dozenx.web.util;
 
+import com.dozenx.util.StringUtil;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.dozenx.util.StringUtil;
 
 
 /**   

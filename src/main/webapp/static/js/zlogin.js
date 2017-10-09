@@ -154,7 +154,7 @@ var loginForm={
                 required : true,
               /*  email : true,*/
                 rangelength : [ 1, 50 ],
-                isemailorphone : true
+                //isemailorphone : true
             },
             pwd : {
                 stringCheck : true,

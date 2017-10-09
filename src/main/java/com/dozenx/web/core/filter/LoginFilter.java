@@ -8,7 +8,6 @@ import com.dozenx.web.core.log.ResultDTO;
 import com.dozenx.web.module.merchant.bean.SessionDTO;
 import com.dozenx.web.module.merchant.bean.SessionUser;
 import com.dozenx.web.util.RequestUtil;
-import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

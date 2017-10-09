@@ -22,7 +22,6 @@ import com.dozenx.web.third.access.bean.AuthResult;
 import com.dozenx.web.third.dbcenter.bean.PubDeviceQueryResult;
 import com.dozenx.web.third.dbcenter.service.MerchantDeviceBaseService;
 import com.dozenx.web.util.RequestUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -302,8 +301,10 @@ public class MerchantController  extends BaseController {
                 request.getSession().setAttribute(Constants.SESSION_DTO, paramDTO);
                 sessionDTO = paramDTO;
             }else if(sessionDTO == null && (paramDTO==null || paramDTO.getDeviceId()==null) ){
+                //用户上报的信息缺失deviceid
                 throw new ParamException(code,"this param dto should not be null and meantime the sessionDto is also null");
-            }}
+            }
+        }
         //根据设备查询商户信息
         //如果session为空 || session中的account_id为空 || url中的account_id 改变 || url中的devId改变， 则更新session
         //step 2 并初始化商户信息(存入到session中,如果有就不用)
@@ -311,6 +312,7 @@ public class MerchantController  extends BaseController {
         if(sessionDTO.getMerchant()==null){
            /* HashMap<String, Object> map = new HashMap<>();
             map.put("deviceId", ParamDTOInSession.getDeviceId());*/
+            //找到商户id 找到商户名称 找到一个设备的mac
             PubDeviceQueryResult pubDeviceQueryResult = merchantDeviceBaseService.queryDetailById(sessionDTO.getDeviceId());
             if (pubDeviceQueryResult == null) {
                 logger.error("this deviceId can't find merchantInfo:"+sessionDTO.getDeviceId());

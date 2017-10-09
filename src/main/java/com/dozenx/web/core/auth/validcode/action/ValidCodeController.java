@@ -1,10 +1,5 @@
 package com.dozenx.web.core.auth.validcode.action;
 
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.dozenx.core.config.Config;
 import com.dozenx.core.config.ValidCodeConfig;
 import com.dozenx.util.ResultUtil;
@@ -21,6 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 
 

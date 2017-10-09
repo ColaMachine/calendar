@@ -7,20 +7,20 @@
  */
 
 package com.dozenx.web.core.log.service;
+
+import com.dozenx.util.ResultUtil;
+import com.dozenx.web.core.log.ResultDTO;
+import com.dozenx.web.core.log.bean.SysLog;
+import com.dozenx.web.core.log.dao.SysLogMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.dozenx.util.ResultUtil;
-import com.dozenx.web.core.log.bean.SysLog;
-import com.dozenx.web.core.log.dao.SysLogMapper;
-import com.dozenx.web.core.log.ResultDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 
 @Service("sysLogService")

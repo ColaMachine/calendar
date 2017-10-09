@@ -6,8 +6,8 @@
  * 文件说明: 
  */
 package com.dozenx.web.system.expert.bean;
+
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class Expert {
     /**编号**/

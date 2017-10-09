@@ -1,12 +1,6 @@
 package com.dozenx.web.third.access.service;
 
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.alibaba.fastjson.JSON;
 import com.dozenx.util.*;
 import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.log.ServiceCode;
@@ -19,15 +13,17 @@ import com.dozenx.web.third.access.bean.AuthResult;
 import com.dozenx.web.third.access.bean.DevParms;
 import com.dozenx.web.third.access.bean.Kickuseroffline;
 import com.dozenx.web.util.ConfigUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import com.alibaba.fastjson.JSON;
-
 import redis.clients.jedis.Jedis;
+
+import javax.annotation.Resource;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * . 接入认证

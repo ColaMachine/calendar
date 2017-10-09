@@ -4,31 +4,24 @@ package pachong;
 /**
  * Created by dozen.zhang on 2016/12/2.
  */
-        import java.io.*;
-        import java.net.Socket;
-        import java.net.URL;
-        import java.util.HashMap;
-        import java.util.Map;
-        import java.util.regex.Matcher;
-        import java.util.regex.Pattern;
 
+import com.dozenx.core.Path.PathManager;
+import com.dozenx.util.FileUtil;
+import com.dozenx.util.HttpHeader;
+import com.dozenx.util.HttpRequestUtil;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
-        import com.dozenx.core.Path.PathManager;
-        import com.dozenx.util.FileUtil;
-        import com.dozenx.util.HttpHeader;
-        import com.dozenx.util.HttpRequestUtil;
-        import org.apache.commons.httpclient.HttpMethod;
-        import org.apache.commons.httpclient.HttpStatus;
-        import org.apache.commons.httpclient.methods.PostMethod;
-        import org.apache.commons.httpclient.params.HttpMethodParams;
-        import org.apache.http.client.HttpClient;
-        import org.apache.http.impl.client.CloseableHttpClient;
-        import org.apache.http.impl.client.HttpClients;
-        import org.w3c.dom.*;
-        import org.xml.sax.SAXException;
-
-        import javax.xml.parsers.*;
-        import javax.xml.xpath.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.*;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
 
 public class XPathExample {
 
@@ -46,25 +39,25 @@ try {
 
     public static void testHtml()throws Exception {
         HttpHeader loginHttpHeader=new  HttpHeader();
-        loginHttpHeader.Host = "www.mayadisc.com";
-        loginHttpHeader.Origin="http://www.mayadisc.com";
-        loginHttpHeader.Referer = "http://www.mayadisc.com/logging.php?action=login";
+        loginHttpHeader.Host = "www.mayaww.com";
+        loginHttpHeader.Origin="http://www.mayaww.com";
+        loginHttpHeader.Referer = "http://www.mayaww.com/logging.php?action=login";
         loginHttpHeader.cookies.put("is_use_cookiex","yes");
         loginHttpHeader.cookies.put("cdb_cookietime","2592000");
-        loginHttpHeader.cookies.put("cdb_oldtopics","D2094663D");
-        loginHttpHeader.cookies.put("cdb_fid5","1480639303");
-        loginHttpHeader.cookies.put("cdb_sid","FwV7KV");
+        loginHttpHeader.cookies.put("cdb_oldtopics","D2112861D2112856D2112862D2112863D");
+        loginHttpHeader.cookies.put("cdb_fid5","1499129739");
+        loginHttpHeader.cookies.put("cdb_sid","7kuZiP");
         loginHttpHeader.cookies.put("is_use_cookied","yes");
 
         //HashMap params =new HashMap();
         loginHttpHeader.Content_Length=190;
-        loginHttpHeader.cookies.put("Host","www.mayadisc.com");
+        loginHttpHeader.cookies.put("Host","www.mayaww.com");
         //loginHttpHeader.params.put
         loginHttpHeader.params.put("username","zjlgdxfj");
 
         loginHttpHeader.params.put("password","123456fj");
-        loginHttpHeader.params.put("formhash","afabcdb9");
-        loginHttpHeader.params.put("referer","http://www.mayadisc.com/index.php");
+        loginHttpHeader.params.put("formhash","c7fcc9af");
+        loginHttpHeader.params.put("referer","http://www.mayaww.com/index.php");
         loginHttpHeader.params.put("loginfield","username");
         loginHttpHeader.params.put("questionid","0");
         loginHttpHeader.params.put("answer","");
@@ -74,7 +67,7 @@ try {
         loginHttpHeader.params.put("loginsubmit","%CC%E1+%26%23160%3B+%BD%BB");
 
 
-        String body= HttpRequestUtil.doGet(loginHttpHeader, "http://www.mayadisc.com/forumdisplay.php?fid=5", loginHttpHeader.params, "gbk");
+        String body= HttpRequestUtil.doGet(loginHttpHeader, "http://www.mayaww.com/forumdisplay.php?fid=5", loginHttpHeader.params, "gbk");
 
         System.out.println(body);
 
@@ -86,9 +79,9 @@ try {
         loginHttpHeader.Referer = "http://www.mayadisc.com/logging.php?action=login";
         loginHttpHeader.cookies.put("is_use_cookiex","yes");
         loginHttpHeader.cookies.put("cdb_cookietime","2592000");
-        loginHttpHeader.cookies.put("cdb_oldtopics","D2094663D");
-        loginHttpHeader.cookies.put("cdb_fid5","1480639303");
-        loginHttpHeader.cookies.put("cdb_sid","FwV7KV");
+        loginHttpHeader.cookies.put("cdb_oldtopics","D2112861D2112856D2112862D2112863D");
+        loginHttpHeader.cookies.put("cdb_fid5","1499129739");
+        loginHttpHeader.cookies.put("cdb_sid","7kuZiP");
         loginHttpHeader.cookies.put("is_use_cookied","yes");
 
         //HashMap params =new HashMap();
@@ -176,7 +169,7 @@ try {
 
 
         //]String loginConent = HttpRequestUtil.sendPost3("http://www.mayadisc.com/logging.php?action=login&", map);
-        String loginConent = HttpRequestUtil.doPost(httpclient,"http://www.mayadisc.com/logging.php?action=login", map, "gbk", true);
+        String loginConent = HttpRequestUtil.doPost(httpclient,"http://www.mayaww.com/logging.php?action=login", map, "gbk", true);
 
         //  System.out.println(ZipUtil.uncompress(loginConent));
         //String loginConent= HttpRequestUtil.sendPost("http://www.mayadisc.com/logging.php?action=login&","formhash=afabcdb9&referer=index.php&loginfield=username&username=zjlgdxfj&password=123456fj&questionid=0&answer=&cookietime=2592000&loginmode=&styleid=&loginsubmit=%CC%E1+%26%23160%3B+%BD%BB");

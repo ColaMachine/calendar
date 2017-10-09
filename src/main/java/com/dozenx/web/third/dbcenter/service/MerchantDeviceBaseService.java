@@ -1,12 +1,9 @@
 package com.dozenx.web.third.dbcenter.service;
 
 import com.dozenx.util.JsonUtils;
-import com.dozenx.web.module.merchant.bean.CenterPubMerchant;
 import com.dozenx.web.third.dbcenter.bean.PubDeviceQueryResult;
 import com.dozenx.web.third.dbcenter.util.AwifiHttpRequestUtil;
 import com.dozenx.web.util.ConfigUtil;
-import org.codehaus.jackson.type.TypeReference;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

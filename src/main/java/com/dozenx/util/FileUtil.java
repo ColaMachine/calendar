@@ -55,7 +55,13 @@ public class FileUtil {
      */
     public static String readFile2Str(String path) throws IOException {
         File file = PathManager.getInstance().getHomePath().resolve(path).toFile();
-        return readFile2Str(file);
+        String content = "";
+        try{
+            content =  readFile2Str(file);
+        }catch(Exception e ){
+            e.printStackTrace();
+        }
+        return content;
     }
 
     /**
@@ -67,7 +73,7 @@ public class FileUtil {
      */
     public static String readFile2Str(File file) throws IOException {
         if (!file.exists()) {
-            throw new IOException("path file not exist");
+            throw new IOException("path file "+file.getPath()+" not exist");
         }
         InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
         BufferedReader br = new BufferedReader(isr);
@@ -312,5 +318,24 @@ public class FileUtil {
             con.close();
         }
 
+    }
+
+    private static boolean saveImageToDisk(byte[] data, String path, String imageName) throws IOException {
+        int len = data.length;
+
+        File file =new File(path);
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        // 写入到文件
+   /*     System.out.println(data);
+        for(int i=0;i<data.length;i++){
+            System.out.print(data[i]);
+        }*/
+        FileOutputStream outputStream = new FileOutputStream(new File(path, imageName));
+        outputStream.write(data);
+        outputStream.flush();
+        outputStream.close();
+        return true;
     }
 }

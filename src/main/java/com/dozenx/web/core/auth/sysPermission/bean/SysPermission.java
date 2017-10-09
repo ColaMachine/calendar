@@ -6,8 +6,6 @@
  * 文件说明: 
  */
 package com.dozenx.web.core.auth.sysPermission.bean;
-import java.sql.Timestamp;
-import java.util.Date;
 
 public class SysPermission {
     /**编号**/

@@ -1,9 +1,10 @@
 package com.dozenx.web.system.artical.dao;
+
+import com.dozenx.web.system.artical.bean.Artical;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.system.artical.bean.Artical;
 
 public interface ArticalMapper {
     

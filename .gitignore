@@ -33,3 +33,5 @@ portalEditor/gulp/node_modules/*
 gulp/*
 src/main/webapp/images/*
 src/main/webapp/html/*
+webpack/node_modules/*
+webpack/npm-debug.log*

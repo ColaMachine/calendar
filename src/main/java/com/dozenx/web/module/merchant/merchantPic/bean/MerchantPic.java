@@ -6,8 +6,6 @@
  * 文件说明: 
  */
 package com.dozenx.web.module.merchant.merchantPic.bean;
-import java.sql.Timestamp;
-import java.util.Date;
 
 public class MerchantPic {
     /**编号**/

@@ -1,9 +1,10 @@
 package com.dozenx.web.module.goods.dao;
+
+import com.dozenx.web.module.goods.bean.Goods;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.module.goods.bean.Goods;
 
 public interface GoodsMapper {
     

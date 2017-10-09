@@ -6,8 +6,8 @@
  * 文件说明: 
  */
 package com.dozenx.web.system.partner.bean;
+
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class Partner {
     /**编号**/

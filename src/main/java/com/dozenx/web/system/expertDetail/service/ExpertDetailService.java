@@ -7,20 +7,19 @@
  */
 
 package com.dozenx.web.system.expertDetail.service;
-import java.util.HashMap;
-import java.util.List;
 
-import javax.annotation.Resource;
-
+import com.dozenx.util.ResultUtil;
+import com.dozenx.web.core.base.BaseService;
+import com.dozenx.web.core.log.ResultDTO;
+import com.dozenx.web.system.expertDetail.bean.ExpertDetail;
+import com.dozenx.web.system.expertDetail.dao.ExpertDetailMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.dozenx.web.system.expertDetail.bean.ExpertDetail;
-import com.dozenx.web.system.expertDetail.dao.ExpertDetailMapper;
-import com.dozenx.util.ResultUtil;
-import com.dozenx.web.core.base.BaseService;
-import com.dozenx.web.core.log.ResultDTO;
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
 
 @Service("expertDetailService")
 public class ExpertDetailService extends BaseService {

@@ -89,16 +89,16 @@
             sendRequest:function(){
                  console.log("formId"+this.formId);
                  console.log("url"+this.content.url);
-
+                //获取json数据  get the form json
                 var json = changeForm2Jso("#"+this.formId);
-                var url=   this.content.url;
-                if(this.content.url.indexOf("{")>0){
+                var url=   this.content.url;    //获取请求 get the request url
+                if(this.content.url.indexOf("{")>0){    //如果含有 if contain path variable
                    var replaceId = url.substr(url.indexOf("{")+1,url.indexOf("}")-url.indexOf("{")-1);
-                    url=url.replace("{"+replaceId+"}",json[replaceId]);
+                    url=url.replace("{"+replaceId+"}",json[replaceId]); //replace it put the variable into url
                     //alert(replaceId);
                  }//alert(url);
                 console.log(json);
-
+                alert(this.consumes);
                 this.requestData=json;
               $.ajax({
              type: this.content.httpType,

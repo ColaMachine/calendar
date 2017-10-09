@@ -6,8 +6,8 @@
  * 文件说明: 
  */
 package com.dozenx.web.system.portal.template.bean;
+
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class Template {
     /**编号**/

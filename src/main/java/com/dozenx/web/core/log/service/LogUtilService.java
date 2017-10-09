@@ -1,11 +1,5 @@
 package com.dozenx.web.core.log.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
-
-//import com.awifi.core.log.collection.api.client.LogSendClient;
-
 import com.dozenx.util.NetWorkUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.log.LogKey;
@@ -17,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.util.Date;
+
+//import com.awifi.core.log.collection.api.client.LogSendClient;
 
 
 /*

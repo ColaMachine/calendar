@@ -6,8 +6,8 @@
  * 文件说明: 
  */
 package com.dozenx.web.module.goods.bean;
+
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class Goods {
     /**主键**/

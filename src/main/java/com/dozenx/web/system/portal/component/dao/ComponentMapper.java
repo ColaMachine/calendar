@@ -1,9 +1,10 @@
 package com.dozenx.web.system.portal.component.dao;
+
+import com.dozenx.web.system.portal.component.bean.Component;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.system.portal.component.bean.Component;
 
 public interface ComponentMapper {
     

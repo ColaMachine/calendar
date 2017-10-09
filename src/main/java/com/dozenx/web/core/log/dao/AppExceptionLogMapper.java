@@ -1,11 +1,11 @@
 package com.dozenx.web.core.log.dao;
 
-import java.util.List;
-
 import com.dozenx.web.core.log.bean.AppExceptionLog;
 import com.dozenx.web.core.log.bean.AppExceptionLogExample;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 
 @Component("appExceptionLogMapper") 

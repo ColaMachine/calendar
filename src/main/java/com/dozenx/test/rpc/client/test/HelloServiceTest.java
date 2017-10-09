@@ -2,7 +2,6 @@ package com.dozenx.test.rpc.client.test;
 
 import com.dozenx.test.rpc.client.RpcProxy;
 import com.dozenx.test.rpc.server.HelloService;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

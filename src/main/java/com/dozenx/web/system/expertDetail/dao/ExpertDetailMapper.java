@@ -1,9 +1,10 @@
 package com.dozenx.web.system.expertDetail.dao;
+
+import com.dozenx.web.system.expertDetail.bean.ExpertDetail;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.system.expertDetail.bean.ExpertDetail;
 
 public interface ExpertDetailMapper {
     

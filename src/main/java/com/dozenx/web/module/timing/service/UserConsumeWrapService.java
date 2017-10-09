@@ -1,9 +1,5 @@
 package com.dozenx.web.module.timing.service;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 import com.dozenx.web.module.timing.bean.TimeConsume;
 import com.dozenx.web.module.timing.service.impl.UserConsumeService;
 import org.slf4j.Logger;
@@ -11,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserConsumeWrapService {

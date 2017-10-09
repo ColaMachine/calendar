@@ -1,9 +1,10 @@
 package com.dozenx.web.core.sysConfig.dao;
+
+import com.dozenx.web.core.sysConfig.bean.SysConfig;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.core.sysConfig.bean.SysConfig;
 
 public interface SysConfigMapper {
     

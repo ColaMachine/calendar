@@ -1,17 +1,17 @@
 package com.dozenx.util;
 
 import com.dozenx.core.Path.PathManager;
-import com.dozenx.core.config.Config;
 import com.dozenx.util.font.Glyph;
 import org.apache.commons.io.FileUtils;
-import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by luying on 16/12/24.

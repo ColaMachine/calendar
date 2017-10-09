@@ -1,24 +1,15 @@
 package com.dozenx.web.module.portal.action;
 
-import com.cpj.swagger.annotation.*;
-import com.dozenx.core.exception.ParamException;
-import com.dozenx.web.core.Constants;
-import com.dozenx.web.core.log.ResultDTO;
+import com.cpj.swagger.annotation.APIs;
 import com.dozenx.web.core.log.ServiceCode;
-import com.dozenx.web.module.merchant.bean.SessionDTO;
 import com.dozenx.web.module.merchant.service.MerchantPictureService;
-import com.dozenx.web.third.dbcenter.bean.PubDeviceQueryResult;
 import com.dozenx.web.third.dbcenter.service.MerchantDeviceBaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * Created by dozen.zhang on 2017/3/30.

@@ -1,9 +1,10 @@
 package com.dozenx.web.module.buy.orderDetail.dao;
+
+import com.dozenx.web.module.buy.orderDetail.bean.OrderDetail;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.module.buy.orderDetail.bean.OrderDetail;
 
 public interface OrderDetailMapper {
     

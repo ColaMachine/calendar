@@ -3,6 +3,7 @@ import com.dozenx.util.DateUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.URLEncoder;
 
 
 public class test {
@@ -30,6 +31,8 @@ public class test {
 
     public static void main(String[] args) {
         try {
+
+            System.out.println(URLEncoder.encode("http://192.168.3.139:8080/devsrv/device/upgrade/alone/tasks?params={%22pageNo%22:$221%22}"));
             float total = 380000;
             System.out.println(DateUtil.daysBetween("2015-08-04","2016-04-13"));
             System.out.println(total*0.085/365);

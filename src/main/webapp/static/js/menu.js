@@ -7,37 +7,6 @@ var zMenu = {
 	menuName: "",
 	r:null,
 	init: function(id, data, option) {
-
-	    function Router(){
-            this.routes = {};
-            this.curUrl = '';
-
-            this.addRoute = function(path, callback){
-                this.routes[path] = callback || function(){alert(path);zMenu.loadPage(path)};
-            };
-
-            this.refresh = function(){
-                this.curUrl = location.hash.slice(1) || '/';
-                if( this.routes[this.curUrl]){
-                    this.routes[this.curUrl]();
-                }else{
-                if(this.curUrl=='/'){//住过主页面不做跳转吗 这里需要改一下 应该是调到主页面 但是内容可以是空白的
-                    return;
-                }
-                    zMenu.loadPage(this.curUrl);
-                }
-            };
-
-            this.init = function(){
-                window.addEventListener('load', this.refresh.bind(this), false);
-                window.addEventListener('hashchange', this.refresh.bind(this), false);
-
-            }
-        }
-        this.R = new Router();
-        this.R.init();//路由初始化
-
-
 		var ele = document.getElementById(id);
 		if (ele) {
 			var html = "<ul class='nav'>";
@@ -205,10 +174,7 @@ var zMenu = {
         		}else{
         		url="/"+url;
         		}
-
             Ajax.get(PATH+url, null, function(data) {
-
-
                 $('.main').html(data);
                 //$('.main').append(ibox.render(data,"新窗口"));
                 //if (typeof fun == 'function') fun();
@@ -216,8 +182,8 @@ var zMenu = {
 		}
 
 	},
+	//暂时都没有用到
 	createIcon: function() {
-
 		return "<i class=\"material-icons\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"48\" height=\"48\" viewBox=\"0 0 48 48\">" +
 			"<rect x=\"20\" y=\"32\" width=\"8\" height=\"8\" fill=\"#0cc2aa\"></rect>" +
 			"<rect x=\"8\" y=\"20\" width=\"8\" height=\"8\" fill=\"#0cc2aa\"></rect>" +
@@ -227,7 +193,7 @@ var zMenu = {
 	},
 	createLi: function(data, row) {
 	var url =row[this.urlName];
-	    this.R.addRoute(url, function() {
+	    window.route.addRoute(url, function() {
 	    zMenu.loadPage(url);
           // res.style.background = 'blue';
         //   res.innerHTML = '这是首页';
@@ -254,27 +220,36 @@ function animation(it, attrname, finalValue, timeOut, fn) {
 		//alert(it.childNodes[i].height);
 	}
 	finalValue = totalHeight;
+	if(totalHeight<=0){
+	    finalValue=it.offsetHeight;
+	}
+	if(finalValue<=0){
+	    finalValue=100;
+	}
 	console.log("finalValue:" + finalValue);
 	val = 0;
 	var val = parseInt(it.style[attrname].replace("px", ""));
 	it.style[attrname] = "0%";
 	it.style.display = "block";
+
 	it.style.overflowY = "hidden";
 	it.style.overflowX = "hidden";
 	if (val) {
-		console.log("value exist:" + value);
+		console.log("value exist:" + val);
 	} else {
 		val = 0;
 	}
 	// if( value>0){
 	var distance = val - finalValue;
-	var permeter = distance / timeOut * speed;
+	var permeter = distance / timeOut * speed;console.log();
+    if(permeter!=0){
+    setTimeout(function() {
+    		// it.style[attrname]=it.style[attrname]-permeter;
+    		// it.setAttribute(attrname,it.getAttribute(attrname)-permeter);
+    		changeAttr(it, attrname, val, permeter, finalValue, fn, speed);
+    	}, speed);
+    }
 
-	setTimeout(function() {
-		// it.style[attrname]=it.style[attrname]-permeter;
-		// it.setAttribute(attrname,it.getAttribute(attrname)-permeter);
-		changeAttr(it, attrname, val, permeter, finalValue, fn, speed);
-	}, speed);
 	//  }
 }
 
@@ -287,11 +262,13 @@ function changeAttr(it, attrname, val, permeter, finalValue, fn, speed) {
 		it.style.overflowY = "";
 		it.style.overflowX = "";
 
-		fn.call();
+		fn.call();it.style.display = "";
+		it.style.height = "";
 	} else {
 		//   it.setAttribute(attrname,value);
 		it.style["height"] = val + "px";
-		console.log(attrname + ":" + it.style[attrname]);
+
+		console.log("now"+attrname + ":" + it.style[attrname]);
 		setTimeout(function() {
 			//  it.setAttribute(attrname,it.getAttribute(attrname)-permeter);
 			changeAttr(it, attrname, val, permeter, finalValue, fn);

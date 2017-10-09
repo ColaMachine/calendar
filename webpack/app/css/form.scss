@@ -1,0 +1,144 @@
+@import 'common';
+@CHARSET "UTF-8";
+
+/**Position**/
+.zw-input-wrapper{
+
+  display:inline-block;
+
+}
+
+.zw-form-group{
+margin-top:15px;
+    margin-bottom:15px;
+
+
+}
+.zw-form-group .zw-input{
+    width:100%;
+}
+
+.zw-input-group{
+   /* display:flex;
+    display:-webkit-flex;*/
+/*    display: flex;
+flex-direction: row;*/
+display:table;
+border-collapse: separate;
+   /* flex: auto;*/
+}
+.zw-input-affix {
+    position:relative;
+}
+.zw-input-prefix ,.zw-input-suffix{
+    position:absolute;
+    top:50%;
+    transform: translateY(-50%);
+
+
+}
+.zw-input-affix .zw-input {
+   padding-left:30px;
+   padding-right:30px;
+}
+  .zw-input-prefix {
+    left:0px;
+  }
+.zw-input-suffix{
+
+    right:0px;
+}
+/**Box-model**/
+
+.zw-form{
+    @include padding($ft-h1);
+}
+.zw-input-wrapper,.zw-input{
+   /* width:100%;*/
+}
+.zw-form-group .btn{
+   /* width:100%;*/
+}/*
+.zw-input-affix .zw-input{
+  padding-left:$ft-nm*2;
+  padding-right:$ft-nm*2;
+}*/
+
+
+
+.zw-input-wrapper{
+     @include height_size($ft-nm);
+      @include padding($ft-nm);
+    /*
+      nowrap:norap;
+      white-space:normal ;*/
+}
+
+.zw-input-group-prepend>span ,.zw-input-group-append>span {/**子元素需要缩小 不然会撑开父元素**/
+    @include height_size($ft-nm);
+    @include padding(0);
+}
+
+.zw-input-group .zw-input ,.zw-input-group .zw-input-group-prepend,.zw-input-group .zw-input-group-append{
+    display:table-cell;
+    height:30px;
+ box-sizing: border-box;
+ vertical-align: middle;
+/* flex: auto;*/
+
+}
+.zw-input-prefix ,.zw-input-suffix  ,.zw-input,.zw-input-group-prepend ,.zw-input-group-append {
+     @include height_size($ft-nm);
+  /*@include padding($ft-nm);*/
+
+}
+.zw-input-group-append>*,.zw-input-group-append>*{
+    margin:0px;
+    height:25px;
+}
+.zw-input-group-prepend ,.zw-input-group-append {
+  border-right-top-radius:5px;
+      border-radius: 6px;
+}
+
+.zw-input-group-prepend, .zw-input-group>.zw-input:first-child, .zw-input-group>span>.zw-input:first-child {
+    border-bottom-right-radius: 0!important;
+    border-top-right-radius: 0!important;
+}
+
+.zw-input-group-append, .zw-input-group>.zw-input:last-child, .zw-input-group>span>.zw-input:last-child {
+    border-bottom-left-radius: 0!important;
+    border-top-left-radius: 0!important;
+}
+
+
+
+/**Typography**/
+.zw-input,.zw-input-group-prepend ,.zw-input-group-append{
+    font-size:$ft-nm;
+}
+
+/**Visual**/
+.zw-input,.zw-input-group-prepend ,.zw-input-group-append {
+  border:1px solid $light-gray;
+
+
+}
+.zw-input,.zw-input-suffix ,.zw-input-prefix {
+ color:$light-black;
+}
+
+.zw-input-suffix:hover ,.zw-input-prefix:hover {
+  color:$dark-gray;
+}
+.zw-form{
+    background-color:$white;
+}
+
+.zw-input-group-prepend ,.zw-input-group-append {
+  background-color: $light-gray;
+}
+
+/* misc */
+
+

@@ -7,15 +7,6 @@
  */
 package com.dozenx.web.core.img.action;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.text.DecimalFormat;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-
-
 import com.dozenx.core.Path.PathManager;
 import com.dozenx.core.config.Config;
 import com.dozenx.util.ImageUtil;
@@ -27,6 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.text.DecimalFormat;
 
 
 
@@ -75,7 +73,7 @@ static final int[]phonesizes={
     @RequestMapping(value = "/upload.json")
     @ResponseBody
     public Object upload(HttpServletRequest request) throws IOException {
-        String imageName = request.getParameter("imageName");
+        String imageNam12e = request.getParameter("imageName");
         String imageData = request.getParameter("imageData");
         //imageData=URLDecoder.decode(imageData);
      //  imageData= URLEncoder.encode(imageData);

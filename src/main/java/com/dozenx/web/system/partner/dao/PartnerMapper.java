@@ -1,9 +1,10 @@
 package com.dozenx.web.system.partner.dao;
+
+import com.dozenx.web.system.partner.bean.Partner;
+
 import java.util.HashMap;
 import java.util.List;
-import java.sql.Timestamp;
 import java.util.Map;
-import com.dozenx.web.system.partner.bean.Partner;
 
 public interface PartnerMapper {
     

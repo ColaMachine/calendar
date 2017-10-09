@@ -5,7 +5,9 @@ import com.dozenx.util.MapUtils;
 import com.dozenx.util.PropertiesUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.util.db.MysqlUtil;
+import com.dozenx.web.core.Constants;
 import com.dozenx.web.util.ConfigUtil;
+import org.apache.zookeeper.ZooKeeper;
 import org.aspectj.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +19,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by dozen.zhang on 2017/1/10.
  */
 public class RemoteProperties implements InitializingBean, FactoryBean<Properties> {
+    //插销锁
+    private CountDownLatch latch = new CountDownLatch(1);
+    //zookeeper对象
 
     Logger logger = LoggerFactory.getLogger(RemoteProperties.class);
 
@@ -64,6 +69,7 @@ public class RemoteProperties implements InitializingBean, FactoryBean<Propertie
 
     private Properties properties = new Properties();
 
+    private ZooKeeper zk=null;
 
     @Override
     public Properties getObject() throws Exception {
@@ -153,8 +159,23 @@ public class RemoteProperties implements InitializingBean, FactoryBean<Propertie
                         e.printStackTrace();
                         System.exit(0);
                     }
-
+                //说明是zookeeper配置文件读取方式
                 }
+
+                //else if(s.equals("zookeeper")){
+                //=========读取zookeeper 配置文件 ip 端口 节点===============
+                String ip = (String)properties.get("zookeeper.ip");
+                //  String port = (String)properties.get("port");
+                String path = (String)properties.get("zookeeper.path");
+
+
+
+             //   zk = connectServer(ip,path);
+                    //从zk从获取所有配置参数
+
+
+
+                // }
             }
         }
         //首先从指定的配置文件读取排位置信息
@@ -184,6 +205,23 @@ public class RemoteProperties implements InitializingBean, FactoryBean<Propertie
         }
 
         ConfigUtil.properties =properties;
+    }
+
+
+   // Watcher watcher =null;
+    private ZooKeeper connectServer(String registryAddress,String path) {
+       // ZooKeeper zk = null;
+        PropertiesWatcher watcher =  new PropertiesWatcher(latch,path,properties);
+
+        try {
+            zk = new ZooKeeper(registryAddress, Constants.ZK_SESSION_TIMEOUT,watcher);
+            watcher.setZk( zk);
+            logger.info("latch.await()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            latch.await();
+        } catch (IOException | InterruptedException e) {
+            logger.error("", e);
+        }
+        return zk;
     }
 
 }
