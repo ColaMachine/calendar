@@ -9,7 +9,7 @@ import React from 'react';
 import {QuestType, OptionTitles} from '../../qestConfig';
 import {Checkbox} from 'antd';
 
-
+//此组件大致样子是 一个checkbox 加上 增加和减少按钮 用于单个题目编辑 的时候 对选项进行增减和减少 还有 选择题的类型进行控制
 export  default  class OptionBar extends React.Component {
     constructor(p) {
         super(p);
@@ -28,7 +28,7 @@ export  default  class OptionBar extends React.Component {
         })
     }
 
-    onChange = (e) => {
+    onChange = (e) => {//当改变了多选题选择框的时候触发
         let {checked} = e.target;
 
         //构造一个假的event对象
@@ -39,7 +39,7 @@ export  default  class OptionBar extends React.Component {
             isNotEvent:true
         };
         console.log('OptionBar:', event)
-        this.props.onTypeChange(event);
+        this.props.onTypeChange(event);//发送构造的事件 触发add/index.js的onTypeChange事件
     }
 
     render() {

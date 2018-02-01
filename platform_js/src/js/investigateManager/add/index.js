@@ -66,7 +66,7 @@ export  default class InvestigateAdd extends React.Component {
     // 通过控制type来，调整单选多选，optionBar的状态在这时同步
     onQuestTypeChange = (e) => {
         //console.log(e)
-        let {value: type} = e.target;
+        let {value: type} = e.target;//获得选中的值
         console.log(e);
 
         //正常更新ui
