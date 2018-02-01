@@ -32,7 +32,7 @@ public class LoginFilter implements Filter {
     private String redirectURL = null;
     List<String> notCheckURLList = new ArrayList<String>();
     // private String[] notCheckUrlArr;
-    private String sessionKey = null;
+    private String sessionKey = Constants.SESSION_DTO;
 
     /**
      * 说明:程序结束时候执行
@@ -85,6 +85,7 @@ public class LoginFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+        System.out.println(path);
 		/*
 		 * if(StringUtil.isNotEmpty(path)&&!"/".equals(path)&&path!=null &&
 		 * !path.endsWith(".json") && !path.endsWith(".htm")){
@@ -98,12 +99,14 @@ public class LoginFilter implements Filter {
         }
         // Object object = session.getAttribute(sessionKey);
         // 如果既不是放行url 也没有登录
-        SessionDTO seesionDTO = (SessionDTO) session.getAttribute(Constants.SESSION_DTO);
-        SessionUser sessionUser = null;
-        if (seesionDTO != null) {
-            sessionUser = seesionDTO.getSessionUser();
-        }
-        if (session.getAttribute(sessionKey) == null && sessionUser == null
+//        SessionDTO seesionDTO = (SessionDTO) session.getAttribute(Constants.SESSION_DTO);
+//        SessionUser sessionUser = null;
+//        if (seesionDTO != null) {
+//            sessionUser = seesionDTO.getSessionUser();
+//        }
+        Object sessionDTO =  session.getAttribute(Constants.SESSION_USER) ;
+        if (sessionDTO == null/* && sessionUser == null*/
+      //  if (session.getAttribute(sessionKey) == null/* && sessionUser == null*/
                 && (!checkRequestURIIntNotFilterList(request))) {
 
             ResultDTO result = ResultUtil.getNotLogging();

@@ -52,7 +52,7 @@ var ${abc}List={
         rowNum:10,
         rowList:[10,20,30],
         multiselect : false,
-        url : PATH+'/${abc}/list.json',
+        url : PATH+'${table.baseUrl}/list.json',
         autowidth:true,
         grid:"#${table.name}Grid",
         pager:"#${table.name}Grid-Pager",
@@ -108,7 +108,7 @@ ${(refName+"_"+refKeyName)?uncap_first}<#else>${col.name}</#if>',width : 80,
     saveInfo:function(){
     },
     addInfo:function (){
-        dialog.window('/${abc}/edit.htm',this.modal);
+        dialog.window('${table.baseUrl}/edit.htm',this.modal);
     },
     editSelectInfo:function(){
         var rowid =this.mygrid.jqGrid("getGridParam","selrow");
@@ -117,11 +117,11 @@ ${(refName+"_"+refKeyName)?uncap_first}<#else>${col.name}</#if>',width : 80,
         if(StringUtil.isBlank(id)){
             dialog.alert("请选中一行数据");
         }else{
-            dialog.window("/${abc}/edit.htm?id="+id,this.modal);
+            dialog.window("${table.baseUrl}/edit.htm?id="+id,this.modal);
         }
     },
     editInfo:function (id){
-        dialog.window("/${abc}/edit.htm?id="+id,this.modal);
+        dialog.window("${table.baseUrl}/edit.htm?id="+id,this.modal);
     },
     searchInfo:function (){
         var jso = changeForm2Jso(".app-search");
@@ -129,11 +129,11 @@ ${(refName+"_"+refKeyName)?uncap_first}<#else>${col.name}</#if>',width : 80,
         this.mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
     },
     viewInfo:function (id){
-        dialog.window("/${abc}/view.htm?id="+id,this.modal);
+        dialog.window("${table.baseUrl}/view.htm?id="+id,this.modal);
     },
     exportInfo:function (){
         var jso= changeForm2Jso(".app-search");
-        Ajax.getJSON(PATH+"/${abc}/export.json",jso,function(data){
+        Ajax.getJSON(PATH+"${table.baseUrl}/export.json",jso,function(data){
             if(data.r==AJAX_SUCC){
                 window.location=PATH+"/"+data.data;
             }else{
@@ -145,7 +145,7 @@ ${(refName+"_"+refKeyName)?uncap_first}<#else>${col.name}</#if>',width : 80,
         var that =this;
          //弹窗
         dialog.confirm("确定删除数据:"+id,function(){
-            Ajax.post(PATH+"/${abc}/del.json",{${table.pk.name}:id},function(result){
+            Ajax.post(PATH+"${table.baseUrl}/del.json",{${table.pk.name}:id},function(result){
                 result=ajaxResultHandler(result);
                 if(result.r==AJAX_SUCC){
                     var did=dialog.alert("删除成功，数据："+id,function(index){
@@ -172,7 +172,7 @@ ${(refName+"_"+refKeyName)?uncap_first}<#else>${col.name}</#if>',width : 80,
         //弹窗
         var that=this;
         var dialogid= dialog.confirm("确定删除数据:"+ids.join(","),function(){
-            Ajax.post(PATH+"/${abc}/mdel.json?",{ids:ids.join(",")},function(result){
+            Ajax.post(PATH+"${table.baseUrl}/mdel.json?",{ids:ids.join(",")},function(result){
                 result=ajaxResultHandler(result);
                 if(result.r==AJAX_SUCC){
                     dialogid=dialog.alert("删除成功，数据："+ids.join(","),function(index){

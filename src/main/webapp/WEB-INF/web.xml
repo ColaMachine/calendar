@@ -72,7 +72,7 @@
 		</init-param>
 		<init-param>
 			<param-name>notCheckURLList</param-name>
-			<param-value>/index.html;/index_dev.html;/proxy/.*;/api/.*;/merchant/login/save.json;/merchant/init.json;/login/sms/wifi/request.json;/editorTempComp/list.json;/goods/list.json;/goods/view.json;/static/*;/ueditor/jsp/upload/.*;/upload/.*;/weixin/.*;/validEmail.json;/artical/list.json;/artical/view.json;/expert/view.json;/expert/list.json;/partner/list.json;/partner/view.json;/register/captcha.json;/login.htm;/code/.*;/static/.*;/login.htm;/register.htm;/loginPost.json;/registerPost.json;/pwdreset.htm;/active/\w*;/img/.*
+			<param-value>/login/sms/request.json;/index.html;/index_dev.html;/proxy/.*;/api/.*;/merchant/login/save.json;/merchant/init.json;/login/sms/wifi/request.json;/editorTempComp/list.json;/goods/list.json;/goods/view.json;/static/*;/ueditor/jsp/upload/.*;/upload/.*;/weixin/.*;/validEmail.json;/artical/list.json;/artical/view.json;/expert/view.json;/expert/list.json;/partner/list.json;/partner/view.json;/register/captcha.json;/login.htm;/code/.*;/static/.*;/login.htm;/register.htm;/loginPost.json;/registerPost.json;/pwdreset.htm;/active/\w*;/img/.*
 			;/forgetpwd.htm;/pwdresetPost.json;/forgetpwd/save.json.*;/pwdrst/save.json;/pwdrst/edit.htm;/pwdrst;/.*\.jpg;/validatecode;/share/qq;
 			</param-value>
 		</init-param>
@@ -87,11 +87,11 @@
     </filter-mapping> -->
 
 
-    <filter-mapping>
+   <!-- <filter-mapping>
         <filter-name>loginfilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
+-->
 	<filter>
 	<filter-name>characterEncodingFilter</filter-name>
 	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -110,7 +110,13 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.js</url-pattern>
+		<url-pattern>*.css</url-pattern>
+		<url-pattern>/assets/*"</url-pattern>
+		<url-pattern>/images/*</url-pattern>
+	</servlet-mapping>
 
 	<!-- <servlet>
         <servlet-name>AjaxServlet</servlet-name>

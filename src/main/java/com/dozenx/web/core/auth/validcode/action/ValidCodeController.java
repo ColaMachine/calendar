@@ -112,7 +112,7 @@ public class ValidCodeController extends BaseController{
         String systemno =request.getParameter("systemno");
         String sessionid = request.getParameter("sessionid");
         String sid =request.getSession().getId();
-       System.out.println("sid"+sid);
+        System.out.println("sid"+sid);
         //调用生成验证码服务 返回验证码 或者失败原因
         ResultDTO result =
                 validCodeService.getImgValidCode(systemno,sid);
@@ -173,12 +173,25 @@ public class ValidCodeController extends BaseController{
         //调用生成验证码服务 返回验证码 或者失败原因
         ResultDTO result =
                 validCodeService.getImgValidCode(systemno,sid);
-         return result;
+        return result;
     }
 
     @RequestMapping(value = "/sms/valid.json")
     @ResponseBody
-    public JSONPObject smsValidCode(HttpServletRequest request){
+    public ResultDTO smsValidCode(HttpServletRequest request){
+        String phone = request.getParameter("phone");
+        String systemno = request.getParameter("systemno");
+        String code = request.getParameter("code");
+        //调用生成验证码服务 返回验证码 或者失败原因
+        ResultDTO result = validCodeService.smsValidCode(systemno, phone, code);
+
+        return result;
+    }
+
+
+    @RequestMapping(value = "/jsonp/sms/valid.json")
+    @ResponseBody
+    public JSONPObject jsonpSmsValidCode(HttpServletRequest request){
         String phone = request.getParameter("phone");
         String systemno = request.getParameter("systemno");
         String code = request.getParameter("code");
@@ -188,9 +201,27 @@ public class ValidCodeController extends BaseController{
         JSONPObject object =new JSONPObject(callbackParam,result);
         return object;
     }
+
     @RequestMapping(value = "/img/valid.json")
     @ResponseBody
-    public JSONPObject imgValidCode(HttpServletRequest request){
+    public ResultDTO imgValidCode(HttpServletRequest request){
+        String systemno = request.getParameter("systemno");
+        String sessionid = request.getRequestedSessionId();
+        String code = request.getParameter("code");
+        //调用生成验证码服务 返回验证码 或者失败原因
+        ResultDTO result = validCodeService.imgValidCode(systemno, sessionid, code);
+
+        if(result.isRight()){
+            request.getSession().setAttribute("hellosms","1");
+        }
+        String callbackParam = request.getParameter("callback");
+        return result;
+
+    }
+
+    @RequestMapping(value = "/jsonp/img/valid.json")
+    @ResponseBody
+    public JSONPObject jsonpImgValidCode(HttpServletRequest request){
         String systemno = request.getParameter("systemno");
         String sessionid = request.getParameter("sessionid");
         String code = request.getParameter("code");
@@ -216,7 +247,7 @@ public class ValidCodeController extends BaseController{
     @ResponseBody
     public ResultDTO imgBehindValidCode(HttpServletRequest request){
         String systemno = request.getParameter("systemno");
-        String sessionid = request.getParameter("sessionid");
+        String sessionid = request.getRequestedSessionId();
         String code = request.getParameter("code");
         //调用生成验证码服务 返回验证码 或者失败原因
         ResultDTO result = validCodeService.imgValidCode(systemno, sessionid, code);
@@ -236,7 +267,7 @@ public class ValidCodeController extends BaseController{
         //防止短信被滥用接口
         if(request.getSession().getAttribute("hellosms")==null){
             logger.error("cheater ip:"+   request.getRemoteAddr()+" xforward "+request.getHeader("x-forwarded-for")+"phone:"+phone);
-            return this.getResult();
+            return this.getResult(30106601);
         }
 
         if(StringUtil.isBlank(phone)||!StringUtil.isPhone(phone)){
@@ -247,13 +278,13 @@ public class ValidCodeController extends BaseController{
     }
     public static void main(String[] args) {
         //\222\200\177\000\000\001
-         byte[] byteData=new byte[]{0x36,};
+        byte[] byteData=new byte[]{0x36,};
 
         System.out.println(123);
 
-         System.out.println(new String(byteData));
-      //  ApplicationContext ac = new FileSystemXmlApplicationContext("C:\\zzw\\workspace\\awifiui\\src\\main\\resources\\config\\xml\\applicationContext.xml");
-       // Object object = ac.getBean("validCodeService");
+        System.out.println(new String(byteData));
+        //  ApplicationContext ac = new FileSystemXmlApplicationContext("C:\\zzw\\workspace\\awifiui\\src\\main\\resources\\config\\xml\\applicationContext.xml");
+        // Object object = ac.getBean("validCodeService");
         //System.out.println(object);//DefaultBeanDefinitionDocumentReader
         //ComponentScanBeanDefinitionParser
     }

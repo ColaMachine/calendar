@@ -29,10 +29,14 @@
             charset="utf-8"></script>
     <script src="${path}/static/js/zlogin.js" type="text/javascript"
             charset="utf-8"></script>
+            <script src="${path}/static/js/dom.js" type="text/javascript"
+                        charset="utf-8"></script>
       <script src="${path}/static/js/common.js" type="text/javascript"
                 charset="utf-8"></script>
                    <script src="${path}/static/js/layer.js" type="text/javascript"
                                 charset="utf-8"></script>
+                                 <script src="${path}/static/phone/js/jquery.md5.js" type="text/javascript"
+                                                                charset="utf-8"></script>
 <style type="text/css">
 .help-block-left-animation{
      color:red !important;

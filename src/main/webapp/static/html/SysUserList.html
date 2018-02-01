@@ -33,7 +33,7 @@
             <!--<button class="btn btn-primary deleteBtn"><i class="fa fa-plus"></i>删除</button>-->
             <!--<button class="btn btn-primary exportBtn"><i class="fa fa-plus"></i>导出</button>-->
         </div>
-        <table id="SysUserGrid" class="grid table"></table>
+        <div id="SysUserGrid" class="grid table"></div>
         <div id="SysUserGrid-Pager" class="pager"></div>
     </div>
 </div>
@@ -61,7 +61,7 @@ var sysUserList={
     init:function(){
 
         setTitle("用户");
-        this.mygrid =this.root.find(".grid").jqGrid(this.gridParam);
+        this.mygrid =new jqGrid(this.root[0].getElementsByClassName("grid")[0] ,this.gridParam);//this.root.find(".grid").jqGrid(this.gridParam);
         this.addEventListener();
         this.loadData();
     },

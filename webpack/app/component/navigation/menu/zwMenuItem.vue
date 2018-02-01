@@ -1,6 +1,6 @@
 
 <template>
-  <li class="zw-menu-item"><a></zwIcon><span class="zw-menu-item-text"><slot></slot></span></a></li>
+  <li class="zw-menu-item"><a v-on:click="clickFn"></zwIcon><span class="zw-menu-item-text"><slot></slot></span></a></li>
 </template>
 <script type="text/javascript">
 import zwIcon from "../../icon/zwIcon.vue"
@@ -25,7 +25,9 @@ export default {
 　　　　　　　　
 　　　　　　},
         methods: {
-
+            clickFn:function(){
+                this.$emit("clickFn");
+            }
         },
     };
 </script>

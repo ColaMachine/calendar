@@ -254,7 +254,7 @@ public class StringUtil {
 	 * @return
      */
     public static boolean isPhone(String value) {
-        String regex = "^[1][3578][0-9]{9}$";
+        String regex = "^[1][0-9]{10}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(value);
         return matcher.find();

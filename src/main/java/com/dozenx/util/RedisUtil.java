@@ -400,6 +400,7 @@ public final class RedisUtil {
         try {
             jedis = jedisPool.getResource();
             jedis.set(key,value);
+
         } catch (Exception e) {
             success  = false;
             if(jedis != null){
@@ -414,6 +415,67 @@ public final class RedisUtil {
         }
 
     }
+
+    /**
+     * 获取数据 归还连接
+     *
+     * @param key
+     * @return
+     */
+    public static void setByteAry(String key,byte[] value){
+        Jedis jedis = null;
+        boolean success = true;
+        try {
+            jedis = jedisPool.getResource();
+            jedis.set(key.getBytes(),value);
+
+        } catch (Exception e) {
+            success  = false;
+            if(jedis != null){
+                jedis.close();
+            }
+            logger.error("redis",e);
+            throw e;
+        }finally{
+            if(success && jedis != null){
+                jedis.close();
+            }
+        }
+
+    }
+
+
+    /**
+     * 获取数据 归还连接
+     *
+     * @param key
+     * @return
+     */
+    public static byte[] getByteAry(String key,byte[] value){
+        Jedis jedis = null;
+        boolean success = true;
+        try {
+            jedis = jedisPool.getResource();
+          return   jedis.get(key.getBytes());
+
+        } catch (Exception e) {
+            success  = false;
+            if(jedis != null){
+                jedis.close();
+            }
+            logger.error("redis",e);
+            throw e;
+        }finally{
+            if(success && jedis != null){
+                jedis.close();
+            }
+        }
+
+    }
+
+
+
+
     /*
          * 释放redis对象。
          */

@@ -1,8 +1,10 @@
 
 <template>
-  <li :class="getSubMenuClasses" v-on:mouseenter="showMenu" v-on:mouseleave="hideMenu" >
-   <a href="javascript:void(0)"   v-on:click="openMenu" ><span class="zw-menu-item-text"><zwIcon type="windows"> </zwIcon><slot  name="title"></slot> <zwIcon type="arrow-down"></zwIcon></span></a>
-    <ul class=" zw-menu-sub "><slot ></slot></ul>
+  <li :class="getSubMenuClasses" v-on:mouseenter="showMenu" v-on:mouseleave="hideMenu"   >
+   <a href="javascript:void(0)"      v-on:click="toggleMenu" >
+
+   <span class="zw-menu-item-text"><zwIcon type="windows"> </zwIcon><slot  name="title"></slot> <zwIcon type="arrow-down"></zwIcon></span></a>
+    <ul v-show="menuShow" class=" zw-menu-sub "><slot ></slot></ul>
   </li>
 </template>
 <script type="text/javascript">
@@ -16,7 +18,9 @@ export default {
         data () {
             return {
                 "active":false,
-                "open":false
+                "open":false,
+                "menuShow":false,
+
             };
         },
         computed: {
@@ -45,6 +49,11 @@ export default {
             },
             showMenu:function(){
                 this.active = true;
+            },
+            toggleMenu:function(){console.log("toggle "+this.menuShow);
+                this.menuShow=!this.menuShow;
+                 this.active = !this.active;
+                 this.open=!this.open;
             }
         },
     };

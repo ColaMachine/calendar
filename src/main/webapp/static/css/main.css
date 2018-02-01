@@ -911,11 +911,11 @@ display:none;
 /* 选择 */
 
 select {
-	width: 90%;
-	display: block;
-	position: absolute;
-	opacity: 0;
-	height: inherit;
+	/*width: 90%;
+	display: block;*/
+	/*position: absolute;*/
+	/*opacity: 0;*/
+	/*height: inherit;*/
 }
 
 .clr-fix:before {

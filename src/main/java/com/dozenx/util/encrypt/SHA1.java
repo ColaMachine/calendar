@@ -201,7 +201,14 @@ public class SHA1 {
 	        System.out.println(data2);
 	        String digest = new SHA1().getDigestOfString(data2.getBytes());
 	        //61EBFF1D9E143497FEDC0E16DC7874EEF1C84A87
-	        System.out.println(digest); 
+	        System.out.println(digest);
+
+			String jsapi_ticket="sM4AOVdWfPE4DxkXGEs8VP5YwsHDdS4hLPznqQIlFh-mBuKunYTkMvkOP34oBTr04u9widaeSn3isCYsVRREeQ";
+			String noncestr ="-427160045";
+			String dd ="jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VP5YwsHDdS4hLPznqQIlFh-mBuKunYTkMvkOP34oBTr04u9widaeSn3isCYsVRREeQ&noncestr=-427160045&timestamp=1510219479&url=http://192.168.3.15/static/html/weixin/tecent_map.html" ;
+
+			 digest = new SHA1().getDigestOfString(dd.getBytes());
+			System.out.println(digest);
 	    } 
 
 }

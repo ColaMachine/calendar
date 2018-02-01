@@ -95,8 +95,12 @@ public class Generator {
                 return gson.fromJson(baseConfig, ZTable.class);
             }
         } catch (JsonParseException e) {
+            e.printStackTrace();
             throw new IOException("Failed to load config", e);
         }
+
+
+
     }
 
 
@@ -120,10 +124,14 @@ public class Generator {
         // FreeMarkerUtil.processTemplate(templatePath, templateName,
         // templateEncoding, root, out);
     }
-    public  void intTpl(String code) throws IOException{
+    public  void intTpl(String code) throws Exception {
         table=(ZTable)allTable.get(code);
         root.put("allTables", allTable);
         root.put("table", table);
+        if(table==null){
+            throw new Exception( "code table name is null " +code);
+           // System.out.println("code table name is null");
+        }
         if(null!=table.getMapper()){
             root.put("child", allTable.get(table.getMapper().getChild()));
             root.put("mapper", allTable.get(table.getMapper().getMapper()));
@@ -571,7 +579,7 @@ return ymd;
         String typeName = "";
         for (ZColum col : table.getCols()) {
             type = col.getType().toLowerCase();
-            sb.append("/**" + col.getRemark() + "**/").append(ctrl);
+            sb.append("\n/**" + col.getRemark() + "**/").append(ctrl);
             typeName = GenCodeHelper.changeMySqlType2JavaType(type);
             sb.append("    private " + typeName + " " + col.getName() + ";").append(ctrl);
             sb.append("    public " + typeName + " get" + StringUtil.getAbc(col.getName()) + "(){").append(ctrl)
@@ -1067,18 +1075,19 @@ return ymd;
         return sb.toString();
         
     }
+
     public static Generator generate(String[] codes){
         Generator gen = new Generator();
         
         try {
-            for(int i=0;i<codes.length;i++){
+            for (int i = 0; i < codes.length; i++) {
                 gen.init(codes[i]);
             }
-            for(int i=0;i<codes.length;i++){
+            for (int i = 0; i < codes.length; i++) {
 
 
             }
-            for(int i=0;i<codes.length;i++){
+            for (int i = 0; i < codes.length; i++) {
                 gen.intTpl(codes[i]);
                 gen.preGenBean();
                 gen.preGenService();
@@ -1101,16 +1110,13 @@ return ymd;
                 gen.genEditHtml();
                 gen.genViewHtml();
             }
-            
-            
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+
         }
         // System.out.println(table.getCols().size());
         // gen.genController(table);
         // gen.genBean(table);
-        catch (TemplateException e) {
+        catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -1139,7 +1145,10 @@ return ymd;
         //Generator.generate(new String[]{"MerchantPic","MerchantNews","MerchantNotice" });
        // Generator.generate(new String[]{"Consume","Order","OrderDetail","Item","ItemInfo" ,"Merchant"});
 
-        Generator.generate(new String[]{"OperLog"});
+        //Generator.generate(new String[]{"OperLog"});
+       // Generator.generate(new String[]{"ApiCategory","ApiUrl","ApiParameter"});
+       // Generator.generate(new String[]{"MapData"});
+        Generator.generate(new String[]{"Device","Gateway"});
     }
 
   

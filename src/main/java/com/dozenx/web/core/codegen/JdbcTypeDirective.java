@@ -87,7 +87,9 @@ public class JdbcTypeDirective implements TemplateDirectiveModel {
                     typeName= "CHAR";
                 }else if(type.startsWith("tinyint")){
                     typeName= "TINYINT";
-                }else{
+                }else if (type.startsWith("decimal")) {
+				 	typeName = "DECIMAL";
+			 	}else{
 		            throw new IOException(
 		                    "This directive content doesn't  allow this value"+type+".");
 		        }

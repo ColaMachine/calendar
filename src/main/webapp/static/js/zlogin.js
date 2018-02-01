@@ -94,7 +94,13 @@ var loginForm={
         var jso = changeForm2Jso("#login_form");
         var jso={};
         jso.email=this.doms.userName.value;
-        jso.pwd=this.doms.pwd.value;
+        if(this.doms.pwd.value.length!=32){
+         jso.pwd=$.md5($.md5(this.doms.pwd.value));
+        }else{
+         jso.pwd=this.doms.pwd.value;
+        }
+
+       // alert(jso.pwd);
         jso.picCaptcha=this.doms.picCaptchaInput.value;
         //jso.password=$$.md5(jso.password);
         //先禁用按钮
@@ -106,12 +112,11 @@ var loginForm={
         //alert($$("#rememberme").attr("checked"));
         //判断是否使用记住功能
 
-
         if ($("#rememberme").attr("checked") == 'checked') {//alert("选中了记住我");
         /*	console.log("选中了记住我" );*/
             console.log("username:" + jso.email);
             this.setCookie('username', jso.email, 365);
-            this.setCookie('password', jso.password, 365);
+            this.setCookie('password', jso.pwd, 365);
         }
         Ajax.post(PATH + "/loginPost.json", jso, function(data) {
             if (data[AJAX_RESULT] == AJAX_SUCC) {
@@ -159,7 +164,7 @@ var loginForm={
             pwd : {
                 stringCheck : true,
                 required : true,
-                rangelength : [ 6, 15 ]
+                rangelength : [ 6, 32 ]
             },
             picCaptcha:{
                  required : true
@@ -176,7 +181,7 @@ var loginForm={
                 rangelength : "密码应由6~20个的数字或字母组成"
             },
             picCaptcha:{
-                             required : "请输入验证码"
+                 required : "请输入验证码"
             }
         }
 
@@ -189,7 +194,7 @@ var loginForm={
 getCookie:function (c_name) {
 	console.log("cookie:"+document.cookie);
 	if (document.cookie.length > 0) {
-		c_start = document.cookie.indexOf(c_name + "=")
+		var c_start = document.cookie.indexOf(c_name + "=")
 		if (c_start != -1) {
 			c_start = c_start + c_name.length + 1
 			c_end = document.cookie.indexOf(";", c_start)
@@ -219,8 +224,14 @@ checkCookie:function () {
 	if (username != null && username != "") {//alert('Welcome again '+username+'!')
 
         this.doms.userName.value=username;
+        var pwd =this.getCookie("password");
+        if(pwd){
+             this.doms.pwd.value=pwd;
 
+             //setTimeout("document.getElementById(\"loginpwd\").value="+pwd,1000);
+        }
 	}
+
 
 	else {
 		//username = prompt('Please enter your name:', "")

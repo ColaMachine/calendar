@@ -19,6 +19,10 @@ public class CacheUtil {
     private static final Logger logger = LoggerFactory
             .getLogger(CacheUtil.class);
 
+    public static void set(String key, String value, int sec) {
+        getInstance().writeCache(key,value,sec);
+    }
+
     public static class CacheInner {
         /**
          * new一个对象
@@ -67,6 +71,10 @@ public class CacheUtil {
         } else {
             return object;
         }
+    }
+
+    public static String  get(String key) {
+       return (String )getInstance().readCache(key,String.class);
     }
 
     /**

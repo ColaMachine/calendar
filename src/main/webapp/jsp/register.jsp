@@ -24,6 +24,8 @@
                 charset="utf-8"></script>
                   <script src="${path}/static/js/bootstrap.min.js" type="text/javascript"
                                 charset="utf-8"></script>
+                                 <script src="${path}/static/js/layer.js" type="text/javascript"
+                                                                charset="utf-8"></script>
 <style type="text/css">
 .help-block-left-animation{
      color:red !important;

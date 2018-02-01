@@ -6,6 +6,7 @@ import com.dozenx.web.module.timing.bean.UserTimeInfoDTO;
 import com.dozenx.web.third.access.bean.AuthResult;
 import com.dozenx.web.third.dbcenter.bean.PubDeviceQueryResult;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * 用于缓存商户用户信息防止每次都去查
  * 在MerchantController的index 首页信息中会去查
  */
-public class SessionDTO {
+public class SessionDTO implements Serializable{
     String userType ;
     String token ;
     String url ;
@@ -29,7 +30,7 @@ public class SessionDTO {
     String gwAddress ;
     String gwPort ;
     String nasName ;
-    List<String > slidelist;
+   List<String > slidelist;
     SessionUser sessionUser;
 
     public AuthResult getAuthResult() {

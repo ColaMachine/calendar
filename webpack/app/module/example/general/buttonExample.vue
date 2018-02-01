@@ -222,11 +222,37 @@
            </div>
         </zwBox>
 
-
+</zwCol>
+<zwCol span=12>
         <zwBox class="">
              <div slot="zwCodeBoxDemo">
-                <zwDropDown>
-                    <zwButton slot="button" type="primary"   icon="down" >下拉查询菜单</zwButton>
+
+                <zwDropDown  placement="bottomRight">
+                    <zwButton slot="button" type="primary"   icon="down" >bottomRight</zwButton>
+                    <zwMenu slot="menu">
+                        <zwMenuItem key="1">1st item</zwMenuItem>
+                        <zwMenuItem key="2">2nd item</zwMenuItem>
+                        <zwMenuItem key="3">3rd item</zwMenuItem>
+                    </zwMenu>
+                </zwDropDown>
+                <zwDropDown placement="bottomLeft">
+                    <zwButton slot="button" type="primary"   icon="down" >bottomLeft</zwButton>
+                    <zwMenu slot="menu">
+                        <zwMenuItem key="1">1st item</zwMenuItem>
+                        <zwMenuItem key="2">2nd item</zwMenuItem>
+                        <zwMenuItem key="3">3rd item</zwMenuItem>
+                    </zwMenu>
+                </zwDropDown>
+                  <zwDropDown placement="topLeft">
+                    <zwButton slot="button" type="primary"   icon="down" >topLeft</zwButton>
+                    <zwMenu slot="menu">
+                        <zwMenuItem key="1">1st item</zwMenuItem>
+                        <zwMenuItem key="2">2nd item</zwMenuItem>
+                        <zwMenuItem key="3">3rd item</zwMenuItem>
+                    </zwMenu>
+                </zwDropDown>
+                 <zwDropDown placement="topRight">
+                    <zwButton slot="button" type="primary"   icon="down" >topRight</zwButton>
                     <zwMenu slot="menu">
                         <zwMenuItem key="1">1st item</zwMenuItem>
                         <zwMenuItem key="2">2nd item</zwMenuItem>
@@ -245,7 +271,7 @@
 
                 <textarea ref="textarea" id="textarea" name="textarea">
                         <div slot="zwCodeBoxDemo">
-                                       <zwDropDown>
+                                       <zwDropDown placement="bottomRight">
                                            <zwButton slot="button" type="primary"   icon="down" >下拉查询菜单</zwButton>
                                            <zwMenu slot="menu">
                                                <zwMenuItem key="1">1st item</zwMenuItem>
@@ -258,6 +284,63 @@
 
            </div>
         </zwBox>
+
+
+
+
+         <zwBox class="">
+                     <div slot="zwCodeBoxDemo">
+
+                        <zwDropDown  trigger="click" placement="bottomRight">
+                            <zwButton slot="button" type="primary"   icon="down" >click trigger</zwButton>
+                            <zwMenu slot="menu">
+                                <zwMenuItem key="1">1st item</zwMenuItem>
+                                <zwMenuItem key="2">2nd item</zwMenuItem>
+                                <zwMenuItem key="3">3rd item</zwMenuItem>
+                            </zwMenu>
+                        </zwDropDown>
+                        <zwDropDown trigger="mouse" placement="bottomLeft">
+                            <zwButton slot="button" type="primary"   icon="down" >mouse trigger</zwButton>
+                            <zwMenu slot="menu">
+                                <zwMenuItem key="1">1st item</zwMenuItem>
+                                <zwMenuItem key="2">2nd item</zwMenuItem>
+                                <zwMenuItem key="3">3rd item</zwMenuItem>
+                            </zwMenu>
+                        </zwDropDown>
+
+                    </div>
+
+
+
+                     <div slot="zwCodeBoxMeta"  title="trigger ">
+
+                      trigger 有两种 click 或者其他  click 就是鼠标点击才有反应  其他就是鼠标移入就会显示
+                    </div>
+                     <div slot="zwCodeBoxPanel"  >
+
+                        <textarea ref="textarea" id="textarea" name="textarea">
+                                <div slot="zwCodeBoxDemo">
+                                             <zwDropDown  trigger="click" placement="bottomRight">
+                                                                         <zwButton slot="button" type="primary"   icon="down" >click trigger</zwButton>
+                                                                         <zwMenu slot="menu">
+                                                                             <zwMenuItem key="1">1st item</zwMenuItem>
+                                                                             <zwMenuItem key="2">2nd item</zwMenuItem>
+                                                                             <zwMenuItem key="3">3rd item</zwMenuItem>
+                                                                         </zwMenu>
+                                                                     </zwDropDown>
+                                                                     <zwDropDown trigger="mouse" placement="bottomLeft">
+                                                                         <zwButton slot="button" type="primary"   icon="down" >mouse trigger</zwButton>
+                                                                         <zwMenu slot="menu">
+                                                                             <zwMenuItem key="1">1st item</zwMenuItem>
+                                                                             <zwMenuItem key="2">2nd item</zwMenuItem>
+                                                                             <zwMenuItem key="3">3rd item</zwMenuItem>
+                                                                         </zwMenu>
+                                                                     </zwDropDown>
+                                           </div>
+                         </textarea>
+
+                   </div>
+                </zwBox>
 </zwCol>
 
 

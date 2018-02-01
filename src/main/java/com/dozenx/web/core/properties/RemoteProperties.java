@@ -67,7 +67,7 @@ public class RemoteProperties implements InitializingBean, FactoryBean<Propertie
 
     private String driver = null;
 
-    private Properties properties = new Properties();
+    private Properties properties ;
 
     private ZooKeeper zk=null;
 
@@ -153,7 +153,7 @@ public class RemoteProperties implements InitializingBean, FactoryBean<Propertie
                         Connection con = mysqlUtil.getConnection(driver,user,pwd,  url);
                         propertiesList = mysqlUtil.executeQuery(con, "select `key`,`value` from sys_config");
                         for (HashMap record : propertiesList) {
-                            properties.put(MapUtils.getStringValue(record, "key").trim(), MapUtils.getStringValue(record, "value").trim());
+                            properties.put(MapUtils.getString(record, "key").trim(), MapUtils.getStringValue(record, "value").trim());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

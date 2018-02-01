@@ -1,10 +1,7 @@
 package com.dozenx.web.core.auth.action;
 
 import com.dozenx.core.config.SysConfig;
-import com.dozenx.util.RandomValidateCode;
-import com.dozenx.util.ResultUtil;
-import com.dozenx.util.StringUtil;
-import com.dozenx.util.ValidateUtil;
+import com.dozenx.util.*;
 import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.auth.service.AuthService;
 import com.dozenx.web.core.auth.service.UserService;
@@ -22,6 +19,7 @@ import com.dozenx.web.util.TerminalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -30,8 +28,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 
 @Controller
@@ -43,6 +47,8 @@ public class LoginController extends BaseController {
     @Autowired
     private AuthService authService;
 
+//    @Value("#{configProperties[uploadFieldName]}")
+//    private String uploadFieldName;
     @Autowired
     private UserService userService;
 
@@ -124,24 +130,24 @@ public class LoginController extends BaseController {
      * @author dozen.zhang
      * @date 2015年5月14日上午11:33:39
      */
-    @RequestMapping(value = "/login/sms/wifi/request.json", method = RequestMethod.POST)
-    public @ResponseBody
-    ResultDTO sendSmsValidCode4LoginDirectRegister4Wifi(HttpServletRequest request) throws Exception {
-        String ip =  RequestUtil.getIp(request);
-        String phone =request.getParameter("mobile");
-        SessionDTO sessionDTO = (SessionDTO)request.getSession().getAttribute(Constants.SESSION_DTO);
-        if(sessionDTO == null){
-            logger.error("cheater ip:"+   ip+" xforward "+"phone:"+phone);
-            return this.getResult("发送成功");
-        }
-        String helloSms = sessionDTO.getDeviceId();
-        ResultDTO result =  authService.sendSmsValidCode4LoginDirectRegister(ip,phone,helloSms);
-        if(result.isRight()){
-          result.setData("");
-
-        }
-        return result;
-    }
+//    @RequestMapping(value = "/login/sms/wifi/request.json", method = RequestMethod.POST)
+//    public @ResponseBody
+//    ResultDTO sendSmsValidCode4LoginDirectRegister4Wifi(HttpServletRequest request) throws Exception {
+//        String ip =  RequestUtil.getIp(request);
+//        String phone =request.getParameter("mobile");
+//        SessionDTO sessionDTO = (SessionDTO)request.getSession().getAttribute(Constants.SESSION_DTO);
+//        if(sessionDTO == null){
+//            logger.error("cheater ip:"+   ip+" xforward "+"phone:"+phone);
+//            return this.getResult("发送成功");
+//        }
+//        String helloSms = sessionDTO.getDeviceId();
+//        ResultDTO result =  authService.sendSmsValidCode4LoginDirectRegister(ip,phone,helloSms);
+//        if(result.isRight()){
+//          result.setData("");
+//
+//        }
+//        return result;
+//    }
 
 
     /**
@@ -155,6 +161,10 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/loginPost.json", method = RequestMethod.POST)
     public @ResponseBody
     ResultDTO loginPost(HttpServletRequest request) {
+
+
+        // String value =this.uploadFieldName;
+        Map map = MapUtils.request2Map(request);
         String userAgent  = request.getHeader("user-agent");
         String type= TerminalUtil.getTerminalType(userAgent);
         logger.info(type);
@@ -169,6 +179,7 @@ public class LoginController extends BaseController {
         if (!result.isRight()) {
             // return result;
         }
+        //为了防止用户暴力碰库 验证码验证用户提交信息安全与否
         result = validCodeService.imgValidCode("calendar",request.getRequestedSessionId(), imgCaptcha);
         if (!result.isRight()) {
             return result;
@@ -177,14 +188,14 @@ public class LoginController extends BaseController {
         result = this.userService.loginValid(email, pwd);
         if (result.isRight()) {
             SysUser user = (SysUser) result.getData();
-            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute(Constants.SESSION_USER, user);//塞入到用户session中
            // List<SysResource> resources = authService.listResourcesByUserid(user.getId());
           /*  List<SysMenu> menus = authService.listMenusByUserid(user.getId());
             List<String> resStr = new ArrayList<String>();
 
             request.getSession().setAttribute("resourceList", resStr);
             request.getSession().setAttribute("resourceStr", StringUtil.join(",",resStr.toArray(new String[resStr.size()])));*/
-            result.setData(null);
+            result.setData(null);//不能把用户信息传给前端 会泄漏信息
         }
 
         //若果密码输入多次 增加 验证码 和锁定功能
@@ -534,6 +545,12 @@ public class LoginController extends BaseController {
     public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
         return "/jsp/login.jsp";
+    }
+
+    @RequestMapping(value = "/logout.json", method = RequestMethod.GET)
+    public @ResponseBody ResultDTO  logoutJson(HttpServletRequest request) {
+        request.getSession().removeAttribute("user");
+       return this.getResult();
     }
 
     @RequestMapping(value = "/user/edit.htm", method = RequestMethod.GET)

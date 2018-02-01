@@ -7,6 +7,7 @@
  */
 package com.dozenx.web.core.codegen;
 
+import com.dozenx.util.StringUtil;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
@@ -81,6 +82,12 @@ public void init(){
             col.setEdit(true);
         }else{
             col.setEdit(false);
+        }
+
+        //如果colName是空的话 就用name 去替代
+
+        if(StringUtil.isBlank(col.getColName())){
+            col.setColName(col.getName());
         }
     }
 }

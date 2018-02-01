@@ -4,6 +4,8 @@
 package com.dozenx.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -565,4 +567,48 @@ public class JsonUtils {
 	 * e) { e.printStackTrace(); } }
 	 */
 
+    public static JSONObject toJsonObject(String str){
+        return JSON.parseObject(str);
+    }
+
+
+
+
+    /**
+     * 将对象转为JSON字符转
+     * @param obj 数据源
+     * @return json字符串
+     * @author 亢燕翔
+     * @date Jan 9, 2017 8:09:25 PM
+     */
+    public static String toJson(Object obj){
+        if(obj == null){
+            return StringUtils.EMPTY;
+        }
+        return JSON.toJSONString(obj);
+    }
+
+    /**
+     * 将json转为指定对象
+     * @param <T>
+     * @param json json数据
+     * @param typeOfT 数据类型
+     * @return new 数据
+     * @author 亢燕翔
+     * @date Jan 9, 2017 8:14:29 PM
+     */
+    public static <T> T fromJson(String json, Class<T> typeOfT){
+        try {
+            return JSON.parseObject(json, typeOfT);
+        } catch (Exception e) {//当报错时，输出error级别的日志，便于定位问题
+            logger.error(json);
+            throw e;
+        }
+    }
+
+
+    public static void main(String args[]){
+        JSONObject obj =JSON.parseObject( "{'rex':'(-|+)?(90.0{0,6}|(\\\\d|[1-8]\\\\d).\\\\d{0,6})'}");
+        System.out.print("allright");
+    }
 }

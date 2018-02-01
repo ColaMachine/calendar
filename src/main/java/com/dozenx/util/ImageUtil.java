@@ -5,6 +5,7 @@ import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.SCPClient;
 import ch.ethz.ssh2.SFTPv3Client;
 import ch.ethz.ssh2.StreamGobbler;
+import com.alibaba.fastjson.util.IOUtils;
 import com.dozenx.core.Path.PathManager;
 import com.dozenx.core.config.Config;
 import com.dozenx.core.config.ImageConfig;
@@ -21,7 +22,9 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URLDecoder;
@@ -473,8 +476,30 @@ public class ImageUtil {
             return false;
         }
     }
+    public void putIntoRedis(String inputPath){
 
+
+    }
     public static void main(String args[]) {
+        String imagePth ="C:\\Users\\dozen.zhang\\Pictures\\parent.png";
+        try {
+            BufferedImage bufferedImage = ImageIO.read(new File(imagePth));
+            //ByteArrayOutputStream outputStream =new ByteArrayOutputStream();
+
+           byte[] bts =  FileUtil.getBytes(imagePth);
+            String s = Base64Util.encode(bts);
+            System.out.println(s);
+            //ImageUtil.imageToB
+          //  ImageIO.write( bufferedImage,"png", outputStream);
+          //  RedisUtil.setByteAry("hello",outputStream.toByteArray());
+
+            String ss ="data:image/png;base64,iVBORw0KGgoAAAANSUh";
+            System.out.print(ss.substring(ss.indexOf(",")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         // try {
         // /*
         // * ImageUtil.generateHaiBao( new String[] {
@@ -519,7 +544,7 @@ public class ImageUtil {
      * @author dozen.zhang
      * @date 2015年12月20日下午12:52:39
      */
-    public static ResultDTO saveImage(String path, String imageName, String imageData) throws IOException {
+    public static ResultDTO saveBase64Image(String path, String imageName, String imageData) throws IOException {
         int success = 0;
         String message = "";
         if (null == imageData || imageData.length() < 100) {
@@ -543,7 +568,7 @@ public class ImageUtil {
             // data:image/jpeg;base64,/9j/4AAQSkZJRgABA
             // data:image/png;base64,iVBORw0KGgoAAAANSUh
             // System.out.println(imageData);
-            byte[] data = decode(imageData);
+            byte[] data = decodeBase64(imageData);
             int len = data.length;
             int len2 = imageData.length();
             if (null == imageName || imageName.length() < 1) {
@@ -557,6 +582,31 @@ public class ImageUtil {
         return ResultUtil.getResult(0, imageName, "上传成功", null);
     }
 
+    /**
+     * base64 转 bufferedImage
+     * @param base64Str
+     * @return
+     * @throws Exception
+     */
+    public static BufferedImage base64ToImage(String base64Str)throws  Exception{
+        if (base64Str.startsWith("%2B")) {
+            base64Str = URLDecoder.decode(base64Str, "UTF-8").substring(1);
+        } else if (base64Str.startsWith("+")) {
+            base64Str = base64Str.substring(1);
+        }
+        base64Str = base64Str.substring(base64Str.indexOf("iVBO"));
+
+        if(base64Str.startsWith("data")){
+            base64Str= base64Str.substring(base64Str.indexOf(","));
+        }
+
+
+        byte[] data = decodeBase64(base64Str);
+        ByteArrayInputStream in = new ByteArrayInputStream(data);    //将b作为输入流；
+        BufferedImage image = ImageIO.read( in);     //将in作为输入流，读取图片存入image中，而这里in可以为ByteArrayInputStream();
+
+        return image;
+    }
     // references: http://blog.csdn.net/remote_roamer/article/details/2979822
     private static boolean saveImageToDisk(byte[] data, String path, String imageName) throws IOException {
         int len = data.length;
@@ -577,10 +627,10 @@ public class ImageUtil {
         return true;
     }
 
-    private static byte[] decode(String imageData) throws IOException {
+    private static byte[] decodeBase64(String imageData) throws IOException {
        /* sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
         return decoder.decodeBuffer(imageData)*/
-        ;
+
 
         byte[] data = Base64Util.decodeBuffer(imageData);
         for (int i = 0; i < data.length; ++i) {
@@ -734,4 +784,264 @@ public class ImageUtil {
         int width=cimg.getWidth();
         int height=cimg.getHeight();
     }
+
+
+
+
+    public static int[][] getGrayPicture(String filename) throws FileNotFoundException, IOException
+    {
+        File file =new File(filename);
+        BufferedImage originalImage=ImageIO.read(new FileInputStream(file));
+        originalImage.getColorModel();
+        System.out.println(originalImage.getColorModel());
+
+        int green=0,red=0,blue=0,rgb;
+        int imageWidth = originalImage.getWidth();
+        int imageHeight = originalImage.getHeight();
+        int[][] heights=new int[imageWidth][imageHeight];
+        for(int i = originalImage.getMinX();i < imageWidth ;i++)
+        {
+            for(int j = originalImage.getMinY();j < imageHeight ;j++)
+            {
+//ͼƬ�����ص���ʵ�Ǹ�����������������forѭ������ÿ�����ؽ��в���
+                Object data = originalImage.getRaster().getDataElements(i, j, null);//��ȡ�õ����أ�����object���ͱ�ʾ
+
+                red = originalImage.getColorModel().getRed(data);
+                blue = originalImage.getColorModel().getBlue(data);
+                green = originalImage.getColorModel().getGreen(data);
+                heights[i][j]=red;
+            }
+
+        }
+        return heights;
+
+    }
+    public static float[][] getGrayPicturef(String filename) throws FileNotFoundException, IOException
+    {
+        File file =PathManager.getInstance().getHomePath().resolve(filename).toFile();
+        BufferedImage originalImage=ImageIO.read(new FileInputStream(file));
+        originalImage.getColorModel();
+        System.out.println(originalImage.getColorModel());
+
+        int green=0,red=0,blue=0,rgb;
+        int imageWidth = originalImage.getWidth();
+        int imageHeight = originalImage.getHeight();
+        float[][] heights=new float[imageWidth][imageHeight];
+        for(int i = originalImage.getMinX();i < imageWidth ;i++)
+        {
+            for(int j = originalImage.getMinY();j < imageHeight ;j++)
+            {
+//ͼƬ�����ص���ʵ�Ǹ�����������������forѭ������ÿ�����ؽ��в���
+                Object data = originalImage.getRaster().getDataElements(i, j, null);//��ȡ�õ����أ�����object���ͱ�ʾ
+
+                red = originalImage.getColorModel().getRed(data);
+                blue = originalImage.getColorModel().getBlue(data);
+                green = originalImage.getColorModel().getGreen(data);
+                heights[i][j]=red;
+            }
+
+        }
+        return heights;
+
+    }
+    public static Color[][] getGrayPicture(String filename,int minX,int minY,int maxX,int maxY) throws FileNotFoundException, IOException
+    {
+        //ImageIO.read( ImageIO.read(PathManager.getInstance().getInstallPath().resolve(filename).toUri())));
+        File file =PathManager.getInstance().getHomePath().resolve(filename).toFile();
+        BufferedImage originalImage=ImageIO.read(new FileInputStream(file));
+        originalImage.getColorModel();
+        System.out.println(originalImage.getColorModel());
+
+        int green=0,red=0,blue=0,rgb;
+        int imageWidth = originalImage.getWidth();
+        int imageHeight = originalImage.getHeight();
+        Color[][] heights=new Color[maxX-minX ][maxY-minY ];
+        for(int i = minX;i < maxX ;i++)
+        {
+            for(int j = minY;j < maxY ;j++)
+            {
+//ͼƬ�����ص���ʵ�Ǹ�����������������forѭ������ÿ�����ؽ��в���
+                Object data = originalImage.getRaster().getDataElements(i, j, null);//��ȡ�õ����أ�����object���ͱ�ʾ
+
+                red = originalImage.getColorModel().getRed(data);
+                if(red!=0){
+                    blue = originalImage.getColorModel().getBlue(data);
+                    green = originalImage.getColorModel().getGreen(data);
+                    heights[i-minX][j-minY]=new Color(red,blue,green);
+                }
+            }
+
+        }
+        return heights;
+
+    }
+
+
+    public static Color[][] getGrayPicture(BufferedImage originalImage,int minX,int minY,int maxX,int maxY) throws FileNotFoundException, IOException
+    {
+        //ImageIO.read( ImageIO.read(PathManager.getInstance().getInstallPath().resolve(filename).toUri())));
+        originalImage.getColorModel();
+        //System.out.println(originalImage.getColorModel());
+
+        int green=0,red=0,blue=0,rgb;
+        int imageWidth = originalImage.getWidth();
+        int imageHeight = originalImage.getHeight();
+        Color[][] heights=new Color[maxX-minX ][maxY-minY ];
+        for(int i = minX;i < maxX ;i++)
+        {
+            for(int j = minY;j < maxY ;j++)
+            {
+//ͼƬ�����ص���ʵ�Ǹ�����������������forѭ������ÿ�����ؽ��в���
+                Object data = originalImage.getRaster().getDataElements(i, j, null);//��ȡ�õ����أ�����object���ͱ�ʾ
+
+                red = originalImage.getColorModel().getRed(data);
+                if(red!=0){
+                    blue = originalImage.getColorModel().getBlue(data);
+                    green = originalImage.getColorModel().getGreen(data);
+                    heights[i-minX][j-minY]=new Color(red,blue,green);
+                }
+            }
+
+        }
+        return heights;
+
+    }
+
+    public static int[][] getColorPicture(String filename) throws FileNotFoundException, IOException
+    {
+        File file =new File(filename);
+        BufferedImage originalImage=ImageIO.read(new FileInputStream(file));
+        originalImage.getColorModel();
+        System.out.println(originalImage.getColorModel());
+
+        int green=0,red=0,blue=0,rgb;
+        int imageWidth = originalImage.getWidth();
+        int imageHeight = originalImage.getHeight();
+        int[][] heights=new int[imageWidth][imageHeight];
+        for(int i = originalImage.getMinX();i < imageWidth ;i++)
+        {
+            for(int j = originalImage.getMinY();j < imageHeight ;j++)
+            {
+//ͼƬ�����ص���ʵ�Ǹ�����������������forѭ������ÿ�����ؽ��в���
+                Object data = originalImage.getRaster().getDataElements(i, j, null);//��ȡ�õ����أ�����object���ͱ�ʾ
+
+                red = originalImage.getColorModel().getRed(data);
+                blue = originalImage.getColorModel().getBlue(data);
+                green = originalImage.getColorModel().getGreen(data);
+                heights[i][j]=red;
+            }
+
+        }
+        return heights;
+
+    }
+
+    /**
+     * 图片转成灰度
+     * @param originalImage
+     * @return
+     */
+
+    public BufferedImage getGrayPicture(BufferedImage originalImage)
+    {
+        originalImage.getColorModel();
+        System.out.println(originalImage.getColorModel());
+        int green=0,red=0,blue=0,rgb;
+        int imageWidth = originalImage.getWidth();
+        int imageHeight = originalImage.getHeight();
+        for(int i = originalImage.getMinX();i < imageWidth ;i++)
+        {
+            for(int j = originalImage.getMinY();j < imageHeight ;j++)
+            {
+//ͼƬ�����ص���ʵ�Ǹ�����������������forѭ������ÿ�����ؽ��в���
+                Object data = originalImage.getRaster().getDataElements(i, j, null);//��ȡ�õ����أ�����object���ͱ�ʾ
+
+                red = originalImage.getColorModel().getRed(data);
+                blue = originalImage.getColorModel().getBlue(data);
+                green = originalImage.getColorModel().getGreen(data);
+                red = (red*3 + green*6 + blue*1)/10;
+                green = red;
+                blue = green;
+/*
+���ｫr��g��b��ת��Ϊrgbֵ����ΪbufferedImageû���ṩ���õ�����ɫ�ķ�����ֻ������rgb��rgb���Ϊ8388608�����������ֵʱ��Ӧ��ȥ255*255*255��16777216
+*/
+                rgb = (red*256 + green)*256+blue;
+                if(rgb>8388608)
+                {
+                    rgb = rgb - 16777216;
+                }
+//��rgbֵд��ͼƬ
+                System.out.printf(" %d %d %d \r\n",red,blue,green);
+            }
+
+        }
+
+        return originalImage;
+    }
+
+    public BufferedImage getGrayPictureAPI(BufferedImage originalImage)
+    {
+        BufferedImage grayPicture;
+        int imageWidth = originalImage.getWidth();
+        int imageHeight = originalImage.getHeight();
+
+        grayPicture = new BufferedImage(imageWidth, imageHeight,
+                BufferedImage.TYPE_3BYTE_BGR);
+        ColorConvertOp cco = new ColorConvertOp(ColorSpace
+                .getInstance(ColorSpace.CS_GRAY), null);
+        cco.filter(originalImage, grayPicture);
+        return grayPicture;
+    }
+
+
+    /**
+     * 将数组转成图片
+     * @param bts
+     * @param width
+     * @param height
+     * @return
+     */
+    public static BufferedImage rgbbyteToImage(byte[] bts,int width,int height){
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+        int[] data=new int[width*height*3];
+        for(int i=0;i<data.length;i++){
+            data[i]=bts[i];
+        }
+        image.setRGB(0, 0, width, height, data, 0, width);
+        return image;
+    }
+
+    /**
+     * 图片转成数组
+     * @param bufferedImage
+     * @return
+     */
+    public static byte[] imageToRGBByte(BufferedImage bufferedImage){
+
+        int width =bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+        byte[] bytes = new byte[height*width*3];
+        for(int j=0;j<height;j++){
+            for(int i=0;i<width;i++){
+                Object data = bufferedImage.getRaster().getDataElements(i, j, null);
+                int red = bufferedImage.getColorModel().getRed(data);
+                int blue = bufferedImage.getColorModel().getBlue(data);
+                int green = bufferedImage.getColorModel().getGreen(data);
+                bytes[(j*width+i)*3+0]= (byte)(red);
+                bytes[(j*width+i)*3+1]= (byte)(green);
+                bytes[(j*width+i)*3+2]= (byte)(blue);
+            }
+        }
+
+        return bytes;
+    }
+
+
+    public static BufferedImage bytesToImage(byte[] b) throws IOException {
+        ByteArrayInputStream in = new ByteArrayInputStream(b);    //将b作为输入流；
+        BufferedImage image = ImageIO.read( in);     //将in作为输入流，读取图片存入image中，而这里in可以
+        return image;
+    }
+
 }

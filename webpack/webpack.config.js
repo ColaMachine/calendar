@@ -5,6 +5,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 console.log("app.js 's dirct "+path.resolve(__dirname,'./app/app.js'));
 var scssLoader = 'vue-style-loader!css-loader?importLoaders=1!sass-loader!postcss-loader';
+//css-loader 和 style-loader，二者处理的任务不同，css-loader使你能够使用类似@import 和 url(...)的方法实现 require()的功能,style-loader将所有的计算后的样式加入页面中，二者组合在一起使你能够把样式表嵌入webpack打包后的JS文件中。
 
 
 if (process.env.NODE_ENV === 'production') {
@@ -16,6 +17,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 const PATHS={
     app:path.resolve(__dirname,'./app/app.js'),
+    phoneApp:path.resolve(__dirname,'./app/phoneApp.js'),
+     zhihuijiating:path.resolve(__dirname,'./app/zhihuijiating.js'),
     build:path.resolve(__dirname,'../src/main/webapp/static/js/'),
 };
 console.log("build path:"+PATHS.build);
@@ -36,7 +39,10 @@ module.exports = {
         new HtmlWebpackPlugin({
             title:'Webpack demo',
         }),
-         new ExtractTextPlugin("[name].css")
+
+
+         new ExtractTextPlugin("[name].css"),
+           // new ExtractTextPlugin("styles.css"),
 
     //  new ExtractPlugin('[name].css') //提取出来的样式放在style.css文件中
 
@@ -78,9 +84,23 @@ module.exports = {
                           }
           },
            { test: /\.css$/,
-            loader: 'style-loader!css-loader'
+//           use: ExtractTextPlugin.extract({
+//                               fallback: "style-loader",
+//                               use: "css-loader"
+//                           })
+           loader: 'style-loader!css-loader'
          //  loader:ExtractPlugin.extract('style-loader', 'css-loader!sass-loader')
 
+            },
+            {
+                //正则匹配后缀.js 和.jsx文件;
+                test: /\.(js|jsx)$/,
+                //需要排除的目录
+                exclude: '/node_modules/',
+                //加载babel-loader转译es6
+                use: [{
+                    loader: 'babel-loader',
+                }],
             },
           ]
       }

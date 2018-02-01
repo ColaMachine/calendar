@@ -67,9 +67,9 @@ try {
         loginHttpHeader.params.put("loginsubmit","%CC%E1+%26%23160%3B+%BD%BB");
 
 
-        String body= HttpRequestUtil.doGet(loginHttpHeader, "http://www.mayaww.com/forumdisplay.php?fid=5", loginHttpHeader.params, "gbk");
+      //  String body= HttpRequestUtil.doGet(loginHttpHeader, "http://www.mayaww.com/forumdisplay.php?fid=5", loginHttpHeader.params, "gbk");
 
-        System.out.println(body);
+       // System.out.println(body);
 
     }
     public static void testLogin()throws Exception{
@@ -107,7 +107,7 @@ try {
 
 
         loginHttpHeader.params.clear();
-        body= HttpRequestUtil.doGet(loginHttpHeader,"http://www.mayadisc.com/forumdisplay.php?fid=5",loginHttpHeader.params,"gbk");
+        //body= HttpRequestUtil.doGet(loginHttpHeader,"http://www.mayadisc.com/forumdisplay.php?fid=5",loginHttpHeader.params,"gbk");
 
         FileUtil.writeFile(PathManager.getInstance().getTmpPath().resolve("page" + 1 + ".txt").toFile(), body);
         System.out.println("get请求结果\r\n"+body +"body length:"+body.length());

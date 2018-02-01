@@ -57,7 +57,7 @@ export default {
         return {
             tags:{},
             original:{},
-            apiUrlStr:'http://127.0.0.1:80/timebuysrv/',//http://alpha-np.51awifi.com/timebuysrv/
+            apiUrlStr:'http://127.0.0.1:80/',//http://alpha-np.51awifi.com/timebuysrv/
         }
     }
     ,
@@ -122,7 +122,11 @@ export default {
             window.APIPATH="/proxy";
             window.APIDOMAIN=this.apiUrlStr;
 
-            var url = APIPATH+"/timebuysrv/api?url="+this.apiUrlStr;
+            var url = APIPATH+"/api?url="+this.apiUrlStr;
+            alert(url);
+
+
+
             var that=this;
             Ajax.getJSON(url,null,function(data){
             var tags={};

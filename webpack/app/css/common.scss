@@ -1,27 +1,11 @@
 /*color*/
-$white:#fff;
-$red:#f00;
-$black:#000;
-$blue:#00a0e9;
+@import 'base';
+@CHARSET "UTF-8";
 
-$light-blue:rgba(0,160,233,.7);
-
-$light-gray:#e5e5e5;
-$dark-gray:#8d8d8d;
-$gray:#d9d9d9;
-$lighter-gray:#f7f7f7;
-$qian-gray:#e5e5e5;
-$shadow-gray:rgba(0,0,0,0.25);
-$disabled-color:$shadow-gray;
-$light-black:#2E3E4E;
-/**font-size**/
-$ft-title-1:25px;
-$ft-nm:14px;
-$ft-nm1:12px;
-$ft-nm2:10px;
-$ft-h1:25px;
-$ft-h2:21px;
-$ft-h3:18px;
+body{
+    margin:0px;
+    padding:0px;
+}
 ul,li{
     margin:0px;
     padding:0px;
@@ -117,6 +101,9 @@ body {
 .bg-blue{
     background-color:$blue;
 }
+.bg-white{
+    background-color:$white;
+}
 
 
 
@@ -132,3 +119,83 @@ body {
 ul{
     padding:0 0;
 }
+.fix-bottom{
+    position:fixed !important;
+    bottom:0 !important;
+}
+
+.fix-top{
+    position:fixed !important;
+    top:0 !important;
+
+}
+ .v-center{
+ display:flex;
+         align-items: center;
+ }
+.middle{
+
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+}
+
+.ui-flex.center {
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+
+.mask{
+
+	position: fixed;
+top: 0px;
+right: 0px;
+bottom: 0px;
+left: 0px;
+background-color: #000;
+
+z-index:999;
+	display:none;
+
+  	background-color:#000000;
+    filter:alpha(opacity=50); /* IE 透明度20% */
+    -moz-opacity:0.5; /* Moz + FF 透明度20% */
+    opacity: 0.5;/*  支持CSS3的浏览器（FF 1.5也支持）透明度20% */
+}
+.wait{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size:30px;
+   margin-left:-15px;
+     margin-top:-15px;
+
+width:30px;
+height:30px;
+
+    z-index:1999;
+
+
+}
+
+.fa-spinner{
+     animation:mymove 2s   linear   infinite;
+     -webkit-animation:mymove 2s  linear   infinite; /*Safari and Chrome*/
+    /*transition: all 2s;*/
+
+ }
+
+
+ @keyframes mymove
+ {
+    from{transform:rotate(0)}
+    to{transform:rotate(360deg)}
+ }

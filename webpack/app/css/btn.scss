@@ -1,15 +1,16 @@
-@import 'common';
+@import 'base';
+@CHARSET "UTF-8";
 @mixin btn-size($size) {
     font-size:$size ;
-    height:$size * 2;
-    line-height:$size * 2;
-     min-height: $size*2;
-     padding: $size*0.2 $size*0.5;
+    height:$size * 2.5;
+    line-height:$size * 2.5;
+     min-height: $size*2.5;
+     padding: $size*0.1 $size*0.5;
       span,i{
               padding: $size*0.12 $size*0.15;
-             line-height: $size*1.5;
-             height: $size*1.5;
-             min-height: $size*1.5;
+             line-height: $size*1.8;
+             height: $size*1.8;
+             min-height: $size*1.8;
 
          }
 }
@@ -36,7 +37,7 @@ button,
 input,
 select,
 textarea {
-	font-size: $ft-nm * 1.5;
+	/*font-size: $ft-nm * 1.1;*/
 	outline: 0;
 	/*border-radius: 1%;*/
 	border: 1px solid #D4D4D4;
@@ -66,9 +67,23 @@ textarea {
 
     @include btn-size($ft-nm);
 
-
+    color:$black;
 }
-
+.btn-border-blue{
+    border:1px solid #4A90E2;
+    color:#4A90E2;
+     border-radius: 0px;
+}
+.btn-border-red{
+    border:1px solid #F05C5C;
+    color:#F05C5C;
+     border-radius: 0px;
+}
+.btn-border-yellow{
+    border:1px solid #fcd70f;
+        color:#F05C5C;
+          background-color: #fcd70f;
+}
 .btn.focus, .btn:focus, .btn:hover {
     color: #333;
     text-decoration: none;
@@ -141,8 +156,8 @@ textarea {
 .circle{
    border-radius: 25px;
 
-   width: $ft-nm*2;
-   height: $ft-nm*2;
+   width: $ft-nm*3;
+   height: $ft-nm*3;
    padding:0 0;
    span,i{
 
@@ -150,7 +165,7 @@ textarea {
 }
 .zw-btn-large{
 
-        @include btn-size($ft-nm*1.5);
+        @include btn-size($ft-nm*1.2);
 }
 .zw-btn-small{
   @include btn-size($ft-nm*0.7);

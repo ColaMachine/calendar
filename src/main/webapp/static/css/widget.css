@@ -1,14 +1,16 @@
 .zwidget_wrap{
-	position:fixed;
+	position:absolute;
 	min-width:234px;
 	background-color:white;
 	top:50%;
-	left:50%;
+
 	margin-top:-75px;
+	/*
+	left:50%;
 	margin-left:-125px;
-/*
+
    -webkit-box-shadow: 0px 0px 4px;
-  -moz-box-shadow: 0px 0px 4px;  
+  -moz-box-shadow: 0px 0px 4px;
   box-shadow: 0px 0px 4px;
 */
   z-index:23000;
@@ -27,7 +29,7 @@
 	diplay:relative;
 	font-weight:normal;
 	background-color:rgb(238,238,238);
-	color:gray;	
+	color:gray;
 	font-size:12px;*/
 
 	    padding: 0 10px 0 20px;
@@ -76,7 +78,7 @@ position: relative;
 	color:gray;
 }
 .zclose .fa-close {
-	
+
 }
 .zinfo-icon{
 	text-align:center;
@@ -124,7 +126,7 @@ position: relative;
 }
 .zinfo-icon .fa{
 	color:rgb(62,189,89);
-	
+
 }
 
 

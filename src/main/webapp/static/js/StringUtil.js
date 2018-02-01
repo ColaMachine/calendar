@@ -503,3 +503,6 @@ function getMFromYMD(str){
 function getDFromYMD(str){
 	return parseInt(str.substr(8,2));
 }
+function trim(Str){
+ return Str.replace(/(^\s*)|(\s*$)/g, ”);
+ }

@@ -83,10 +83,10 @@ public class ${Abc}Controller extends BaseController{
        @API(summary="${table.remark}列表接口",
                  description="${table.remark}列表接口",
                  parameters={
-                 @Param(name="pageSize", description="分页大小", dataType= DataType.PHONE,required = true),
-                 @Param(name="curPage", description="当前页", dataType= DataType.CAPTCHA,required = true),
+                 @Param(name="pageSize", description="分页大小", dataType= DataType.INTEGER,required = true),
+                 @Param(name="curPage", description="当前页", dataType= DataType.INTEGER,required = true),
                   <#list table.cols as col>
-                    @Param(name="${col.name}" , description="${col.remark}",dataType = DataType.<@apiType>${col.type}</@apiType>,required = ${col.nn?c}),
+                    @Param(name="${col.name}" , description="${col.remark}",dataType = DataType.<@apiType>${col.type}</@apiType>,required =false),// ${col.nn?c}
                    </#list>
          })
     @RequestMapping(value = "/list" , method = RequestMethod.GET)
@@ -158,7 +158,7 @@ ${getSearchParam}
           </#list>
         })
     // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
-    @RequestMapping(value = "{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "update/{id}",method = RequestMethod.PUT)
     @ResponseBody
     public ResultDTO update(@PathVariable <@javaType>${table.pk.type}</@javaType> id,HttpServletRequest request) throws Exception {
         ${Abc} ${abc} =new  ${Abc}();
@@ -202,7 +202,7 @@ ${validCode}
                @Param(name="${col.name}" , description="${col.remark}",dataType = DataType.<@apiType>${col.type}</@apiType>,required = ${col.nn?c}),
               </#list>
             })
-        @RequestMapping(value = "",method = RequestMethod.POST)
+        @RequestMapping(value = "add",method = RequestMethod.POST)
         @ResponseBody
         public ResultDTO add(HttpServletRequest request) throws Exception {
             ${Abc} ${abc} =new  ${Abc}();
@@ -291,7 +291,7 @@ ${validCode}
                 return ResultUtil.getResult(302,validStr);
             }
             
-            if(StringUtil.isNotEmpty(validStr)) {
+            if(StringUtil.isNotBlank(validStr)) {
                 return ResultUtil.getResult(302,validStr);
             }
             idAry[i]=<@javaType>${table.pk.type}</@javaType>.valueOf(idStrAry[i]);

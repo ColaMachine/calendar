@@ -43,14 +43,14 @@ public class UserController extends BaseController{
 
     @ResponseBody
     public ResultDTO info(HttpServletRequest request){
-        SessionDTO sessionDTO = (SessionDTO) request.getSession().getAttribute(Constants.SESSION_DTO);
-        SessionUser sessionUser  = sessionDTO.getSessionUser();
+        SysUser sysUser = (SysUser) request.getSession().getAttribute(Constants.SESSION_DTO);
+
         /*sessionUser.setNick("nick");
         sessionUser.setAddress("address");
         sessionUser.setBirthday(new Date().getTime());
         sessionUser.setSex(1);
         sessionUser.setFace("/images/icon/face.png");*/
-        return this.getResult(sessionUser);
+        return this.getResult(sysUser);
     }
 
 
@@ -142,17 +142,18 @@ try {
     }
 
     /**
+     * 这个方法和logincontroller的重复了
      * 说明:登录的时候获取短信验证码
      * @param request
      * @return
      * @author dozen.zhang
      * @date 2015年5月14日上午11:33:39
      */
-    @RequestMapping(value = "/loginsms/request.json", method = RequestMethod.POST)
-    public @ResponseBody
-    ResultDTO sendSmsValidCode4Login(HttpServletRequest request) throws Exception {
-        String ip =  RequestUtil.getIp(request);
-        String phone =request.getParameter("phone");
-        return authService.sendSmsValidCode4LoginDirectRegister(ip,phone,(String)request.getSession().getAttribute("hellosms"));
-    }
+//    @RequestMapping(value = "/loginsms/request.json", method = RequestMethod.POST)
+//    public @ResponseBody
+//    ResultDTO sendSmsValidCode4Login(HttpServletRequest request) throws Exception {
+//        String ip =  RequestUtil.getIp(request);
+//        String phone =request.getParameter("phone");
+//        return authService.sendSmsValidCode4LoginDirectRegister(ip,phone,(String)request.getSession().getAttribute("hellosms"));
+//    }
 }

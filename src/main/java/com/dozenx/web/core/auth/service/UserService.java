@@ -94,11 +94,11 @@ public class UserService extends SysUserService {
 
 
 	/**
-	 * 登录验证
+	 * 登录验证 UnencryptedPwd 采用md5两次算法
 	 */
 	public ResultDTO loginValid(String email, String UnencryptedPwd) {
 		// / this.userMapper.getUsersByParam(map)
-		String pwd = MD5Utils.MD5Encode(UnencryptedPwd);
+		//String pwd = MD5Utils.MD5Encode(UnencryptedPwd);
 		if (StringUtil.isBlank(email) || StringUtil.isBlank(UnencryptedPwd)) {
 			return ResultUtil.getWrongResultFromCfg("err.account.empty");
 		}
@@ -114,10 +114,21 @@ public class UserService extends SysUserService {
 			//return ResultUtil.getResult(ResultUtil.fail,"既不是手机号也不是邮箱");
 		}
 
-		params.put("password", pwd);
+		//params.put("password", pwd);
 		List list = sysUserMapper.listByParams(params);
 		if (list != null && list.size() > 0) {
 			SysUser  user = (SysUser) list.get(0);
+			if(StringUtil.isNotBlank(user.getPassword())){
+				try {
+					if(MD5Util.getStringMD5String(UnencryptedPwd).equals(user.getPassword())){
+						ResultDTO result = ResultUtil.getSuccResult();
+						result.setData(user);
+						return result;
+                    }
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 //				returnMap.putAll(userMap);
 
 			/* SysUser user =new SysUser();
@@ -127,9 +138,8 @@ public class UserService extends SysUserService {
 			  user.setId(MapUtils.getLong(userMap, "userid"));
 			  user.setStatus(MapUtils.getIntValue(userMap, "active"));*/
 
-			ResultDTO result = ResultUtil.getSuccResult();
-			result.setData(user);
-			return result;
+
+			return ResultUtil.getWrongResultFromCfg("err.accountorpwd.wrong");
 		} else {
 			return ResultUtil
 					.getWrongResultFromCfg("err.accountorpwd.wrong");

@@ -21,7 +21,11 @@
 <script type="text/javascript" src="${path}/static/js/common.js"></script>
 <script type="text/javascript" src="${path}/static/js/router.js"></script>
 <script type="text/javascript" src="${path}/static/js/menu.js"></script>
+<script type="text/javascript" src="${path}/static/js/dom.js"></script>
+<script type="text/javascript" src="${path}/static/js/grid1.js"></script>
+<script type="text/javascript" src="${path}/static/js/animation.js"></script>
 <script type="text/javascript" src="${path}/static/js/slider.js"></script>
+<script type="text/javascript" src="${path}/static/js/imageUtil.js"></script>
 <script src="/static/js/vue.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/slider.css" >
 <%
@@ -371,7 +375,13 @@ var menuList=[
 {id:36,name:"实验室",url:"",icon:"fa fa-bar-chart",pid:0},
 {id:361,name:"vue",url:"/static/html/api/apiList.html",icon:"fa fa-bar-chart",pid:36},
 {id:362,name:"vueList",url:"/static/html/lab/vue/commonListTemplate.html",icon:"fa fa-bar-chart",pid:36},
-
+{id:37,name:"api",url:"",icon:"fa fa-bar-chart",pid:0},
+{id:371,name:"apiUrl",url:"/api/url/list.htm",icon:"fa fa-bar-chart",pid:37},
+{id:372,name:"apiUrl",url:"/api/url/list.htm",icon:"fa fa-bar-chart",pid:37},
+{id:373,name:"apiUrl",url:"/api/url/list.htm",icon:"fa fa-bar-chart",pid:37},
+{id:38,name:"地图",url:"",icon:"fa fa-bar-chart",pid:0},
+{id:381,name:"地图数据",url:"/mapdata/list.htm",icon:"fa fa-bar-chart",pid:38},
+{id:382,name:"地图展示",url:"window:/static/html/weixin/tecent_map.html",icon:"fa fa-bar-chart",pid:38},
 ]
 
 

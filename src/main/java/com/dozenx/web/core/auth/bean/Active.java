@@ -2,6 +2,10 @@ package com.dozenx.web.core.auth.bean;
 
 import java.sql.Timestamp;
 
+/* @Author: dozen.zhang
+ * @Description:激活类
+ * @Date:17:09 2018/1/2
+ */
 public class Active {
 private String activeid;
 

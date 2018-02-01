@@ -10,6 +10,7 @@ package com.dozenx.web.core.img.action;
 import com.dozenx.core.Path.PathManager;
 import com.dozenx.core.config.Config;
 import com.dozenx.util.ImageUtil;
+import com.dozenx.util.RedisUtil;
 import com.dozenx.util.ResultUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.log.ResultDTO;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -77,13 +79,15 @@ static final int[]phonesizes={
         String imageData = request.getParameter("imageData");
         //imageData=URLDecoder.decode(imageData);
      //  imageData= URLEncoder.encode(imageData);
-       ResultDTO result = ImageUtil.saveImage(PathManager.getInstance().getImagePath().toFile().getAbsolutePath(), "", imageData);
+       ResultDTO result = ImageUtil.saveBase64Image(PathManager.getInstance().getImagePath().toFile().getAbsolutePath(), "", imageData);
        result.setData(Config.getInstance().getImage().getServerUrl()+"/"+result.getData());
        return result;
     }
     @RequestMapping(value = "/uploadSubmit.json")
     @ResponseBody
     public Object uploadSubmit( @RequestParam(value="pic1")MultipartFile image){
+
+
         int index=0;
         // 校验文件类型是否正确
         long fileSize = image.getSize();
@@ -138,5 +142,71 @@ static final int[]phonesizes={
         return  ResultUtil.getResult(1,Config.getInstance().getImage().getServerUrl()+"/"+fileName,"上传成功");
     
     }
+
+    private ResultDTO readBufferedImageFromMultipartFile(MultipartFile image){
+        int index=0;
+        // 校验文件类型是否正确
+        long fileSize = image.getSize();
+        String type = image.getContentType();
+        if (!StringUtil.isBlank(type)) {
+            if (type.equals("image/jpeg") || type.equals("image/png")
+                    || type.equals("image/bmp")) {
+            } else {
+                return ResultUtil.getResult(0, "图片格式不正确");
+            }
+        } else {
+            return ResultUtil.getResult(0, "图片格式不正确");
+        }
+        type = type.split("/")[1];
+        // 如果用的是Tomcat服务器，则文件会上传到\\%TOMCAT_HOME%\\webapps\\YourWebProject\\WEB-INF\\upload\\文件夹中
+        String uploadpath = PathManager.getInstance().getImagePath().toFile().getAbsolutePath();
+        // 这里不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉，我是看它的源码才知道的
+        BufferedImage img = null;
+        String fileName="";
+        try {
+            img = ImageIO.read(image.getInputStream());
+            if (img == null || img.getWidth(null) <= 0
+                    || img.getHeight(null) <= 0) {
+                return ResultUtil.getResult(0,"上传的图片为空");
+            }
+        }catch(Exception e){
+            return ResultUtil.getResult(0,e.getMessage());
+        }
+        return ResultUtil.getDataResult(img);
+
+    }
+  /*  @RequestMapping(value = "/uploadToRedis.json")
+    @ResponseBody
+    public ResultDTO imageToRedis(@RequestParam(value="pic1")MultipartFile image){
+
+        String imagePth ="C:\\Users\\dozen.zhang\\Pictures\\parent.png";
+        try {
+            BufferedImage bufferedImage = ImageIO.read(new File(imagePth));
+
+            ByteArrayOutputStream outputStream =new ByteArrayOutputStream();
+            ImageIO.write( bufferedImage,"png", outputStream);
+
+            byte[] bytes = new byte[bufferedImage.getWidth()*bufferedImage.getHeight()*3];
+            int width =bufferedImage.getWidth();
+            int height = bufferedImage.getHeight();
+
+
+            for(int j=0;j<bufferedImage.getHeight();j++){
+                for(int i=0;i<bufferedImage.getWidth();i++){
+                    Object data = bufferedImage.getRaster().getDataElements(i, j, null);//��ȡ�õ����أ�����object���ͱ�ʾ
+                    int red = bufferedImage.getColorModel().getRed(data);
+                    int blue = bufferedImage.getColorModel().getBlue(data);
+                    int green = bufferedImage.getColorModel().getGreen(data);
+                    bytes[(j*width+i)*3+0]= (byte)(red);
+                    bytes[(j*width+i)*3+1]= (byte)(green);
+                    bytes[(j*width+i)*3+2]= (byte)(blue);
+                }
+            }
+            RedisUtil.setByteAry("hello",bytes);
+            System.out.print(bytes.length);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
 
 }

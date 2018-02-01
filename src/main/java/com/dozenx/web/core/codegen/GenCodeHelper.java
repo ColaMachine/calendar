@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GenCodeHelper {
+
     public static <T> T getValidBean(HttpServletRequest request, String name,Class<T> clzz) throws IllegalAccessException, InstantiationException, NoSuchFieldException {
         //利用反射创建一个类
         T object = clzz.newInstance();
@@ -128,6 +129,8 @@ public static Integer getIntFromKuoHao(String str){
         typeName = "String";
     } else if (type.startsWith("tinyint")) {
         typeName = "Byte";
+    } else if (type.startsWith("decimal")) {
+        typeName = "BigDecimal";
     }
     return typeName;
 }
@@ -155,6 +158,9 @@ public static Integer getIntFromKuoHao(String str){
             typeName = "STRING";
         } else if (type.startsWith("tinyint")) {
             typeName = "BYTE";
+        }
+        else if (type.startsWith("decimal")) {
+            typeName = "FLOAT";
         }
         return typeName;
     }

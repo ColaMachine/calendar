@@ -1,5 +1,5 @@
  <div class="ibox float-e-margins">
-    <form id="${abc}EditForm" class="form-horizontal" method="post" action="/${abc}/save.json" enctype="multipart/form-data">
+    <form id="${abc}EditForm" class="form-horizontal" method="post" action="${table.baseUrl}/save.json" enctype="multipart/form-data">
         <!--<div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
             <h4 class="modal-title">${table.remark}编辑</h4>

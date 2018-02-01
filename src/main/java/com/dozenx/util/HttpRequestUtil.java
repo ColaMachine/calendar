@@ -313,6 +313,7 @@ public class HttpRequestUtil {
      * @return URL 所代表远程资源的响应结果
      */
     public static String sendGet(String url, String param) {
+
         try {
             if(!StringUtil.isBlank(param)){
 
@@ -322,7 +323,11 @@ public class HttpRequestUtil {
                     url+= "?"+param;
                 }
             }
-            return UrlRead(url);
+
+            if(url.startsWith("https")){
+                return  HttpsConnection.doGet(url,null,2000,2000);
+            }else
+                return UrlRead(url);
         } catch (Exception e) {
             return "400";
         }
@@ -748,7 +753,7 @@ public class HttpRequestUtil {
     }
 
     /**
-     * 向指定 URL 发送POST方法的请求
+     * 向指定 URL 发送POST form表单请求方法的请求
      * 
      * @param url
      *            发送请求的 URL
@@ -760,10 +765,12 @@ public class HttpRequestUtil {
         OutputStream out = null;
         BufferedReader in = null;
         StringBuffer result = new StringBuffer("");
-        System.out.println(JSON.toJSONString(params));
+
         try {
-            byte[] body = ("[" + JSON.toJSONString(params) + "]")
-                    .getBytes("utf-8");
+            String bodyString = MapUtils.join(params,"=","&");
+            System.out.println(bodyString);
+            byte[] body =bodyString
+                    .getBytes("utf-8");// ("[" + JSON.toJSONString(params) + "]")
             URL realUrl = new URL(url);
             // 打开和URL之间的连接
             HttpURLConnection conn = (HttpURLConnection) realUrl
@@ -771,10 +778,14 @@ public class HttpRequestUtil {
             // 设置通用的请求属性
             conn.setRequestMethod("POST");
             conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             conn.setRequestProperty("Content-Type",
-                    "applocation/x-www-form-urlencoded; charset=utf-8");
+                    "application/x-www-form-urlencoded");
             conn.setRequestProperty("Content-Length",
                     String.valueOf(body.length));
+
+//            PrintWriter  out2 = new PrintWriter(conn.getOutputStream());
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -842,15 +853,15 @@ public class HttpRequestUtil {
 
 
         HttpMethod method = new PostMethod(url);
-        // method.setRequestHeader("Host","www.mayadisc.com");
+        // method.setRequestHeader("Host","xxxx");
         method.setRequestHeader("Connection","keep-alive");
         method.setRequestHeader("Cache-Control","max-age=0");
-        method.setRequestHeader("Origin","http://www.mayadisc.com");
+       // method.setRequestHeader("Origin","http://xxx.com");
         method.setRequestHeader("Upgrade-Insecure-Requests","1");
         method.setRequestHeader("User-Agent","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36");
         method.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         method.setRequestHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-        //method.setRequestHeader("Referer","http://www.mayadisc.com/logging.php?action=login");
+        //method.setRequestHeader("Referer","http://www.xxx.com/logging.php?action=login");
         //method.setRequestHeader("Accept-Encoding","gzip, deflate");
         method.setRequestHeader("Accept-Language","zh-CN,zh;q=0.8");
         method.setRequestHeader("Cookie","is_use_cookiex=yes; cdb_cookietime=2592000; cdb_oldtopics=D2094663D; cdb_fid5=1480639303; cdb_sid=FwV7KV; is_use_cookied=yes");
@@ -944,7 +955,16 @@ public class HttpRequestUtil {
         return response.toString();
     }
 
-    public static String doGet(HttpHeader header ,String posturl,HashMap params,String charset) throws IOException {
+    /**
+     * 利用socket 进行通讯
+     * @param header
+     * @param posturl
+     * @param params
+     * @param charset
+     * @return
+     * @throws IOException
+     */
+    public static String doGetWithSocket(HttpHeader header ,String posturl,HashMap params,String charset) throws IOException {
         String url =posturl;
         Long startTime =System.currentTimeMillis();
 
@@ -1108,6 +1128,16 @@ public class HttpRequestUtil {
 
 
     }
+
+    /**
+     * 利用socket 进行通讯
+     * @param header
+     * @param posturl
+     * @param params
+     * @param charset
+     * @return
+     * @throws IOException
+     */
     public static String doPost(HttpHeader header ,String posturl,HashMap params,String charset) throws IOException {
         Long startTime = System.currentTimeMillis();
         System.out.println("开始post请求");
@@ -1330,15 +1360,15 @@ public class HttpRequestUtil {
 //
 //        //HttpMethod method = new PostMethod(url);
 //        HttpPost method =new HttpPost(url);
-//        // method.setRequestHeader("Host","www.mayadisc.com");
+//        // method.setRequestHeader("Host","www.xxx.com");
 ////        method.setRequestHeader("Connection","keep-alive");
 ////        method.setRequestHeader("Cache-Control","max-age=0");
-////        method.setRequestHeader("Origin","http://www.mayadisc.com");
+////        method.setRequestHeader("Origin","http://www.xxxx.com");
 ////        method.setRequestHeader("Upgrade-Insecure-Requests","1");
 ////        method.setRequestHeader("User-Agent","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36");
 ////        method.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 ////        method.setRequestHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,**/*//*;q=0.8");
-////        //method.setRequestHeader("Referer","http://www.mayadisc.com/logging.php?action=login");
+////        //method.setRequestHeader("Referer","http://www.xxxx.com/logging.php?action=login");
 ////        method.setRequestHeader("Accept-Encoding","gzip, deflate");
 ////        method.setRequestHeader("Accept-Language","zh-CN,zh;q=0.8");
 ////        method.setRequestHeader("Cookie","is_use_cookiex=yes; cdb_cookietime=2592000; cdb_oldtopics=D2094663D; cdb_fid5=1480639303; cdb_sid=FwV7KV; is_use_cookied=yes");
@@ -1402,14 +1432,20 @@ public class HttpRequestUtil {
         // 读取到的数据长度
         int len;
         // 输出的文件流
-        OutputStream os = new FileOutputStream(filename);
-        // 开始读取
-        while ((len = is.read(bs)) != -1) {
-            os.write(bs, 0, len);
+        OutputStream os=null;
+        try {
+             os = new FileOutputStream(filename);
+            // 开始读取
+            while ((len = is.read(bs)) != -1) {
+                os.write(bs, 0, len);
+            }
+        }finally {
+
+            os.close();
+            is.close();
         }
         // 完毕，关闭所有链接
-        os.close();
-        is.close();
+
     }
     /**
      * 描述:获取 post 请求的 byte[] 数组

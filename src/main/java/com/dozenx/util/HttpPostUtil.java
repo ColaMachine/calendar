@@ -224,7 +224,8 @@ public class HttpPostUtil {
     private void paramsEnd() throws Exception {  
         ds.writeBytes("--" + boundary + "--" + "\r\n");  
         ds.writeBytes("\r\n");  
-    }  
+    }
+
     /**
      * 对包含中文的字符串进行转码，此为UTF-8。服务器那边要进行一次解码  
      * @param value 需要转码的字符串
@@ -235,7 +236,8 @@ public class HttpPostUtil {
      */
     private String encode(String value) throws Exception{  
         return URLEncoder.encode(value, "UTF-8");  
-    }  
+    }
+
     public static void main(String[] args) throws Exception {  
         HttpPostUtil u = new HttpPostUtil("http://localhost:3000/up_load");  
         u.addFileParameter("img", new File(  

@@ -34,7 +34,7 @@ public class ApiAspect {
          * 定义缓存逻辑
          */
         @Around("execution(* *.*(..)) && @annotation(com.cpj.swagger.annotation.API)")
-        public Object cache(ProceedingJoinPoint pjp ) throws Throwable {
+        public Object validParam(ProceedingJoinPoint pjp ) throws Throwable {
             Object result=null;
             Method method=getMethod(pjp);
             API api=method.getAnnotation(com.cpj.swagger.annotation.API.class);
@@ -68,25 +68,28 @@ public class ApiAspect {
             }
 
             for(int i=0;i<params.length;i++){
+                String in = params[i].in();
+
+                if("path".equalsIgnoreCase(in)){
+                    continue;//如果是path 变量就跳过
+                }
                 String name =params[i].name();
                 if(restfulParam!=null && restfulParam.equals(name)){
+
                     continue;
                 }
 
                 String value =request.getParameter(name);
                 DataType type = params[i].dataType();
                 List<Rule> rules =new ArrayList<Rule>();
-
-
-
                 if(type == DataType.INTEGER){
                     rules.add(new Numeric());
                 }else if(type == DataType.LONG){
                     rules.add(new Numeric());
                 }else if(type == DataType.FLOAT){
-                    rules.add(new Numeric());
+                    rules.add(new Digits(5,18));
                 }else if(type == DataType.DOUBLE){
-                    rules.add(new Numeric());
+                    rules.add(new Digits(5,18));
                 }else if(type == DataType.STRING){
                     //rules.add(new Numeric());
                 }else if(type == DataType.ARRAY){

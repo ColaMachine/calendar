@@ -35,7 +35,38 @@
                 <span slot="prepend">http:</span>
                 <span slot="append">.com</span>
                </zwInput>
+<zwInput placeholder="Basic usage">
 
+
+                <img slot="append" src="data:image/png;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0a
+                          HBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIy
+                          MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAaAFADASIA
+                          AhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQA
+                          AAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3
+                          ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWm
+                          p6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEA
+                          AwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSEx
+                          BhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElK
+                          U1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3
+                          uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+sfx
+                          Vqd5o3hm91GwgWa4gVWCOhYY3AMSAQcBcn2xWxWT4o/5FLWv+vCf/wBFtUz+F2EzjbPx3rGteC9R
+                          v9PitP7RsoibhdpXyhkkSICSHGwHgkEFDwwIFULr4vz2T6Np1hokmvX11YJNKbeUo/mjcJF8tYyc
+                          jYTx2OenNUbbRL+X4c6XrWkI0l2ltc2VxborsZ4ZJXXACnkqWLYx7n7oFc3r+i3dsvw8SKS70jWL
+                          uWeye5XeksSGcBflyCMCZz2yG64xWeGlKU0p9iLs7rS/i9NLrh0zXPCl/pEhtZbpPMcl2WNGc/K6
+                          JwQjgHPUAepHa2Pieyv/AAm3iOKK4FmsMsxRlHmbYywPGcZ+U45rx7R9PtvA3xMlj8erJftfKVsN
+                          buZWaNl2mNhICSCCrBW3Z2YH8J3Vb+H9h40utBnfw5q9lZ2YumDxzoCxk2rk8xtxjb37V1ziuhDq
+                          STSO5uPiXp+neB9P8UalY3KQ3k5gWC2KysrAvzlioxiM/nWZpnxy8JajqUFm6ahZiZtn2i6jRYkP
+                          bcQ5IGeM4wM84GTXl+sf8kUT/sYh/wCkxq5ruu39tquiXXjLxJo3irTILku2naZOrfw43uFRVO3I
+                          wHPPI6FjRyI3o+/TTZ9HUUUVkAUUUUAFZ2qW+js9rearbWjm2kzBcXMSt5DcHIYj5OVHORyAOuK0
+                          aKAGyRpNE8ciK8bgqysMhgeoI9KoaLoWm+HrN7TS7b7PA8hlZd7PliAM5Yk9AKvxxpDEkcaKkaAK
+                          qqMBQOgA9Kpa5I8Ph/UpI3ZJEtZWVlOCpCHBB9aBWW5m33gbw1qOiRaNcaTF/Z8UomWKNmjzIFKh
+                          iVILHBxkk571V0n4a+D9Dv1vrDQ4VuUxseV3m2EEEModiAwIGGHI9a6uindjWishskaTRPHIivG4
+                          KsrDIYHqCPSqH9mS2/8AyD72S3UfdgkUSwj8DhgMdFVlAwOOudGikB//2Q==" ></img>
+
+
+                                    <zwButton  slot="append" icon="refresh" loading :loading_delay=5 ></zwButton>
+
+               </zwInput>
 
 
             </div>
@@ -64,6 +95,17 @@
                                                <zwIcon slot="prefix" type="windows"></zwIcon>
                                                <zwIcon slot="suffix" type="windows"></zwIcon>
                                               </zwInput>
+
+                <zwInput placeholder="Basic usage">
+                                   <zwIcon slot="prefix" type="windows"></zwIcon>
+                                   <select slot="suffix" type="windows">
+                                     <option valule="minute">分</option>
+                                   <option valule="hour">小时</option>
+                                    <option valule="day">天</option>
+                                    <option valule="month">月</option>
+                                    <option valule="year">年</option>
+                                   </select>
+                              </zwInput>
             </div>
              <div slot="zwCodeBoxMeta"  title="前缀和后缀">
 
@@ -104,151 +146,13 @@
 
             </div>
         </zwBox>
-        <!---------按钮组--------------->
-        <zwBox >
-            <div slot="zwCodeBoxDemo">
-                <zwButtonGroup>
-                    <zwButton type="dashed"  icon="search" loading :loading_delay=5></zwButton>
-                    <zwButton type="dashed"  icon="search"loading  >search</zwButton>
-                    <zwButton type="danger"  icon="search" :loading="getLoadingVal"  v-on:click.native="changeLoading" :loading_delay=5></zwButton>
-                    <zwButton type="danger"  icon="search" :loading="getLoadingVal" v-on:click.native="changeLoading" >search</zwButton>
-                </zwButtonGroup>
-            </div>
-             <div slot="zwCodeBoxMeta"  title="等待按钮">
 
-                按钮有大、中、小三种尺寸。
-                通过设置 size 为 large small 分别把按钮设为大、小尺寸。若不设置 size，则尺寸为中。
-            </div>
-            <div slot="zwCodeBoxPanel"  >
-
-                <textarea ref="textarea" id="textarea" name="textarea">
-                   <zwButton type="dashed" shape="circle" icon="search" loading :loading_delay=5></zwButton>
-                   <zwButton type="dashed"  icon="search"loading  >search</zwButton>
-                   <zwButton type="danger" shape="circle" icon="search" :loading="getLoadingVal"  v-on:click.native="changeLoading" :loading_delay=5></zwButton>
-                   <zwButton type="danger"  icon="search" :loading="getLoadingVal" v-on:click.native="changeLoading" >search</zwButton>
-
-                </textarea>
-
-            </div>
-        </zwBox>
 </zwCol>
 
 
 
 <zwCol span=12>
-    <zwBox class="">
-         <div slot="zwCodeBoxDemo">
 
-            <zwButton type="primary" shape="circle" icon="search"></zwButton>
-            <zwButton type="primary"  icon="search">search</zwButton>
-
-            <zwButton  shape="circle" icon="search"></zwButton>
-            <zwButton   icon="search">search</zwButton>
-
-            <br />
-
-            <zwButton type="dashed" shape="circle" icon="search"></zwButton>
-            <zwButton type="dashed"  icon="search">search</zwButton>
-
-            <zwButton type="danger" shape="circle" icon="search"></zwButton>
-            <zwButton type="danger"  icon="search">search</zwButton>
-
-
-
-
-        </div>.
-         <div slot="zwCodeBoxMeta"  title="图标按钮">
-
-          当需要在 Button 内嵌入 Icon 时，可以设置 icon 属性，或者直接在 Button 内使用 Icon 组件。
-          如果想控制 Icon 具体的位置，只能直接使用 Icon 组件，而非 icon 属性。
-        </div>
-         <div slot="zwCodeBoxPanel"  >
-
-            <textarea ref="textarea" id="textarea" name="textarea">
-                 <zwButton type="primary" shape="circle" icon="search"></zwButton>
-                        <zwButton type="primary"  icon="search">search</zwButton>
-
-                        <zwButton  shape="circle" icon="search"></zwButton>
-                        <zwButton   icon="search">search</zwButton>
-
-                        <br />
-
-                        <zwButton type="dashed" shape="circle" icon="search"></zwButton>
-                        <zwButton type="dashed"  icon="search">search</zwButton>
-
-                        <zwButton type="danger" shape="circle" icon="search"></zwButton>
-                        <zwButton type="danger"  icon="search">search</zwButton>
-             </textarea>
-
-       </div>
-    </zwBox>
-
-
-
-
-    <zwBox class="">
-             <div slot="zwCodeBoxDemo">
-
-                <zwButton type="primary"  shape="circle" icon="search" disabled></zwButton>
-                <zwButton type="primary"  disabled icon="search">search</zwButton>
-
-                <zwButton  shape="circle" icon="search" disabled ></zwButton>
-                <zwButton   icon="search" disabled >search</zwButton>
-
-            </div>.
-             <div slot="zwCodeBoxMeta"  title="disabled禁用">
-
-                To mark a button as disabled, add the disabled property to the Button.
-            </div>
-             <div slot="zwCodeBoxPanel"  >
-
-                <textarea ref="textarea" id="textarea" name="textarea">
-                        <zwButton type="primary"  shape="circle" icon="search" disabled></zwButton>
-                        <zwButton type="primary"  disabled icon="search">search</zwButton>
-
-                        <zwButton  shape="circle" icon="search" disabled ></zwButton>
-                        <zwButton   icon="search" disabled >search</zwButton>
-                 </textarea>
-
-           </div>
-        </zwBox>
-
-
-        <zwBox class="">
-             <div slot="zwCodeBoxDemo">
-                <zwDropDown>
-                    <zwButton slot="button" type="primary"   icon="down" >下拉查询菜单</zwButton>
-                    <zwMenu slot="menu">
-                        <zwMenuItem key="1">1st item</zwMenuItem>
-                        <zwMenuItem key="2">2nd item</zwMenuItem>
-                        <zwMenuItem key="3">3rd item</zwMenuItem>
-                    </zwMenu>
-                </zwDropDown>
-            </div>
-
-
-
-             <div slot="zwCodeBoxMeta"  title="多按钮 下拉">
-
-                To mark a button as disabled, add the disabled property to the Button.
-            </div>
-             <div slot="zwCodeBoxPanel"  >
-
-                <textarea ref="textarea" id="textarea" name="textarea">
-                        <div slot="zwCodeBoxDemo">
-                                       <zwDropDown>
-                                           <zwButton slot="button" type="primary"   icon="down" >下拉查询菜单</zwButton>
-                                           <zwMenu slot="menu">
-                                               <zwMenuItem key="1">1st item</zwMenuItem>
-                                               <zwMenuItem key="2">2nd item</zwMenuItem>
-                                               <zwMenuItem key="3">3rd item</zwMenuItem>
-                                           </zwMenu>
-                                       </zwDropDown>
-                                   </div>
-                 </textarea>
-
-           </div>
-        </zwBox>
 </zwCol>
 
 

@@ -15,9 +15,7 @@ import zwIcon from '../icon/zwIcon.vue';
 export default {
         name: 'zwPanel',
          components:{zwIcon},
-        props: {
-
-        },
+        props:["state"],
         data () {
             return {
                 collapse:true,
@@ -41,11 +39,16 @@ export default {
              }
         },
         mounted () {
-
+            if(this.state && this.state=="open"){
+                this.collapse=false;
+            }
 
         },
         methods: {
             changeCollapse:function(){
+ this.collapse = !this.collapse;
+                   return;
+
                 var body = this.$refs.body;
                 var totalHeight = 0;
                 for (var i = 0; i < body.childNodes.length; i++) {
@@ -55,12 +58,14 @@ export default {
 
                 totalHeight+=30;
 
-                body.style.visibility="visible";
+               body.style.visibility="visible";
                 this.collapse=!this.collapse;
                  body.style.height=totalHeight+"px";
                   //body.style.overflow="auto";
+
                 if(!this.collapse){//展开 zhankai
                     //body.style.maxHeight=totalHeight+"px";
+
                     setTimeout(function() {
                       body.style.visibility="visible";
 

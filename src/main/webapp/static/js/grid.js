@@ -1271,7 +1271,7 @@
 												/ this.p.width_sum// * 100
 												+ "px\"><a>" + this.p.colNames[i]
 												+ "</a><span class='moveSpan' style='cursor:e-resize;'>&nbsp;</span></th>";
-												}
+                                    }
 								}
 								gridHeadhtml += "</tr></thead></table></div>";
 								//		grid=gridParam;
@@ -1417,6 +1417,21 @@
 
 					$($t).jqGrid("ajaxRequest");
 				},
+				goNext : function(event) {
+                    var $t = event.data.t;
+                    console.log("curPage:"+$t.p.page+"totalPage")
+                    if ($t.p.page >= $t.p.lastpage)
+                        return;
+                    $t.p.page++;
+
+                    $($t).jqGrid("ajaxRequest");
+
+                },
+                goPage : function(event) {
+                    var $t = event.data.t;
+                    $t.p.page = event.data.curPage;
+                    $($t).jqGrid("ajaxRequest");
+                },
 				selectAll : function() {//alert($(this).jqGrid("getGridParam","selarrrow"));
 
 					this.each(function() {
@@ -1439,21 +1454,7 @@
 					});
 				},
 
-				goNext : function(event) {
-					var $t = event.data.t;
-					console.log("curPage:"+$t.p.page+"totalPage")
-					if ($t.p.page >= $t.p.lastpage)
-						return;
-					$t.p.page++;
 
-					$($t).jqGrid("ajaxRequest");
-
-				},
-				goPage : function(event) {
-					var $t = event.data.t;
-					$t.p.page = event.data.curPage;
-					$($t).jqGrid("ajaxRequest");
-				},
 				getCell : function(rownum, colnum) {
 					var ret;
 					this.each(function() {
@@ -1514,7 +1515,7 @@
 						}
 						 $.ajax({
 
-				             type: "POST",
+				             type: "get",
 
 				             url: this.p.url,
 

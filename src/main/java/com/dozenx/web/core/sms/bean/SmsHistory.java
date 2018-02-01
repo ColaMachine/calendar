@@ -25,8 +25,7 @@ public class SmsHistory {
         return last;
     }
 
-    public void setLast(Long last) {
-        this.last = last;
+  public void setLast(Long last) {       this.last = last;
     }
 
     Long last;

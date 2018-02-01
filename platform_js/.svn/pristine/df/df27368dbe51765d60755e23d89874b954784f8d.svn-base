@@ -1,0 +1,8 @@
+在打包之前请确保你的电脑已安装nodejs
+生产环境部署流程
+1.将代码复制到时服务器文件夹someFolder；进入文件夹 cd someFolder
+2.npm install 安装第三方插件
+3.npm run build生成生产环境文件，位于build文件夹下
+4.将build文件夹里的文件拷贝到要部署的war包根目录即可
+
+

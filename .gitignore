@@ -19,6 +19,8 @@ src/main/webapp/static/vc
 /temp/
 .idea
 .idea/*
+webpack/app/module/*
+webpack/platform_js/module/*
 calendar.iml
 src/main/resources/properties/jdbc.properties
 src/main/resources/config.cfg

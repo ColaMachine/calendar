@@ -176,6 +176,7 @@ public class AuthService {
             //直接注册吗
             SysUser registerUser = new SysUser();
             registerUser.setTelno(phone);
+            registerUser.setUsername(phone);
             registerUser.setPassword("123456");
             registerUser.setStatus(1);
 

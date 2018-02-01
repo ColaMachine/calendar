@@ -6,7 +6,7 @@
 export default {
         name: 'zwMenu',
         components: {  },
-        props:["mode"],
+        props:["mode","color"],
         data () {
             return {
             };
@@ -16,6 +16,9 @@ export default {
                 var classes = "zw-menu fnt-1  color-black  ";
                 if(this.mode=="horizontal"){
                     classes+= " zw-menu-horizontal";
+                }
+                 if(this.color=="white"){
+                    classes+= " zw-menu-white";
                 }
                 return classes;
             }

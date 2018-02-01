@@ -33,6 +33,7 @@ public class Constants {
     public static final String returnDatas="returnDatas";
 
     public static final String SESSION_DTO = "SESSION_DTO";
+    public static final String SESSION_USER = "SESSION_USER";
     public static final String SESSION_MERCHANT = "AWIFI_MERCHANT";
     public static final String ROLE_MERCHANT_MANAGER = "1";
     public static final String ROLE_MERCHANT_AGENT_MANAGER = "2";
@@ -92,4 +93,9 @@ public class Constants {
     public static final String REDIS_QUESTIONNAIRE_MIDDEL = "REDIS_QUESTIONNAIRE_MIDDEL";
     public static Long QUESTIONNAIRE_RED_PACKAGE = 10086L;
     public static String CHARSET ="utf-8";
+
+    //连接超时时间
+    public static int HTTP_CONNECT_TIME_OUT =5000;
+    //读取超时时间
+    public  static int HTTP_READ_TIME_OUT = 5000;
 }

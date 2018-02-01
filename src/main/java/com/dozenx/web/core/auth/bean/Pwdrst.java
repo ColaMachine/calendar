@@ -1,7 +1,11 @@
 package com.dozenx.web.core.auth.bean;
 
 import java.sql.Timestamp;
-
+/** 
+ * @Author: dozen.zhang 
+ * @Description: 密码重置
+ * @Date:17:11 2018/1/2
+ */
 public class Pwdrst {
 private String idpwdrst;
 private long userid;

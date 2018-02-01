@@ -1,17 +1,18 @@
+@import 'base';
 @CHARSET "UTF-8";
-
-@CHARSET "UTF-8";
-@import 'common';
 .zw-dropdown{
     display:inline-block;
+    line-height:$ft-title-1;
+    z-index: 150;
+        position: relative;/** 防止弹出的菜单 被其他div 遮挡住*/
 }
 
 .zw-dropdown .zw-menu{
 
-    min-width:155px;
+   /* min-width:155px;*/
 
-    position:absolute;
-
+  /*  position:absolute;
+    left:-150px;*/
     list-style: none;
     padding:0px 0px;
     background-color: $white;

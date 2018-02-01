@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,11 @@ public class RequestUtil {
 	  * @return
 	  */
 	public static boolean isAjaxRequest(HttpServletRequest request) {
+		//System.out.println(request.getContentType());
+		String contentType = request.getContentType();
+		if(StringUtil.isNotBlank(contentType ) && contentType .indexOf("application/json")!=-1){
+			return true;
+		}
 		return (request.getHeader("x-requested-with") == null) ? false : true;
 	}
 
@@ -359,5 +366,28 @@ public class RequestUtil {
 			String terminalVersion = getTerminalVersion(userAgent, terminalType);
 			System.out.println("终端版本：" + terminalVersion);
 		}
+	}
+
+	/**
+	 * 从request中提取参数转成hashmap
+	 * @param request
+	 * @return
+     */
+	public static HashMap request2Map(HttpServletRequest request) {
+		HashMap map = new HashMap();
+		Enumeration paramNames = request.getParameterNames();
+		while (paramNames.hasMoreElements()) {
+			String paramName = (String) paramNames.nextElement();
+
+			String[] paramValues = request.getParameterValues(paramName);
+			if (paramValues.length == 1) {
+				String paramValue = paramValues[0];
+				if (paramValue.length() != 0) {
+					// System.out.println("参数：" + paramName + "=" + paramValue);
+					map.put(paramName, paramValue);
+				}
+			}
+		}
+		return map;
 	}
 }

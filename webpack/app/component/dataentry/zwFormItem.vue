@@ -1,6 +1,6 @@
 
 <template>
-  <div class="zw-form-group">
+  <div class="zw-form-item form-group">
    <label v-if="label">{{label}}</label><slot ></slot>
 
   </div>

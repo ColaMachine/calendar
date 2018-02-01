@@ -4,20 +4,20 @@
 
 <span style="display:inline">
 <span :class="wrapperClasses">
- <span v-if="icon" class="zw-input-prefix">
+ <span v-if="icon" class="zw-input-prefix .zw-input-group-addon">
  <zwIcon v-if="icon" :type="icon" ></zwIcon></span>
-<span  v-if="this.$slots.prepend" class="zw-input-group-prepend"><slot name="prepend" ></slot></span>
+<span  v-if="this.$slots.prepend" class="zw-input-group-prepend .zw-input-group-addon"><slot name="prepend" ></slot></span>
 
-<span   v-if="this.$slots.prefix"  class="zw-input-prefix"><slot  name="prefix"></slot></span>
+<span   v-if="this.$slots.prefix"  class="zw-input-prefix zw-input-group-addon"><slot  name="prefix"></slot></span>
 <template v-if="type=='password'">
  <input :placeholder="placeholder" ref="text"  v-model="textvalue"  type ="password" class="zw-input" />
  </template >
  <template v-if="type!='password'">
-  <input :id="id" :name="name" @change="onchange" v:placeholder="placeholder" ref="text"  v-model="textvalue"  type ="text" class="zw-input" />
+  <input :id="id" :name="name" @change="onchange" :placeholder="placeholder" ref="text"  v-model="textvalue"  type ="text" class="zw-input" />
   </template >
-  <span   v-if="this.closeSee"  class="zw-input-suffix"v-on:click="clearContent"><zwIcon  name="suffix" type="close"></zwIcon></span>
- <span   v-if="this.$slots.suffix"  class="zw-input-suffix"><slot  name="suffix"></slot></span>
-    <span   v-if="this.$slots.append"  class="zw-input-group-append"><slot  name="append"></slot></span>
+  <span   v-if="this.closeSee"  class="zw-input-suffix zw-input-group-addon" v-on:click="clearContent"><zwIcon  name="suffix" type="close"></zwIcon></span>
+ <span   v-if="this.$slots.suffix"  class="zw-input-suffix zw-input-group-addon "><slot  name="suffix"></slot></span>
+    <span   v-if="this.$slots.append"  class="zw-input-group-append zw-input-group-addon"><slot  name="append"></slot></span>
  </span>
 </span>
 
@@ -28,7 +28,7 @@ import zwIcon from "../icon/zwIcon.vue"
 export default {
         name: 'zwInput',
          components:{zwIcon},
-        props: ["icon","placeholder","type","clear","id","name"],
+        props: ["icon","placeholder","type","clear","id","name","defaultValue"],
         data () {
             return {
                     ok:false,
@@ -37,6 +37,7 @@ export default {
             };
         },
         computed: {
+
         /*canClear:function(){
             if(this.clear ){console.log("canclear");
                // if(this.$refs.text!=null && this.$refs.text.value!=null && this.$refs.text.value.length>0){
@@ -72,6 +73,9 @@ export default {
             }
         },
         mounted () {
+          if(this.defaultValue){
+                    this.textvalue = this.defaultValue;
+                }
         if(this.clear && this.textvalue!=null && this.textvalue.length>0){
             this.closeSee=true;
           }else{
@@ -88,6 +92,9 @@ export default {
             }
         },
         watch:{
+            defaultValue(curVal,oldVal){
+                this.textvalue= defaultValue;
+            },
           textvalue(curVal,oldVal){
           if(this.clear &&  curVal!=null && curVal.length>0){
             this.closeSee=true;

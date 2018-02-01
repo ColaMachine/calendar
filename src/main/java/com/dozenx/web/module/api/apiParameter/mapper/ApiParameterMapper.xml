@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozenx.web.module.api.apiParameter.dao.ApiParameterMapper">
+  <resultMap id="BaseResultMap" type="com.dozenx.web.module.api.apiParameter.bean.ApiParameter">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="fater" jdbcType="VARCHAR" property="fater" />
+      <result column="pid" jdbcType="BIGINT" property="pid" />
+      <result column="type" jdbcType="VARCHAR" property="type" />
+      <result column="dataType" jdbcType="VARCHAR" property="dataType" />
+      <result column="required" jdbcType="INTEGER" property="required" />
+      <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+      <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    api_parameter.`id` ,api_parameter.`name` ,api_parameter.`fater` ,api_parameter.`pid` ,api_parameter.`type` ,api_parameter.`dataType` ,api_parameter.`required` ,api_parameter.`createtime` ,api_parameter.`updatetime` 
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from api_parameter
+    where api_parameter.id =   #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from api_parameter
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+ <insert id="insert" useGeneratedKeys="true" keyProperty="id"   parameterType="com.dozenx.web.module.api.apiParameter.bean.ApiParameter" >
+
+    insert into api_parameter (  <include refid="Base_Column_List" />)
+    values (
+#{id,jdbcType=BIGINT}
+,#{name,jdbcType=VARCHAR}
+,#{fater,jdbcType=VARCHAR}
+,#{pid,jdbcType=BIGINT}
+,#{type,jdbcType=VARCHAR}
+,#{dataType,jdbcType=VARCHAR}
+,#{required,jdbcType=INTEGER}
+,#{createtime,jdbcType=TIMESTAMP}
+,#{updatetime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+   <insert id="insertSelective" parameterType="com.dozenx.web.module.api.apiParameter.bean.ApiParameter" >
+    insert into api_parameter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+           `id`, 
+        </if>  
+        <if test="name != null" >  
+           `name`, 
+        </if>  
+        <if test="fater != null" >  
+           `fater`, 
+        </if>  
+        <if test="pid != null" >  
+           `pid`, 
+        </if>  
+        <if test="type != null" >  
+           `type`, 
+        </if>  
+        <if test="dataType != null" >  
+           `dataType`, 
+        </if>  
+        <if test="required != null" >  
+           `required`, 
+        </if>  
+        <if test="createtime != null" >  
+           `createtime`, 
+        </if>  
+        <if test="updatetime != null" >  
+           `updatetime`, 
+        </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >  
+          #{id,jdbcType=BIGINT},
+        </if>  
+        <if test="name != null" >  
+          #{name,jdbcType=VARCHAR},
+        </if>  
+        <if test="fater != null" >  
+          #{fater,jdbcType=VARCHAR},
+        </if>  
+        <if test="pid != null" >  
+          #{pid,jdbcType=BIGINT},
+        </if>  
+        <if test="type != null" >  
+          #{type,jdbcType=VARCHAR},
+        </if>  
+        <if test="dataType != null" >  
+          #{dataType,jdbcType=VARCHAR},
+        </if>  
+        <if test="required != null" >  
+          #{required,jdbcType=INTEGER},
+        </if>  
+        <if test="createtime != null" >  
+          #{createtime,jdbcType=TIMESTAMP},
+        </if>  
+        <if test="updatetime != null" >  
+          #{updatetime,jdbcType=TIMESTAMP},
+        </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.module.api.apiParameter.bean.ApiParameter" >
+    update api_parameter
+    <set >
+        <if test="id != null" >  
+             `id`=#{id,jdbcType=BIGINT},
+        </if>  
+        <if test="name != null" >  
+             `name`=#{name,jdbcType=VARCHAR},
+        </if>  
+        <if test="fater != null" >  
+             `fater`=#{fater,jdbcType=VARCHAR},
+        </if>  
+        <if test="pid != null" >  
+             `pid`=#{pid,jdbcType=BIGINT},
+        </if>  
+        <if test="type != null" >  
+             `type`=#{type,jdbcType=VARCHAR},
+        </if>  
+        <if test="dataType != null" >  
+             `dataType`=#{dataType,jdbcType=VARCHAR},
+        </if>  
+        <if test="required != null" >  
+             `required`=#{required,jdbcType=INTEGER},
+        </if>  
+        <if test="createtime != null" >  
+             `createtime`=#{createtime,jdbcType=TIMESTAMP},
+        </if>  
+        <if test="updatetime != null" >  
+             `updatetime`=#{updatetime,jdbcType=TIMESTAMP},
+        </if>  
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dozenx.web.module.api.apiParameter.bean.ApiParameter" >
+    update api_parameter
+    set 
+              `name`=#{name,jdbcType=VARCHAR},  
+              `fater`=#{fater,jdbcType=VARCHAR},  
+              `pid`=#{pid,jdbcType=BIGINT},  
+              `type`=#{type,jdbcType=VARCHAR},  
+              `dataType`=#{dataType,jdbcType=VARCHAR},  
+              `required`=#{required,jdbcType=INTEGER},  
+              `createtime`=#{createtime,jdbcType=TIMESTAMP},  
+              `updatetime`=#{updatetime,jdbcType=TIMESTAMP}  
+where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from api_parameter where 1=1
+        <if test="id != null and id != '' ">  
+           and `id` = #{id}
+        </if>  
+        <if test="name != null and name != '' ">  
+           and `name` = #{name}
+        </if>  
+        <if test="nameLike != null and nameLike != '' ">  
+             and `name` like "%"#{nameLike}"%"
+        </if>   
+        <if test="fater != null and fater != '' ">  
+           and `fater` = #{fater}
+        </if>  
+        <if test="faterLike != null and faterLike != '' ">  
+             and `fater` like "%"#{faterLike}"%"
+        </if>   
+        <if test="pid != null and pid != '' ">  
+           and `pid` = #{pid}
+        </if>  
+        <if test="type != null and type != '' ">  
+           and `type` = #{type}
+        </if>  
+        <if test="typeLike != null and typeLike != '' ">  
+             and `type` like "%"#{typeLike}"%"
+        </if>   
+        <if test="dataType != null and dataType != '' ">  
+           and `dataType` = #{dataType}
+        </if>  
+        <if test="dataTypeLike != null and dataTypeLike != '' ">  
+             and `dataType` like "%"#{dataTypeLike}"%"
+        </if>   
+        <if test="required != null and required != '' ">  
+           and `required` = #{required}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and `createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and `createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and `createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and `createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and `createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="updatetime != null and updatetime != '' ">  
+           and `updatetime` = #{updatetime}
+        </if>  
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and `updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and `updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and `updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and `updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+  </select>
+   <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from api_parameter
+
+    where 1=1
+        <if test="id != null and id != '' ">  
+           and api_parameter.`id` = #{id}
+        </if>  
+        <if test="name != null and name != '' ">  
+           and api_parameter.`name` = #{name}
+        </if>  
+        <if test="nameLike != null and nameLike != '' ">  
+             and api_parameter.`name` like "%"#{nameLike}"%"
+        </if>   
+        <if test="fater != null and fater != '' ">  
+           and api_parameter.`fater` = #{fater}
+        </if>  
+        <if test="faterLike != null and faterLike != '' ">  
+             and api_parameter.`fater` like "%"#{faterLike}"%"
+        </if>   
+        <if test="pid != null and pid != '' ">  
+           and api_parameter.`pid` = #{pid}
+        </if>  
+        <if test="type != null and type != '' ">  
+           and api_parameter.`type` = #{type}
+        </if>  
+        <if test="typeLike != null and typeLike != '' ">  
+             and api_parameter.`type` like "%"#{typeLike}"%"
+        </if>   
+        <if test="dataType != null and dataType != '' ">  
+           and api_parameter.`dataType` = #{dataType}
+        </if>  
+        <if test="dataTypeLike != null and dataTypeLike != '' ">  
+             and api_parameter.`dataType` like "%"#{dataTypeLike}"%"
+        </if>   
+        <if test="required != null and required != '' ">  
+           and api_parameter.`required` = #{required}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and api_parameter.`createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and api_parameter.`createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and api_parameter.`createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="updatetime != null and updatetime != '' ">  
+           and api_parameter.`updatetime` = #{updatetime}
+        </if>  
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and api_parameter.`updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and api_parameter.`updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+  </select>
+   <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
+    select 
+    count(1) 
+    from api_parameter where 1=1
+        <if test="id != null and id != '' ">  
+           and api_parameter.`id` = #{id}
+        </if>  
+        <if test="name != null and name != '' ">  
+           and api_parameter.`name` = #{name}
+        </if>  
+        <if test="nameLike != null and nameLike != '' ">  
+             and api_parameter.`name` like "%"#{nameLike}"%"
+        </if>   
+        <if test="fater != null and fater != '' ">  
+           and api_parameter.`fater` = #{fater}
+        </if>  
+        <if test="faterLike != null and faterLike != '' ">  
+             and api_parameter.`fater` like "%"#{faterLike}"%"
+        </if>   
+        <if test="pid != null and pid != '' ">  
+           and api_parameter.`pid` = #{pid}
+        </if>  
+        <if test="type != null and type != '' ">  
+           and api_parameter.`type` = #{type}
+        </if>  
+        <if test="typeLike != null and typeLike != '' ">  
+             and api_parameter.`type` like "%"#{typeLike}"%"
+        </if>   
+        <if test="dataType != null and dataType != '' ">  
+           and api_parameter.`dataType` = #{dataType}
+        </if>  
+        <if test="dataTypeLike != null and dataTypeLike != '' ">  
+             and api_parameter.`dataType` like "%"#{dataTypeLike}"%"
+        </if>   
+        <if test="required != null and required != '' ">  
+           and api_parameter.`required` = #{required}
+        </if>  
+        <if test="createtime != null and createtime != '' ">  
+           and api_parameter.`createtime` = #{createtime}
+        </if>  
+        <if test="createtimeBegin != null and createtimeBegin != '' ">  
+             and api_parameter.`createtime` &gt;= #{createtimeBegin}
+        </if>   
+         <if test="createtimeEnd != null and createtimeEnd != '' ">  
+             and api_parameter.`createtime` &lt;= #{createtimeEnd}
+        </if> 
+        <if test="updatetime != null and updatetime != '' ">  
+           and api_parameter.`updatetime` = #{updatetime}
+        </if>  
+        <if test="updatetimeBegin != null and updatetimeBegin != '' ">  
+             and api_parameter.`updatetime` &gt;= #{updatetimeBegin}
+        </if>   
+         <if test="updatetimeEnd != null and updatetimeEnd != '' ">  
+             and api_parameter.`updatetime` &lt;= #{updatetimeEnd}
+        </if> 
+  </select>
+ <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from api_parameter where 1!=1
+        <if test="id != null and id != '' ">
+           or `id` = #{id}
+        </if>
+        <if test="name != null and name != '' ">
+           or `name` = #{name}
+        </if>
+        <if test="fater != null and fater != '' ">
+           or `fater` = #{fater}
+        </if>
+        <if test="pid != null and pid != '' ">
+           or `pid` = #{pid}
+        </if>
+        <if test="type != null and type != '' ">
+           or `type` = #{type}
+        </if>
+        <if test="dataType != null and dataType != '' ">
+           or `dataType` = #{dataType}
+        </if>
+        <if test="required != null and required != '' ">
+           or `required` = #{required}
+        </if>
+        <if test="createtime != null and createtime != '' ">
+           or `createtime` = #{createtime}
+        </if>
+        <if test="updatetime != null and updatetime != '' ">
+           or `updatetime` = #{updatetime}
+        </if>
+  </select>
+</mapper>

@@ -7,4 +7,6 @@ public class TimeUtil {
     public static long getNowTime(){
         return System.currentTimeMillis();
     }
+
+
 }

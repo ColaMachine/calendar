@@ -14,7 +14,17 @@ import java.util.Map;
 
 public class ZColum {
 private String name;
-private boolean nn;
+    private String colName;
+    private boolean nn;
+
+    public String getColName() {
+        return colName;
+    }
+
+    public void setColName(String colName) {
+        this.colName = colName;
+    }
+
     private String references;
     private String file;
 
@@ -151,7 +161,7 @@ public String getJavaType(){
         public ZColum deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
             Gson gson =new Gson();
-
+            System.out.println("column name:"+json.getAsJsonObject().get("name"));
             ZColum col = gson.fromJson(json,ZColum.class);
             JsonObject jsonObject = json.getAsJsonObject();
            /* col = context.deserialize(json, ZColum.class);

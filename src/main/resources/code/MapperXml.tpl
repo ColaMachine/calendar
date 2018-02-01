@@ -3,7 +3,7 @@
 <mapper namespace="${table.pkg}.${abc}.dao.${Abc}Mapper">
   <resultMap id="BaseResultMap" type="${table.pkg}.${abc}.bean.${Abc}">
    <#list table.cols as col>
-      <<#if col.pk==true>id<#else>result</#if> column="${col.name}" jdbcType="<@jdbcType>${col.type}</@jdbcType>" property="${col.name}" />
+      <<#if col.pk==true>id<#else>result</#if> column="${col.colName}" jdbcType="<@jdbcType>${col.type}</@jdbcType>" property="${col.colName}" />
    </#list>
     <#if reference??>
     <#list table.cols as col>
@@ -21,7 +21,7 @@
    </#if>
   </resultMap>
   <sql id="Base_Column_List">
-    <#list table.cols as col><#if col_index==0>${table.tableName}.`${col.name}`<#else>,${table.tableName}.`${col.name}`</#if> </#list>
+    <#list table.cols as col><#if col_index==0>${table.tableName}.`${col.colName}`<#else>,${table.tableName}.`${col.colName}`</#if> </#list>
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.<@javaType>${table.pk.type}</@javaType>" resultMap="BaseResultMap">
     select 
@@ -58,7 +58,7 @@
                     <#assign refAliasName =refAliasName+'1'>
                 </#if>
                left join ${refTableName} ${refAliasName}
-                 on ${table.tableName}.${col.name} = ${refAliasName}.${refKey}
+                 on ${table.tableName}.${col.colName} = ${refAliasName}.${refKey}
              </#if>
           </#list>
        </#if>
@@ -114,7 +114,7 @@
     <set >
      <#list table.cols as col>
         <if test="${col.name} != null" >  
-             `${col.name}`=${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>},
+             `${col.colName}`=${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>},
         </if>  
     </#list>
     </set>
@@ -125,7 +125,7 @@
     set 
     <#list table.cols as col>
         <#if col.pk!=true >
-              `${col.name}`=${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>}<#if col_index<table.cols?size-1>,</#if>  
+              `${col.colName}`=${r'#{'}${col.name},jdbcType=<@jdbcType>${col.type}</@jdbcType>}<#if col_index<table.cols?size-1>,</#if>
         </#if>
     </#list>
 where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk.type}</@jdbcType>}
@@ -140,32 +140,32 @@ where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk
         </if>  
          <#if col.type?length gt 6>
         <#if col.type[0..6]?lower_case=='varchar'>
-        <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
+        <if test="${col.name}Like != null and ${col.name}Like != '' ">
+             and `${col.colName}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
          <#if col.type?length gt 3>
         <#if col.type[0..3]?lower_case=='char'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and `${col.name}` like "%"${r'#{'}${col.name}Like}"%"
+             and `${col.colName}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
           <#if col.type=='timestamp'>
         <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
-             and `${col.name}` &gt;= ${r'#{'}${col.name}Begin}
+             and `${col.colName}` &gt;= ${r'#{'}${col.name}Begin}
         </if>   
          <if test="${col.name}End != null and ${col.name}End != '' ">  
-             and `${col.name}` &lt;= ${r'#{'}${col.name}End}
+             and `${col.colName}` &lt;= ${r'#{'}${col.name}End}
         </if> 
         </#if>
         <#if col.type=='timestamp'>
         <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
-             and `${col.name}` &gt;= ${r'#{'}${col.name}Begin}
+             and `${col.colName}` &gt;= ${r'#{'}${col.name}Begin}
         </if>   
          <if test="${col.name}End != null and ${col.name}End != '' ">  
-             and `${col.name}` &lt;= ${r'#{'}${col.name}End}
+             and `${col.colName}` &lt;= ${r'#{'}${col.name}End}
         </if> 
         </#if>
     </#list>
@@ -206,7 +206,7 @@ where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk
       <#assign refAliasName =refAliasName+'1'>
   </#if>
     left join ${refTableName} ${refAliasName}
-      on ${table.tableName}.${col.name} = ${refAliasName}.${refKey}
+      on ${table.tableName}.${col.colName} = ${refAliasName}.${refKey}
   </#if>
 </#list>
 
@@ -214,28 +214,28 @@ where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk
     where 1=1
     <#list table.cols as col>
         <if test="${col.name} != null and ${col.name} != '' ">  
-           and ${table.tableName}.`${col.name}` = ${r'#{'}${col.name}}
+           and ${table.tableName}.`${col.colName}` = ${r'#{'}${col.name}}
         </if>  
            <#if col.type?length gt 6>
         <#if col.type[0..6]?lower_case=='varchar'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and ${table.tableName}.`${col.name}` like "%"${r'#{'}${col.name}Like}"%"
+             and ${table.tableName}.`${col.colName}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
          <#if col.type?length gt 3>
         <#if col.type[0..3]?lower_case=='char'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and ${table.tableName}.`${col.name}` like "%"${r'#{'}${col.name}Like}"%"
+             and ${table.tableName}.`${col.colName}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
         <#if col.type=='timestamp'>
         <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
-             and ${table.tableName}.`${col.name}` &gt;= ${r'#{'}${col.name}Begin}
+             and ${table.tableName}.`${col.colName}` &gt;= ${r'#{'}${col.name}Begin}
         </if>   
          <if test="${col.name}End != null and ${col.name}End != '' ">  
-             and ${table.tableName}.`${col.name}` &lt;= ${r'#{'}${col.name}End}
+             and ${table.tableName}.`${col.colName}` &lt;= ${r'#{'}${col.name}End}
         </if> 
         </#if>
     </#list>
@@ -246,28 +246,28 @@ where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk
     from ${table.tableName} where 1=1
     <#list table.cols as col>
         <if test="${col.name} != null and ${col.name} != '' ">  
-           and ${table.tableName}.`${col.name}` = ${r'#{'}${col.name}}
+           and ${table.tableName}.`${col.colName}` = ${r'#{'}${col.name}}
         </if>  
            <#if col.type?length gt 6>
         <#if col.type[0..6]?lower_case=='varchar'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and ${table.tableName}.`${col.name}` like "%"${r'#{'}${col.name}Like}"%"
+             and ${table.tableName}.`${col.colName}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
          <#if col.type?length gt 3>
         <#if col.type[0..3]?lower_case=='char'>
         <if test="${col.name}Like != null and ${col.name}Like != '' ">  
-             and ${table.tableName}.`${col.name}` like "%"${r'#{'}${col.name}Like}"%"
+             and ${table.tableName}.`${col.colName}` like "%"${r'#{'}${col.name}Like}"%"
         </if>   
         </#if>
         </#if>
          <#if col.type=='timestamp'>
         <if test="${col.name}Begin != null and ${col.name}Begin != '' ">  
-             and ${table.tableName}.`${col.name}` &gt;= ${r'#{'}${col.name}Begin}
+             and ${table.tableName}.`${col.colName}` &gt;= ${r'#{'}${col.name}Begin}
         </if>   
          <if test="${col.name}End != null and ${col.name}End != '' ">  
-             and ${table.tableName}.`${col.name}` &lt;= ${r'#{'}${col.name}End}
+             and ${table.tableName}.`${col.colName}` &lt;= ${r'#{'}${col.name}End}
         </if> 
         </#if>
     </#list>
@@ -279,7 +279,7 @@ where ${table.pk.name} = ${r'#{'}${table.pk.name},jdbcType=<@jdbcType>${table.pk
     from ${table.tableName} where 1!=1
     <#list table.cols as col>
         <if test="${col.name} != null and ${col.name} != '' ">
-           or `${col.name}` = ${r'#{'}${col.name}}
+           or `${col.colName}` = ${r'#{'}${col.name}}
         </if>
     </#list>
   </select>

@@ -1,8 +1,7 @@
+@import 'base';
 @CHARSET "UTF-8";
-
-@CHARSET "UTF-8";
-@import 'common';
-
+$menu_height:2.25rem;
+$menu_font_size:2.25rem;
 .page{
     margin-left:50px ;
     margin-right:50px;
@@ -12,7 +11,7 @@
 }
 
 
-i.undefined {
+i.undefined {/*有的时候 没有样式的情况下 也要占用一个位置*/
 	display: inline-block;
 	min-width: 1rem;
 }
@@ -24,10 +23,10 @@ div ul li{
 padding-top:0px;
 }
 .main-wrap{
-display:table-cell;
-/*width:80%;*/
-min-width:800px;
-/*margin-left: 0px;*/
+    display:table-cell;
+    /*width:80%;*/
+    min-width:800px;
+    /*margin-left: 0px;*/
 }
 /**Position**/
 
@@ -60,7 +59,7 @@ body{
     border:none;/*1px solid #F0F0EE;*/
     text-align:left;
     z-index:1000;
-    width: 200px;
+  /*  width: 200px;*//* 为了让弹出来的菜单能够只适应宽度*/
 }
 
 /**ul**/
@@ -216,8 +215,20 @@ border-bottom:none;
 
 .zw-menu-item-text .zw-icon{
     position:relative;
+    line-height: 2.25rem;
+    min-height: 2.25rem;
+    height:2.25rem;
+}
+.zw-menu-item-text .zw-icon-arrow{
+    position:relative;
+    line-height: 10px;
+    min-height: 10px;
+    height:10px;
 }
 
+.zw-menu-item-text .zw-icon:after{
+
+}
 
 .zw-menu .zw-icon {
 	/*margin-left: 15px;*/
@@ -244,14 +255,25 @@ border-bottom:none;
     top:0px;
     margin-left:5px;
 }
+.zw-menu-item-text{
+    position:relative;
+    min-width:100px;
+    padding-right:20px;
+}
+.zw-menu-horizontal .zw-menu-item-text{
+    position:relative;
+    min-width:50px;
+    padding-right:0px;
+}
 .zw-menu-submenu>a .zw-icon-arrow{
  position:absolute;
 /*   display:inline-block;*/
        top: 50%;
      /*  transform: translateY(-50%);*/
-     margin-top:-0.5*$ft-nm;
+     margin-top:-5px;
+     height:10px;
  /*  left:120px;*/
- right:15px;
+ right:-5px;
 /*top:$ft-h1*0.3;*/
 /*    vertical-align: baseline;
      text-align: center;*/
@@ -302,7 +324,8 @@ width:100%;
  }
  .zw-menu .zw-menu-item-text {
 
-	margin-left: 15px;
+	/*margin-left: 15px;*/
+	padding-left:20px;
 
 }
 
@@ -322,7 +345,10 @@ width:100%;
 
 
 
-
+ .zw-menu-item-text {
+    box-sizing:border-box;
+    padding-right:25px;
+}
 
 
 
@@ -351,6 +377,23 @@ width:100%;
 	background-color: $light-black;
 
 }
+.zw-menu-white {
+    color:$light-black;
+	background-color: $white !important;
+    ul{
+           color:$light-black;
+        	background-color: $white;
+    }
+    a{
+           color:$light-black;
+        	background-color: $white;
+    }
+}
+
+
+
+
+
 
 .zw-menu-item:hover,
 .zw-menu-item:focus,
@@ -392,6 +435,9 @@ width:100%;
     box-sizing:border-box;
     border-left: 5px solid transparent;
 }
+
+
+
 
  .zw-menu>ul>li:hover>a,  .zw-menu-submenu-open>a {
     box-sizing:border-box;

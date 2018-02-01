@@ -12,7 +12,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.text.NumberFormat;
@@ -22,6 +26,50 @@ import java.util.*;
 //import org.apache.poi.ss.usermodel.DateUtil;
 
 public class ExcelUtil {
+
+
+
+    /**
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static List<Map<Integer, String>> getExcelDataKeyIndex(File file) throws Exception {
+        Sheet sheet = getExcelSheetFromFile(file);
+        List<Map<Integer,String>> retDats = getListFromSheet(sheet);
+        return  retDats;
+    }
+
+    /**
+     * 返回的是有key名的数据
+     * @param file
+     * @param keys
+     * @return
+     * @throws Exception
+     */
+    public static List<Map<String, String>> getExcelDataKeyName(File file,List<String> keys) throws Exception {
+
+        Sheet sheet = getExcelSheetFromFile(file);
+        List<Map<String ,String>> retDats = getListFromSheet(sheet,keys);
+
+        return retDats;
+    }
+
+    /**
+     * 返回的是有key名的数据
+     * @param fileInputStream
+     * @param keys
+     * @return
+     * @throws Exception
+     */
+    public static List<Map<String, String>> getExcelDataFromStream(InputStream fileInputStream,List<String> keys) throws Exception {
+
+        Sheet sheet = getExcelSheetFromInputStream(fileInputStream);
+        List<Map<String ,String>> retDats = getListFromSheet(sheet,keys);
+
+        return retDats;
+    }
 
     /**
      * 将一个EXCEL文件转化为数据集合（以表头每列为key，对应列内容为value的list集合）
@@ -294,6 +342,57 @@ public class ExcelUtil {
         }
     }
 
+    public static File getExcelFileFromList(List<String> dataList, String filePath
+                                        ) throws IOException {
+
+        if (dataList == null || dataList.size() == 0) {
+            return null;
+        } else if (StringUtil.isBlank(filePath) || !(filePath.endsWith("xls") || filePath.endsWith("xlsx"))) {
+            throw new IOException("传入正确的Excel文件路径");
+        } else {
+            Workbook wb = null;
+            if (filePath.endsWith("xls")) {
+                wb = new HSSFWorkbook();
+            } else {
+                wb = new XSSFWorkbook();
+            }
+            Sheet sheet = wb.createSheet("sheet1");
+            // 先创建表头,将表头内容居中
+            Row row = sheet.createRow(0);
+            CellStyle style = wb.createCellStyle();
+            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            // 表头的列值集合
+            List<String> keyList = new ArrayList<String>();
+            int c = 0;
+            // 如果有匹配的列名则完全按照提供的列名键对值进行列填充，反之则用原数据
+
+            // 生成各行对应数据
+            for (int i = 0; i < dataList.size(); i++) {
+                row = sheet.createRow(i + 1);
+
+
+                    row.createCell(0).setCellValue(dataList.get(i));
+
+            }
+            // 输出Excel文件
+            FileOutputStream fos =null;
+            try {
+                 fos = new FileOutputStream(
+                        PathManager.getInstance().getTmpPath().resolve(filePath).toFile());
+                wb.write(fos);
+            }catch (Exception e){
+                e.printStackTrace();
+
+            }finally {
+                fos.close();
+                wb.close();
+            }
+
+            return new File(filePath);
+
+        }
+    }
+
     public static Workbook getExcelBookFromMap(List<Map<String, String>> data,
                                            LinkedHashMap<String, String> colTitle) throws IOException {
         if (data == null || data.size() == 0) {
@@ -505,5 +604,108 @@ public class ExcelUtil {
             e.printStackTrace();
         }
 
+    }
+
+
+    /**
+     * 根据文件获得sheet
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static Sheet getExcelSheetFromFile(File file ) throws IOException {
+        FileInputStream inputStream =null;
+
+        inputStream  = new FileInputStream( file );
+        return getExcelSheetFromInputStream(inputStream);
+
+    }
+
+    /**
+     * 从文件流中获取sheet
+     * 此方法最终关闭流
+     * @param stream
+     * @return
+     * @throws IOException
+     */
+    public static Sheet getExcelSheetFromInputStream(InputStream stream ) throws IOException {
+        try {
+            Workbook wb = getWorkBook(stream, "excel");
+            Sheet sheet = wb.getSheetAt(0);
+            return sheet;
+        }finally {
+            stream.close();
+        }
+    }
+
+    /**
+     * 文件解析器.获取sheet(仅适用于单个文件)
+     * @param  sheet
+     * @return List<Map <Integer ,String>>
+     * @throws Exception 异常
+     * @author zhangzhiwei
+     * @date 2017年2月13日 上午9:49:54
+     */
+    public static List<Map <Integer ,String>>  getListFromSheet(Sheet sheet  ) throws Exception{
+
+        List<Map <Integer ,String>> retDats = new ArrayList<Map <Integer ,String>>( );
+        int firsRowNum = sheet.getFirstRowNum();
+        int lastRowNum = sheet.getLastRowNum();
+        Row headerRow = sheet.getRow(firsRowNum);
+        if (headerRow == null) {
+            throw new IOException("excel头部数据缺失 请按模板使用");
+        }
+        List<String> header = getHeader(headerRow);
+
+        for (int i = firsRowNum + 1; i <= lastRowNum; i++) {
+            Row row = sheet.getRow(i);
+            if (row == null) {
+                continue;
+            }
+            Map<Integer, String> eRow = new LinkedHashMap<Integer, String>();//以列号为key
+            for (int j = 0; j < header.size(); j++) {
+                Cell cell = row.getCell(j);
+
+                String value = getCellValue(cell);
+                eRow.put(j, value);
+            }
+            retDats.add(eRow);
+        }
+        return retDats;
+    }
+    /**
+     * 文件解析器.获取sheet(仅适用于单个文件)
+     * @param sheet excelsheet
+     * @param keys 列名
+     * @return Sheet
+     * @throws Exception 异常
+     * @author zhangzhiwei
+     * @date 2017年2月13日 上午9:49:54
+     */
+    public static List<Map <String ,String>>  getListFromSheet(Sheet sheet   ,List<String> keys) throws Exception{
+
+        List<Map <String ,String>> retDats = new ArrayList<Map <String ,String>>( );
+        int firsRowNum = sheet.getFirstRowNum();
+        int lastRowNum = sheet.getLastRowNum();
+        Row headerRow = sheet.getRow(firsRowNum);
+        if (headerRow == null) {
+            throw new IOException("excel头部数据缺失 请按模板使用");
+        }
+
+        for (int i = firsRowNum + 1; i <= lastRowNum; i++) {
+            Row row = sheet.getRow(i);
+            if (row == null) {
+                continue;
+            }
+            Map<String, String> eRow = new LinkedHashMap<String, String>();//以列号为key
+            for (int j = 0; j < keys.size(); j++) {
+                Cell cell = row.getCell(j);
+
+                String value = getCellValue(cell);
+                eRow.put(keys.get(j), value);
+            }
+            retDats.add(eRow);
+        }
+        return retDats;
     }
 }

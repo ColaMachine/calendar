@@ -53,7 +53,15 @@ public class ValidateUtil<T> {
     public void init(){
         ruleMap = new HashMap<String,Rule[]>();
     }
-    
+
+    /**
+     * 添加参数规则
+     * @author zhangzhiwei
+     * @param key
+     * @param value
+     * @param name
+     * @param ruleArr
+     */
     public void add(String key, String value, String name, Rule[] ruleArr){
         nameMap.put(key, name);
         valueMap.put(key, value);
@@ -107,6 +115,21 @@ public class ValidateUtil<T> {
             }
         }
         return resultMap;
+    }
+
+    public ResultDTO  validate(String name ,String value ,String cnName,Rule rule ) throws Exception{
+        ResultDTO result =new ResultDTO();
+
+
+            rule.setValue(value);
+            if(!rule.valid()){
+                result.setR(302);
+                result.setMsg(rule.getMessage());
+                return result;
+            }
+
+
+        return result;
     }
     
     public void clear(){

@@ -9,7 +9,7 @@ public class Digits extends Rule {
 	public Digits() {
 		
 	}
-public Digits(int integer,int fraction) {
+	public Digits(int integer,int fraction) {
 		this.integer=integer;
 		this.fraction=fraction;
 	}

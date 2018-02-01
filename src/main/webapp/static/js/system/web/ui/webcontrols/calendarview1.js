@@ -2887,9 +2887,6 @@ function loopCheckAndSave(){
 	}else{
 		setTimeout("loopCheckAndSave()",1000);
 	}
-
-
-
 }
 function saveHandler(data){
     //TODO 增加失败调用
