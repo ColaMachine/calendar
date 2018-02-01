@@ -16,7 +16,7 @@ import {Radio} from 'antd';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-
+//调查问卷增加界面
 export  default class InvestigateAdd extends React.Component {
     constructor() {
         super()
@@ -32,14 +32,14 @@ export  default class InvestigateAdd extends React.Component {
     }
 
     componentWillMount() {
-
-        let params = Tools.getUrlParams();
+        //http://127.0.0.1:3333/#/index/investigateManager/add?activeNum=0&QuestType=2&title=%E9%98%BF%E6%96%AF%E9%A1%BF%E5%8F%91%E6%96%AF%E8%92%82%E8%8A%AC
+        let params = Tools.getUrlParams();//获取url参数
         if (!params)
             return
 
         this.urlParams = params;
         //当前激活的问题类型
-        let type = this.state.type = params[QuestType.key] || QuestType.select;
+        let type = this.state.type = params[QuestType.key] || QuestType.select;//如果没有类型的话默认是选择题
 
         if (type === QuestType.answer) {
             this.actIndexAnswer = params[ActiveNumKey] || 0;
@@ -112,7 +112,7 @@ export  default class InvestigateAdd extends React.Component {
 
         let {actIndexSelect, actIndexAnswer} = this;
         let {type} = this.state;
-        let actIndex = type === QuestType.answer ? actIndexAnswer : actIndexSelect;
+        let actIndex = type === QuestType.answer ? actIndexAnswer : actIndexSelect;  //
 
         let args = QueryString.stringify({
             [ActiveNumKey]: actIndex,
@@ -141,20 +141,21 @@ export  default class InvestigateAdd extends React.Component {
         })
     }
 
-    onSubmit = (config) => {
+    onSubmit = (config) => {//提交编辑过的问卷调查
         console.log(' ADD　＝＝submitAll');
 
-        // 有id则为编辑
+        // 有id则为编辑  //调用 commAjax里的方法
         let promise = submitInvestigation(config, this.state.title, this.urlParams.id)
         promise.then(() => {
             console.log('提交成功');
 
             // 清空缓存
-            Tools.removeLocalStorage(InvestSelectKey);
-            Tools.removeLocalStorage(InvestAnswerKey);
-
+            Tools.removeLocalStorage(InvestSelectKey);//删除缓存
+            Tools.removeLocalStorage(InvestAnswerKey);//闪存答案缓存
+            alert("保存成功")
+            window.close();//关闭窗口
             //返回列表
-            this.goList();
+           // this.goList();
         })
     }
 

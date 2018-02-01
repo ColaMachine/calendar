@@ -26,9 +26,9 @@ export const QuestType = {
 }
 
 // 存在缓冲中的选择题的key
-export const InvestSelectKey = 'investigateSelect';
+export const InvestSelectKey = 'investigateSelect';//表示现在是哪个题目
 // 存在缓冲中的问答题的key
-export const InvestAnswerKey = 'investigateAnswer';
+export const InvestAnswerKey = 'investigateAnswer';//表示现在的问答选项 存在sessionStorage  里的
 // 当前正在录入的题目的编号
 export const ActiveNumKey = 'activeNum';
 

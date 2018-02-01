@@ -38,8 +38,8 @@ class VersionList extends React.Component {
             }
         });
     }
-    onEdit=(title)=>{alert("onEdit");
-         let url="/index/investigateManager/add?"+"title="+`${title}`
+    onEdit=(title)=>{//alert("onEdit");
+         let url="/index/investigateManager/add?"+"title="+`${title}`//跳转增加界面
          window.location.hash=url;//hash改变 路由变换
     }
     render() {//渲染函数

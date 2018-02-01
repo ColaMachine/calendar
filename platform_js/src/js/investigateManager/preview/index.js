@@ -21,14 +21,15 @@ import {InvestStatus} from '../qestConfig';
 let {WAIT, OPEN, CLOSED} = InvestStatus;
 
 const IS_ADD = 'isAdd';
+//问卷调查的预览功能
 export default  class InvestigatePreview extends React.Component {
     constructor(p) {
         super(p);
         this.state = {
-            questSelects: [],
-            questAnswers: [],
-            loadingBegin: false,
-            loadingFinish: false,
+            questSelects: [],//有哪些选择题
+            questAnswers: [],//有哪些问答题
+            loadingBegin: false,//加载开始
+            loadingFinish: false,//加载结束
         };
         // 问卷状态
         this.status = '';
@@ -70,17 +71,17 @@ export default  class InvestigatePreview extends React.Component {
             let g_index = 0;
             let questSelects = questions.filter((item, index) => {
                 if (item.type == QuestType.selectM || item.type == QuestType.select) {
-                    item.index = g_index++;
-                    return true;
+                    item.index = g_index++;//序号增加
+                    return true;//放入选择题
                 }
             })
 
             g_index = 0;
             let questAnswers = questions.filter((item, index) => {
                 if (item.type == QuestType.answer) {
-                    item.index = g_index++;
+                    item.index = g_index++;//序号增加
 
-                    return true;
+                    return true;//放入集合
                 }
             })
             this.setState({questAnswers, questSelects})
