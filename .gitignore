@@ -41,3 +41,4 @@ webpack/npm-debug.log*
 platform_js/.svn/*
 platform_js/.svn/wc.db
 *.rar
+platform_js/.svn/
