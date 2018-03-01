@@ -1,7 +1,7 @@
 package com.dozenx.web.third.dbcenter.util;
 
 import com.dozenx.util.HttpRequestUtil;
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.util.TimeUtil;
 import com.dozenx.web.core.Constants;
 import com.dozenx.web.third.dbcenter.DBException;
@@ -29,7 +29,7 @@ public class AwifiHttpRequestUtil {
      */
     public static String sendGet(String url, Map param) throws Exception {
         //检查token
-        String paramStr = JsonUtils.toJsonString(param);
+        String paramStr = JsonUtil.toJsonString(param);
         return sendGet(url, paramStr);
     }
 
@@ -46,7 +46,7 @@ public class AwifiHttpRequestUtil {
             //  http://192.168.41.49:8085/awifi-oauth-server-web/tokenController/authorizationGrant?oauthCode=msp_tp53
             String tokenUrl = ConfigUtil.getConfig("dbcenter.token.url");
             String result = HttpRequestUtil.sendGet(tokenUrl);
-            TokenResult tokenResult = JsonUtils.toJavaBean(result, TokenResult.class);
+            TokenResult tokenResult = JsonUtil.toJavaBean(result, TokenResult.class);
             if ("success".equals(tokenResult.getState())) {
 
                 token = tokenResult.getData();
@@ -62,7 +62,7 @@ public class AwifiHttpRequestUtil {
         if ("400".equals(resultStr)) {
             throw new Exception("结果400");
         }
-        DBResultDTO resultDTO = JsonUtils.toJavaBean(resultStr, DBResultDTO.class);
+        DBResultDTO resultDTO = JsonUtil.toJavaBean(resultStr, DBResultDTO.class);
         if (resultDTO.isSuc()) {
             return resultDTO.getRs();
         } else {
@@ -84,7 +84,7 @@ public class AwifiHttpRequestUtil {
 
             String tokenUrl = ConfigUtil.getConfig("dbcenter.token.url");
             String result = HttpRequestUtil.sendGet(tokenUrl);
-            TokenResult tokenResult = JsonUtils.toJavaBean(result, TokenResult.class);
+            TokenResult tokenResult = JsonUtil.toJavaBean(result, TokenResult.class);
             if ("success".equals(tokenResult.getState())) {
 
                 token = tokenResult.getData();
@@ -100,7 +100,7 @@ public class AwifiHttpRequestUtil {
         if ("400".equals(resultStr)) {
             throw new Exception("结果400");
         }
-        DBResultDTO resultDTO = JsonUtils.toJavaBean(resultStr, DBResultDTO.class);
+        DBResultDTO resultDTO = JsonUtil.toJavaBean(resultStr, DBResultDTO.class);
         if (!resultDTO.isSuc()) {
             return resultDTO.getRs();
         } else {

@@ -696,6 +696,14 @@ public final class DateUtil {
 	public static long getNowTimeStampSeconds(){
 		return getNowTimeStampMills()/1000;
 	}
+
+	/**
+	 * 获取当前事件戳
+	 * @return
+     */
+	public static Timestamp getNowTimeStamp(){
+		return new Timestamp( new Date().getTime());
+	}
 }
 
 

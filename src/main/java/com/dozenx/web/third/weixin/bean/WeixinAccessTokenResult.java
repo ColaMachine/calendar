@@ -3,11 +3,10 @@ package com.dozenx.web.third.weixin.bean;
 /**
  * Created by dozen.zhang on 2017/11/8.
  */
-public class WeixinAccessTokenResult {
+public class WeixinAccessTokenResult extends WeixinBaseBean {
     String access_token;
     int expires_in;
-    int errcode;
-    String errmsg;
+
     public String getAccess_token() {
         return access_token;
     }
@@ -24,21 +23,7 @@ public class WeixinAccessTokenResult {
         this.expires_in = expires_in;
     }
 
-    public int getErrcode() {
-        return errcode;
-    }
 
-    public void setErrcode(int errcode) {
-        this.errcode = errcode;
-    }
-
-    public String getErrmsg() {
-        return errmsg;
-    }
-
-    public void setErrmsg(String errmsg) {
-        this.errmsg = errmsg;
-    }
 
 
 }

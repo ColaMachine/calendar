@@ -1,6 +1,6 @@
 package com.dozenx.web.third.dbcenter.service;
 
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.web.third.dbcenter.bean.PubDeviceQueryResult;
 import com.dozenx.web.third.dbcenter.util.AwifiHttpRequestUtil;
 import com.dozenx.web.util.ConfigUtil;
@@ -42,7 +42,7 @@ public class MerchantDeviceBaseService {
         Map param =new HashMap();
         param.put("deviceId",id);
         String jsonStr= AwifiHttpRequestUtil.sendGet(url,param);
-        List<PubDeviceQueryResult> results = JsonUtils.toList(jsonStr,PubDeviceQueryResult.class);
+        List<PubDeviceQueryResult> results = JsonUtil.toList(jsonStr,PubDeviceQueryResult.class);
         if(results!=null && results.size()>0){
             return results.get(0);
         }else{

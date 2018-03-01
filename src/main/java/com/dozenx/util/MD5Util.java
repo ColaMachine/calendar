@@ -65,4 +65,8 @@ public class MD5Util {
 		stringbuffer.append(c0);
 		stringbuffer.append(c1);
 	}
+
+	public static void main(){
+		//System.out.println(MD5Util.to);
+	}
 }

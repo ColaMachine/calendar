@@ -7,6 +7,8 @@
  */
 package com.dozenx.web.core.auth.sysMenu.bean;
 
+import java.util.List;
+
 public class SysMenu {
     /**编号**/
     private Long id;
@@ -50,11 +52,11 @@ public class SysMenu {
     }    public void setUrl(String url){
         this.url=url;
     }/**排序id**/
-    private Integer order;
-    public Integer getOrder(){
-        return order;
-    }    public void setOrder(Integer order){
-        this.order=order;
+    private Integer orderNo;
+    public Integer getOrderNo(){
+        return orderNo;
+    }    public void setOrderNo(Integer orderNo){
+        this.orderNo=orderNo;
     }/**状态**/
     private Integer status;
     public Integer getStatus(){
@@ -68,4 +70,15 @@ public class SysMenu {
     }    public void setRemark(String remark){
         this.remark=remark;
     }
+    private String icon;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public List<SysMenu> childs;
 }

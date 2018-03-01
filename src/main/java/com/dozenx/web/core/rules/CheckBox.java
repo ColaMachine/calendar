@@ -24,7 +24,7 @@ public class CheckBox extends Rule {
 		boolean result = false;
 		if(this.getCherkArr()!=null){
 			for(String item : this.getCherkArr()){
-				if(item.equalsIgnoreCase(this.getValue())){
+				if(item.equalsIgnoreCase(this.getValue().toString())){
 					result = true;
 					break;
 				}

@@ -1,14 +1,14 @@
 package com.dozenx.web.core.rules;
 
 public abstract class Rule{
-	public String value;
+	public Object value;
 	public String message;
 	public static final String charset = "UTF-8";
-	public String getValue() {
+	public Object getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(Object value) {
 		this.value = value;
 	}
 

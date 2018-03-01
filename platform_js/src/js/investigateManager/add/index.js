@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import {Input} from 'antd';
+import {Input,message} from 'antd';
 import $http from 'util/http';
 import TabSelect from './components/TabSelect';
 import TabAnswer from './components/TabAnswer';
@@ -53,7 +53,8 @@ export  default class InvestigateAdd extends React.Component {
 
     goList = () => {
         // debugger
-        window.location.hash = '#/index/investigateManager/list';
+        message.success("提交成功", 1, function(){window.close()});
+        //window.location.hash = '#/index/investigateManager/list';
     }
 
     // 问题序号发生改变时
@@ -66,7 +67,7 @@ export  default class InvestigateAdd extends React.Component {
     // 通过控制type来，调整单选多选，optionBar的状态在这时同步
     onQuestTypeChange = (e) => {
         //console.log(e)
-        let {value: type} = e.target;//获得选中的值
+        let {value: type} = e.target;
         console.log(e);
 
         //正常更新ui
@@ -112,7 +113,7 @@ export  default class InvestigateAdd extends React.Component {
 
         let {actIndexSelect, actIndexAnswer} = this;
         let {type} = this.state;
-        let actIndex = type === QuestType.answer ? actIndexAnswer : actIndexSelect;  //
+        let actIndex = type === QuestType.answer ? actIndexAnswer : actIndexSelect;
 
         let args = QueryString.stringify({
             [ActiveNumKey]: actIndex,
@@ -141,21 +142,21 @@ export  default class InvestigateAdd extends React.Component {
         })
     }
 
-    onSubmit = (config) => {//提交编辑过的问卷调查
+    onSubmit = (config) => {
         console.log(' ADD　＝＝submitAll');
 
-        // 有id则为编辑  //调用 commAjax里的方法
+        // 有id则为编辑
         let promise = submitInvestigation(config, this.state.title, this.urlParams.id)
         promise.then(() => {
             console.log('提交成功');
 
             // 清空缓存
-            Tools.removeLocalStorage(InvestSelectKey);//删除缓存
-            Tools.removeLocalStorage(InvestAnswerKey);//闪存答案缓存
-            alert("保存成功")
-            window.close();//关闭窗口
+            Tools.removeLocalStorage(InvestSelectKey);
+            Tools.removeLocalStorage(InvestAnswerKey);
+
             //返回列表
-           // this.goList();
+
+            this.goList();
         })
     }
 

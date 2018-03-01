@@ -7,11 +7,16 @@ export default class Answeroption extends React.Component{
         super(props)
         this.state={
             visible: false,
-            id:0
+            id:0,
+            type:''
         }
+        let type=this.props.type;
+        this.setState({
+            type:type
+        })
     }
     componentWillMount(){
-        //console.log("[[[[[[[",this.props.questionDescription);
+       
     }
    
     doDelete=()=>{
@@ -23,7 +28,11 @@ export default class Answeroption extends React.Component{
                 this.setState({
                     visible: false,
                 })
-             this.props.search(this.props.id)  
+             if(this.props.data.type==1){
+                    this.props.search(this.props.id,1)
+                }else{
+                    this.props.search(this.props.id,2)
+                }  
             }, 800);
            
            }
@@ -51,19 +60,48 @@ export default class Answeroption extends React.Component{
     }
     Employment=(item,type)=>{
        console.log(type);
-        let url ='/questionnaire/answer/excellent';
-        url = url +`/${item}`;
-        Axios.put(url, this.HeaderToken).then(({data}) => {
-           if(data.code==0){
-             notification['success']({
-                message: '提示',
-                description: '录入成功',
-              });
-           }
-       this.props.search(this.props.id)
-        }).catch((err) => {
+       if(this.props.data.type!=1){
+            let url ='/questionnaire/answer/ordinary';
+            url = url +`/${item}`;
+            Axios.put(url, this.HeaderToken).then(({data}) => {
+                if(data.code==0){
+                    notification['success']({
+                        message: '提示',
+                        description: `${this.props.data.type==1?"录入成功":"返出成功"}`,
+                    });
+                }
+
+                if(this.props.type==2){
+                        this.props.search(this.props.id,1)
+                }else{
+                        this.props.search(this.props.id,this.props.type)
+                }
+                
+                }).catch((err) => {
+                    
+                })
+       }else{
+            let url ='/questionnaire/answer/excellent';
+            url = url +`/${item}`;
+            Axios.put(url, this.HeaderToken).then(({data}) => {
+            if(data.code==0){
+                notification['success']({
+                    message: '提示',
+                    description: `${this.props.data.type==1?"录入成功":"返出成功"}`,
+                });
+            }
+            if(this.props.type==2){
+                    this.props.search(this.props.id,1)
+            }else{
+                    this.props.search(this.props.id,this.props.type)
+            }
             
-        })
+            }).catch((err) => {
+                
+            })
+       }
+
+
     }
     parameters=()=>{
         setTimeout(() => {
@@ -73,6 +111,7 @@ export default class Answeroption extends React.Component{
         }, 100);
     }
     render(){
+        console.log('from syayrasda',this.state)
         return (
             <div>
                 <span>用户昵称:{this.props.data.username}</span>
@@ -80,7 +119,7 @@ export default class Answeroption extends React.Component{
                 <div>{this.props.data.answer}</div>
                 <div className="quest-title">
                 <div className="line"></div>
-                <Button type="primary"  onClick={this.Employment.bind(this,this.props.data.id,this.props.data.type)}>收录</Button>
+                <Button type="primary"  onClick={this.Employment.bind(this,this.props.data.id,this.props.data.type)}>{this.props.data.type==1?"录入":"差建议"}</Button>
                 <Button type="primary"  style={{marginLeft:"10px"}} onClick={this.showModal.bind(this,this.props.data.id)}>删除</Button>
                 </div>
                 <Modal

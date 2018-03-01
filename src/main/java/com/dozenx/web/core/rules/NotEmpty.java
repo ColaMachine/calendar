@@ -10,7 +10,7 @@ public class NotEmpty extends Rule {
 
 	@Override
 	public boolean valid() throws Exception{
-		if(this.getValue() == null || this.getValue().trim().equals("") ){
+		if(this.getValue() == null || this.getValue().toString().trim().equals("") ){
 				message = "不能为空";
 				return false;
 			}else {

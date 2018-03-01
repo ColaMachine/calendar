@@ -10,7 +10,7 @@
 
                                 <div  slot="body" name="body">
 
-                                 <form class="panel-body" ref="formToSubmit" :id="getId"   :action=content.url :method=content.httpType  :enctype=formType(content) >
+                                 <form  class="panel-body" ref="formToSubmit" :id="getId"   :action=content.url :method=content.httpType  :enctype=formType(content) >
 
                                               <span>contenttype:</span>
                                               <span>{{content.consumes}}</span>
@@ -44,7 +44,7 @@
                                                            <zwButton type="primary"  :loading="false"  :loading_delay=1 v-on:click.native="hideRequestData"   >隐藏</zwButton>&nbsp;&nbsp;
 
                                                             </h3>
-                                                            <p>
+                                                            <p style="max-width:1024px">
                                                             返回参数说明
                                                               <span>{{content.response}}</span>
                                                               </p>
@@ -136,48 +136,73 @@ export default {
 
                     },
 
-                sendRequest : function() {
-                    this.sending=true;
+                sendRequest : function() {//发送请求
+                    this.sending=true;//修改状态为
                     //console.log("formId" + this.formId);
-                    var contentType = "application/x-www-form-urlencoded";
+                    var contentType = "application/x-www-form-urlencoded";//初步制定contentType
                     //console.log("url" + this.content.url);
                      //获取json数据  get the form json
-                    var json = changeForm2Jso("#"+this.formId);
+
+                     var bodyJsonFlag=false;
+
+
+                     var json = {};
+                     	var arr = $(  this.$refs.formToSubmit).serializeArray();
+                     	for (var i = 0; i < arr.length; i++) {
+                     		json["" + arr[i].name] = arr[i].value;
+                     	}
+                  //  var json = changeForm2Jso("#"+this.formId);//将参数转换成json格式
                     //==========为了兼容传输的数据是array 数组这种类型============
 
-                      var url=   this.content.url+"?1=1";    //获取请求 get the request url
+                      var url=   this.content.url+"?1=1";    //获取请求 get the request url 默认加上?号
 
                      for (var i = 0; i < this.content.parameters.length; i++) {
 
-                       if (this.content.parameters[i].type == 'array') {
-                            if(json[this.content.parameters[i].name]){
+                       if (this.content.parameters[i].type.toLocaleLowerCase  () == 'array') {//如果参数的格式是数组的话
+                            if(json[this.content.parameters[i].name]){//alert("怎么会有数组的");
                                 if(json[this.content.parameters[i].name].indexOf("[")!=-1  ){
-                                    json[this.content.parameters[i].name] = eval('('+json[this.content.parameters[i].name]+')');
+                                    json[this.content.parameters[i].name] = eval('('+json[this.content.parameters[i].name]+')');//如果有数组参数就转换成字符串json格式
                                 }
                             }
 
                        }
+                       if(this.content.parameters[i].in.toLocaleLowerCase()=='body' ){
+                           // json = json["body请求体"];//eval('{'++'}');
+                           // break;
+                           bodyJsonFlag=true;
+                       }
 
-                       if(this.content.parameters[i].in == 'query'){alert(123);
+                       if(this.content.parameters[i].in .toLocaleLowerCase  ()== 'query'){//如果有url参数 就放到url参数里面
                             //如果是查询参数就拼接到url里
                             url+="&"+this.content.parameters[i].name+"="+json[this.content.parameters[i].name];
+                            delete json[this.content.parameters[i].name];//如果在query 里的 就删除掉
+
                        }
+
+                       if(this.content.parameters[i].in.toLocaleLowerCase  () == 'path'){//如果有url参数 就放到url参数里面
+                           //如果是url path 参数就拼接到url里
+                         //  url+="/"+json[this.content.parameters[i].name];
+
+                            if(this.content.url.indexOf("{")>0){    //如果含有 if contain path variable
+                                console.log("进行替换");
+                              var replaceId = url.substr(url.indexOf("{")+1,url.indexOf("}")-url.indexOf("{")-1);
+
+                               url=url.replace("{"+replaceId+"}",json[replaceId]); //replace it put the variable into url
+
+                               //alert(replaceId);
+                           }//alert(url);
+                      }
                     }
 
-                    if(this.content.url.indexOf("{")>0){    //如果含有 if contain path variable
-                       var replaceId = url.substr(url.indexOf("{")+1,url.indexOf("}")-url.indexOf("{")-1);
 
-                        url=url.replace("{"+replaceId+"}",json[replaceId]); //replace it put the variable into url
 
-                        //alert(replaceId);
-                    }//alert(url);
                     //console.log(this.content.consumes[0]);
                      //alert(this.content.consumes[0]);
-                    if(this.content.consumes instanceof Array   ){
+                    if(this.content.consumes instanceof Array   ){//如果协议有多个
                         for(var i=0;i<this.content.consumes.length;i++){
                             var s = this.content.consumes[i];
 
-                            if(s.indexOf("application/json")>=0){
+                            if(s.toLocaleLowerCase  ().indexOf("application/json")>=0){
                                 contentType = "application/json";
 
 
@@ -185,15 +210,15 @@ export default {
                         }
                     }
                     else
-                    if(this.content.consumes.indexOf("application/json")>=0){
+                    if(this.content.consumes.toLocaleLowerCase  ().indexOf("application/json")>=0){
                          contentType = "application/json";
 
 
                     }
                     //this.requestData = json;
-
-                    if(contentType == "application/json"){
-                     if(this.content.httpType=="get" || this.content.httpType=="GET"){
+                    /*
+                    if(contentType.toLocaleLowerCase  () == "application/json"){
+                     if(this.content.httpType.toLocaleLowerCase  ()=="get" ){//如果是get 协议的话 这里的判断有点偏业务了
                                                 //组装成 params
                                                 //json = json.toJSONString();
                                                 json=JSON.stringify(json);
@@ -203,16 +228,16 @@ export default {
                                                  json=JSON.stringify(json);
                                                  //this.requestData = json;
                                             }
-                    }
+                    }*/
                     this.requestData = json;
-                    //如果是文件提交 就用第一种方案
+                    //如果是文件提交 就用第一种方案 一般都是post + form 表单提交方式
                     var isFileSubmit = false;
 
                     for (var i = 0; i < this.content.parameters.length; i++) {
-                        if (this.content.parameters[i].type == 'file') {
+                        if (this.content.parameters[i].type.toLocaleLowerCase  () == 'file') {
                             isFileSubmit = true;
                         }
-                       /* if (this.content.parameters[i].type == 'array') {
+                       /* if (this.content.parameters[i].type.toLocaleLowerCase  () == 'array') {
                            json[this.content.parameters[i].name] = eval('('+json[this.content.parameters[i].name]+')');
                        }*/
                     }
@@ -220,7 +245,7 @@ export default {
 
                     if (isFileSubmit) {
                         var options = {
-                            url : window.APIPATH+ url+"&url="+window.APIDOMAIN,
+                            url : window.APIPATH+ url+"&url="+window.APIDOMAIN,//加上前缀 加上url 加上 代理url
                             success : function(xml) {
                                 this.result = xml;
 
@@ -238,6 +263,11 @@ export default {
                         return;
                     }
                    // alert(this.content.httpType);
+                   console.log("before ajax"+"url:"+window.APIPATH+url+"&url="+window.APIDOMAIN);
+
+                   if(bodyJsonFlag){
+                    json=JSON.stringify(json);
+                   }
                     $.ajax({
                         type : this.content.httpType,
                         url :  window.APIPATH+url+"&url="+window.APIDOMAIN,
@@ -262,8 +292,12 @@ export default {
                 },
 
                 saveTestData : function() {
-
-                    var json = changeForm2Jso("#" + this.formId);
+                      var json = {};
+                        var arr = $(  this.$refs.formToSubmit).serializeArray();
+                        for (var i = 0; i < arr.length; i++) {
+                            json["" + arr[i].name] = arr[i].value;
+                        }
+                   // var json = changeForm2Jso("#" + this.formId);
                     //console.log(json);
                     var sendData = {};
                     this.testData.push(json);
@@ -286,7 +320,8 @@ export default {
 
                     Ajax.getJSON( "/api/test/data/get", sendData,
                             function(data) {
-                                this.testData =data;//eval( '('+data+')');
+
+                                this.testData =getJSON(data);//eval( '('+data+')');
 
                             }.Apply(this));
                 },
@@ -329,5 +364,7 @@ export default {
     };
 </script>
 <style>
-
+.api-list {
+color:black;
+}
 </style>

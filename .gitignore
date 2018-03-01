@@ -37,3 +37,7 @@ src/main/webapp/images/*
 src/main/webapp/html/*
 webpack/node_modules/*
 webpack/npm-debug.log*
+*.tsd
+platform_js/.svn/*
+platform_js/.svn/wc.db
+*.rar

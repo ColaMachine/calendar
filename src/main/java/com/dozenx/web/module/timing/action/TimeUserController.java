@@ -1,7 +1,7 @@
 package com.dozenx.web.module.timing.action;
 
 import com.cpj.swagger.annotation.*;
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.base.BaseController;
 import com.dozenx.web.core.log.ResultDTO;
@@ -194,7 +194,7 @@ public class TimeUserController extends BaseController{
                 consume.put("cutoffDate", calendar.getTime());
             }
             try {
-                TimeConsume userConsume = JsonUtils.toJavaBean(JsonUtils.toJsonString(consume), TimeConsume.class);
+                TimeConsume userConsume = JsonUtil.toJavaBean(JsonUtil.toJsonString(consume), TimeConsume.class);
                 userConsumeWrapService.addCompConsume(userConsume);
             } catch (Exception e) {
                 logger.error("iUserConsumeService.addCompConsume fail", e);

@@ -18,7 +18,7 @@ public class Digits extends Rule {
 		if(this.getValue() == null || this.getValue().equals("")){
 			return true;
 		}else{
-			if (StringUtil.checkFloat(this.value, integer, fraction)) {
+			if (StringUtil.checkFloat(this.value.toString(), integer, fraction)) {
 				return true;
 			}
 			else {

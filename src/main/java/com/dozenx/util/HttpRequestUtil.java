@@ -18,7 +18,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -54,6 +56,9 @@ public class HttpRequestUtil {
         outputStream.write(paramData);
         outputStream.flush();
         outputStream.close();
+
+
+
         return conn;
     }
 
@@ -104,12 +109,43 @@ public class HttpRequestUtil {
 
     }
 
-
     /**
      * 向指定URL发送GET方法的请求
      *
      * @modificationHistory.
      * @param url
+     *            发送请求的URL
+     * @param map
+     *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
+     * @return URL 所代表远程资源的响应结果
+     */
+    public static String sendGetWithCookie(String url, Map map ,Map<String,Cookie > cookieMap) {
+        StringBuffer result = new StringBuffer("");
+        BufferedReader in = null;
+        Long startTime = System.currentTimeMillis();
+        try {
+            if(map.size()>0){
+                String paramStr = MapUtils.join(map,"&");
+                if(url.indexOf("?")>0){
+                    url+= "&"+paramStr;
+                }else{
+                    url+= "?"+paramStr;
+                }
+            }
+            return UrlRead(url,cookieMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "400";
+        }
+
+    }
+
+
+    /**
+     * 向指定URL发送GET方法的请求
+     *
+     * @modificationHistory.
+     * @param map
      *            发送请求的URL
      * @param map
      *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
@@ -277,6 +313,8 @@ public class HttpRequestUtil {
         while ((line = in.readLine()) != null) {
             result.append(line);
         }
+
+            String responseCookie = connection.getHeaderField("Set-Cookie");// 取到所用的Cookie
         Long endTime = System.currentTimeMillis();
         logger.info("success to httpget \n"+url+"  cost time:"+(endTime-startTime)+"\n result:"+result);
         }
@@ -286,6 +324,62 @@ public class HttpRequestUtil {
             //logger.info("fail to httpget \n "+url+"   cost time:"+(endTime-startTime));
             //logger.error("send http get error use url: "+url+"error :"+e.getMessage());
            // logger.error("send http get error use url: "+url+"error :"+"cost time:"+(endTime-startTime),e);
+            logger.error("send http get error "+url,e);
+            return "400";
+        }
+        // 使用finally块来关闭输入流
+        finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return result.toString();
+    }
+    public static String UrlRead(String url,Map<String,Cookie> cookieMap){
+        StringBuffer result = new StringBuffer("");
+        BufferedReader in = null;
+        Long startTime = System.currentTimeMillis();
+        try{
+            URL realUrl = new URL(url);
+            // 打开和URL之间的连接
+            URLConnection connection = realUrl.openConnection();
+            // 设置通用的请求属性
+
+
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // 建立实际的连接
+
+            HttpRequestUtil .setCookie(connection, cookieMap);
+            connection.connect();
+            // 定义 BufferedReader输入流来读取URL的响应
+            in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream(), "UTF-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result.append(line);
+            }
+
+           // String responseCookie = connection.getHeaderField("Set-Cookie");// 取到所用的Cookie
+
+            Map newCookieMap =  GetCookieMap(connection);
+            cookieMap.putAll(newCookieMap);
+
+            Long endTime = System.currentTimeMillis();
+            logger.info("success to httpget \n"+url+"  cost time:"+(endTime-startTime)+"\n result:"+result);
+        }
+        catch (Exception e) {
+            // System.out.println("发送GET请求出现异常！" + e);
+            Long endTime = System.currentTimeMillis();
+            //logger.info("fail to httpget \n "+url+"   cost time:"+(endTime-startTime));
+            //logger.error("send http get error use url: "+url+"error :"+e.getMessage());
+            // logger.error("send http get error use url: "+url+"error :"+"cost time:"+(endTime-startTime),e);
             logger.error("send http get error "+url,e);
             return "400";
         }
@@ -328,6 +422,37 @@ public class HttpRequestUtil {
                 return  HttpsConnection.doGet(url,null,2000,2000);
             }else
                 return UrlRead(url);
+        } catch (Exception e) {
+            return "400";
+        }
+    }
+
+    /**
+     * 向指定URL发送GET方法的请求
+     *
+     * @modificationHistory.
+     * @param url
+     *            发送请求的URL
+     * @param param
+     *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
+     * @return URL 所代表远程资源的响应结果
+     */
+    public static String sendGetWithCookie(String url, String param,Map<String,Cookie> cookieMap ) {
+
+        try {
+            if(!StringUtil.isBlank(param)){
+
+                if(url.indexOf("?")>0){
+                    url+= "&"+param;
+                }else{
+                    url+= "?"+param;
+                }
+            }
+
+            if(url.startsWith("https")){
+                return  HttpsConnection.doGet(url,null,2000,2000);
+            }else
+                return UrlRead(url,cookieMap);
         } catch (Exception e) {
             return "400";
         }
@@ -460,6 +585,77 @@ public class HttpRequestUtil {
             while ((line = in.readLine()) != null) {
                 result.append(line);
             }
+
+            String session_value=conn.getHeaderField("Set-Cookie");
+            logger.info("session_value"+session_value);
+            conn.disconnect();
+        } catch (Exception e) {
+            // //System.out.println("发送 POST 请求出现异常！" + e);
+            e.printStackTrace();
+            return "400";
+        }
+        // 使用finally块来关闭输出流、输入流
+        finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return result.toString();
+    }
+
+
+    public static String sendPostWithCookie(String url, String param,String contentType,Map<String,Cookie> cookieMap) {
+        OutputStreamWriter out = null;
+        BufferedReader in = null;
+        StringBuffer result = new StringBuffer("");
+        try {
+            URL realUrl = new URL(url);
+            // 打开和URL之间的连接
+            HttpURLConnection conn = (HttpURLConnection) realUrl
+                    .openConnection();
+            // 设置通用的请求属性
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            conn.setRequestProperty("Content-type", contentType);
+
+            conn.setRequestProperty("Accept-Encoding", "identity");
+
+            conn.setRequestProperty("Accept-Charset", "utf-8");
+            conn.setRequestProperty("contentType",contentType);
+            // 发送POST请求必须设置如下两行
+            conn.setDoOutput(true);
+
+            HttpRequestUtil.setCookie(conn,cookieMap);
+            out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+            // 发送请求参数
+            out.write(param);
+            // flush输出流的缓冲
+            out.flush();
+            out.close();
+            // 定义BufferedReader输入流来读取URL的响应
+            if (conn.getResponseCode() != 200) {
+                return "400";
+            }
+
+            Map newCookieMap =  GetCookieMap(conn);
+            cookieMap.putAll(newCookieMap);
+
+
+            in = new BufferedReader(new InputStreamReader(
+                    conn.getInputStream(), "UTF-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result.append(line);
+            }
             conn.disconnect();
         } catch (Exception e) {
             // //System.out.println("发送 POST 请求出现异常！" + e);
@@ -521,6 +717,69 @@ public class HttpRequestUtil {
             while ((line = in.readLine()) != null) {
                 result.append(line);
             }
+            conn.disconnect();
+        } catch (Exception e) {
+            // //System.out.println("发送 POST 请求出现异常！" + e);
+            e.printStackTrace();
+            return "400";
+        }
+        // 使用finally块来关闭输出流、输入流
+        finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return result.toString();
+    }
+    public static String sendXWithCookie(String url, String param,String contentType,String httpType,Map<String,Cookie> cookieMap) {
+        OutputStreamWriter out = null;
+        BufferedReader in = null;
+        StringBuffer result = new StringBuffer("");
+        try {
+            URL realUrl = new URL(url);
+            // 打开和URL之间的连接
+            HttpURLConnection conn = (HttpURLConnection) realUrl
+                    .openConnection();
+            // 设置通用的请求属性
+            conn.setRequestMethod(httpType);
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            conn.setRequestProperty("Content-type", contentType);
+
+            conn.setRequestProperty("Accept-Encoding", "identity");
+
+            conn.setRequestProperty("Accept-Charset", "utf-8");
+            conn.setRequestProperty("contentType", contentType);
+            HttpRequestUtil.setCookie(conn,cookieMap);
+            // 发送POST请求必须设置如下两行
+            conn.setDoOutput(true);
+            out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+            // 发送请求参数
+            out.write(param);
+            // flush输出流的缓冲
+            out.flush();
+            out.close();
+            // 定义BufferedReader输入流来读取URL的响应
+            if (conn.getResponseCode() != 200) {
+                return "400";
+            }
+            in = new BufferedReader(new InputStreamReader(
+                    conn.getInputStream(), "UTF-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result.append(line);
+            }
+            Map<String,Cookie> newCookieMap = GetCookieMap(conn);
+            cookieMap.putAll(newCookieMap);
             conn.disconnect();
         } catch (Exception e) {
             // //System.out.println("发送 POST 请求出现异常！" + e);
@@ -829,6 +1088,41 @@ public class HttpRequestUtil {
         return result.toString();
     }
 
+
+
+
+
+    public static Map<String,Cookie> GetCookieMap(URLConnection conn){
+        String cookieStr= GetCookieStr(conn);
+        String[] cookieStrAry = cookieStr.split(";");
+        Map<String,Cookie> newCookieMap =  new HashMap<>();
+        for(int i=0;i<cookieStrAry.length;i++){
+            if(StringUtil.isBlank(cookieStrAry[i])){
+                continue;
+            }
+            String[]  newCookieStrAry = cookieStrAry[i].split("=");
+           // newCookieMap.put(newCookieStrAry[0],newCookieStrAry[1]);
+
+            Cookie cookie =new Cookie(newCookieStrAry[0],newCookieStrAry[1]);
+            newCookieMap.put(newCookieStrAry[0],cookie);
+        }
+        return newCookieMap ;
+    }
+    public static String  GetCookieStr( URLConnection conn){
+        String key;
+        String cookieVal;
+        String cookieStr="";
+        for(int i = 1; (key = conn.getHeaderFieldKey(i)) != null; i++){
+            if(key.equalsIgnoreCase("set-cookie")){
+
+                cookieVal = conn.getHeaderField(i);
+                System.out.println("cookieVal:"+cookieVal);
+                cookieVal = cookieVal.substring(0, cookieVal.indexOf(";"));
+                cookieStr = cookieStr + cookieVal + ";";
+            }
+        }
+        return cookieStr;
+    }
 
     /**
      * 执行一个HTTP POST请求，返回请求响应的HTML
@@ -1496,4 +1790,137 @@ public class HttpRequestUtil {
         }
         return new String(buffer, charEncoding);
     }
+
+
+
+
+
+    /**
+     * 保存Cookies
+     *
+     * @param response
+     *            servlet请求
+     * @param value
+     *            保存值
+     * @author jxf
+     */
+    public static HttpServletResponse setCookie(HttpServletResponse response, String name, String value, int time) {
+        // new一个Cookie对象,键值对为参数
+        Cookie cookie = new Cookie(name, value);
+        // tomcat下多应用共享
+        cookie.setPath("/");
+        // 如果cookie的值中含有中文时，需要对cookie进行编码，不然会产生乱码
+        try {
+            URLEncoder.encode(value, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        cookie.setMaxAge(time);
+        // 将Cookie添加到Response中,使之生效
+        response.addCookie(cookie); // addCookie后，如果已经存在相同名字的cookie，则最新的覆盖旧的cookie
+        return response;
+    }
+
+
+    /**
+     * 保存Cookies
+     *
+     * @param response
+     *            servlet请求
+     * @param cookieMap
+     *            保存值
+     * @author jxf
+     */
+    public static HttpServletResponse setCookie(HttpServletResponse response, Map<String,Cookie> cookieMap ) {
+
+
+            Iterator it = cookieMap.entrySet().iterator();
+            while(it.hasNext()){
+                Map.Entry<String, Cookie> entry = (Map.Entry<String, Cookie>)it.next();
+                String key = entry.getKey();
+                Cookie cookie =entry.getValue();
+
+
+
+                cookie.setDomain("192.168.3.15");
+                cookie.setPath("/");
+
+                // 将Cookie添加到Response中,使之生效
+                response.addCookie(cookie);
+            }
+        Cookie cookie = new Cookie("access", "123123");
+        //cookie.setMaxAge(3600); 让cookie跟session时间走
+        cookie.setMaxAge(30000);
+        cookie.setDomain("192.168.3.15");
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
+        return response;
+    }
+
+
+    /**
+     * 保存Cookies
+     *
+     * @param conn
+     *            servlet请求
+     * @param cookieMap
+     *            保存值
+     * @author jxf
+     */
+    public static void setCookie(URLConnection conn, Map<String,Cookie> cookieMap ) {
+
+
+        Iterator it = cookieMap.entrySet().iterator();
+        String cookieStr = "";
+        while(it.hasNext()){
+            Map.Entry<String, Cookie> entry = (Map.Entry<String, Cookie>)it.next();
+            String key = entry.getKey();
+            Cookie value =entry.getValue();
+            cookieStr+=key+"="+value.getValue()+";";
+            // 将Cookie添加到Response中,使之生效
+
+        }
+        conn.setRequestProperty("Cookie", cookieStr);
+
+    }
+
+
+    /**
+     * 根据名字获取cookie
+     *
+     * @param request
+     * @param name
+     *            cookie名字
+     * @return
+     */
+    public static Cookie getCookieByName(HttpServletRequest request, String name) {
+        Map<String, Cookie> cookieMap = ReadCookieMap(request);
+        if (cookieMap.containsKey(name)) {
+            Cookie cookie = (Cookie) cookieMap.get(name);
+            return cookie;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 将cookie封装到Map里面
+     *
+     * @param request
+     * @return
+     */
+    public static Map<String, Cookie> ReadCookieMap(HttpServletRequest request) {
+        Map<String, Cookie> cookieMap = new HashMap<String, Cookie>();
+        Cookie[] cookies = request.getCookies();
+        if (null != cookies) {
+            for (Cookie cookie : cookies) {
+                cookieMap.put(cookie.getName(), cookie);
+            }
+        }
+        return cookieMap;
+    }
+
+
+
 }

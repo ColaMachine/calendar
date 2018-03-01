@@ -36,7 +36,7 @@ public class GeoCoderUtil {
         int index = result.indexOf("(");
         result=result.substring(index+1);
         result=result.substring(0,result.length()-1);
-        Map<String ,Object> re= JsonUtils.fromJson(result,Map.class);
+        Map<String ,Object> re= JsonUtil.fromJson(result,Map.class);
         return  judge(re);
     }
 
@@ -54,14 +54,14 @@ public class GeoCoderUtil {
                key="&key="+key;//key
         String param="address="+address+key;//服务参数
         String result= HttpRequestUtil.sendGet(url,param);  //拿到返回结果
-        Map<String ,Object> re= JsonUtils.fromJson(result,Map.class);
+        Map<String ,Object> re= JsonUtil.fromJson(result,Map.class);
         return  judge(re);
     }
 
     public static String judge(Map<String, Object> re){
         if(CastUtil.toString(re.get("status")).equals("0") ){  //判断是否成功
             String r=CastUtil.toString(re.get("result"));
-            Map<String ,Object> res=JsonUtils.fromJson(r,Map.class);
+            Map<String ,Object> res= JsonUtil.fromJson(r,Map.class);
             return CastUtil.toString(res.get("location"));  //获取Location
         }else {
             return null;

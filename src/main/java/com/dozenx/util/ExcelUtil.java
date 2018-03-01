@@ -12,11 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.text.NumberFormat;
@@ -153,8 +149,8 @@ public class ExcelUtil {
         // 最后将Map转化为javaBean
         List<T> relists = new ArrayList<T>();
         for (int i = 0; i < list.size(); i++) {
-            String json = JsonUtils.toJsonString(list.get(i));
-            T object = JsonUtils.toJavaBean(json, valueType);
+            String json = JsonUtil.toJsonString(list.get(i));
+            T object = JsonUtil.toJavaBean(json, valueType);
             relists.add(object);
         }
         return relists;

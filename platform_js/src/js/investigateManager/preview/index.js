@@ -9,7 +9,7 @@ import React from 'react';
 
 import QItemSelect from './components/itemSelect'
 import QItemAnswer from './components/itemAnswer'
-import {Form, Button, BackTop} from 'antd';
+import {Form, Button, BackTop,message} from 'antd';
 import Tools from 'util/formatTool';
 import QueryString from 'querystring';
 import {InvestigateTitleKey, QuestType, InvestSelectKey, InvestAnswerKey, ActiveNumKey} from '../qestConfig';
@@ -85,7 +85,8 @@ export default  class InvestigatePreview extends React.Component {
                 }
             })
             this.setState({questAnswers, questSelects})
-        }, () => {
+        }, (resultData) => {
+            message.error(resultData.msg, 1, null);
             console.log('get fail');
         });
     }
@@ -214,7 +215,8 @@ export default  class InvestigatePreview extends React.Component {
     }
 
     goList = () => {
-        window.location.hash = '#/index/investigateManager/list';
+        window.close;
+       // window.location.hash = '#/index/investigateManager/list';
     }
 
     submitStatus = (status, loadingKey) => {
@@ -228,9 +230,13 @@ export default  class InvestigatePreview extends React.Component {
         $http.put(url, data, config, () => {
             console.log('submit ok');
             //返回列表
-            this.goList();
-        }, () => {
-            console.log('submit fail');
+            alert("保存成功!");
+
+           this.goList();
+        }, (resultData) => {
+            console.log('submit fail',resultData);
+            //alert(resultData.msg);
+            message.error(resultData.msg, 1, null);
         });
     }
 

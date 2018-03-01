@@ -7,25 +7,36 @@
  */
 package com.dozenx.web.core.auth.action;
 
+import com.cpj.swagger.annotation.*;
+import com.dozenx.util.MapUtils;
+import com.dozenx.util.RedisUtil;
 import com.dozenx.util.ResultUtil;
+import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.auth.service.AuthService;
 import com.dozenx.web.core.auth.service.UserService;
+import com.dozenx.web.core.auth.sysMenu.bean.SysMenu;
 import com.dozenx.web.core.auth.sysMenu.service.SysMenuService;
 import com.dozenx.web.core.auth.sysUser.bean.SysUser;
+import com.dozenx.web.core.auth.validcode.service.ValidCodeService;
 import com.dozenx.web.core.log.ResultDTO;
+import com.dozenx.web.util.TerminalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-
+@APIs(description = "认证模块")
 @Controller
-@RequestMapping("/auth")
+@RequestMapping("/sys/auth")
 public class AuthController {
     /** 日志 **/
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -39,13 +50,11 @@ public class AuthController {
     @Resource
     private SysMenuService sysMenuService;
 
-    @RequestMapping(value = "/menu/list.json")
-    @ResponseBody
-    public ResultDTO listMenu(HttpServletRequest request){
-        String id=request.getParameter("id");
-        SysUser user = (SysUser)request.getSession().getAttribute("user");
-        return  ResultUtil.getDataResult(authService.listMenusByUserid(user.getId()));
-    }
+    @Autowired
+    ValidCodeService validCodeService;
+
+
+
 
 
 }

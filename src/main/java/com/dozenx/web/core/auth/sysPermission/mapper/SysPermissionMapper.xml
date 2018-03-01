@@ -5,22 +5,22 @@
       <id column="id" jdbcType="BIGINT" property="id" />
       <result column="pid" jdbcType="BIGINT" property="pid" />
       <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="url" jdbcType="VARCHAR" property="url" />
       <result column="code" jdbcType="VARCHAR" property="code" />
-      <result column="order" jdbcType="INTEGER" property="order" />
+      <result column="order_no" jdbcType="INTEGER" property="orderNo" />
       <result column="status" jdbcType="INTEGER" property="status" />
       <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="sys_permission_name" jdbcType="VARCHAR" property="sys_permission_name" />
   </resultMap>
   <sql id="Base_Column_List">
-    sys_permission.`id` ,sys_permission.`pid` ,sys_permission.`name` ,sys_permission.`code` ,sys_permission.`order` ,sys_permission.`status` ,sys_permission.`remark` 
+    sys_permission.`id` ,sys_permission.`pid` ,sys_permission.`name` ,sys_permission.`code` ,sys_permission.`order_no` ,sys_permission.`status` ,sys_permission.`remark`,sys_permission.`url`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-                ,sys_permission1.name as SysPermission_name
-    from sys_permission
-               left join sys_permission sys_permission1
-                 on sys_permission.pid = sys_permission1.id
+
+    from sys_permission sys_permission
+
     where sys_permission.id =   #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -35,9 +35,10 @@
 ,#{pid,jdbcType=BIGINT}
 ,#{name,jdbcType=VARCHAR}
 ,#{code,jdbcType=VARCHAR}
-,#{order,jdbcType=INTEGER}
+,#{orderNo,jdbcType=INTEGER}
 ,#{status,jdbcType=INTEGER}
 ,#{remark,jdbcType=VARCHAR}
+     ,#{url,jdbcType=VARCHAR}
     )
   </insert>
    <insert id="insertSelective" parameterType="com.dozenx.web.core.auth.sysPermission.bean.SysPermission" >
@@ -55,15 +56,18 @@
         <if test="code != null" >  
            `code`, 
         </if>  
-        <if test="order != null" >  
-           `order`, 
+        <if test="orderNo != null" >
+           `orderNo`,
         </if>  
         <if test="status != null" >  
            `status`, 
         </if>  
         <if test="remark != null" >  
            `remark`, 
-        </if>  
+        </if>
+        <if test="url != null" >
+            `url`,
+        </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
         <if test="id != null" >  
@@ -78,15 +82,18 @@
         <if test="code != null" >  
           #{code,jdbcType=VARCHAR},
         </if>  
-        <if test="order != null" >  
-          #{order,jdbcType=INTEGER},
+        <if test="orderNo != null" >
+          #{orderNo,jdbcType=INTEGER},
         </if>  
         <if test="status != null" >  
           #{status,jdbcType=INTEGER},
         </if>  
         <if test="remark != null" >  
           #{remark,jdbcType=VARCHAR},
-        </if>  
+        </if>
+        <if test="url != null" >
+            #{url,jdbcType=VARCHAR},
+        </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.core.auth.sysPermission.bean.SysPermission" >
@@ -104,15 +111,18 @@
         <if test="code != null" >  
              `code`=#{code,jdbcType=VARCHAR},
         </if>  
-        <if test="order != null" >  
-             `order`=#{order,jdbcType=INTEGER},
+        <if test="orderNo != null" >
+             `order_no`=#{orderNo,jdbcType=INTEGER},
         </if>  
         <if test="status != null" >  
              `status`=#{status,jdbcType=INTEGER},
         </if>  
         <if test="remark != null" >  
              `remark`=#{remark,jdbcType=VARCHAR},
-        </if>  
+        </if>
+        <if test="url != null" >
+            `url`=#{url,jdbcType=VARCHAR},
+        </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -122,10 +132,11 @@
               `pid`=#{pid,jdbcType=BIGINT},  
               `name`=#{name,jdbcType=VARCHAR},  
               `code`=#{code,jdbcType=VARCHAR},  
-              `order`=#{order,jdbcType=INTEGER},  
+              `order_no`=#{orderNo,jdbcType=INTEGER},
               `status`=#{status,jdbcType=INTEGER},  
-              `remark`=#{remark,jdbcType=VARCHAR}  
-where id = #{id,jdbcType=BIGINT}
+              `remark`=#{remark,jdbcType=VARCHAR} ,
+                `url`=#{url,jdbcType=VARCHAR}
+      where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
     select 
@@ -149,8 +160,8 @@ where id = #{id,jdbcType=BIGINT}
         <if test="codeLike != null and codeLike != '' ">  
              and `code` like "%"#{codeLike}"%"
         </if>   
-        <if test="order != null and order != '' ">  
-           and `order` = #{order}
+        <if test="orderNo != null and orderNo != '' ">
+           and `order_no` = #{orderNo}
         </if>  
         <if test="status != null and status != '' ">  
            and `status` = #{status}
@@ -160,7 +171,10 @@ where id = #{id,jdbcType=BIGINT}
         </if>  
         <if test="remarkLike != null and remarkLike != '' ">  
              and `remark` like "%"#{remarkLike}"%"
-        </if>   
+        </if>
+      <if test="url != null and url != '' ">
+          and `url` like "%"#{url}"%"
+      </if>
   </select>
    <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
     select 
@@ -190,8 +204,8 @@ where id = #{id,jdbcType=BIGINT}
         <if test="codeLike != null and codeLike != '' ">  
              and sys_permission.`code` like "%"#{codeLike}"%"
         </if>   
-        <if test="order != null and order != '' ">  
-           and sys_permission.`order` = #{order}
+        <if test="orderNo != null and orderNo != '' ">
+           and sys_permission.`order_no` = #{orderNo}
         </if>  
         <if test="status != null and status != '' ">  
            and sys_permission.`status` = #{status}
@@ -201,7 +215,11 @@ where id = #{id,jdbcType=BIGINT}
         </if>  
         <if test="remarkLike != null and remarkLike != '' ">  
              and sys_permission.`remark` like "%"#{remarkLike}"%"
-        </if>   
+        </if>
+
+       <if test="url != null and url != '' ">
+           and sys_permission.`url` like "%"#{url}"%"
+       </if>
   </select>
    <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
     select 
@@ -225,8 +243,8 @@ where id = #{id,jdbcType=BIGINT}
         <if test="codeLike != null and codeLike != '' ">  
              and sys_permission.`code` like "%"#{codeLike}"%"
         </if>   
-        <if test="order != null and order != '' ">  
-           and sys_permission.`order` = #{order}
+        <if test="orderNo != null and orderNo != '' ">
+           and sys_permission.`order_no` = #{orderNo}
         </if>  
         <if test="status != null and status != '' ">  
            and sys_permission.`status` = #{status}
@@ -236,7 +254,10 @@ where id = #{id,jdbcType=BIGINT}
         </if>  
         <if test="remarkLike != null and remarkLike != '' ">  
              and sys_permission.`remark` like "%"#{remarkLike}"%"
-        </if>   
+        </if>
+       <if test="url != null and url != '' ">
+           and sys_permission.`url` like "%"#{url}"%"
+       </if>
   </select>
  <select id="countByOrParams" parameterType="map" resultType="java.lang.Integer">
     select
@@ -254,8 +275,8 @@ where id = #{id,jdbcType=BIGINT}
         <if test="code != null and code != '' ">
            or `code` = #{code}
         </if>
-        <if test="order != null and order != '' ">
-           or `order` = #{order}
+        <if test="orderNo != null and orderNo != '' ">
+           or `order_no` = #{orderNo}
         </if>
         <if test="status != null and status != '' ">
            or `status` = #{status}

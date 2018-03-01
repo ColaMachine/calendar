@@ -10,8 +10,8 @@ public class BooleanValue extends Rule {
         }
 
 		if (this.getValue() != null && 
-				(this.getValue().equalsIgnoreCase(Boolean.TRUE.toString()) 
-						|| this.getValue().equalsIgnoreCase(Boolean.FALSE.toString()))){
+				(this.getValue().toString().equalsIgnoreCase(Boolean.TRUE.toString())
+						|| this.getValue().toString().equalsIgnoreCase(Boolean.FALSE.toString()))){
 			return true;
 		}
 		else {

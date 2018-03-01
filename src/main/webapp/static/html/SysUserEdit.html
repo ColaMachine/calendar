@@ -289,14 +289,14 @@ var sysUserEdit={
     },
     loadData:function(){
         var that =this;
-        Ajax.getJSON(PATH+"/sysUser/view.json?id="+getParam("id"),null,function(data){
-            if(data.r==AJAX_SUCC){
-                if(data.data.bean){
-                    fillJso2Form("#sysUserEditForm",data.data.bean);
+        Ajax.getJSON(PATH+"/sysUser/view/"+getParam("id"),null,function(result){
+            if(result.r==AJAX_SUCC){
+                if(result.data){
+                    fillJso2Form("#sysUserEditForm",result.data);
                     $("#face").parent().find("img").attr("src",$("#face").val());
                 }
             }else{
-                dialog.error("获取信息失败"+data.msg,function(index){
+                dialog.error("获取信息失败"+result.msg,function(index){
                     goPage("sysUser/list.htm");
                     dialog.close(index);
                 });
@@ -311,7 +311,7 @@ var sysUserEdit={
         var jso = changeForm2Jso("#sysUserEditForm");
         var dialogId=dialog.showWait();
         var that=this;
-        Ajax.post(PATH+$("#sysUserEditForm").attr("action"),jso,function(data){
+        Ajax.put(PATH+"/sysUser/add",jso,function(data){
             dialog.hideWait(dialogId);
             if(data.r==0){
                 dialog.alert(data.msg||"保存成功",function(index){

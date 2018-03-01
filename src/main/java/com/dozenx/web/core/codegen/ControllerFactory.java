@@ -36,6 +36,9 @@ public class ControllerFactory extends DefaultGenCodeFactory {
     public  String getIdValid(ZTable table ){
         this.tabNo=2;
         ZColum zcol =table.getPk();
+        if(zcol==null){//有的时候是没有主键的
+            return "";
+        }
         String type =zcol.getType().toLowerCase();
         List rules =new ArrayList();
         if(type.startsWith("varchar") ||type.startsWith("char")  ){

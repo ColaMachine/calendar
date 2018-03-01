@@ -20,7 +20,7 @@ public class IntegerRange extends Rule {
 	@Override
 	public boolean valid() throws Exception {
 		if (this.getValue() != null && !this.getValue().equals("")) {
-			Integer realValue = Integer.valueOf(this.getValue());
+			Integer realValue = Integer.valueOf(this.getValue().toString());
 			//BigDecimal minValue = new BigDecimal(min);
 
 			if (this.min != null) {

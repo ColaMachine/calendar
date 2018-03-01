@@ -49,7 +49,8 @@ public class ApiAspect {
                 }
             }
             if(request==null){
-                throw new Exception( "request 不能为空");
+                return pjp.proceed();
+              //  throw new Exception( "request 不能为空");
             }
 
 
@@ -71,6 +72,9 @@ public class ApiAspect {
                 String in = params[i].in();
 
                 if("path".equalsIgnoreCase(in)){
+                    continue;//如果是path 变量就跳过
+                }
+                if("body".equalsIgnoreCase(in)){
                     continue;//如果是path 变量就跳过
                 }
                 String name =params[i].name();

@@ -1,6 +1,6 @@
 package com.dozenx.web.third.dbcenter.service;
 
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.web.third.dbcenter.bean.PubUser;
 import com.dozenx.web.third.dbcenter.util.AwifiHttpRequestUtil;
 import com.dozenx.web.util.ConfigUtil;
@@ -30,7 +30,7 @@ public class UserBaseService {
         Map<String,Long> param =new HashMap<>();
         param.put("id",id);
         String jsonStr= AwifiHttpRequestUtil.sendGet(url,param);
-        return JsonUtils.toJavaBean(jsonStr,PubUser.class);
+        return JsonUtil.toJavaBean(jsonStr,PubUser.class);
 
     }
 
@@ -44,7 +44,7 @@ public class UserBaseService {
         if(pubUser.getId()==null){
             throw new Exception("id can't be null in pubUser");
         }
-        String param = JsonUtils.toJsonString(pubUser);
+        String param = JsonUtil.toJsonString(pubUser);
         /*String jsonStr=*/ AwifiHttpRequestUtil.sendGet(url,param);
 
     }

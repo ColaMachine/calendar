@@ -32,7 +32,7 @@ import java.io.File;
 import java.util.*;
 
 @Controller
-@RequestMapping("/sysUserPermission")
+@RequestMapping("/advertsrv/sysUserPermission")
 public class SysUserPermissionController extends BaseController{
     /** 日志 **/
     private Logger logger = LoggerFactory.getLogger(SysUserPermissionController.class);

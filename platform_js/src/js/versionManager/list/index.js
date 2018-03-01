@@ -39,6 +39,7 @@ export default class VersionList extends React.Component {
 
     onPageSizeChange(current, size) {
         this.pageSize = size;
+        this.pageNo = current;
         this.search();
     }
 

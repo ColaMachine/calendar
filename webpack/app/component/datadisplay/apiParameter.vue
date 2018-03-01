@@ -6,7 +6,7 @@
                {{item.name}}
                </td>
                 <td >
-               <input :name="item.name"  :type="isFile(item)" width="200px"></input>
+               <textarea :name="item.name"  :type="isFile(item)" width="200px"></textarea>
                </td>
                 <td >
                {{item.description}}

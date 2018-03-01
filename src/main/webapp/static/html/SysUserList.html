@@ -61,7 +61,7 @@ var sysUserList={
     init:function(){
 
         setTitle("用户");
-        this.mygrid =new jqGrid(this.root[0].getElementsByClassName("grid")[0] ,this.gridParam);//this.root.find(".grid").jqGrid(this.gridParam);
+        this.mygrid =this.root.find(".grid").jqGrid(this.gridParam);//new jqGrid(this.root[0].getElementsByClassName("grid")[0] ,this.gridParam);//this.root.find(".grid").jqGrid(this.gridParam);
         this.addEventListener();
         this.loadData();
     },
@@ -79,7 +79,7 @@ var sysUserList={
         rowNum:10,
         rowList:[10,20,30],
         multiselect : false,
-        url : PATH+'/sysUser/list.json',
+        url : PATH+'/sysUser/list',
         autowidth:true,
         grid:"#SysUserGrid",
         pager:"#SysUserGrid-Pager",
@@ -154,7 +154,7 @@ var sysUserList={
     searchInfo:function (){
         var jso = changeForm2Jso(".app-search");
 
-        this.mygrid.jqGrid("setGridParam", { search: true ,"postData":jso}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
+        this.mygrid.jqGrid("setGridParam", { search: true ,"postData":{params:JSON.stringify(jso)}}).trigger("reloadGrid", [{ page: 1}]);  //重载JQGrid
     },
     viewInfo:function (id){
         dialog.window("/sysUser/view.htm?id="+id,this.modal);

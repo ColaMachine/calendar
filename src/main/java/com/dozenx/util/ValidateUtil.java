@@ -1,5 +1,6 @@
 package com.dozenx.util;
 
+import com.dozenx.core.exception.ValidException;
 import com.dozenx.web.core.log.ErrorMessage;
 import com.dozenx.web.core.log.ResultDTO;
 import com.dozenx.web.core.rules.Rule;
@@ -26,12 +27,12 @@ public class ValidateUtil<T> {
 
     public Map<String, Rule[]> ruleMap = null;
     public Map<String, String> nameMap = null;
-    public Map<String, String> valueMap = null;
+    public Map<String, Object> valueMap = null;
 
     public ValidateUtil() {
         ruleMap = new HashMap<String,Rule[]>();
         nameMap = new HashMap<String, String>();
-        valueMap = new HashMap<String, String>();
+        valueMap = new HashMap<String, Object>();
     }
 
     public Map<String, Object> validate(String key, String value, String name) throws Exception{
@@ -62,6 +63,11 @@ public class ValidateUtil<T> {
      * @param name
      * @param ruleArr
      */
+    public void add(String key, Object value, String name, Rule[] ruleArr){
+        nameMap.put(key, name);
+        valueMap.put(key, value);
+        ruleMap.put(key, ruleArr);
+    }
     public void add(String key, String value, String name, Rule[] ruleArr){
         nameMap.put(key, name);
         valueMap.put(key, value);
@@ -208,5 +214,14 @@ public class ValidateUtil<T> {
             result.setMsg("参数校验失败");
         }
         return result;
+    }
+
+    public static void valid(Object value,String name,Rule[] rules) throws Exception {
+        ValidateUtil vu =new ValidateUtil();
+        vu.add(name,value,name,rules);
+        String validStr = vu.validateString();
+        if(StringUtil.isNotBlank(validStr)) {
+            throw new ValidException("302",validStr);
+        }
     }
 }

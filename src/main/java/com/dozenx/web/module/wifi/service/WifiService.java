@@ -1,6 +1,6 @@
 package com.dozenx.web.module.wifi.service;
 
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.util.RedisUtil;
 import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.log.ServiceCode;
@@ -57,7 +57,7 @@ public class WifiService {
             Long merchantId = sessionDTO.getMerchant().getMerchantId();
             SessionUser sessionUser  = sessionDTO.getSessionUser();
             if(sessionUser!=null)
-                LogUtil.track(serviceCode, 711, null, JsonUtils.toJsonString(sessionUser), null);
+                LogUtil.track(serviceCode, 711, null, JsonUtil.toJsonString(sessionUser), null);
             String username = sessionUser.getPhone();
             Long userId = sessionUser.getId();
             if(sessionDTO.getTimeInfo()!=null && sessionDTO.getTimeInfo().isVip()){

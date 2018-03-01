@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("sysPermissionService")
 public class SysPermissionService extends BaseService {
@@ -34,10 +35,16 @@ public class SysPermissionService extends BaseService {
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
      */
-    public List<SysPermission> listByParams4Page(HashMap params) {
+    public List<SysPermission> listByParams4Page(Map<String,Object> params) {
         return sysPermissionMapper.listByParams4Page(params);
     }
-    public List<SysPermission> listByParams(HashMap params) {
+
+    /**
+     * 查询所有的
+     * @param params
+     * @return
+     */
+    public List<SysPermission> listByParams(Map<String ,Object> params) {
         return sysPermissionMapper.listByParams(params);
     }
 

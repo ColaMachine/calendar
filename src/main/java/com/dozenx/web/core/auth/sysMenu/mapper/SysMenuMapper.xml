@@ -8,13 +8,15 @@
       <result column="code" jdbcType="VARCHAR" property="code" />
       <result column="permission" jdbcType="VARCHAR" property="permission" />
       <result column="url" jdbcType="VARCHAR" property="url" />
-      <result column="order" jdbcType="INTEGER" property="order" />
+      <result column="order_no" jdbcType="INTEGER" property="orderNo" />
       <result column="status" jdbcType="INTEGER" property="status" />
+      <result column="icon" jdbcType="VARCHAR" property="icon" />
       <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="sys_menu_name" jdbcType="VARCHAR" property="sys_menu_name" />
   </resultMap>
   <sql id="Base_Column_List">
-    sys_menu.`id` ,sys_menu.`pid` ,sys_menu.`name` ,sys_menu.`code` ,sys_menu.`permission` ,sys_menu.`url` ,sys_menu.`order` ,sys_menu.`status` ,sys_menu.`remark` 
+    sys_menu.`id` ,sys_menu.`pid` ,sys_menu.`name` ,sys_menu.`code` ,sys_menu.`permission` ,sys_menu.`url` ,sys_menu.`order_no` ,sys_menu.`status` ,sys_menu.`remark`
+      , sys_menu.`icon`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -39,9 +41,10 @@
 ,#{code,jdbcType=VARCHAR}
 ,#{permission,jdbcType=VARCHAR}
 ,#{url,jdbcType=VARCHAR}
-,#{order,jdbcType=INTEGER}
+,#{orderNo,jdbcType=INTEGER}
 ,#{status,jdbcType=INTEGER}
 ,#{remark,jdbcType=VARCHAR}
+     ,#{icon,jdbcType=VARCHAR}
     )
   </insert>
    <insert id="insertSelective" parameterType="com.dozenx.web.core.auth.sysMenu.bean.SysMenu" >
@@ -65,15 +68,18 @@
         <if test="url != null" >  
            `url`, 
         </if>  
-        <if test="order != null" >  
-           `order`, 
+        <if test="orderNo != null" >
+           `order_no`,
         </if>  
         <if test="status != null" >  
            `status`, 
         </if>  
         <if test="remark != null" >  
            `remark`, 
-        </if>  
+        </if>
+        <if test="icon != null" >
+            `icon`,
+        </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
         <if test="id != null" >  
@@ -94,15 +100,18 @@
         <if test="url != null" >  
           #{url,jdbcType=VARCHAR},
         </if>  
-        <if test="order != null" >  
-          #{order,jdbcType=INTEGER},
+        <if test="orderNo != null" >
+          #{orderNo,jdbcType=INTEGER},
         </if>  
         <if test="status != null" >  
           #{status,jdbcType=INTEGER},
         </if>  
         <if test="remark != null" >  
           #{remark,jdbcType=VARCHAR},
-        </if>  
+        </if>
+        <if test="icon != null" >
+            #{icon,jdbcType=VARCHAR},
+        </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dozenx.web.core.auth.sysMenu.bean.SysMenu" >
@@ -126,15 +135,18 @@
         <if test="url != null" >  
              `url`=#{url,jdbcType=VARCHAR},
         </if>  
-        <if test="order != null" >  
-             `order`=#{order,jdbcType=INTEGER},
+        <if test="orderNo != null" >
+             `order_no`=#{orderNo,jdbcType=INTEGER},
         </if>  
         <if test="status != null" >  
              `status`=#{status,jdbcType=INTEGER},
         </if>  
         <if test="remark != null" >  
              `remark`=#{remark,jdbcType=VARCHAR},
-        </if>  
+        </if>
+        <if test="icon != null" >
+            `icon`=#{icon,jdbcType=VARCHAR},
+        </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -146,10 +158,11 @@
               `code`=#{code,jdbcType=VARCHAR},  
               `permission`=#{permission,jdbcType=VARCHAR},  
               `url`=#{url,jdbcType=VARCHAR},  
-              `order`=#{order,jdbcType=INTEGER},  
+              `order_no`=#{orderNo,jdbcType=INTEGER},
               `status`=#{status,jdbcType=INTEGER},  
-              `remark`=#{remark,jdbcType=VARCHAR}  
-where id = #{id,jdbcType=BIGINT}
+              `remark`=#{remark,jdbcType=VARCHAR} ,
+      `icon`=#{icon,jdbcType=VARCHAR}
+      where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="listByParams" parameterType="map" resultMap="BaseResultMap">
     select 
@@ -185,8 +198,8 @@ where id = #{id,jdbcType=BIGINT}
         <if test="urlLike != null and urlLike != '' ">  
              and `url` like "%"#{urlLike}"%"
         </if>   
-        <if test="order != null and order != '' ">  
-           and `order` = #{order}
+        <if test="orderNo != null and orderNo != '' ">
+           and `order_no` = #{orderNo}
         </if>  
         <if test="status != null and status != '' ">  
            and `status` = #{status}
@@ -196,7 +209,8 @@ where id = #{id,jdbcType=BIGINT}
         </if>  
         <if test="remarkLike != null and remarkLike != '' ">  
              and `remark` like "%"#{remarkLike}"%"
-        </if>   
+        </if>
+      order by order_no
   </select>
    <select id="listByParams4Page" parameterType="map" resultMap="BaseResultMap">
     select 
@@ -238,8 +252,8 @@ where id = #{id,jdbcType=BIGINT}
         <if test="urlLike != null and urlLike != '' ">  
              and sys_menu.`url` like "%"#{urlLike}"%"
         </if>   
-        <if test="order != null and order != '' ">  
-           and sys_menu.`order` = #{order}
+        <if test="orderNo != null and orderNo != '' ">
+           and sys_menu.`order_no` = #{orderNo}
         </if>  
         <if test="status != null and status != '' ">  
            and sys_menu.`status` = #{status}
@@ -249,7 +263,8 @@ where id = #{id,jdbcType=BIGINT}
         </if>  
         <if test="remarkLike != null and remarkLike != '' ">  
              and sys_menu.`remark` like "%"#{remarkLike}"%"
-        </if>   
+        </if>
+       order by order_no
   </select>
    <select id="countByParams" parameterType="map" resultType="java.lang.Integer">
     select 
@@ -285,8 +300,8 @@ where id = #{id,jdbcType=BIGINT}
         <if test="urlLike != null and urlLike != '' ">  
              and sys_menu.`url` like "%"#{urlLike}"%"
         </if>   
-        <if test="order != null and order != '' ">  
-           and sys_menu.`order` = #{order}
+        <if test="orderNo != null and orderNo != '' ">
+           and sys_menu.`order_no` = #{orderNo}
         </if>  
         <if test="status != null and status != '' ">  
            and sys_menu.`status` = #{status}
@@ -320,8 +335,8 @@ where id = #{id,jdbcType=BIGINT}
         <if test="url != null and url != '' ">
            or `url` = #{url}
         </if>
-        <if test="order != null and order != '' ">
-           or `order` = #{order}
+        <if test="orderNo != null and orderNo != '' ">
+           or `order_no` = #{orderNo}
         </if>
         <if test="status != null and status != '' ">
            or `status` = #{status}
@@ -330,4 +345,17 @@ where id = #{id,jdbcType=BIGINT}
            or `remark` = #{remark}
         </if>
   </select>
+
+
+    <select id="selectMenuByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from sys_menu menu where menu.id in (select menu_id from sys_role_menu where role_id in ( select role_id from sys_user_role where user_id =#{userid}))
+         order by order_no desc
+
+    </select>
+
+    <select id="selectMenuByRole" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from sys_menu sr where menu.id in (select menu_id from sys_role_menu where role_id  =#{roleid}))
+        order by order_no
+    </select>
+
 </mapper>

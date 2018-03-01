@@ -16,6 +16,8 @@ import com.dozenx.web.core.auth.sysRole.bean.SysRole;
 import com.dozenx.web.core.auth.sysRole.dao.SysRoleMapper;
 import com.dozenx.web.core.auth.sysRolePermission.bean.SysRolePermission;
 import com.dozenx.web.core.auth.sysRolePermission.dao.SysRolePermissionMapper;
+import com.dozenx.web.core.auth.sysUser.bean.SysUser;
+import com.dozenx.web.core.auth.sysUserRole.bean.SysUserRole;
 import com.dozenx.web.core.base.BaseService;
 import com.dozenx.web.core.log.ResultDTO;
 import org.slf4j.Logger;
@@ -68,61 +70,15 @@ public class SysRolePermissionService extends BaseService {
      * @date 2015年11月15日下午1:33:54
      */
     public ResultDTO save(SysRolePermission sysRolePermission) {
-        // 进行字段验证
-      /* ValidateUtil<SysRolePermission> vu = new ValidateUtil<SysRolePermission>();
-        ResultDTO result = vu.valid(sysRolePermission);
-        if (result.getR() != 1) {
-            return result;
-        }*/
-         //逻辑业务判断判断
-       //判断是否有uq字段
-       
-       //判断是更新还是插入
-        if (sysRolePermission.getId()==null ||  this.selectByPrimaryKey(sysRolePermission.getId())==null) {
 
-            sysRolePermissionMapper.insert(sysRolePermission);
-        } else {
-            sysRolePermissionMapper.updateByPrimaryKeySelective(sysRolePermission);
-        }
+        sysRolePermissionMapper.insert(sysRolePermission);
+
         return ResultUtil.getSuccResult();
     }
-    /**
-    * 说明:根据主键删除数据
-    * description:delete by key
-    * @param id
-    * @return void
-    * @author dozen.zhang
-    * @date 2015年12月27日下午10:56:38
-    */
-    public void delete(Long  id){
-        sysRolePermissionMapper.deleteByPrimaryKey(id);
-    }   
-    /**
-    * 说明:根据主键获取数据
-    * description:delete by key
-    * @param id
-    * @return void
-    * @author dozen.zhang
-    * @date 2015年12月27日下午10:56:38
-    */
-    public SysRolePermission selectByPrimaryKey(Long id){
-       return sysRolePermissionMapper.selectByPrimaryKey(id);
-    }
-    /**多id删除
-     * @param idAry
-     * @return
-     * @author dozen.zhang
-     */
-    public ResultDTO multilDelete(Long[] idAry) {
-        for(int i=0;i<idAry.length;i++){
-            sysRolePermissionMapper.deleteByPrimaryKey(idAry[i]);
-        }
-        return ResultUtil.getSuccResult();
-    }
+
      /**
          * 多项关联保存
-         * @param uids
-         * @param rids
+
          * @return
          */
         public ResultDTO msave(String rids,String pids) {
@@ -183,17 +139,68 @@ public class SysRolePermissionService extends BaseService {
                     params.put("rid",rid);
                     int count = sysRolePermissionMapper.countByParams(params);
                     if(count>0)continue;
-                    sysRolePermission.setPid(pid);
-                    sysRolePermission.setRid(rid);
+                    sysRolePermission.setPermissionId(pid);
+                    sysRolePermission.setRoleId(rid);
                     sysRolePermissionMapper.insert(sysRolePermission);
                 }
             }
             //删除多余的数据
             params.clear();
-            params.put("pids",pidAryReal);
-            params.put("rids",ridAryReal);
+            params.put("permissionIds",pidAryReal);
+            params.put("roleIds",ridAryReal);
             sysRolePermissionMapper.deleteExtra(params);
             //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
             return ResultUtil.getSuccResult();
         }
+
+
+
+    public  ResultDTO batchUpdate(Long[] parentIds,Long[] childIds){
+        //验证父亲id 正确性 是否存在
+        if(parentIds!=null)
+            for(int i=0;i< parentIds.length;i++){
+                //
+                SysRole sysUser = sysRoleMapper.selectByPrimaryKey(parentIds[i]);
+                if(sysUser==null ){
+                    return ResultUtil.getResult(101,"数据不存在");
+                }
+                //查询的数据不存在
+            }
+        if(childIds!=null)
+            for(int i=0;i<childIds.length;i++){
+                SysPermission sysPermission = sysPermissionMapper.selectByPrimaryKey(childIds[i]);
+                //查询的数据不存在
+                if(sysPermission==null ){
+                    return ResultUtil.getResult(101,"数据不存在");
+                }
+            }
+
+        //验证子id 正确性 是否存在
+        SysRolePermission sysUserRole =new SysRolePermission();
+        if(childIds!=null)
+            for(int i=0;i<parentIds.length;i++){
+                for(int j=0;j<childIds.length;j++){
+
+                    Long parentId =parentIds[i];
+                    Long childId =childIds[j];
+                    //查找是否已经有关联数据了
+                    sysUserRole.setRoleId(parentId);
+                    sysUserRole.setPermissionId(childId);
+
+                    int count = sysRolePermissionMapper.count(sysUserRole);
+                    if(count>0)continue;//如果有记录了就不保存
+                    sysUserRole.setPermissionId(childId);
+                    sysUserRole.setRoleId(parentId);
+                    sysRolePermissionMapper.insert(sysUserRole);
+                }
+            }
+        //删除多余的数据
+        HashMap params =new HashMap(2);
+
+        params.put("permissionIds",childIds);
+        params.put("roleIds",parentIds);
+        sysRolePermissionMapper.deleteExtra(params);//删除额外的数据
+        return ResultUtil.getSuccResult();
+    }
+
 }

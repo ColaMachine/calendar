@@ -8,39 +8,48 @@
 
 package com.dozenx.web.core.auth.sysUser.action;
 
+import com.cpj.swagger.annotation.*;
+import com.dozenx.core.exception.ParamException;
 import com.dozenx.util.*;
+import com.dozenx.util.encrypt.EncryptUtil;
 import com.dozenx.web.core.auth.sysUser.bean.SysUser;
 import com.dozenx.web.core.auth.sysUser.service.SysUserService;
+import com.dozenx.web.core.auth.sysUserRole.service.SysUserRoleService;
 import com.dozenx.web.core.base.BaseController;
+import com.dozenx.web.core.log.ErrorMessage;
+import com.dozenx.web.core.log.ResultDTO;
 import com.dozenx.web.core.page.Page;
+
 import com.dozenx.web.core.rules.*;
 import com.dozenx.web.util.RequestUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.*;
+
+
+@APIs(description = "用户模块")
 @Controller
-@RequestMapping("/sysUser")
+@RequestMapping("/advertsrv/sys/auth/user")
 public class SysUserController extends BaseController{
     /** 日志 **/
     private Logger logger = LoggerFactory.getLogger(SysUserController.class);
     /** 权限service **/
     @Autowired
     private SysUserService sysUserService;
-    
+
     /**
      * 说明: 跳转到角色列表页面
-     * 
+     *
      * @return
      * @return String
      * @author dozen.zhang
@@ -55,6 +64,9 @@ public class SysUserController extends BaseController{
     public String listMapper() {
         return "/static/html/SysUserListMapper.html";
     }
+
+
+
 
     /**
      * 说明:ajax请求角色信息
@@ -71,9 +83,9 @@ public class SysUserController extends BaseController{
         //ConfigUtil.getConfig("SysConfigService");
         Page page = RequestUtil.getPage(request);
         if(page ==null){
-             return this.getWrongResultFromCfg("err.param.page");
+            return this.getWrongResultFromCfg("err.param.page");
         }
-        
+
         HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
@@ -256,17 +268,17 @@ public class SysUserController extends BaseController{
         List<SysUser> sysUsers = sysUserService.listByParams4Page(params);
         return ResultUtil.getResult(sysUsers, page);
     }
-    
-   /**
-    * 说明:ajax请求角色信息 无分页版本
-    * @return Object
-    * @author dozen.zhang
-    * @date 2015年11月15日下午12:31:55
-    */
+
+    /**
+     * 说明:ajax请求角色信息 无分页版本
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午12:31:55
+     */
     @RequestMapping(value = "/listAll.json")
     @ResponseBody
     public Object listAll(HttpServletRequest request) {
-                HashMap<String,Object> params= new HashMap<String,Object>();
+        HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
             params.put("id",id);
@@ -447,7 +459,7 @@ public class SysUserController extends BaseController{
         List<SysUser> sysUsers = sysUserService.listByParams(params);
         return ResultUtil.getDataResult(sysUsers);
     }
-    
+
     /**
      * @param request 发请求
      * @return Object
@@ -461,14 +473,15 @@ public class SysUserController extends BaseController{
     public Object viewPage( HttpServletRequest request) {
         return "/static/html/SysUserView.html";
     }
-   
+
     @RequestMapping(value = "/view.json")
     @ResponseBody
     public Object view(HttpServletRequest request) {
-            String id = request.getParameter("id");
+        String id = request.getParameter("id");
         HashMap<String,Object> result =new HashMap<String,Object>();
         if(!StringUtil.isBlank(id)){
             SysUser bean = sysUserService.selectByPrimaryKey(Long.valueOf(id));
+            bean.setPassword(null);
             result.put("bean", bean);
         }
         return this.getResult(result);
@@ -480,10 +493,11 @@ public class SysUserController extends BaseController{
         return this.getResult(bean);*/
     }
 
-    
+
+
     /**
      * 说明:保存角色信息
-     * 
+     *
      * @param request
      * @return
      * @throws Exception
@@ -501,92 +515,92 @@ public class SysUserController extends BaseController{
         if(!StringUtil.isBlank(id)){
             sysUser.setId(Long.valueOf(id)) ;
         }
-        
+
         String username = request.getParameter("username");
         if(!StringUtil.isBlank(username)){
             sysUser.setUsername(String.valueOf(username)) ;
         }
-        
+
         String password = request.getParameter("password");
         if(!StringUtil.isBlank(password)){
             sysUser.setPassword(String.valueOf(password)) ;
         }
-        
+
         String nkname = request.getParameter("nkname");
         if(!StringUtil.isBlank(nkname)){
             sysUser.setNkname(String.valueOf(nkname)) ;
         }
-        
+
         String type = request.getParameter("type");
         if(!StringUtil.isBlank(type)){
             sysUser.setType(Integer.valueOf(type)) ;
         }
-        
+
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
             sysUser.setStatus(Integer.valueOf(status)) ;
         }
-        
+
         String email = request.getParameter("email");
         if(!StringUtil.isBlank(email)){
             sysUser.setEmail(String.valueOf(email)) ;
         }
-        
+
         String telno = request.getParameter("telno");
         if(!StringUtil.isBlank(telno)){
             sysUser.setTelno(String.valueOf(telno)) ;
         }
-        
+
         String idcard = request.getParameter("idcard");
         if(!StringUtil.isBlank(idcard)){
             sysUser.setIdcard(String.valueOf(idcard)) ;
         }
-        
+
         String sex = request.getParameter("sex");
         if(!StringUtil.isBlank(sex)){
             sysUser.setSex(Integer.valueOf(sex)) ;
         }
-        
+
         String birth = request.getParameter("birth");
         if(!StringUtil.isBlank(birth)){
             sysUser.setBirth(Date.valueOf(birth)) ;
         }
-        
+
         String integral = request.getParameter("integral");
         if(!StringUtil.isBlank(integral)){
             sysUser.setIntegral(Integer.valueOf(integral)) ;
         }
-        
+
         String address = request.getParameter("address");
         if(!StringUtil.isBlank(address)){
             sysUser.setAddress(String.valueOf(address)) ;
         }
-        
+
         String weichat = request.getParameter("weichat");
         if(!StringUtil.isBlank(weichat)){
             sysUser.setWeichat(String.valueOf(weichat)) ;
         }
-        
+
         String qq = request.getParameter("qq");
         if(!StringUtil.isBlank(qq)){
             sysUser.setQq(Long.valueOf(qq)) ;
         }
-        
+
         String face = request.getParameter("face");
         if(!StringUtil.isBlank(face)){
             sysUser.setFace(String.valueOf(face)) ;
         }
-        
+
         String remark = request.getParameter("remark");
         if(!StringUtil.isBlank(remark)){
             sysUser.setRemark(String.valueOf(remark)) ;
         }
-        
+
         String createtime = request.getParameter("createtime");
         if(!StringUtil.isBlank(createtime)){
             sysUser.setCreatetime(Timestamp.valueOf(createtime)) ;
         }
-        
+
         String updatetime = request.getParameter("updatetime");
         if(!StringUtil.isBlank(updatetime)){
             sysUser.setUpdatetime(Timestamp.valueOf(updatetime)) ;
@@ -709,8 +723,12 @@ public class SysUserController extends BaseController{
         }
 
         return sysUserService.save(sysUser);
-       
+
     }
+
+
+
+
 
     @RequestMapping(value = "/del.json")
     @ResponseBody
@@ -723,7 +741,7 @@ public class SysUserController extends BaseController{
         sysUserService.delete(id);
         return this.getResult(SUCC);
     }
-     /**
+    /**
      * 多行删除
      * @param request
      * @return
@@ -742,7 +760,7 @@ public class SysUserController extends BaseController{
             ValidateUtil vu = new ValidateUtil();
             String validStr="";
             String id = idStrAry[i];
-                    vu.add("id", id, "编号",  new Rule[]{});
+            vu.add("id", id, "编号",  new Rule[]{});
 
             try{
                 validStr=vu.validateString();
@@ -751,13 +769,13 @@ public class SysUserController extends BaseController{
                 validStr="验证程序异常";
                 return ResultUtil.getResult(302,validStr);
             }
-            
+
             if(StringUtil.isNotBlank(validStr)) {
                 return ResultUtil.getResult(302,validStr);
             }
             idAry[i]=Long.valueOf(idStrAry[i]);
         }
-       return  sysUserService.multilDelete(idAry);
+        return  sysUserService.multilDelete(idAry);
     }
 
     /**
@@ -767,9 +785,9 @@ public class SysUserController extends BaseController{
      * @author dozen.zhang
      */
     @RequestMapping(value = "/export.json")
-    @ResponseBody   
+    @ResponseBody
     public Object exportExcel(HttpServletRequest request){
-               HashMap<String,Object> params= new HashMap<String,Object>();
+        HashMap<String,Object> params= new HashMap<String,Object>();
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
             params.put("id",id);
@@ -1001,7 +1019,7 @@ public class SysUserController extends BaseController{
             map.put("birth",  list.get(i).getBirth());
             map.put("integral",  list.get(i).getIntegral());
             map.put("address",  list.get(i).getAddress());
-            map.put("weichat",  list.get(i).getWeichat());
+            map.put("wechat",  list.get(i).getWechat());
             map.put("qq",  list.get(i).getQq());
             map.put("face",  list.get(i).getFace());
             map.put("remark",  list.get(i).getRemark());
@@ -1022,10 +1040,309 @@ public class SysUserController extends BaseController{
             e.printStackTrace();
         }
         return this.getResult(0, "数据为空，导出失败");
-    
+
     }
     @RequestMapping(value = "/import.json")
     public void importExcel(){
-        
+
+    }
+
+
+    /**
+     * 说明:ajax请求用户信息
+     * @return
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午12:31:55
+     */
+
+    @API(summary = "用户列表接口",
+            consumes = "application/x-www-form-urlencoded",
+            description = "sysUserController 用户列表分页查询接口", parameters = {
+
+            @Param(name = "params", description = "{telno:13958173965, name:\"123\", curPage:1,pageSize:30 }" +
+                    "{telno:手机号码 \n" +
+                    "name:'姓名', 支持模糊查询\n" +
+                    "curPage:1 //当前页\n" +
+                    "pageSize:30//每页记录数，数字，不允许为空\n" +
+                    "}", dataType = DataType.STRING, in="query",required = true),
+    })
+    @APIResponse(value = "{\"r\":0,\"data\":[{\"id\":123,\"username\":\"123\",\"password\":\"123\",\"nkname\":\"123\",\"type\":null,\"status\":1,\"email\":null,\"telno\":\"13969696969\",\"idcard\":\"23\",\"sex\":0,\"birth\":1517414400000,\"integral\":123,\"address\":\"123\",\"wechat\":\"123\",\"qq\":123,\"face\":\"static/img/timg.jpeg\",\"remark\":\"123\",\"outId\":null,\"createtime\":1517901790000,\"updatetime\":1517901790000}],\"msg\":null,\"page\":{\"curPage\":1,\"totalPage\":1,\"pageSize\":10,\"totalCount\":1,\"beginIndex\":0,\"hasPrePage\":false,\"hasNextPage\":false},\"other\":null,\"right\":true}")
+
+    @RequestMapping(value = "/list",method=RequestMethod.GET,produces="application/json")
+    @ResponseBody
+    public Object list( HttpServletRequest request,@RequestParam(name="params",required=true) String paramStr) {
+        Map<String,Object> params = JsonUtil.fromJson(paramStr,Map.class);
+        Page page =  RequestUtil.getPage(params);
+        params.put("page",page);
+        params.put("usernameLike",MapUtils.getStringValue(params,"name"));
+        List<HashMap<String,Object>> sysUsers = sysUserService.listRoleByParams4Page(params);
+        return ResultUtil.getResult(sysUsers, page);
+    }
+
+    /**
+     * 说明:保存角色信息
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午1:33:00
+     */
+    @API(summary = "用户添加接口",
+            consumes = "application/json",
+            description = "sysUserController 用户添加接口", parameters = {
+
+
+            @Param(name = "username", description = "用户名"
+                    , dataType = DataType.LONG, in="body",required = true),
+            @Param(name = "password", description = "密码"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "email", description = "用户邮箱"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "telno", description = "手机号码"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "face", description = "头像"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "roleIds", description = "角色id数组"
+                    , dataType = DataType.ARRAY, in="body",required = false),
+            @Param(name = "province", description = "省id"
+                    , dataType = DataType.STRING, in="body",required = true),
+
+            @Param(name = "city", description = "市id"
+                    , dataType = DataType.STRING, in="body",required = true),
+
+            @Param(name = "county", description = "区id"
+                    , dataType = DataType.STRING, in="body",required = true),
+    })
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+    @RequestMapping(value = "/add",method=RequestMethod.POST,produces="application/json")
+    @ResponseBody
+    // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
+    public ResultDTO add(HttpServletRequest request, @RequestBody(required=true) Map<String,Object> bodyParam ) throws Exception {
+        SysUser sysUser = getInfoFromMap(bodyParam);
+
+        //valid
+        //获取角色id数组
+
+        //如果密码是空的 设置默认密码
+        if(StringUtil.isBlank(sysUser.getPassword())){
+            sysUser.setPassword("123456");
+        }
+        //保存用户信息并 关联角色信息
+        ResultDTO result =  sysUserService.saveWithRoleInfo(sysUser);
+
+        return  result;
+
+    }
+
+
+    @API(summary = "用户资料更新接口",
+
+            consumes = "application/json",
+            description = "sysUserController 用户添加接口", parameters = {
+
+            @Param(name = "id", description = "用户id"
+                    , dataType = DataType.LONG, in="path",required = true),
+            @Param(name = "username", description = "用户名"
+                    , dataType = DataType.LONG, in="body",required = true),
+            @Param(name = "password", description = "密码"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "email", description = "用户邮箱"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "telno", description = "手机号码"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "face", description = "头像"
+                    , dataType = DataType.STRING, in="body",required = true),
+
+            @Param(name = "province", description = "省id"
+                    , dataType = DataType.STRING, in="body",required = true),
+
+            @Param(name = "city", description = "市id"
+                    , dataType = DataType.STRING, in="body",required = true),
+
+            @Param(name = "county", description = "区id"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "roleIds", description = "角色id数组"
+                    , dataType = DataType.ARRAY, in="body",required = false),
+    })
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+
+    @RequestMapping(value = "/update/{id}",method=RequestMethod.PUT,produces="application/json")
+    @ResponseBody
+
+
+    // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
+
+    public Object update( HttpServletRequest request,@PathVariable Long id,@RequestBody(required=true) Map<String,Object> bodyParam ) throws Exception {
+        SysUser sysUser =getInfoFromMap(bodyParam);
+        id = MapUtils.getLong(bodyParam,"id");
+        if(id==null || id ==0){
+            return ResultUtil.getResult(10102001,ErrorMessage.getErrorMsg("err.param.null","用户id"));
+        }
+
+        sysUser.setId(id);
+
+        //获取角色id
+
+
+        return sysUserService.saveWithRoleInfo(sysUser);
+    }
+
+    @API(summary = "用户资料删除接口",
+
+            consumes = "application/x-www-form-urlencoded",
+            description = "sysUserController 用户删除接口", parameters = {
+
+            @Param(name = "id", description = "用户id", dataType = DataType.LONG, in="PATH",required = true),
+    })
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+
+    @RequestMapping(value = "/del/{id}" ,method=RequestMethod.DELETE,produces="application/json")
+    @ResponseBody
+    public Object deleteRestFul(@PathVariable("id") Long id, HttpServletRequest request ) {
+
+        if(id==null ){
+            return this.getResult(10202003, ErrorMessage.getErrorMsg("err.param.null","用户id"));
+        }
+
+        sysUserService.delete(id);//将状态为改成9
+        return this.getResult(SUCC);
+    }
+
+
+
+    @API(summary = "用户详情接口",
+
+            consumes = "application/x-www-form-urlencoded",
+            description = "用户详情接口", parameters = {
+
+            @Param(name = "id", description = "/view/{id}", dataType = DataType.STRING, in="path",required = true),
+    })
+    @APIResponse(value = "{ \"r\": 0, \"data\": { \"id\": 123, \"username\": \"123\", \"password\": \"123\", \"nkname\": \"123\", \"status\": 1, \"telno\": \"13969696969\", \"idcard\": \"23\", \"sex\": 0, \"birth\": \"Feb 1, 2018 12:00:00 AM\", \"integral\": 123, \"address\": \"123\", \"wechat\": \"123\", \"qq\": 123, \"face\": \"static/img/timg.jpeg\", \"remark\": \"123\", \"createTime\": \"Feb 6, 2018 3:23:10 PM\", \"updateTime\": \"Feb 6, 2018 3:23:10 PM\" } }")
+
+    @RequestMapping(value = "/view/{id}" ,method=RequestMethod.GET,produces="application/json")
+    @ResponseBody
+    public Object viewRestFul(@PathVariable ("id") Long id , HttpServletRequest request) {
+
+        HashMap<String,Object> result =new HashMap<String,Object>();
+        if(id>0){
+            SysUser bean = sysUserService.selectWithRoleInfoByPrimaryKey(Long.valueOf(id));
+            return this.getResult(bean);
+
+        }
+
+        //返回角色信息
+        return this.getResult(10102300, ErrorMessage.getErrorMsg("err.param.null","用户id"));
+
+    }
+
+    private SysUser getInfoFromMap(Map<String,Object> bodyParam) throws Exception {
+        SysUser sysUser =new SysUser();
+        String username = MapUtils.getString(bodyParam,"username");
+        if(!StringUtil.isBlank(username)){
+            sysUser.setUsername(username);
+        }
+        String password =  MapUtils.getString(bodyParam,"password");
+        if(!StringUtil.isBlank(password)){
+            sysUser.setPassword(MD5Util.getStringMD5String(password));//别忘记md5加密
+        }
+        String nkname =  MapUtils.getString(bodyParam,"nkname");
+        if(!StringUtil.isBlank(nkname)){
+            sysUser.setNkname(nkname);
+        }
+
+        String email = MapUtils.getString(bodyParam,"email");
+        if(!StringUtil.isBlank(email)){
+            sysUser.setEmail(email);
+        }
+        String telno = MapUtils.getString(bodyParam,"telno");
+        if(!StringUtil.isBlank(telno)){
+            sysUser.setTelno(telno);
+        }
+        String idcard = MapUtils.getString(bodyParam,"idcard");
+        if(!StringUtil.isBlank(idcard)){
+            sysUser.setIdcard(idcard);
+        }
+        String sex = MapUtils.getString(bodyParam,"sex");
+        if(!StringUtil.isBlank(sex)){
+            sysUser.setSex(Integer.valueOf(sex));
+        }
+        String birth = MapUtils.getString(bodyParam,"birth");
+        if(!StringUtil.isBlank(birth)){
+            if(StringUtil.checkNumeric(birth)){
+                sysUser.setBirth(new Date(birth));
+            }else if(StringUtil.checkDateStr(birth, "yyyy-MM-dd")){
+                sysUser.setBirth(DateUtil.parseToDate(birth, "yyyy-MM-dd"));
+            }
+        }
+
+        String address = MapUtils.getString(bodyParam,"address");
+        if(!StringUtil.isBlank(address)){
+            sysUser.setAddress(address);
+        }
+
+        String qq = MapUtils.getString(bodyParam,"qq");
+        if(!StringUtil.isBlank(qq)){
+            sysUser.setQq(Long.valueOf(qq));
+        }
+        String face = MapUtils.getString(bodyParam,"face");
+        if(!StringUtil.isBlank(face)){
+            sysUser.setFace(face);
+        }
+        String remark = MapUtils.getString(bodyParam,"remark");
+        if(!StringUtil.isBlank(remark)){
+            sysUser.setRemark(remark);
+        }
+
+        Integer province = MapUtils.getInteger(bodyParam,"province");
+        if(province!=null && province>0){
+            sysUser.setProvince(province);
+        }
+
+        Integer city = MapUtils.getInteger(bodyParam,"city");
+        if(city!=null && city>0){
+            sysUser.setCity(city);
+        }
+
+        Integer county = MapUtils.getInteger(bodyParam,"county");
+        if(county!=null && county>0){
+            sysUser.setCounty(county);
+        }
+        Object roleIdsObj = bodyParam.get("roleIds");
+        if(roleIdsObj!=null) {
+
+            List<Number> ary = (ArrayList<Number>)bodyParam.get("roleIds");//bodyoaran 只不过的参数是 arryList<Double>格式的
+            Long[] roleIdAry = new Long[ary.size()];
+            for(int i=0;i<ary.size();i++){
+                roleIdAry[i] = ary.get(i).longValue();
+            }
+
+
+            sysUser.setRoleIds(roleIdAry);
+        }
+
+        //基础的参数校验  不对任何参数进行非空校验 需要的话 自行再校验一般
+        ValidateUtil vu = new ValidateUtil();
+        String validStr="";
+        vu.add("username", sysUser.getUsername(), "用户名",  new Rule[]{new Length(20),new NotEmpty()});
+        vu.add("password", password, "密码",  new Rule[]{new Length(50)});
+        vu.add("nkname", nkname, "昵称",  new Rule[]{new Length(20)});
+        vu.add("email", email, "邮箱地址",  new Rule[]{new Length(50),new EmailRule()});
+        vu.add("telno", telno, "手机号码",  new Rule[]{new Length(11),new PhoneRule(),new NotEmpty()});
+        vu.add("idcard", idcard, "身份证号码",  new Rule[]{new Length(18)});
+        vu.add("sex", sex, "性别",  new Rule[]{new Digits(1,0),new CheckBox(new String[]{"0","1","2"})});
+        vu.add("birth", birth, "出生年月",  new Rule[]{new DateValue("yyyy-MM-dd")});
+        vu.add("address", address, "地址",  new Rule[]{new Length(50)});
+        vu.add("qq", qq, "qq",  new Rule[]{new Digits(11,0)});
+        vu.add("face", face, "头像",  new Rule[]{new Length(100)});
+        vu.add("remark", remark, "备注",  new Rule[]{new Length(200)});
+        validStr = vu.validateString();
+        if(StringUtil.isNotBlank(validStr)) {
+            throw new ParamException(10002000,validStr);//bean的校验
+
+        }
+        return sysUser;
     }
 }

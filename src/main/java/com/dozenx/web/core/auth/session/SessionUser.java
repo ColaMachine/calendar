@@ -1,6 +1,7 @@
 package com.dozenx.web.core.auth.session;
 
 /**
+ * 存入session中的用户对象
  * @Author: dozen.zhang
  * @Description:
  * @Date: Created in 17:19 2018/1/2

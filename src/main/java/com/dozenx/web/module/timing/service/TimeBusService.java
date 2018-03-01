@@ -1,6 +1,6 @@
 package com.dozenx.web.module.timing.service;
 
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.util.RedisUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.Constants;
@@ -102,7 +102,7 @@ public class TimeBusService {
         consume.setUserId( userId);
         // 查询用户在商家下的上网时长
 
-        LogUtil.track(serviceCode, 94, JsonUtils.toJsonString(consume),
+        LogUtil.track(serviceCode, 94, JsonUtil.toJsonString(consume),
                 "begin iUserCutoffService.queryListByParam", null);
         String jsonStr = "";
         UserCutoff userCutoff;
@@ -114,7 +114,7 @@ public class TimeBusService {
                     "after  iUserCutoffService.queryListByParam", null);
 
         } catch (Exception e) {
-            logger.error("error when iUserCutoffService.queryListByParam" + JsonUtils.toJsonString(consume), e);
+            logger.error("error when iUserCutoffService.queryListByParam" + JsonUtil.toJsonString(consume), e);
             return 0;
         }
         // List<UserCutoff> userCutoff = JSON.parseArray(jsonStr, UserCutoff.class);
@@ -170,7 +170,7 @@ public class TimeBusService {
 
         }
         // 新增消费记录
-        LogUtil.track(serviceCode, 147, JsonUtils.toJsonString(consume),
+        LogUtil.track(serviceCode, 147, JsonUtil.toJsonString(consume),
                 "begin iUserConsumeService.addCompConsume  ", null);
 
         try {

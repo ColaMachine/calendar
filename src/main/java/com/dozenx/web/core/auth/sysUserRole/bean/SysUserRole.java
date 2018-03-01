@@ -8,23 +8,26 @@
 package com.dozenx.web.core.auth.sysUserRole.bean;
 
 public class SysUserRole {
-    /**主键**/
-    private Long id;
-    public Long getId(){
-        return id;
-    }    public void setId(Long id){
-        this.id=id;
-    }/**用户id**/
-    private Long uid;
-    public Long getUid(){
-        return uid;
-    }    public void setUid(Long uid){
-        this.uid=uid;
-    }/**角色id**/
-    private Long roleid;
-    public Long getRoleid(){
-        return roleid;
-    }    public void setRoleid(Long roleid){
-        this.roleid=roleid;
+
+  /**用户id**/
+    private Long userId;
+
+    /**角色id**/
+    private Long roleId;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 }

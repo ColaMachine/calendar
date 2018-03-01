@@ -1,6 +1,6 @@
 package com.dozenx.web.third.dbcenter.service;
 
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.web.module.merchant.bean.CenterPubMerchant;
 import com.dozenx.web.third.dbcenter.util.AwifiHttpRequestUtil;
 import com.dozenx.web.util.ConfigUtil;
@@ -68,7 +68,7 @@ public class MerchantBaseService {
 
        String url = ConfigUtil.getConfig("MerchantBaseService_url")+"merchant/list?params={json}";
         String jsonStr= AwifiHttpRequestUtil.sendGet(url,param);
-        List<CenterPubMerchant> list = JsonUtils.toList(jsonStr,CenterPubMerchant.class);
+        List<CenterPubMerchant> list = JsonUtil.toList(jsonStr,CenterPubMerchant.class);
         return list;
    }
     /**
@@ -84,7 +84,7 @@ public class MerchantBaseService {
         Map param =new HashMap();
         param.put("id",id);
         String jsonStr= AwifiHttpRequestUtil.sendGet(url,param);
-       CenterPubMerchant result = JsonUtils.toJavaBean(jsonStr,CenterPubMerchant.class);
+       CenterPubMerchant result = JsonUtil.toJavaBean(jsonStr,CenterPubMerchant.class);
         return result;
     }
 
@@ -96,7 +96,7 @@ public class MerchantBaseService {
         String jsonStr="";
         try {
             jsonStr = AwifiHttpRequestUtil.sendGet(url,param);
-            List<CenterPubMerchant> list = JsonUtils.toList(jsonStr,CenterPubMerchant.class);
+            List<CenterPubMerchant> list = JsonUtil.toList(jsonStr,CenterPubMerchant.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

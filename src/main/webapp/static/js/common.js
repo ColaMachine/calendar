@@ -205,6 +205,12 @@ var Ajax={
  post:function(url,data,callback){
     this.AjaxFun(url,data,callback,{type:"POST"});
  },
+del:function(url,data,callback){
+    this.AjaxFun(url,data,callback,{type:"DELETE"});
+},
+put:function(url,data,callback){
+    this.AjaxFun(url,data,callback,{type:"PUT"});
+},
  AjaxFun1:function(url, inputData, callback, options, callbackOnError){
       $.ajax({
             url:url,

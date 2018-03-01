@@ -147,6 +147,53 @@ public class UserService extends SysUserService {
 	}
 
 	/**
+	 * @Author: dozen.zhang
+	 * @Description:验证机密后的密码
+	 * @Date: 2018/2/9
+	 */
+	public ResultDTO loginValidWithEncryptedPwd(String email, String encryptedPwd) {
+		// / this.userMapper.getUsersByParam(map)
+		//String pwd = MD5Utils.MD5Encode(UnencryptedPwd);
+		if (StringUtil.isBlank(email) || StringUtil.isBlank(encryptedPwd)) {
+			return ResultUtil.getWrongResultFromCfg("err.account.empty");
+		}
+
+		HashMap<String, String> params = new HashMap<String, String>();
+		if(StringUtil.isEmail(email)){
+			//是手机号码
+			params.put("email", email);
+		}else if(StringUtil.isPhone(email)){
+			params.put("telno", email);
+		}else{
+			params.put("username", email);
+			//return ResultUtil.getResult(ResultUtil.fail,"既不是手机号也不是邮箱");
+		}
+
+		//params.put("password", pwd);
+		List list = sysUserMapper.listByParams(params);
+		if (list != null && list.size() > 0) {
+			SysUser  user = (SysUser) list.get(0);
+			if(StringUtil.isNotBlank(user.getPassword())){
+				try {
+					if(encryptedPwd.equals(user.getPassword())){
+						ResultDTO result = ResultUtil.getSuccResult();
+						user.setPassword(null);//返回的时候不能把密码返回给对方
+						result.setData(user);
+						return result;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return ResultUtil.getWrongResultFromCfg("err.accountorpwd.wrong");
+		} else {
+			return ResultUtil
+					.getWrongResultFromCfg("err.accountorpwd.wrong");
+
+		}
+	}
+
+	/**
 	 * 注册
 	 */
 	public ResultDTO saveRegisterUser(SysUser user) {
@@ -210,14 +257,14 @@ public class UserService extends SysUserService {
 
 				//TODO assign guest role
 				SysUserRole sysUserRole=new SysUserRole();
-				sysUserRole.setUid(user.getId());
+				sysUserRole.setUserId(user.getId());
 				HashMap params =new HashMap();
 				params.put("code","role_guest");
 				List<SysRole> sysUserRoles=  roleMapper.listByParams(params);
 				if(sysUserRoles==null || sysUserRoles.size()==0){
 					return ResultUtil.getFailResult("系统异常");
 				}
-				sysUserRole.setRoleid(sysUserRoles.get(0).getId());
+				sysUserRole.setRoleId(sysUserRoles.get(0).getId());
 				sysUserRoleMapper.insert(sysUserRole);
 				// 发送激活邮件
 				try {
@@ -416,5 +463,15 @@ public class UserService extends SysUserService {
 		this.sysUserMapper.updateByPrimaryKey(user);
 
 		return ResultUtil.getSuccResult();
+	}
+
+	/**
+	 * 根据微信id获取用户信息
+	 * @param openid
+	 * @return
+     */
+	public SysUser getUserByWxopenid(String openid) {
+		SysUser user = userMapper.selectUserByWeichat(openid);
+		return user;
 	}
 }

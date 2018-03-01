@@ -1,7 +1,7 @@
 package com.dozenx.web.core.base;
 
 
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.auth.session.SessionUser;
@@ -88,7 +88,7 @@ public class BaseController extends ResultAction {
 		String json = request.getParameter("json");
 		if (RequestUtil.isAjaxRequest(request) || StringUtil.isNotBlank(json)) {
 			try {
-				String resultStr = JsonUtils.toJsonString(result);
+				String resultStr = JsonUtil.toJsonString(result);
 				response.setHeader("Cache-Control", "no-cache");
 				response.setCharacterEncoding("UTF-8");
 				response.setContentType("text/json;charset=UTF-8");

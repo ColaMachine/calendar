@@ -1,12 +1,10 @@
 package com.dozenx.web.core.filter;
 
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.util.ResultUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.log.ResultDTO;
-import com.dozenx.web.module.merchant.bean.SessionDTO;
-import com.dozenx.web.module.merchant.bean.SessionUser;
 import com.dozenx.web.util.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,7 +115,7 @@ public class LoginFilter implements Filter {
                     response.setHeader("Cache-Control", "no-cache");
                     response.setCharacterEncoding("UTF-8");
                     response.setContentType("text/json;charset=UTF-8");
-                    response.getWriter().println(JsonUtils.toJsonString(result));
+                    response.getWriter().println(JsonUtil.toJsonString(result));
                     response.getWriter().flush();
                     response.getWriter().close();
                 } catch (IOException e) {

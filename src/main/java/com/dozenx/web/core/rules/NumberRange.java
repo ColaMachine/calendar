@@ -37,7 +37,7 @@ public class NumberRange extends Rule {
 	@Override
 	public boolean valid() throws Exception {
 		if(this.getValue() != null && !this.getValue().equals("")){
-			BigDecimal realValue = new BigDecimal(this.getValue());
+			BigDecimal realValue = new BigDecimal(this.getValue().toString());
 			BigDecimal minValue = new BigDecimal(min);
 			
 			if(this.max==null || "".equals(this.max)){

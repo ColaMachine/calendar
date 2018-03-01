@@ -24,5 +24,12 @@ public interface UserMapper {
 
 	public void resetPwd(SysUser user);
 
-	void updateStatus(SysUser user);
+	public void updateStatus(SysUser user);
+
+	/**
+	 * 根据微信id 获取用户信息
+	 * @param openid
+	 * @return
+     */
+	public SysUser selectUserByWeichat(String openid);
 }

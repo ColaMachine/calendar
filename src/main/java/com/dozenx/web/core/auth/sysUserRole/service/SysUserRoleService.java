@@ -36,102 +36,21 @@ public class SysUserRoleService extends BaseService {
     private SysUserMapper sysUserMapper;
     @Resource
     private SysRoleMapper sysRoleMapper;
-    /**
-     * 说明:list by page and params根据参数返回列表
-     * @return List<HashMap>
-     * @author dozen.zhang
-     * @date 2015年11月15日下午12:36:24
-     */
-    public List<SysUserRole> listByParams4Page(HashMap params) {
-        return sysUserRoleMapper.listByParams4Page(params);
-    }
-    public List<SysUserRole> listByParams(HashMap params) {
-        return sysUserRoleMapper.listByParams(params);
-    }
 
-     /**
-     * 说明:countByParams 根据参数提取个数
-     * @return int
-     * @author dozen.zhang
-     * @date 2015年11月15日下午12:36:24
-     */
-    public int countByParams(HashMap params) {
-           return sysUserRoleMapper.countByParams(params);
-    }
 
-    /*
-     * 说明:
-     * @param SysUserRole
-     * @return
-     * @return Object
-     * @author dozen.zhang
-     * @date 2015年11月15日下午1:33:54
-     */
-    public ResultDTO save(SysUserRole sysUserRole) {
-        // 进行字段验证
-      /* ValidateUtil<SysUserRole> vu = new ValidateUtil<SysUserRole>();
-        ResultDTO result = vu.valid(sysUserRole);
-        if (result.getR() != 1) {
-            return result;
-        }*/
-         //逻辑业务判断判断
-       //判断是否有uq字段
-       
-       //判断是更新还是插入
-        if (sysUserRole.getId()==null ||  this.selectByPrimaryKey(sysUserRole.getId())==null) {
-
-            sysUserRoleMapper.insert(sysUserRole);
-        } else {
-            sysUserRoleMapper.updateByPrimaryKeySelective(sysUserRole);
-        }
-        return ResultUtil.getSuccResult();
-    }
-    /**
-    * 说明:根据主键删除数据
-    * description:delete by key
-    * @param id
-    * @return void
-    * @author dozen.zhang
-    * @date 2015年12月27日下午10:56:38
-    */
-    public void delete(Long  id){
-        sysUserRoleMapper.deleteByPrimaryKey(id);
-    }   
-    /**
-    * 说明:根据主键获取数据
-    * description:delete by key
-    * @param id
-    * @return void
-    * @author dozen.zhang
-    * @date 2015年12月27日下午10:56:38
-    */
-    public SysUserRole selectByPrimaryKey(Long id){
-       return sysUserRoleMapper.selectByPrimaryKey(id);
-    }
-    /**多id删除
-     * @param idAry
-     * @return
-     * @author dozen.zhang
-     */
-    public ResultDTO multilDelete(Long[] idAry) {
-        for(int i=0;i<idAry.length;i++){
-            sysUserRoleMapper.deleteByPrimaryKey(idAry[i]);
-        }
-        return ResultUtil.getSuccResult();
-    }
      /**
          * 多项关联保存
-         * @param uids
-         * @param rids
+         * @param userIds
+         * @param roleIds
          * @return
          */
-        public ResultDTO msave(String uids,String roleids) {
-            if(StringUtil.isBlank(uids)){
+        public ResultDTO msave(String userIds,String roleIds) {
+            if(StringUtil.isBlank(userIds)){
                 return ResultUtil.getResult(101,"参数错误");
             }
 
-            String[] uidAry= uids.split(",");
-            String[] roleidAry=roleids.split(",");
+            String[] uidAry= userIds.split(",");
+            String[] roleidAry=roleIds.split(",");
             Long[] uidAryReal =new  Long[uidAry.length];
             Long[] roleidAryReal =new  Long[roleidAry.length];
             for(int i=0;i<uidAry.length;i++){
@@ -140,7 +59,7 @@ public class SysUserRoleService extends BaseService {
                 }
                 uidAryReal[i]=Long.valueOf(uidAry[i]);
             }
-            if(StringUtil.isBlank(roleids)){
+            if(StringUtil.isBlank(roleIds)){
                 roleidAryReal=null;
                  roleidAry=null;
             }
@@ -151,8 +70,14 @@ public class SysUserRoleService extends BaseService {
                 }
                 roleidAryReal[i]=Long.valueOf(roleidAry[i]);
             }
-            //验证父亲id 正确性 是否存在
-             if(uidAryReal!=null)
+            batchUpdate(uidAryReal,roleidAryReal);
+            //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
+            return ResultUtil.getSuccResult();
+        }
+
+    public  ResultDTO batchUpdate(Long[] uidAryReal,Long[] roleidAryReal){
+        //验证父亲id 正确性 是否存在
+        if(uidAryReal!=null)
             for(int i=0;i< uidAryReal.length;i++){
                 //
                 SysUser sysUser = sysUserMapper.selectByPrimaryKey(uidAryReal[i]);
@@ -161,39 +86,41 @@ public class SysUserRoleService extends BaseService {
                 }
                 //查询的数据不存在
             }
-             if(roleidAryReal!=null)
+        if(roleidAryReal!=null)
             for(int i=0;i<roleidAryReal.length;i++){
-                 SysRole sysRole = sysRoleMapper.selectByPrimaryKey(roleidAryReal[i]);
+                SysRole sysRole = sysRoleMapper.selectByPrimaryKey(roleidAryReal[i]);
                 //查询的数据不存在
                 if(sysRole==null ){
                     return ResultUtil.getResult(101,"数据不存在");
                 }
             }
-             HashMap params =new HashMap();
-            //验证子id 正确性 是否存在
-             if(roleidAryReal!=null)
+
+        //验证子id 正确性 是否存在
+        SysUserRole sysUserRole =new SysUserRole();
+        if(roleidAryReal!=null)
             for(int i=0;i<uidAryReal.length;i++){
                 for(int j=0;j<roleidAryReal.length;j++){
-                   SysUserRole sysUserRole =new  SysUserRole();
+
                     Long uid =uidAryReal[i];
                     Long roleid =roleidAryReal[j];
                     //查找是否已经有关联数据了
+                    sysUserRole.setUserId(uid);
+                    sysUserRole.setRoleId(roleid);
 
-                    params.put("roleid",roleid);
-                    params.put("uid",uid);
-                    int count = sysUserRoleMapper.countByParams(params);
-                    if(count>0)continue;
-                    sysUserRole.setRoleid(roleid);
-                    sysUserRole.setUid(uid);
+                    int count = sysUserRoleMapper.count(sysUserRole);
+                    if(count>0)continue;//如果有记录了就不保存
+                    sysUserRole.setRoleId(roleid);
+                    sysUserRole.setUserId(uid);
                     sysUserRoleMapper.insert(sysUserRole);
                 }
             }
-            //删除多余的数据
-            params.clear();
-            params.put("roleids",roleidAryReal);
-            params.put("uids",uidAryReal);
-            sysUserRoleMapper.deleteExtra(params);
-            //delete from SysUserRole where uid in (1,2,3,4,5) and rid not in(1,2,3)
-            return ResultUtil.getSuccResult();
-        }
+        //删除多余的数据
+        HashMap params =new HashMap(2);
+
+        params.put("roleIds",roleidAryReal);
+        params.put("userIds",uidAryReal);
+        sysUserRoleMapper.deleteExtra(params);//删除额外的数据
+        return ResultUtil.getSuccResult();
+    }
+
 }

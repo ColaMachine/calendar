@@ -21,7 +21,8 @@ export  default  class StatSelect extends React.Component {
            total:0,
            questionDescription:'',
            id:0,
-           yellow:'blue'
+           yellow:'blue',
+           mun: this.props.data[0].id
           
         };
         this.onPageSizeChange = this.onPageSizeChange.bind(this);
@@ -32,36 +33,28 @@ export  default  class StatSelect extends React.Component {
       
     }
     componentWillMount() {
-        this.search();
-       
+        this.search(this.props.data[0].id);
     }
     componentDidMount=()=>{
-       console.log("node",this.refs.boy.children); 
        let select=this.refs.boy.children;
        Array.from(select).map((item1,index)=>{
-          
           Array.from(item1.children).map((item2,index)=>{
             let mun= item2.innerHTML;
-            this.search(mun);
                 item1.onclick=()=>{
-                    item1.style.background="blue";
-                    //item1.style.background="";
-                    console.log("item1",item1);
+                    this.search(mun);
+                    this.setState({mun});
                     this.props.data.map((item,index)=>{
                             if(mun==item.id){
                                 let questionDescription=item.questionDescription;
                                 let questionNumber=item.questionNumber;
-                                console.log("questionDescription",questionDescription);
                                 let id=mun;
                                 var url = 'questionnaire/statistics/answers';
                                 url = url + '?'+`id=${mun}`+"&"+`pageNum=${this.pageNo}`+"&"+`pageSize=${this.pageSize}`+"&"+`type=1`;
                                 Axios.get(url, this.HeaderToken).then(({data}) => {
-                                    console.log(data);
                                 let{list=[],total=0}=data.data;
                                 list.forEach((item, index) => {
                                         item.key = index + this.pageSize * (this.pageNo - 1) + 1;
                                     })
-                                    console.log("ddddd",this.props.data);
                                     this.setState({
                                         list, total,questionDescription,id,questionNumber
                                     });
@@ -71,7 +64,6 @@ export  default  class StatSelect extends React.Component {
                                
                             }
                         })
-                  
                 }
            })
        
@@ -80,89 +72,102 @@ export  default  class StatSelect extends React.Component {
    
     onPageSizeChange(current, size) {
         this.pageSize = size;
-        this.search(this.state.id);
+        this.search(this.state.id,this.state.type);
     }
 
     onPageChange(page, pageSize) {
         this.pageNo = page;
-        this.search(this.state.id);
+        this.search(this.state.id,this.state.type);
     }
-    search=(mun)=>{
-          for(let i=0;i<this.props.data.length;i++){
-                let id=this.props.data[0]
-                let questionDescription=id.questionDescription;
-                let questionNumber=id.questionNumber;
-                console.log("id",id.id);
-                if(mun==id.id){
+    search=(mun,type)=>{
+                let item=this.props.data[0]
+                let questionDescription=item.questionDescription;
+                let questionNumber=item.questionNumber;
+                if(mun==item.id){
                     var url = 'questionnaire/statistics/answers';
-                    url = url + '?'+`id=${id.id}`+"&"+`pageNum=${this.pageNo}`+"&"+`pageSize=${this.pageSize}`+"&"+`type=2`;
+                    url = url + '?'+`id=${item.id}`+"&"+`pageNum=${this.pageNo}`+"&"+`pageSize=${this.pageSize}`+"&"+`type=${type?type:1}`;
+                    
                     Axios.get(url, this.HeaderToken).then(({data}) => {
-                        console.log(data);
                        let{list=[],total=0}=data.data;
                        list.forEach((item, index) => {
                             item.key = index + this.pageSize * (this.pageNo - 1) + 1;
                         })
+                        let id=item.id;
                        this.setState({
                             list, total,questionDescription,id,questionNumber
     
                          });
-                        console.log(list)
                     }).catch((err) => {
                         
                     })
                 }else{
                     var url = 'questionnaire/statistics/answers';
-                    url = url + '?'+`id=${mun}`+"&"+`pageNum=${this.pageNo}`+"&"+`pageSize=${this.pageSize}`+"&"+`type=1`;
+                    url = url + '?'+`id=${mun}`+"&"+`pageNum=${this.pageNo}`+"&"+`pageSize=${this.pageSize}`+"&"+`type=${type?type:1}`;
                     Axios.get(url, this.HeaderToken).then(({data}) => {
-                        console.log(data);
                        let{list=[],total=0}=data.data;
                        list.forEach((item, index) => {
                             item.key = index + this.pageSize * (this.pageNo - 1) + 1;
                         })
                         let id=mun;
+                        console.log('vvvvvvvvvvvvvvvvvv',mun,this.props.data)
+                        this.props.data.map(item=>{
+                            if(item.id==mun){
+                                this.setState({
+                                    questionDescription:item.questionDescription,
+                                    questionNumber:item.questionNumber
+                                })
+                            }
+                        })
                        this.setState({
-                            list, total,questionDescription,id,questionNumber
+                            list, total,id
     
                          });
-                        console.log(list)
                     }).catch((err) => {
                         
                     })
-                }
-               
-          }
-             
-    }
-    GoodAdvice=(id)=>{
-        console.log("id",id);
-        let url = '/questionnaire/answer/ordinary';
-        url = url +`/${id}`;
-        Axios.put(url, this.HeaderToken).then(({data}) => {
-           if(data.code==0){
-             notification['success']({
-                message: '提示',
-                description: '好建议库',
-              });
-           }
-           this.props.search(this.props.id)
-        }).catch((err) => {
-            console.error('获取列表失败')
-        })
- 
+                }    
+        }
+    GoodAdvice=()=>{
+       var url = 'questionnaire/statistics/answers';
+       url = url + '?'+`id=${this.state.mun}`+"&"+`pageNum=${this.pageNo}`+"&"+`pageSize=${this.pageSize}`+"&"+`type=2`;
+       Axios.get(url, this.HeaderToken).then(({data}) => {
+          let{list=[],total=0}=data.data;
+          list.forEach((item, index) => {
+               item.key = index + this.pageSize * (this.pageNo - 1) + 1;
+           })
+           let type=2;
+          this.setState({
+               list, total,type
+
+            });
+       }).catch((err) => {
+           
+       })
      }
      handle=(e)=>{
         let select=this.refs.boy.children;
         for(var i=0;i<select.length;i++){
-            select[i].style.background="";
+            select[i].className="";
         }
-        e.target.style.background="#4AA0ED"
+        e.target.className="active"
      }
+     pageItemRender(current, type, originalElement) {
+        if (type === 'prev') {
+            return <a>上一页</a>;
+        } else if (type === 'next') {
+            return <a>下一页</a>;
+        }
+        return originalElement;
+    }
+
     render() {
-        console.log("type",this.props.data);
             var data=[];
             this.props.data.map((item,index)=>{
-                console.log("item",item);
-                data.push(<li key={index}>{item.questionNumber}<span style={{display:"none"}}>{item.id}</span></li>);
+                let clsName='';
+                if(index==0){
+                    clsName='active'
+                }
+                data.push(<li key={index} className={clsName}>{item.questionNumber+1}<span style={{display:"none",background:"#4AA0ED"}}>{item.id}</span></li>);
             })
         return (
             <div>
@@ -170,13 +175,13 @@ export  default  class StatSelect extends React.Component {
                     {data}
                 </ul> }
                     <div className="quest-title">
-                    <span className="dot">{this.state.questionNumber}</span>
+                    <span className="dot">{this.state.questionNumber+1}</span>
                     <label style={{marginLeft:"20px"}}>{this.state.questionDescription}</label>
                     <div className="line"></div>
-                    <Button type="primary" className="storageButton" onClick={this.GoodAdvice.bind(this,this.state.id)} >好建议库</Button>
+                    <Button type="primary" className="storageButton" onClick={this.GoodAdvice} >好建议库</Button>
                     </div>
                   {this.state.list.map((item,index)=>{
-                      return <AnswerOption data={item} key={index} style={{marginTop:"30px"}} search={this.search} pageNum={this.pageNo} pageSize={this.pageSize}  id={this.state.id}/>
+                      return <AnswerOption data={item} key={index} style={{marginTop:"30px"}} search={this.search} type={this.state.type}  id={this.state.id}/>
                   })}
                 {/*分页*/}
                 {this.state.total ? <Pagination

@@ -6,10 +6,9 @@ import com.dozenx.util.UUIDUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 public class test {
@@ -33,6 +32,17 @@ public class test {
     public static void main1(String args[]) throws Exception {
 //        setFinalStatic(Boolean.class.getField("FALSE"), true);
 //        System.out.format("Everything is %s", false); // "Everything is true"
+//        List<Number> ary = (ArrayList<Number>)bodyParam.get("roleIds");//bodyoaran 只不过的参数是 arryList<Double>格式的
+//        Long[] roleIdAry = new Long[ary.size()];
+//        for(int i=0;i<ary.size();i++){
+//            Number number = ary.get(i);
+//            roleIdAry[i] = ary.get(i).longValue();
+//        }
+
+        Integer obj = new Integer(1);
+        Long a  =obj.longValue();
+
+
 
         String url ="https://wx.hz-hospital.com/weiwenvote/index?voteusername=cf1be1c0-d46a-4d3f-9bf4-4668dbde24e9";
         String otherurl ="https://wx.hz-hospital.com/";
@@ -101,7 +111,8 @@ System.out.println(total);
     }
 
     public static void main(String args[]) throws Exception {
-
+        System.out.println(MD5Util.getStringMD5String("123456"));
+        System.out.println(URLDecoder.decode("http://hainan.51iwifi.com:84/hotmapsrv/authed/getAuthedDetail?access_token=AT_NP_BIZ_E8AD5F6E7A024357AC1CAA849B892C23&params=%7B%22start%22%3A%222018-02-24%22%2C%22messageFrom%22%3A%2206%22%2C%22end%22%3A%222018-02-24%22%2C%22pageNo%22%3A1%2C%22pageSize%22%3A20%7D"));
         long timestamp= System.currentTimeMillis();
         String sign= MD5Util.getStringMD5String("18368729738"+"|"+timestamp+"|awifi").toLowerCase();
         System.out.print(timestamp+"\n");

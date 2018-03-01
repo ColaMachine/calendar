@@ -13,7 +13,7 @@ package com.dozenx.web.third.weixin.bean;
 
  {"errcode":40029,"errmsg":"invalid code"}
  */
-public class WeixinOauthAccessTokenResult {
+public class WeixinOauthAccessTokenResult   extends WeixinBaseBean{
 
     //网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
     String access_token;
@@ -28,8 +28,7 @@ public class WeixinOauthAccessTokenResult {
 
     //用户授权的作用域，使用逗号（,）分隔
     String scope;
-    int errcode;
-    String errmsg;
+
     public String getAccess_token() {
         return access_token;
     }
@@ -46,24 +45,7 @@ public class WeixinOauthAccessTokenResult {
         this.expires_in = expires_in;
     }
 
-    public int getErrcode() {
-        return errcode;
-    }
 
-    public void setErrcode(int errcode) {
-        this.errcode = errcode;
-    }
-
-    public String getErrmsg() {
-        return errmsg;
-    }
-
-    public void setErrmsg(String errmsg) {
-        this.errmsg = errmsg;
-    }
-    public String getRefresh_token() {
-        return refresh_token;
-    }
 
     public void setRefresh_token(String refresh_token) {
         this.refresh_token = refresh_token;

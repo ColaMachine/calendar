@@ -62,14 +62,21 @@ export default {
     }
     ,
     mounted () {window.APIPATH="/api";
+        //从cookie 中读取 apiUrlStr 放入到 apiUrlStr变量中
+
+        var apiUrlStrTemp = getCookie("apiUrlStr");
+        if(apiUrlStrTemp){
+           this.apiUrlStr= apiUrlStrTemp.replace(/"/g,"");
+        }
 
         var PATH ="";
         var that=this;
         return;
             Ajax.getJSON(PATH+"/hello.json",null,function(data){
             var tags={};
+            //console.log(data);
                 for(var url in data.paths){
-                    //console.log(url);
+                  //  console.log(url);
                     var postGetData=data.paths[url];
 
                     for(var httpType in postGetData){
@@ -99,6 +106,7 @@ export default {
     methods:{
     search:function(){
         var value = document.getElementById("apiSearchText").value;
+
         var newTags={};
 
         for(var key in this.original){
@@ -123,14 +131,16 @@ export default {
             window.APIDOMAIN=this.apiUrlStr;
 
             var url = APIPATH+"/api?url="+this.apiUrlStr;
-            alert(url);
+            //alert(url);
 
-
+             log("设置cookie值");
+            setCookie("apiUrlStr",this.apiUrlStr,5);
 
             var that=this;
             Ajax.getJSON(url,null,function(data){
+           var data = ajaxResultHandler(data);
             var tags={};
-                for(var url in data.paths){
+                for(var url in data.paths){;
 
                     var postGetData=data.paths[url];
 
@@ -160,5 +170,8 @@ export default {
 }
 </script>
 <style scoped>
+.api-list,.api-list td{
+color:black;
+}
 
 </style>

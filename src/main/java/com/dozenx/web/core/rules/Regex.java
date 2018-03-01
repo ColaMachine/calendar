@@ -32,7 +32,7 @@ public class Regex extends Rule {
 	@Override
 	public boolean valid() throws Exception {
 		if(value != null && !value.equals("")) {
-			Matcher matcher = this.pattern.matcher(value);
+			Matcher matcher = this.pattern.matcher(value.toString());
 			if(!matcher.matches()) {
 				message = "格式不正确";
 				return false;

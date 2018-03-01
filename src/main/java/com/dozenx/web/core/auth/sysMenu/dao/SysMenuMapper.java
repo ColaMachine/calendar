@@ -80,5 +80,16 @@ public interface SysMenuMapper {
 
     int countByOrParams(HashMap map);
 
-      
+    /**
+     * @Author: dozen.zhang
+     * @Description:根据用户id 查菜单
+     * @Date: 2018/2/8
+     */
+    List<SysMenu> selectMenuByUserId(Long userId);
+    /**
+     * @Author: dozen.zhang
+     * @Description:根据角色id 查菜单
+     * @Date: 2018/2/8
+     */
+    List<SysMenu> selectMenuByRoleId(Long roleId);
 }

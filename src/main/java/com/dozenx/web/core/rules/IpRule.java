@@ -16,13 +16,13 @@ public class IpRule extends Rule {
     }
 	@Override
 	public boolean valid() throws Exception {
-		if (StringUtil.isBlank(this.getValue())) {
+		if (StringUtil.isBlank(this.getValue().toString())) {
 			return true;
 		}
 
 
 		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(value);
+		Matcher matcher = pattern.matcher(value.toString());
 
 
 		if (!matcher.find()) {

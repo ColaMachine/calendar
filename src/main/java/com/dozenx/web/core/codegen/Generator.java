@@ -1124,7 +1124,7 @@ return ymd;
     }
     public static void main(String[] args) {
         Generator generator =new Generator();
-        //generator.generate(new String[]{"SysRole","SysUser","SysUserRole"});
+        generator.generate(new String[]{"SysRole","SysUser","SysUserRole","SysMenu","SysRoleMenu"});
         //用户模块
        // Generator.generate(new String[]{"Pwdrst"});
        // Generator.generate(new String[]{/*"SysResource",*/"SysRole","SysUser","SysUserRole"});
@@ -1148,7 +1148,7 @@ return ymd;
         //Generator.generate(new String[]{"OperLog"});
        // Generator.generate(new String[]{"ApiCategory","ApiUrl","ApiParameter"});
        // Generator.generate(new String[]{"MapData"});
-        Generator.generate(new String[]{"Device","Gateway"});
+        //Generator.generate(new String[]{"Device","Gateway"});
     }
 
   

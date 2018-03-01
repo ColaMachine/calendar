@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("sysMenuService")
 public class SysMenuService extends BaseService {
@@ -34,7 +35,7 @@ public class SysMenuService extends BaseService {
      * @author dozen.zhang
      * @date 2015年11月15日下午12:36:24
      */
-    public List<SysMenu> listByParams4Page(HashMap params) {
+    public List<SysMenu> listByParams4Page(Map<String,Object> params) {
         return sysMenuMapper.listByParams4Page(params);
     }
     public List<SysMenu> listByParams(HashMap params) {
@@ -118,4 +119,24 @@ public class SysMenuService extends BaseService {
         }
         return ResultUtil.getSuccResult();
     }
+    /**
+     * @Author: dozen.zhang
+     * @Description:根据角色查找菜单
+     * @Date: 2018/2/8
+     */
+    public List<SysMenu> selectMenuByRoleId(Long roleId){
+        return sysMenuMapper.selectMenuByRoleId(roleId);
+    }
+
+    /**
+     * @Author: dozen.zhang
+     * @Description:根据角色查找菜单
+     * @Date: 2018/2/8
+     */
+    public List<SysMenu> selectMenuByUserId(Long userId){
+        return sysMenuMapper.selectMenuByUserId(userId);
+    }
+
+
+
 }

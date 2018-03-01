@@ -15,6 +15,19 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class LocationUtil {
+
+	public static String  getLocationNameById(int id){
+
+		if(idNameMap.size()==0){
+			//去数据库里去获取一下
+
+
+		}
+		return idNameMap.get(id);
+	}
+	public static HashMap<Integer,String> idNameMap  =new HashMap<>();
+
+
 	public static HashMap<Integer,Integer>  map = new HashMap<Integer,Integer>();
 	static{
 
@@ -174,7 +187,38 @@ public class LocationUtil {
 
 	}
 	public static void main(String args[]){
-		getLocationJs();
+		//getLocationJs();
+		getLocationIdNameMap();
+	}
+
+	public static void getLocationIdNameMap(){
+		Connection con;
+
+		Statement stmt;
+		try {
+			Class.forName("com.mysql.jdbc.Driver") ;
+			String sql1 ="select id,area_name from center_pub_area ;";
+			String url = "jdbc:mysql://192.168.41.74:3306/awifiopms?user=root&password=root@2015";
+			con = DriverManager.getConnection(url);
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql1);
+			Map map =new HashMap();
+			while (rs.next()) {
+
+				Long id = rs.getLong(1);
+				String area_name = rs.getString(2);
+
+
+				System.out.println("map.put("+id+","+area_name+");");
+
+
+
+			}
+
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	public static void getLocationMap(){
 		Connection con;
@@ -183,7 +227,7 @@ public class LocationUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver") ;
 			String sql1 ="select id,crm_code,area_name from center_pub_area where id =31 or parent_id =31 or parent_id in (SELECT id FROM center_pub_area where parent_id =31);";
-			String url = "jdbc:mysql://192.168.10.88:3306/awifi_alf?user=DBcenter&password=dbcenter@2015";
+			String url = "jdbc:mysql://192.168.41.74:3306/awifiopms?user=root&password=root@2015";
 			con = DriverManager.getConnection(url);
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql1);
@@ -227,7 +271,7 @@ public class LocationUtil {
 					System.out.println("有重复数据");
 				map.put(crm_code, id);
 
-				System.out.println("map.put("+crm_code+","+id+");//"+rs.getString(3));
+				System.out.println("idNameMap.put("+crm_code+","+id+");//"+rs.getString(3));
 
 
 

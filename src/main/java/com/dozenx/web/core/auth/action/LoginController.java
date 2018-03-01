@@ -1,5 +1,6 @@
 package com.dozenx.web.core.auth.action;
 
+import com.cpj.swagger.annotation.*;
 import com.dozenx.core.config.SysConfig;
 import com.dozenx.util.*;
 import com.dozenx.web.core.Constants;
@@ -14,6 +15,8 @@ import com.dozenx.web.core.rules.NotEmpty;
 import com.dozenx.web.core.rules.Required;
 import com.dozenx.web.core.rules.Rule;
 import com.dozenx.web.module.merchant.bean.SessionDTO;
+import com.dozenx.web.third.weixin.WeixinConstants;
+import com.dozenx.web.third.weixin.bean.WeixinUser;
 import com.dozenx.web.util.RequestUtil;
 import com.dozenx.web.util.TerminalUtil;
 import org.slf4j.Logger;
@@ -23,10 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -37,9 +37,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-
+@APIs(description = "登录模块")
 @Controller
-
+@RequestMapping("/sys/auth/")
 public class LoginController extends BaseController {
     private final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
@@ -150,17 +150,59 @@ public class LoginController extends BaseController {
 //    }
 
 
+
     /**
      * 说明:登录提交
-     * 
      * @param request
      * @return
      * @author dozen.zhang
      * @date 2015年5月14日上午11:33:39
      */
+    @API(summary = "用户登录接口",
+            consumes = "application/json",
+            description = "sysRoleController 角色添加接口", parameters = {
+            @Param(name = "loginName", description = "用户名"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "pwd", description = "加密后的密码"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "picCaptcha", description = "排序号"
+                    , dataType = DataType.LONG, in="body",required = true),
+
+    })
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+    // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
+    @RequestMapping(value = "/login",method=RequestMethod.POST,produces="application/json")
+    @ResponseBody
+
+    public ResultDTO loginWidthAccountAndPwd(HttpServletRequest request,@RequestBody(required=true) Map<String,Object> bodyParam) {
+        String userAgent  = request.getHeader("user-agent");
+        String type= TerminalUtil.getTerminalType(userAgent);
+        logger.info("user login os:登录的操作系统为:"+type);//打印用户的操作系统
+        String account = MapUtils.getString(bodyParam,"loginName");//用户名
+        String pwd = MapUtils.getString(bodyParam,"pwd");//密码加密后的md5密码
+        String imgCaptcha = MapUtils.getString(bodyParam,"picCaptcha");//图片验证码
+
+        //为了防止用户暴力碰库 验证码验证用户提交信息安全与否
+        //如果用OpmsRedirect会出现sessionId是空
+        ResultDTO  result = validCodeService.imgValidCode("calendar",request.getRequestedSessionId(), imgCaptcha);
+        if (!result.isRight()) {
+           // return result;
+        }
+
+        result = this.userService.loginValidWithEncryptedPwd(account, pwd);
+        if (result.isRight()) {
+            SysUser user = (SysUser) result.getData();
+            request.getSession().setAttribute(Constants.SESSION_USER, user);//塞入到用户session中
+            user.setPassword(null);//返回前端的时候不能把密码返回给他
+            result.setData(user);//不能把用户信息传给前端 会泄漏信息
+        }
+
+        //若果密码输入多次 增加 验证码 和锁定功能
+        return result;
+    }
+
     @RequestMapping(value = "/loginPost.json", method = RequestMethod.POST)
-    public @ResponseBody
-    ResultDTO loginPost(HttpServletRequest request) {
+    public ResultDTO loginPost(HttpServletRequest request) {
 
 
         // String value =this.uploadFieldName;
@@ -203,7 +245,85 @@ public class LoginController extends BaseController {
     }
 
 
+    /**
+     * 说明:登录提交
+     *
+     * @param request
+     * @return
+     * @author dozen.zhang
+     * @date 2015年5月14日上午11:33:39
+     */
+    @RequestMapping(value = "/loginPost2.json", method = RequestMethod.POST)
+    public @ResponseBody
+    ResultDTO loginPost2(HttpServletRequest request) {
 
+
+        // String value =this.uploadFieldName;
+        Map map = MapUtils.request2Map(request);
+        String userAgent  = request.getHeader("user-agent");
+        String type= TerminalUtil.getTerminalType(userAgent);
+        logger.info(type);
+        String phone = request.getParameter("phone");
+        String pwd = "123456";
+
+        String smsCaptcha = request.getParameter("code");
+        //String sessionid = request.getParameter("sessionid");
+
+
+        ResultDTO result = validCodeService.smsValidCode("calendar",phone, smsCaptcha);
+        if (!result.isRight()) {
+            return result;
+        }
+        //为了防止用户暴力碰库 验证码验证用户提交信息安全与否
+
+        //  result = this.userService.loginValid(phone, pwd);
+        //if (result.isRight()) {
+        //取得用户 并将openid 更新到用户信息表里 存入到session里
+        SysUser user = userService.getUserByTelno(phone);
+        //如果用户不存在 需要创建用户
+        if(user==null){
+            user =new SysUser() ;
+            user.setUsername(phone);
+            user.setTelno(phone);
+
+        }
+        //需要判断次openid 是否有关联了其他的账号 如果有的话 需要先去掉
+
+        String openid= (String)request.getSession().getAttribute(WeixinConstants.WEIXIN_SESSION_OPENID);
+        SysUser anotrherAccount = userService.getUserByWxopenid(openid);
+        if(anotrherAccount !=null){
+            anotrherAccount.setWeichat(null);
+            userService.save(anotrherAccount);
+        }
+
+        user.setWeichat((String)request.getSession().getAttribute(WeixinConstants.WEIXIN_SESSION_OPENID));
+        Object object = request.getSession().getAttribute(WeixinConstants.WEIXIN_SESSION_USER);
+        if(object!=null){
+            WeixinUser weixinUser =(WeixinUser)object;
+            if(weixinUser!=null){
+                user.setFace(weixinUser.getHeadimgurl());
+                user.setAddress(weixinUser.getProvince()+weixinUser.getCity()+weixinUser.getCountry());
+                user.setNkname(weixinUser.getNickname());
+                user.setSex(Integer.valueOf(weixinUser.getSex()));
+                user.setRemark(weixinUser.getUnionid());
+            }
+        }
+        userService.save(user);
+
+
+        request.getSession().setAttribute(Constants.SESSION_USER, user);//塞入到用户session中
+        // List<SysResource> resources = authService.listResourcesByUserid(user.getId());
+      /*  List<SysMenu> menus = authService.listMenusByUserid(user.getId());
+        List<String> resStr = new ArrayList<String>();
+
+        request.getSession().setAttribute("resourceList", resStr);
+        request.getSession().setAttribute("resourceStr", StringUtil.join(",",resStr.toArray(new String[resStr.size()])));*/
+        result.setData(null);//不能把用户信息传给前端 会泄漏信息
+        // }
+
+        //若果密码输入多次 增加 验证码 和锁定功能
+        return result;
+    }
     /**
      * 说明:转到注册页面
      * 
@@ -543,16 +663,15 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value = "/logout.htm", method = RequestMethod.GET)
     public String logout(HttpServletRequest request) {
-        request.getSession().removeAttribute("user");
+        request.getSession().removeAttribute(Constants.SESSION_USER);
         return "/jsp/login.jsp";
     }
 
     @RequestMapping(value = "/logout.json", method = RequestMethod.GET)
     public @ResponseBody ResultDTO  logoutJson(HttpServletRequest request) {
-        request.getSession().removeAttribute("user");
-       return this.getResult();
+        request.getSession().removeAttribute(Constants.SESSION_USER);
+        return this.getResult();
     }
-
     @RequestMapping(value = "/user/edit.htm", method = RequestMethod.GET)
     public String userEdit(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
@@ -582,6 +701,22 @@ public class LoginController extends BaseController {
         Object object = ac.getBean("validCodeService");
         System.out.println(object);
     }
-    
-   
+
+
+    /**
+     * @Author: dozen.zhang
+     * @Description:获取二维验证码图片接口
+     * @Date: 2018/2/8
+     */
+    @API(summary = "获取验证码",
+            consumes = "application/x-www-form-urlencoded",
+            description = " ", parameters = {
+
+    })
+    @APIResponse(value = "{\"r\":0,\"data\":base64二维验证码图片}")
+    @RequestMapping(value = "/login/pic/captcha",method=RequestMethod.GET,produces="application/json")
+    public @ResponseBody ResultDTO imgCode(HttpServletRequest request){
+        request.getSession();
+        return validCodeService.getImgValidCode("calendar",request.getRequestedSessionId());
+    }
 }

@@ -1,6 +1,10 @@
 package com.dozenx.web.core.page;
 
 
+import com.dozenx.util.MapUtils;
+
+import java.util.Map;
+
 public class PageUtil {
 	public static Page createPage(int everyPage, int currentPage, int totalCount) {
         everyPage = getEveryPage(everyPage);
@@ -86,5 +90,20 @@ public class PageUtil {
     //设置是否有下一个，需要总页数和当前页  
     public static boolean getHasNextPage(int totalPage, int currentPage) {  
         return currentPage == totalPage || totalPage == 0 ? false : true;  
-    }  
+    }
+
+
+    public static Page getPage(Map params){
+
+		/*if(StringUtil.isBlank(curPage)||StringUtil.isBlank(pageSize) ){
+			return null;
+		}*/
+        int curPage = MapUtils.getInteger(params,"curPage",1);
+        int pageSize = MapUtils.getInteger(params,"pageSize",20);
+
+        Page page =new Page();
+        page.setCurPage(curPage);
+        page.setPageSize(pageSize);
+        return page;
+    }
 }

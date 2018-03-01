@@ -29,12 +29,16 @@ public class SysRole {
     }    public void setCode(String code){
         this.code=code;
     }/**排序**/
-    private Integer order;
-    public Integer getOrder(){
-        return order;
-    }    public void setOrder(Integer order){
-        this.order=order;
-    }/**状态**/
+    private Integer orderNo;
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
+    }
+
     private Integer status;
     public Integer getStatus(){
         return status;
@@ -47,10 +51,10 @@ public class SysRole {
     }    public void setRemark(String remark){
         this.remark=remark;
     }/**创建时间**/
-    private Timestamp createtime;
-    public Timestamp getCreatetime(){
-        return createtime;
+    private Timestamp createTime;
+    public Timestamp getCreateTime(){
+        return createTime;
     }    public void setCreatetime(Timestamp createtime){
-        this.createtime=createtime;
+        this.createTime=createtime;
     }
 }

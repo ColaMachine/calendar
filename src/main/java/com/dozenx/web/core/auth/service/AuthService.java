@@ -164,7 +164,7 @@ public class AuthService {
     public ResultDTO sendSmsValidCode4LoginDirectRegister(String ip, String phone, String helloSmsFlagInSession) throws Exception {
         if (StringUtil.isBlank(helloSmsFlagInSession)) {
             logger.error("cheater ip:" + ip + " xforward " + "phone:" + phone);
-            return ResultUtil.getResult();
+            return ResultUtil.getResult(30106601,"短信发送失败");
         }
 
         if (StringUtil.isBlank(phone) || !StringUtil.isPhone(phone)) {

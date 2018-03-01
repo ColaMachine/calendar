@@ -125,7 +125,7 @@ function AjaxClass()
                 if (XmlHttp.status==200)
                 {
                     Result = XmlHttp.responseText;
-                    if(XmlHttp.getResponseHeader("Content-Type").indexOf("application/json")!=-1){
+                    if(XmlHttp.getResponseHeader("Content-Type") && XmlHttp.getResponseHeader("Content-Type").indexOf("application/json")!=-1){
                         Result=eval('('+Result+')');
                     }
                 }
@@ -2442,4 +2442,14 @@ function setCookie (c_name, value, expiredays) {
 			+ ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString()));
 	document.cookie = c_name + "=" + escape(value)
 			+ ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString())
+}
+
+function getJSON(data){
+    if(isString(data)){
+        data=eval('('+data+')');
+    }return data;
+}
+
+function isString(obj){ //判断对象是否是字符串
+  return Object.prototype.toString.call(obj) === "[object String]";
 }

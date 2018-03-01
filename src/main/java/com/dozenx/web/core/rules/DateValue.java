@@ -13,11 +13,11 @@ public class DateValue extends Rule {
     }
 	@Override
 	public boolean valid() throws Exception {
-		if (StringUtil.isBlank(this.getValue())) {
+		if (this.getValue()==null|| StringUtil.isBlank(this.getValue().toString())) {
 			return true;
 		}
 			
-		java.util.Date dtValue = DateUtil.parseToDateTry(this.getValue());
+		java.util.Date dtValue = DateUtil.parseToDateTry(this.getValue().toString());
 		
 		if (dtValue == null) {
 			this.setMessage("请输入日期");

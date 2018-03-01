@@ -13,13 +13,13 @@ public class MacRule extends Rule {
     }
 	@Override
 	public boolean valid() throws Exception {
-		if (StringUtil.isBlank(this.getValue())) {
+		if (StringUtil.isBlank(this.getValue().toString())) {
 			return true;
 		}
 
 
 		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(value.toUpperCase());
+		Matcher matcher = pattern.matcher(value.toString().toUpperCase());
 
 
 		if (!matcher.find()) {

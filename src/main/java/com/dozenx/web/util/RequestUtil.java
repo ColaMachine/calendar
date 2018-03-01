@@ -1,5 +1,6 @@
 package com.dozenx.web.util;
 
+import com.dozenx.util.MapUtils;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.page.Page;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,6 +87,20 @@ public class RequestUtil {
 	    page.setCurPage(Integer.valueOf(curPage));
 	    page.setPageSize(Integer.valueOf(pageSize));
 	    return page;
+	}
+
+	public static Page getPage(Map params){
+
+		/*if(StringUtil.isBlank(curPage)||StringUtil.isBlank(pageSize) ){
+			return null;
+		}*/
+		int curPage = MapUtils.getInteger(params,"curPage",1);
+		int pageSize = MapUtils.getInteger(params,"curPage",10);
+
+		Page page =new Page();
+		page.setCurPage(curPage);
+		page.setPageSize(pageSize);
+		return page;
 	}
 
 	/**
@@ -389,5 +405,31 @@ public class RequestUtil {
 			}
 		}
 		return map;
+	}
+
+
+	/**
+	 * 从request中获取page
+	 * @param request
+	 * @return
+	 * @author dozen.zhang
+	 */
+	public static Page getPage(HttpServletRequest request, Map<String, Object> paramMap) {
+		String curPage = MapUtils.getString(paramMap, "curPage");
+		String pageSize = MapUtils.getString(paramMap, "pageSize");
+		if (StringUtil.isBlank(curPage) && StringUtil.isBlank(pageSize)) {
+			curPage = request.getParameter("curPage");
+			pageSize = request.getParameter("pageSize");
+		}
+		if (StringUtil.isBlank(curPage)) {
+			curPage = "1";
+		}
+		if (StringUtil.isBlank(pageSize)) {
+			pageSize = "10";
+		}
+		Page page = new Page();
+		page.setCurPage(Integer.valueOf(curPage));
+		page.setPageSize(Integer.valueOf(pageSize));
+		return page;
 	}
 }

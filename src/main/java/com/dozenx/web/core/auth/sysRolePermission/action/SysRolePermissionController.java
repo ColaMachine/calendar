@@ -8,13 +8,17 @@
 
 package com.dozenx.web.core.auth.sysRolePermission.action;
 
+import com.cpj.swagger.annotation.*;
 import com.dozenx.util.*;
+import com.dozenx.web.core.auth.sysPermission.bean.SysPermission;
+import com.dozenx.web.core.auth.sysPermission.service.SysPermissionService;
 import com.dozenx.web.core.auth.sysRolePermission.bean.SysRolePermission;
 import com.dozenx.web.core.auth.sysRolePermission.service.SysRolePermissionService;
 import com.dozenx.web.core.base.BaseController;
 import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.rules.Digits;
 import com.dozenx.web.core.rules.NotEmpty;
+import com.dozenx.web.core.rules.Required;
 import com.dozenx.web.core.rules.Rule;
 import com.dozenx.web.util.RequestUtil;
 import org.slf4j.Logger;
@@ -23,23 +27,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.*;
-
+@APIs(description = "角色权限模块")
 @Controller
-@RequestMapping("/sysRolePermission")
+@RequestMapping("/advertsrv/sys/auth/role/permission")
 public class SysRolePermissionController extends BaseController{
     /** 日志 **/
     private Logger logger = LoggerFactory.getLogger(SysRolePermissionController.class);
     /** 权限service **/
     @Autowired
     private SysRolePermissionService sysRolePermissionService;
-    
+    @Autowired
+    private SysPermissionService sysPermissionService;
 
     /**
      * 说明: 跳转到角色列表页面
@@ -134,84 +137,10 @@ public class SysRolePermissionController extends BaseController{
         return "/static/html/SysRolePermissionView.html";
     }
    
-    @RequestMapping(value = "/view.json")
-    @ResponseBody
-    public Object view(HttpServletRequest request) {
-            String id = request.getParameter("id");
-        HashMap<String,Object> result =new HashMap<String,Object>();
-        if(!StringUtil.isBlank(id)){
-            SysRolePermission bean = sysRolePermissionService.selectByPrimaryKey(Long.valueOf(id));
-            result.put("bean", bean);
-        }
-        return this.getResult(result);
 
-      /*  String id = request.getParameter("id");
-        SysRolePermission bean = sysRolePermissionService.selectByPrimaryKey(Long.valueOf(id));
-        HashMap<String,Object> result =new HashMap<String,Object>();
-        result.put("bean", bean);
-        return this.getResult(bean);*/
-    }
 
     
-    /**
-     * 说明:保存角色信息
-     * 
-     * @param request
-     * @return
-     * @throws Exception
-     * @return Object
-     * @author dozen.zhang
-     * @date 2015年11月15日下午1:33:00
-     */
-    // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
-    @RequestMapping(value = "/save.json")
-    @ResponseBody
-    public Object save(HttpServletRequest request) throws Exception {
-        SysRolePermission sysRolePermission =new  SysRolePermission();
-        /*
-        String id = request.getParameter("id");
-        if(!StringUtil.isBlank(id)){
-            sysRolePermission.setId(Long.valueOf(id)) ;
-        }
-        
-        String rid = request.getParameter("rid");
-        if(!StringUtil.isBlank(rid)){
-            sysRolePermission.setRid(Long.valueOf(rid)) ;
-        }
-        
-        String pid = request.getParameter("pid");
-        if(!StringUtil.isBlank(pid)){
-            sysRolePermission.setPid(Long.valueOf(pid)) ;
-        }
-        */
-        String id = request.getParameter("id");
-        if(!StringUtil.isBlank(id)){
-            sysRolePermission.setId(Long.valueOf(id));
-        }
-        String rid = request.getParameter("rid");
-        if(!StringUtil.isBlank(rid)){
-            sysRolePermission.setRid(Long.valueOf(rid));
-        }
-        String pid = request.getParameter("pid");
-        if(!StringUtil.isBlank(pid)){
-            sysRolePermission.setPid(Long.valueOf(pid));
-        }
 
-        //valid
-        ValidateUtil vu = new ValidateUtil();
-        String validStr="";
-        vu.add("id", id, "主键",  new Rule[]{new Digits(15,0)});
-        vu.add("rid", rid, "角色id",  new Rule[]{new Digits(15,0),new NotEmpty()});
-        vu.add("pid", pid, "权限id",  new Rule[]{new Digits(15,0),new NotEmpty()});
-        validStr = vu.validateString();
-        if(StringUtil.isNotBlank(validStr)) {
-            return ResultUtil.getResult(302,validStr);
-        }
-
-          return sysRolePermissionService.save(sysRolePermission);
-
-       
-    }
     @RequestMapping(value = "/msave.json")
     @ResponseBody
     public Object msave(HttpServletRequest request) throws Exception {
@@ -220,53 +149,8 @@ public class SysRolePermissionController extends BaseController{
         return sysRolePermissionService.msave( rids, pids);
     }
 
-    @RequestMapping(value = "/del.json")
-    @ResponseBody
-    public Object delete(HttpServletRequest request) {
-        String idStr = request.getParameter("id");
-        if(StringUtil.isBlank(idStr)){
-            return this.getWrongResultFromCfg("err.param.notnull");
-        }
-        Long id = Long.valueOf(idStr);
-        sysRolePermissionService.delete(id);
-        return this.getResult(SUCC);
-    }
-     /**
-     * 多行删除
-     * @param request
-     * @return
-     * @author dozen.zhang
-     */
-    @RequestMapping(value = "/mdel.json")
-    @ResponseBody
-    public Object multiDelete(HttpServletRequest request) {
-        String idStr = request.getParameter("ids");
-        if(StringUtil.isBlank(idStr)){
-            return this.getWrongResultFromCfg("err.param.notnull");
-        }
-        String idStrAry[]= idStr.split(",");
-        Long idAry[]=new Long[idStrAry.length];
-        for(int i=0,length=idAry.length;i<length;i++){
-            ValidateUtil vu = new ValidateUtil();
-            String validStr="";
-            String id = idStrAry[i];
-                    vu.add("id", id, "主键",  new Rule[]{});
 
-            try{
-                validStr=vu.validateString();
-            }catch(Exception e){
-                e.printStackTrace();
-                validStr="验证程序异常";
-                return ResultUtil.getResult(302,validStr);
-            }
-            
-            if(StringUtil.isNotBlank(validStr)) {
-                return ResultUtil.getResult(302,validStr);
-            }
-            idAry[i]=Long.valueOf(idStrAry[i]);
-        }
-       return  sysRolePermissionService.multilDelete(idAry);
-    }
+
 
     /**
      * 导出
@@ -316,9 +200,9 @@ public class SysRolePermissionController extends BaseController{
         for (int i = 0; i < list.size(); i++) {
             SysRolePermission sm = list.get(i);
             HashMap<String,Object> map = new HashMap<String,Object>();
-            map.put("id",  list.get(i).getId());
-            map.put("rid",  list.get(i).getRid());
-            map.put("pid",  list.get(i).getPid());
+
+            map.put("rid",  list.get(i).getRoleId());
+            map.put("pid",  list.get(i).getPermissionId());
             finalList.add(map);
         }
         try {
@@ -340,4 +224,100 @@ public class SysRolePermissionController extends BaseController{
     public void importExcel(){
         
     }
+
+    @API(summary = "角色权限批量更新接口",
+
+            consumes = "application/json",
+            description = "sysUserController 用户添加接口", parameters = {
+
+
+            @Param(name = "roleId", description = "角色id"
+                    , dataType = DataType.LONG, in="body",required = true),
+            @Param(name = "permissionIds", description = "权限id数组"
+                    , dataType = DataType.ARRAY, in="body",required = true),
+    })
+
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+    @RequestMapping(value = "/update",method=RequestMethod.PUT,produces="application/json")
+    @ResponseBody
+    public Object update(HttpServletRequest request,@RequestBody(required=true) Map<String,Object> bodyParam) throws Exception {
+        Long roleId = MapUtils.getLong(bodyParam,"roleId");
+        ValidateUtil.valid(roleId,"userId",new Rule[]{new Required(),new Digits(10,0)});
+
+        Object obj = bodyParam.get("permissionIds");
+        Long[] permissionIds;
+        if(obj==null){
+            permissionIds=new Long[]{};
+        }else{
+            List<Double> ary = (ArrayList<Double>)bodyParam.get("permissionIds");//bodyoaran 只不过的参数是 arryList<Double>格式的
+            permissionIds = new Long[ary.size()];
+            for(int i=0;i<ary.size();i++){
+                permissionIds[i] = ary.get(i).longValue();
+            }
+
+        }
+        return sysRolePermissionService.batchUpdate(new Long[]{ roleId}, permissionIds);
+    }
+
+    @API(summary = "角色权限树接口",
+
+            consumes = "application/json",
+            description = "sysUserController 用户添加接口", parameters = {
+
+
+            @Param(name = "id", description = "角色id"
+                    , dataType = DataType.LONG, in="path",required = true),
+
+    })
+
+    @APIResponse(value = "{\"r\":0,\"data\":[{\"id\":123,\"name\":\"123\",\"url\":\"123\"}],\"page\":{\"curPage\":1,\"totalPage\":1,\"pageSize\":10,\"totalCount\":1,\"beginIndex\":0,\"hasPrePage\":false,\"hasNextPage\":false}}")
+
+    @RequestMapping(value = "/tree/{id}",method=RequestMethod.GET,produces="application/json")
+    @ResponseBody
+    public Object tree( HttpServletRequest request,@PathVariable("id") Long id) {
+
+
+        List<SysPermission> sysPermissions = sysPermissionService.listByParams(new HashMap());
+
+        HashMap<String,Object> params =new HashMap<String,Object>();
+        params.put("roleId",id);
+        List<SysRolePermission> hasPermissions= this.sysRolePermissionService.listByParams(params);
+
+
+        List<SysPermission> finalList = new ArrayList<SysPermission>();//最终返回前台的list
+
+        for(int i=0,length=sysPermissions.size();i<length;i++){
+            SysPermission sysPermission = sysPermissions.get(i);
+            for(int j=0;j<hasPermissions.size();j++){
+                SysRolePermission sysRolePermission  = hasPermissions.get(j);
+                if(sysPermission.getId() == sysRolePermission.getPermissionId()){
+                    sysPermission.setChecked(true);
+                    break;
+                }
+            }
+
+        }
+         params =new HashMap<String,Object>();
+        //组装成树状结构
+        for(int i=0,length=sysPermissions.size();i<length;i++){//倒序 方便找到后删除
+            SysPermission sysPermission = sysPermissions.get(i);
+
+            if(sysPermission.getPid()==0){
+                finalList.add(sysPermission);
+                sysPermission.childs=new ArrayList<>();
+                for(int j=0;j<length;j++){//倒序 方便找到后删除
+                    SysPermission child = sysPermissions.get(j);//遍历所有的项目查找所有子项
+                    if(child.getPid() == sysPermission.getId()){
+                        sysPermission.childs.add(child);//塞入到childs中 并从集合中删除
+                        // sysMenuTree.remove(j);
+                    }
+                }
+                // sysMenuTree.remove(i);
+            }
+        }
+
+        return this.getResult(finalList);
+    }
+
+
 }

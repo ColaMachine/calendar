@@ -14,7 +14,7 @@ public class AlphaRule extends Rule {
 		if(this.getValue() == null || this.getValue().equals("")){
 			return true;
 		}else{
-			if (StringUtil.checkAlpha(this.getValue())) {
+			if (StringUtil.checkAlpha(this.getValue().toString())) {
 				return true;
 			}
 			else {

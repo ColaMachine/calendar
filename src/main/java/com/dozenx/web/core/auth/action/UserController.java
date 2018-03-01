@@ -12,7 +12,6 @@ import com.dozenx.web.module.merchant.bean.SessionDTO;
 import com.dozenx.web.module.merchant.bean.SessionUser;
 import com.dozenx.web.third.dbcenter.bean.PubUser;
 import com.dozenx.web.third.dbcenter.service.UserBaseService;
-import com.dozenx.web.util.RequestUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -130,7 +129,7 @@ try {
             user.setUserNick(nick);
             user.setBirthday(DateUtil.parseToDate(birthday, "yyyy-MM-dd"));
             user.setFaceInfo(face);
-            String userstr = JsonUtils.toJsonString(user);
+            String userstr = JsonUtil.toJsonString(user);
             userBaseService.update(user);
             // 更新session中的用户信息
 

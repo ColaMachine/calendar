@@ -125,8 +125,13 @@ class VersionAdder extends React.Component {
             if (!value) {
                 callback('必填')
             }
-            else if (!/^V[0-9]\.[0-9]\.[0-9]/.test(value)) {
-                callback('版本格式:V1.2.3')
+            else if (!/^V[0-9]\.[0-9]\.[0-9]{0,4}$/.test(value)) {
+                    if(value.length>9){
+                        callback('版本格式:V1.2.9999')
+                    }else{
+                        callback('版本格式:V1.2.3')
+                    }
+                
             } else {
                 callback();
             }
@@ -155,7 +160,7 @@ class VersionAdder extends React.Component {
                             {getFieldDecorator('version', {
                                 rules: [{required: true, validator: verifyVersion}],
                             })(
-                                <Input placeholder='请输入版本号，格式Vx.x.x  x取值 0-9' maxLength='20'/>
+                                <Input placeholder='请输入版本号，格式VX.X.Y X取值 0-9 Y取值 0-9999'  maxLength='20'/>
                             )}
                         </FormItem>
                         <FormItem label='说  明：'>

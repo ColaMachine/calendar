@@ -18,14 +18,12 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -75,7 +73,7 @@ public class OpmsRedirectInterceptor extends HandlerInterceptorAdapter {
 
 
         // 营销装维平台地址 先写死 以后从properties 中获取
-        String proxyUrl = request.getParameter("url");
+        String proxyUrl = request.getParameter("url");//类似于
         String proxyDomain = proxyUrl.substring(0,proxyUrl.indexOf("/",7));
 
         //原来的url
@@ -89,8 +87,11 @@ public class OpmsRedirectInterceptor extends HandlerInterceptorAdapter {
 
         //拼接后的url为
         String newUrl  = com.dozenx.util.URLUtil.connact(proxyDomain,urlSuffix);
-        logger.info("newurl:"+newUrl);
 
+        if(newUrl.indexOf("?")>-1){
+            newUrl =newUrl.substring(0,newUrl.indexOf("?"));
+        }
+        logger.info("newurl:"+newUrl);
         /*
         if(requestUri.startsWith("/api")){
             requestUri=requestUri.substring(4);
@@ -160,6 +161,7 @@ public class OpmsRedirectInterceptor extends HandlerInterceptorAdapter {
             logger.info("说明是文件上传");
         }
         String result = "";
+        Map<String,Cookie> cookieMap = HttpRequestUtil.ReadCookieMap(request);
         // 开始获取文件流信息
         // ByteBuffer fileByteBuffer = null;
       //  request.getMethod()
@@ -188,7 +190,9 @@ public class OpmsRedirectInterceptor extends HandlerInterceptorAdapter {
 
 
 
-                result = HttpRequestUtil.sendPost(newUrl,bodyParam,contentType);
+                result = HttpRequestUtil.sendPostWithCookie(newUrl,bodyParam,contentType,cookieMap );
+                //set cookie to response
+                HttpRequestUtil.setCookie(response,cookieMap);
             }else{
                 Set<String> keySet = textParam.keySet();
                 for (Iterator<String> textParamIt = keySet.iterator(); textParamIt.hasNext(); ) {
@@ -214,19 +218,22 @@ public class OpmsRedirectInterceptor extends HandlerInterceptorAdapter {
             }
             String bodyParam = HttpRequestUtil.getRequestPostStr(request);
 
-            result = HttpRequestUtil.sendX(newUrl, bodyParam,contentType,"DELETE" );
+            result = HttpRequestUtil.sendXWithCookie(newUrl, bodyParam,contentType,"DELETE" ,cookieMap);
+
+            //set cookie to response
+            HttpRequestUtil.setCookie(response,cookieMap);
         } else if(request.getMethod().equalsIgnoreCase("PUT")) {
             String bodyParam = HttpRequestUtil.getRequestPostStr(request);
 
-            result = HttpRequestUtil.sendX(newUrl, bodyParam,contentType,"PUT" );
+            result = HttpRequestUtil.sendXWithCookie(newUrl, bodyParam,contentType,"PUT" ,cookieMap);
         }else if(request.getMethod().equalsIgnoreCase("GET")){
 
             // 发送请求
             // response.sendRedirect(redirectUrl);
            // textParam.put("access_token","123");
-            result = HttpRequestUtil.sendGet(newUrl, textParam);
+            result = HttpRequestUtil.sendGetWithCookie(newUrl, textParam,cookieMap);
 
-
+            HttpRequestUtil.setCookie(response,cookieMap);
         }
 
         response.setHeader("Cache-Control", "no-cache");

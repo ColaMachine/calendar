@@ -8,10 +8,12 @@
 
 package com.dozenx.web.core.auth.sysRole.action;
 
+import com.cpj.swagger.annotation.*;
 import com.dozenx.util.*;
 import com.dozenx.web.core.auth.sysRole.bean.SysRole;
 import com.dozenx.web.core.auth.sysRole.service.SysRoleService;
 import com.dozenx.web.core.base.BaseController;
+import com.dozenx.web.core.log.ErrorMessage;
 import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.rules.*;
 import com.dozenx.web.util.RequestUtil;
@@ -21,16 +23,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.*;
+@APIs(description = "角色模块")
 @Controller
-@RequestMapping("/sysRole")
+@RequestMapping("/advertsrv/sys/auth/role")
 public class SysRoleController extends BaseController{
     /** 日志 **/
     private Logger logger = LoggerFactory.getLogger(SysRoleController.class);
@@ -92,9 +93,9 @@ public class SysRoleController extends BaseController{
         if(!StringUtil.isBlank(codeLike)){
             params.put("codeLike",codeLike);
         }
-        String order = request.getParameter("order");
-        if(!StringUtil.isBlank(order)){
-            params.put("order",order);
+        String orderNo = request.getParameter("orderNo");
+        if(!StringUtil.isBlank(orderNo)){
+            params.put("orderNo",orderNo);
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
@@ -168,9 +169,9 @@ public class SysRoleController extends BaseController{
         if(!StringUtil.isBlank(codeLike)){
             params.put("codeLike",codeLike);
         }
-        String order = request.getParameter("order");
-        if(!StringUtil.isBlank(order)){
-            params.put("order",order);
+        String orderNo = request.getParameter("orderNo");
+        if(!StringUtil.isBlank(orderNo)){
+            params.put("orderNo",orderNo);
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
@@ -261,42 +262,7 @@ public class SysRoleController extends BaseController{
     @ResponseBody
     public Object save(HttpServletRequest request) throws Exception {
         SysRole sysRole =new  SysRole();
-        /*
-        String id = request.getParameter("id");
-        if(!StringUtil.isBlank(id)){
-            sysRole.setId(Long.valueOf(id)) ;
-        }
-        
-        String name = request.getParameter("name");
-        if(!StringUtil.isBlank(name)){
-            sysRole.setName(String.valueOf(name)) ;
-        }
-        
-        String code = request.getParameter("code");
-        if(!StringUtil.isBlank(code)){
-            sysRole.setCode(String.valueOf(code)) ;
-        }
-        
-        String order = request.getParameter("order");
-        if(!StringUtil.isBlank(order)){
-            sysRole.setOrder(Integer.valueOf(order)) ;
-        }
-        
-        String status = request.getParameter("status");
-        if(!StringUtil.isBlank(status)){
-            sysRole.setStatus(Integer.valueOf(status)) ;
-        }
-        
-        String remark = request.getParameter("remark");
-        if(!StringUtil.isBlank(remark)){
-            sysRole.setRemark(String.valueOf(remark)) ;
-        }
-        
-        String createtime = request.getParameter("createtime");
-        if(!StringUtil.isBlank(createtime)){
-            sysRole.setCreatetime(Timestamp.valueOf(createtime)) ;
-        }
-        */
+
         String id = request.getParameter("id");
         if(!StringUtil.isBlank(id)){
             sysRole.setId(Long.valueOf(id));
@@ -309,9 +275,9 @@ public class SysRoleController extends BaseController{
         if(!StringUtil.isBlank(code)){
             sysRole.setCode(code);
         }
-        String order = request.getParameter("order");
-        if(!StringUtil.isBlank(order)){
-            sysRole.setOrder(Integer.valueOf(order));
+        String orderNo = request.getParameter("orderNo");
+        if(!StringUtil.isBlank(orderNo)){
+            sysRole.setOrderNo(Integer.valueOf(orderNo));
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
@@ -336,7 +302,7 @@ public class SysRoleController extends BaseController{
         vu.add("id", id, "编号",  new Rule[]{new Digits(10,0)});
         vu.add("name", name, "角色名",  new Rule[]{new Length(20),new NotEmpty()});
         vu.add("code", code, "角色代码",  new Rule[]{new Length(20),new NotEmpty()});
-        vu.add("order", order, "排序",  new Rule[]{new Digits(11,0),new NotEmpty()});
+        vu.add("orderNo", orderNo, "排序",  new Rule[]{new Digits(11,0),new NotEmpty()});
         vu.add("status", status, "状态",  new Rule[]{new Digits(1,0),new CheckBox(new String[]{"1","2"}),new NotEmpty()});
         vu.add("remark", remark, "备注",  new Rule[]{new Length(255)});
         vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
@@ -427,9 +393,9 @@ public class SysRoleController extends BaseController{
         if(!StringUtil.isBlank(codeLike)){
             params.put("codeLike",codeLike);
         }
-        String order = request.getParameter("order");
-        if(!StringUtil.isBlank(order)){
-            params.put("order",order);
+        String orderNo = request.getParameter("orderNo");
+        if(!StringUtil.isBlank(orderNo)){
+            params.put("orderNo",orderNo);
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
@@ -489,7 +455,7 @@ public class SysRoleController extends BaseController{
         colTitle.put("id", "编号");
         colTitle.put("name", "角色名");
         colTitle.put("code", "角色代码");
-        colTitle.put("order", "排序");
+        colTitle.put("orderNo", "排序");
         colTitle.put("status", "状态");
         colTitle.put("remark", "备注");
         colTitle.put("createtime", "创建时间");
@@ -500,10 +466,10 @@ public class SysRoleController extends BaseController{
             map.put("id",  list.get(i).getId());
             map.put("name",  list.get(i).getName());
             map.put("code",  list.get(i).getCode());
-            map.put("order",  list.get(i).getOrder());
+            map.put("orderNo",  list.get(i).getOrderNo());
             map.put("status",  list.get(i).getStatus());
             map.put("remark",  list.get(i).getRemark());
-            map.put("createtime",  list.get(i).getCreatetime());
+            map.put("createtime",  list.get(i).getCreateTime());
             finalList.add(map);
         }
         try {
@@ -524,5 +490,215 @@ public class SysRoleController extends BaseController{
     @RequestMapping(value = "/import.json")
     public void importExcel(){
         
+    }
+
+
+
+    /**
+     * 说明:ajax请求角色信息
+     * @return
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午12:31:55
+     */
+    @API(summary = "角色列表接口",
+            consumes = "application/x-www-form-urlencoded",
+            description = "sysUserController 角色列表分页查询接口", parameters = {
+
+            @Param(name = "params", description = "{name:\"123\", code:\'123\',curPage:1,pageSize:30 }" +
+                    "{telno:手机号码 \n" +
+                    "name:'角色名称', 支持模糊查询\n" +
+                    "curPage:1 //当前页\n" +
+                    "pageSize:30//每页记录数，数字，不允许为空\n" +
+                    "}", dataType = DataType.STRING, in="query",required = true),
+    })
+
+
+
+
+
+
+    @APIResponse(value = "{\"r\":0,\"data\":[{\"id\":123,\"username\":\"123\",\"password\":\"123\",\"nkname\":\"123\",\"type\":null,\"status\":1,\"email\":null,\"telno\":\"13969696969\",\"idcard\":\"23\",\"sex\":0,\"birth\":1517414400000,\"integral\":123,\"address\":\"123\",\"wechat\":\"123\",\"qq\":123,\"face\":\"static/img/timg.jpeg\",\"remark\":\"123\",\"outId\":null,\"createtime\":1517901790000,\"updatetime\":1517901790000}],\"msg\":null,\"page\":{\"curPage\":1,\"totalPage\":1,\"pageSize\":10,\"totalCount\":1,\"beginIndex\":0,\"hasPrePage\":false,\"hasNextPage\":false},\"other\":null,\"right\":true}")
+
+    @RequestMapping(value = "/list",method=RequestMethod.GET,produces="application/json")
+    @ResponseBody
+    public Object listRestful(HttpServletRequest request,@RequestParam(name="params",required=true) String paramStr) {
+        Map<String,Object> params = JsonUtil.fromJson(paramStr,Map.class);
+        Page page =  RequestUtil.getPage(params);
+        params.put("page",page);
+        List<SysRole> sysRoles = sysRoleService.listByParams4Page(params);
+        return ResultUtil.getResult(sysRoles, page);
+    }
+
+
+    /**
+     * 说明:添加角色信息
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午1:33:00
+     */
+
+    @API(summary = "角色添加接口",
+            consumes = "application/json",
+            description = "sysRoleController 角色添加接口", parameters = {
+            @Param(name = "name", description = "角色名"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "code", description = "角色代号"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "orderNo", description = "排序号"
+                    , dataType = DataType.LONG, in="body",required = false),
+            @Param(name = "remark", description = "角色备注"
+                    , dataType = DataType.STRING, in="body",required = true),
+    })
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+    // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
+    @RequestMapping(value = "/add",method=RequestMethod.POST,produces="application/json")
+    @ResponseBody
+    public Object add(HttpServletRequest request,@RequestBody(required=true) Map<String,Object> bodyParam) throws Exception {
+        SysRole sysRole =new  SysRole();
+
+        String name = MapUtils.getString(bodyParam,"name");
+        if(!StringUtil.isBlank(name)){
+            sysRole.setName(name);
+        }
+        String code = MapUtils.getString(bodyParam,"code");
+
+        if(!StringUtil.isBlank(code)){
+            sysRole.setCode(code);
+        }
+        Integer orderNo = MapUtils.getInteger(bodyParam,"orderNo");
+        if(orderNo!=null){
+            sysRole.setOrderNo(orderNo);
+        }
+        sysRole.setStatus(0);
+        sysRole.setCreatetime(DateUtil.getNowTimeStamp());
+        String remark = MapUtils.getString(bodyParam,"remark");
+        if(!StringUtil.isBlank(remark)){
+            sysRole.setRemark(remark);
+        }
+        //valid
+        ValidateUtil vu = new ValidateUtil();
+        String validStr="";
+
+        vu.add("name", name, "角色名",  new Rule[]{new Length(20),new NotEmpty()});
+        vu.add("code", code, "角色代码",  new Rule[]{new Length(20),new NotEmpty()});
+        vu.add("orderNo", orderNo, "排序",  new Rule[]{new Digits(3,0)});//考虑到角色没必要强制排序 将从修改中移除此项目 2018年2月24日09:05:59 ,new NotEmpty()
+
+        vu.add("remark", remark, "备注",  new Rule[]{new Length(255)});
+        //vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
+        validStr = vu.validateString();
+        if(StringUtil.isNotBlank(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+
+        return sysRoleService.save(sysRole);
+
+    }
+
+    @API(summary = "角色更新接口",
+            consumes = "application/json",
+            description = "sysRoleController 角色添加接口", parameters = {
+            @Param(name = "id", description = "角色id"
+                    , dataType = DataType.LONG, in="body",required = true),
+            @Param(name = "name", description = "角色名"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "orderNo", description = "排序号"
+                    , dataType = DataType.LONG, in="body",required = false),
+            @Param(name = "code", description = "角色代号"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "remark", description = "角色备注"
+                    , dataType = DataType.STRING, in="body",required = true),
+    })
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+    // @RequiresPermissions(value={"auth:edit" ,"auth:add" },logical=Logical.OR)
+    @RequestMapping(value = "/update/{id}",method=RequestMethod.PUT,produces="application/json")
+    @ResponseBody
+    public Object update(HttpServletRequest request,@PathVariable Long id,@RequestBody(required=true) Map<String,Object> bodyParam) throws Exception {
+        SysRole sysRole =new  SysRole();
+         id   = MapUtils.getLong(bodyParam,"id");
+        if(id==null || id ==0){
+           return this.getResult(10202001,ErrorMessage.getErrorMsg("err.param.null","id"));
+        }
+
+        sysRole.setId(id);
+        String name = MapUtils.getString(bodyParam,"name");
+        if(!StringUtil.isBlank(name)){
+            sysRole.setName(name);
+        }
+        String code = MapUtils.getString(bodyParam,"code");
+
+        if(!StringUtil.isBlank(code)){
+            sysRole.setCode(code);
+        }
+        Integer orderNo = MapUtils.getInteger(bodyParam,"orderNo");
+        if(orderNo!=null){
+            sysRole.setOrderNo(orderNo);
+        }
+        sysRole.setStatus(0);
+        sysRole.setCreatetime(DateUtil.getNowTimeStamp());
+        String remark = MapUtils.getString(bodyParam,"remark");
+        if(!StringUtil.isBlank(remark)){
+            sysRole.setRemark(remark);
+        }
+        //valid
+        ValidateUtil vu = new ValidateUtil();
+        String validStr="";
+        vu.add("name", name, "角色名",  new Rule[]{new Length(20),new NotEmpty()});
+        vu.add("code", code, "角色代码",  new Rule[]{new Length(20),new NotEmpty()});
+        vu.add("orderNo", orderNo, "排序",  new Rule[]{new Digits(3,0)});//考虑到角色没必要强制排序 将从修改中移除此项目 2018年2月24日09:05:59 ,new NotEmpty()
+        vu.add("remark", remark, "备注",  new Rule[]{new Length(255)});
+        //vu.add("createtime", createtime, "创建时间",  new Rule[]{new DateValue("yyyy-MM-dd HH:mm:ss")});
+        validStr = vu.validateString();
+        if(StringUtil.isNotBlank(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+
+        return sysRoleService.save(sysRole);
+
+    }
+
+    @API(summary = "角色详情接口",
+            consumes = "application/json",
+            description = "角色详情接口", parameters = {
+            @Param(name = "id", description = "/view/{id}", dataType = DataType.STRING, in="path",required = true),
+    })
+    @APIResponse(value = "{ \"r\": 0, \"data\": { \"id\": 123, \"username\": \"123\", \"password\": \"123\", \"nkname\": \"123\", \"status\": 1, \"telno\": \"13969696969\", \"idcard\": \"23\", \"sex\": 0, \"birth\": \"Feb 1, 2018 12:00:00 AM\", \"integral\": 123, \"address\": \"123\", \"wechat\": \"123\", \"qq\": 123, \"face\": \"static/img/timg.jpeg\", \"remark\": \"123\", \"createTime\": \"Feb 6, 2018 3:23:10 PM\", \"updateTime\": \"Feb 6, 2018 3:23:10 PM\" } }")
+    @RequestMapping(value = "/view/{id}" ,method=RequestMethod.GET,produces="application/json")
+    @ResponseBody
+    public Object view(@PathVariable ("id") Long id , HttpServletRequest request) {
+
+        if(id==null || id ==0 ){
+
+            return this.getResult(10202002, ErrorMessage.getErrorMsg("err.param.null","角色id"));
+        }
+        SysRole bean = sysRoleService.selectByPrimaryKey(id);
+        return this.getResult(bean);
+
+
+    }
+
+    @API(summary = "角色删除接口",
+
+            consumes = "application/x-www-form-urlencoded",
+            description = "sysUserController 角色删除接口", parameters = {
+
+            @Param(name = "id", description = "用户id", dataType = DataType.LONG, in="PATH",required = true),
+    })
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+
+    @RequestMapping(value = "/del/{id}" ,method=RequestMethod.DELETE,produces="application/json" )
+    @ResponseBody
+    public Object deleteRestFul(@PathVariable("id") Long id, HttpServletRequest request ) {
+
+        if(id==null ){
+            return this.getResult(10202003, ErrorMessage.getErrorMsg("err.param.null","角色id"));
+        }
+
+        sysRoleService.delete(id);//将状态为改成9
+        return this.getResult(SUCC);
     }
 }

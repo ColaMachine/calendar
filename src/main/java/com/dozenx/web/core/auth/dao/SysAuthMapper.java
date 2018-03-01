@@ -15,8 +15,8 @@ public interface SysAuthMapper {
      * @author dozen.zhang
      * @date 2016年3月18日下午9:01:44
      */
-/*    public List<SysResource> selectResourceByUserId(Long id);
-    public List<SysResource> selectMenuResourceByUserId(Long id);*/
-    public List<SysPermission> selectPermissionByUserId(Long id);
-    //public List<SysPermission> selectMenuResourceByUserId(Long id);
+
+    public List<SysPermission> selectPermissionByUserId(Long userId);
+    public List<SysPermission> selectPermissionByRoleId(Long roleId);
+
 }

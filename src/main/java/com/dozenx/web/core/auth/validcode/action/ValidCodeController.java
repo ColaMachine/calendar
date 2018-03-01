@@ -1,5 +1,8 @@
 package com.dozenx.web.core.auth.validcode.action;
 
+import com.cpj.swagger.annotation.API;
+import com.cpj.swagger.annotation.APIResponse;
+import com.cpj.swagger.annotation.APIs;
 import com.dozenx.core.config.Config;
 import com.dozenx.core.config.ValidCodeConfig;
 import com.dozenx.util.ResultUtil;
@@ -22,6 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 
+
+
+@APIs(description = "验证码")
 
 @Controller
 @RequestMapping("/code")
@@ -255,6 +261,21 @@ public class ValidCodeController extends BaseController{
     }
     @RequestMapping(value = "/img/request.json", method = RequestMethod.GET)
     public @ResponseBody ResultDTO imgRequest(HttpServletRequest request){
+        return validCodeService.getImgValidCode("calendar",request.getRequestedSessionId());
+    }
+    /**
+     * @Author: dozen.zhang
+     * @Description:获取二维验证码图片接口
+     * @Date: 2018/2/8
+     */
+    @API(summary = "获取验证码",
+            consumes = "application/x-www-form-urlencoded",
+            description = " ", parameters = {
+
+    })
+    @APIResponse(value = "{\"r\":0,\"data\":base64二维验证码图片}")
+    @RequestMapping(value = "/img",method=RequestMethod.GET,produces="application/json")
+    public @ResponseBody ResultDTO imgCode(HttpServletRequest request){
         return validCodeService.getImgValidCode("calendar",request.getRequestedSessionId());
     }
     @RequestMapping(value = "/sms/request.json", method = RequestMethod.GET)

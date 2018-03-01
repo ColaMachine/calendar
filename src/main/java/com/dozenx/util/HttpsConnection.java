@@ -11,8 +11,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import javax.net.ssl.HostnameVerifier;
@@ -25,8 +23,6 @@ import javax.net.ssl.X509TrustManager;
 
 
 import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import sun.net.www.protocol.https.Handler;
 
@@ -266,7 +262,7 @@ public class HttpsConnection {
         params.put("pageNo","1");
         params.put("pageSize","11");
 
-        String result =HttpRequestUtil.sendGet("https://np.51awifi.com/appsrv/api/devices?access_token="+accessToken+"&params="+ URLEncoder.encode(JsonUtils.toJsonString(params)));
+        String result =HttpRequestUtil.sendGet("https://np.51awifi.com/appsrv/api/devices?access_token="+accessToken+"&params="+ URLEncoder.encode(JsonUtil.toJsonString(params)));
 
         System.out.println(result);
     }

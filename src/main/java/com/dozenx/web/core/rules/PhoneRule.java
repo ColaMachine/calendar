@@ -14,7 +14,7 @@ public class PhoneRule extends Rule {
 		if(this.getValue() == null || this.getValue().equals("")){
 			return true;
 		}else{
-			if (StringUtil.isPhone(this.getValue())) {
+			if (StringUtil.isPhone(this.getValue().toString())) {
 				return true;
 			}
 			else {

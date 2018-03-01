@@ -85,29 +85,4 @@ export default {
 </script>
 <style scoped>
 
-.zw-layout {
-   color:white;
-    text-align:center;
-}
-.zw-header {
-    background-color:rgba(0,160,233,.7);
-}
-.zw-content {
-    background-color:#00a0e9;
-}
-.zw-footer {
-    background-color:rgba(0,160,233,.3);
-}
-.zw-code-box-demo  div[class*="col-"] .zw-gutter-box{
-    margin-top:15px;
-    height:50px;
-    color:white;
-    text-align:center;
-    line-height:50px;
-}
-.zw-code-box-demo>div> .zw-layout{
-
-   margin-top:50px;
-
-}
 </style>

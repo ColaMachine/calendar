@@ -3,6 +3,9 @@ package com.dozenx.util;
 
 import com.dozenx.web.core.log.ResultDTO;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegexUtil {
 	public static ResultDTO email(String email){
 		if(email.matches("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\\.[a-zA-Z0-9_-]{2,3}){1,2})$")){
@@ -26,6 +29,46 @@ public class RegexUtil {
 			return ResultUtil.getWrongResultFromCfg("err.email.leng");
 		}
 		 return ResultUtil.getSuccResult();
+	}
+
+	/**
+	 * 正则匹配
+	 * @param str 待匹配字符串
+	 * @param pattern 正则表达式
+	 * @return true 成功、false 失败
+	 * @author 许小满
+	 * @date 2017年1月17日 下午2:17:25
+	 */
+	public static boolean match(String str, String pattern){
+		return match(str, pattern, null);
+	}
+
+	/**
+	 * 正则匹配
+	 * @param str 待匹配字符串
+	 * @param pattern 正则表达式
+	 * @param flags flags
+	 * @return true 成功、false 失败
+	 * @author 许小满
+	 * @date 2016年7月25日 下午12:13:16
+	 */
+	public static boolean match(String str, String pattern, Integer flags){
+		if(str == null){
+			return false;
+		}
+		Pattern p = null;
+		if(flags == null){
+			p = Pattern.compile(pattern);
+		}else {
+			p = Pattern.compile(pattern, flags);
+		}
+		Matcher m = p.matcher(str);
+		return m.matches();
+	}
+
+	public static void main(String[] args) {
+		String ip = "192.168.1.111";
+		//System.out.println(match(ip, RegexConstants.IP_PATTERN));
 	}
 	
 }

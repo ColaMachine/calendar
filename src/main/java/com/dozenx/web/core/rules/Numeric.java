@@ -14,7 +14,7 @@ public class Numeric extends Rule {
 		if(this.getValue() == null || this.getValue().equals("")){
 			return true;
 		}else{
-			if (StringUtil.checkNumeric(this.getValue())) {
+			if (StringUtil.checkNumeric(this.getValue().toString())) {
 				return true;
 			}
 			else {

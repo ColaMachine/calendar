@@ -14,7 +14,7 @@ public class IDCardRule extends Rule {
 		if(this.getValue() == null || this.getValue().equals("")){
 			return true;
 		}else{
-			if (StringUtil.isID(this.getValue())) {
+			if (StringUtil.isID(this.getValue().toString())) {
 				return true;
 			}
 			else {

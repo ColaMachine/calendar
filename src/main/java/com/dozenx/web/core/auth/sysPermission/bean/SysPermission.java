@@ -7,6 +7,8 @@
  */
 package com.dozenx.web.core.auth.sysPermission.bean;
 
+import java.util.List;
+
 public class SysPermission {
     /**编号**/
     private Long id;
@@ -38,12 +40,17 @@ public class SysPermission {
     }    public void setCode(String code){
         this.code=code;
     }/**排序id**/
-    private Integer order;
-    public Integer getOrder(){
-        return order;
-    }    public void setOrder(Integer order){
-        this.order=order;
-    }/**状态**/
+    private Integer orderNo;
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    /**状态**/
     private Integer status;
     public Integer getStatus(){
         return status;
@@ -55,5 +62,35 @@ public class SysPermission {
         return remark;
     }    public void setRemark(String remark){
         this.remark=remark;
+    }
+    //权限链接
+    public String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public List<SysPermission> childs ;
+
+    public List<SysPermission> getChilds() {
+        return childs;
+    }
+
+    public void setChilds(List<SysPermission> childs) {
+        this.childs = childs;
+    }
+
+    private boolean checked;
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

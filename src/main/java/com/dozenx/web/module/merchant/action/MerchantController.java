@@ -2,7 +2,7 @@ package com.dozenx.web.module.merchant.action;
 
 import com.cpj.swagger.annotation.*;
 import com.dozenx.core.exception.ParamException;
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.util.ResultUtil;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.core.Constants;
@@ -146,7 +146,7 @@ public class MerchantController  extends BaseController {
         if (sessionDTO==null || StringUtil.isBlank(sessionDTO.getDeviceId()) ||sessionDTO .getMerchant() ==null || sessionDTO.getMerchant().getId()==null ) {
             logger.error("用户登录时遇到sessionDto参数错误");
             LogUtilFeichu.track(serviceCode, 102,
-                    JsonUtils.toJsonString(sessionDTO),
+                    JsonUtil.toJsonString(sessionDTO),
                     "miss param", username);
             return this.getResult(1,"缺少用户商户参数");
         }

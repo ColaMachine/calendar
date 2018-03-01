@@ -63,6 +63,14 @@ export default class InvestigateList extends React.Component {
             console.error('获取列表失败:', err)//
         })
     }
+    pageItemRender(current, type, originalElement) {
+        if (type === 'prev') {
+            return <a>上一页</a>;
+        } else if (type === 'next') {
+            return <a>下一页</a>;
+        }
+        return originalElement;
+    }
 
     render() {
         const columns = [

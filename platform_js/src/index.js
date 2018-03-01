@@ -4,8 +4,6 @@ import 'antd/dist/antd.css'
 import './css/reset.css'
 import './css/index.scss'
 import registerServiceWorker from './registerServiceWorker';
-
-
 import router from './js/index/mainRouter'
 
 //主index 挂载点

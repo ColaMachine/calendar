@@ -22,7 +22,7 @@
 <script type="text/javascript" src="${path}/static/js/router.js"></script>
 <script type="text/javascript" src="${path}/static/js/menu.js"></script>
 <script type="text/javascript" src="${path}/static/js/dom.js"></script>
-<script type="text/javascript" src="${path}/static/js/grid1.js"></script>
+
 <script type="text/javascript" src="${path}/static/js/animation.js"></script>
 <script type="text/javascript" src="${path}/static/js/slider.js"></script>
 <script type="text/javascript" src="${path}/static/js/imageUtil.js"></script>
@@ -57,8 +57,8 @@ var jsAry=[/*"/static/js/menu.js" ,
                      "/static/js/validmsg.js",*/
                      "/static/js/DateUtils.js",
                     /* "/static/js/jquery-ui.min.js",*/
-                    "/static/js/grid.js",
-                      /*  "/static/js/jquery.jqGrid.js",*/
+                     "/static/js/grid.js",
+                      /* "/static/js/jquery.jqGrid.js",*/
                       "/static/js/jquery.form.js",
                       "/static/js/grid.locale-en.js",
                       "/static/js/My97DatePicker/WdatePicker.js",

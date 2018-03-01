@@ -8,10 +8,21 @@
 
 package com.dozenx.web.core.auth.sysMenu.action;
 
+import com.cpj.swagger.annotation.APIs;
+
+
+import com.cpj.swagger.annotation.API;
+import com.cpj.swagger.annotation.APIResponse;
+import com.cpj.swagger.annotation.DataType;
+import com.cpj.swagger.annotation.Param;
 import com.dozenx.util.*;
+import com.dozenx.web.core.auth.service.AuthService;
 import com.dozenx.web.core.auth.sysMenu.bean.SysMenu;
 import com.dozenx.web.core.auth.sysMenu.service.SysMenuService;
+import com.dozenx.web.core.auth.sysUser.bean.SysUser;
 import com.dozenx.web.core.base.BaseController;
+import com.dozenx.web.core.log.ErrorMessage;
+import com.dozenx.web.core.log.ResultDTO;
 import com.dozenx.web.core.page.Page;
 import com.dozenx.web.core.rules.*;
 import com.dozenx.web.util.RequestUtil;
@@ -21,22 +32,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.*;
+@APIs(description = "菜单模块")
+
 @Controller
-@RequestMapping("/sysMenu")
+@RequestMapping("/advertsrv/sys/auth/menu")
 public class SysMenuController extends BaseController{
     /** 日志 **/
     private Logger logger = LoggerFactory.getLogger(SysMenuController.class);
     /** 权限service **/
     @Autowired
     private SysMenuService sysMenuService;
-    
+    @Autowired
+    private AuthService authService;
     /**
      * 说明: 跳转到角色列表页面
      * 
@@ -324,7 +336,7 @@ public class SysMenuController extends BaseController{
         }
         String order = request.getParameter("order");
         if(!StringUtil.isBlank(order)){
-            sysMenu.setOrder(Integer.valueOf(order));
+            sysMenu.setOrderNo(Integer.valueOf(order));
         }
         String status = request.getParameter("status");
         if(!StringUtil.isBlank(status)){
@@ -508,7 +520,7 @@ public class SysMenuController extends BaseController{
             map.put("code",  list.get(i).getCode());
             map.put("permission",  list.get(i).getPermission());
             map.put("url",  list.get(i).getUrl());
-            map.put("order",  list.get(i).getOrder());
+            map.put("order",  list.get(i).getOrderNo());
             map.put("status",  list.get(i).getStatus());
             map.put("remark",  list.get(i).getRemark());
             finalList.add(map);
@@ -531,5 +543,250 @@ public class SysMenuController extends BaseController{
     @RequestMapping(value = "/import.json")
     public void importExcel(){
         
+    }
+
+    /**
+     * @Author: dozen.zhang
+     * @Description:当前用户树状菜单
+     * @Date: 2018/2/8
+     */
+    @API(summary = "当前用户树状菜单",
+            consumes = "application/x-www-form-urlencoded",
+            description = " ", parameters = { })
+    @APIResponse(value = "{\"r\":0,\"data\":[{\"id\":123,\"username\":\"123\",\"password\":\"123\",\"nkname\":\"123\",\"type\":null,\"status\":1,\"email\":null,\"telno\":\"13969696969\",\"idcard\":\"23\",\"sex\":0,\"birth\":1517414400000,\"integral\":123,\"address\":\"123\",\"wechat\":\"123\",\"qq\":123,\"face\":\"static/img/timg.jpeg\",\"remark\":\"123\",\"outId\":null,\"createtime\":1517901790000,\"updatetime\":1517901790000}],\"msg\":null,\"page\":{\"curPage\":1,\"totalPage\":1,\"pageSize\":10,\"totalCount\":1,\"beginIndex\":0,\"hasPrePage\":false,\"hasNextPage\":false},\"other\":null,\"right\":true}")
+
+    @RequestMapping(value = "/tree/my",method=RequestMethod.GET,produces="application/json")
+    @ResponseBody
+    public ResultDTO listMenu(HttpServletRequest request){
+        String id=request.getParameter("id");
+        Long userId = this.getUserId(request);
+        //根据用户id查找菜单
+
+        List<SysMenu> sysMenuTree = sysMenuService.selectMenuByUserId(userId);
+
+        List<SysMenu> finalList = new ArrayList<SysMenu>();//最终返回前台的list
+
+        //组装成树状结构
+        for(int i=sysMenuTree.size()-1;i>=0;i--){//倒序 方便找到后删除
+            SysMenu sysMenu = sysMenuTree.get(i);
+
+            if(sysMenu.getPid()==0){
+                finalList.add(sysMenu);
+                sysMenu.childs=new ArrayList<>();
+                for(int j=sysMenuTree.size()-1;j>=0;j--){//倒序 方便找到后删除
+                    SysMenu childMenu = sysMenuTree.get(j);//遍历所有的项目查找所有子项
+                    if(childMenu.getPid() == sysMenu.getId()){
+                        sysMenu.childs.add(childMenu);//塞入到childs中 并从集合中删除
+                       // sysMenuTree.remove(j);
+                    }
+                }
+               // sysMenuTree.remove(i);
+            }
+        }
+        return  ResultUtil.getDataResult(finalList);//返回集合
+    }
+
+
+
+    /**
+     * 说明:菜单添加接口
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午1:33:00
+     */
+
+    @API(summary = "菜单添加接口",
+            consumes = "application/json",
+            description = " ", parameters = {
+
+
+            @Param(name = "name", description = "name"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "url", description = "url"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "remark", description = "备注"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "icon", description = "图标"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "pid", description = "父节点id"
+                    , dataType = DataType.LONG, in="body",required = true),
+            @Param(name = "orderNo", description = "排序"
+                    , dataType = DataType.INTEGER, in="body",required = true),
+    })
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+    @RequestMapping(value = "/add",method=RequestMethod.POST,produces="application/json")
+    @ResponseBody
+    public Object add(HttpServletRequest request,@RequestBody(required=true) Map<String,Object> bodyParam ) throws Exception {
+        SysMenu sysMenu =new  SysMenu();
+        Long pid =MapUtils.getLong(bodyParam,"pid");
+        Integer orderNo =MapUtils.getInteger(bodyParam,"orderNo");
+        String name = MapUtils.getString(bodyParam,"name");
+        String icon = MapUtils.getString(bodyParam,"icon");
+        String url = MapUtils.getString(bodyParam,"url");
+        String remark = MapUtils.getString(bodyParam,"remark");
+        ValidateUtil vu = new ValidateUtil();
+        String validStr="";
+        vu.add("pid", pid, "父菜单",  new Rule[]{new Digits(10,0)});
+        vu.add("name", name, "菜单名称",  new Rule[]{new Length(20),new NotEmpty()});
+        vu.add("url", url, "资源对应URL",  new Rule[]{new Length(255)});
+        vu.add("orderNo", orderNo, "排序id",  new Rule[]{new Digits(11,0)});
+        vu.add("icon", icon, "图标",  new Rule[]{new Length(50)});
+        vu.add("remark", remark, "备注",  new Rule[]{new Length(20)});
+        validStr = vu.validateString();
+        if(StringUtil.isNotBlank(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        sysMenu.setPid(Long.valueOf(pid));
+        sysMenu.setName(name);
+        sysMenu.setUrl(url);
+        sysMenu.setOrderNo(orderNo);
+        sysMenu.setRemark(remark);
+        sysMenu.setIcon(icon);
+        return sysMenuService.save(sysMenu);
+
+    }
+
+    /**
+     * 说明:保存角色信息
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     * @return Object
+     * @author dozen.zhang
+     * @date 2015年11月15日下午1:33:00
+     */
+
+    @API(summary = "菜单更新接口",
+            consumes = "application/json",
+            description = " ", parameters = {
+
+            @Param(name = "id", description = "id"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "name", description = "name"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "url", description = "url"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "remark", description = "备注"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "icon", description = "图标"
+                    , dataType = DataType.STRING, in="body",required = true),
+            @Param(name = "pid", description = "父节点id"
+                    , dataType = DataType.LONG, in="body",required = true),
+            @Param(name = "orderNo", description = "排序"
+                    , dataType = DataType.INTEGER, in="body",required = true),
+    })
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+    @RequestMapping(value = "/update",method=RequestMethod.PUT,produces="application/json")
+    @ResponseBody
+    public Object update(HttpServletRequest request,@RequestBody(required=true) Map<String,Object> bodyParam ) throws Exception {
+        SysMenu sysMenu =new  SysMenu();
+        Long id =MapUtils.getLong(bodyParam,"id");
+        Long pid =MapUtils.getLong(bodyParam,"pid");
+        Integer orderNo =MapUtils.getInteger(bodyParam,"orderNo");
+        String name = MapUtils.getString(bodyParam,"name");
+        String url = MapUtils.getString(bodyParam,"url");
+        String icon = MapUtils.getString(bodyParam,"icon");
+
+        String remark = MapUtils.getString(bodyParam,"remark");
+        ValidateUtil vu = new ValidateUtil();
+        String validStr="";
+        vu.add("id", id, "编号",  new Rule[]{new Digits(10,0)});
+        vu.add("pid", pid, "父菜单",  new Rule[]{new Digits(10,0)});
+        vu.add("name", name, "菜单名称",  new Rule[]{new Length(20),new NotEmpty()});
+        //vu.add("code", code, "菜单代码",  new Rule[]{new Length(20),new NotEmpty()});
+        //  vu.add("permission", permission, "权限",  new Rule[]{new Length(255)});
+        vu.add("icon", icon, "图标",  new Rule[]{new Length(50)});
+        vu.add("url", url, "资源对应URL",  new Rule[]{new Length(255)});
+        vu.add("orderNo", orderNo, "排序id",  new Rule[]{new Digits(11,0)});
+        //  vu.add("status", status, "状态",  new Rule[]{new Digits(1,0),new CheckBox(new String[]{"1","2"}),new NotEmpty()});
+        vu.add("remark", remark, "备注",  new Rule[]{new Length(20)});
+        validStr = vu.validateString();
+        if(StringUtil.isNotBlank(validStr)) {
+            return ResultUtil.getResult(302,validStr);
+        }
+        sysMenu.setId(id);
+        sysMenu.setPid(Long.valueOf(pid));
+        sysMenu.setName(name);
+        sysMenu.setUrl(url);
+        sysMenu.setIcon(icon);
+        sysMenu.setOrderNo(orderNo);
+        sysMenu.setRemark(remark);
+        return sysMenuService.save(sysMenu);
+
+    }
+
+
+    @API(summary = "菜单列表接口",
+            consumes = "application/x-www-form-urlencoded",
+            description = "sysMenuController 菜单列表接口", parameters = {
+
+            @Param(name = "params", description = "{telno:13958173965, name:\"123\", curPage:1,pageSize:30 }" +
+                    "{telno:手机号码 \n" +
+                    "name:'姓名', 支持模糊查询\n" +
+                    "curPage:1 //当前页\n" +
+                    "pageSize:30//每页记录数，数字，不允许为空\n" +
+                    "}", dataType = DataType.STRING, in="query",required = true),
+    })
+    @APIResponse(value = "{ \"r\": 0, \"data\": [ { \"id\": 2, \"pid\": 0, \"name\": \"1级1\", \"url\": \"http://www.baidu.com\", \"orderNo\": 0, \"remark\": \"1级1备注\" }, { \"id\": 3, \"pid\": 0, \"name\": \"1ji1\", \"url\": \"1ji1\", \"orderNo\": 1, \"remark\": \"1ji1\" }, { \"id\": 4, \"pid\": 2, \"SysMenu_name\": \"1级1\", \"name\": \"1ji1\", \"url\": \"1ji11\", \"orderNo\": 1, \"remark\": \"1ji1\" }, { \"id\": 5, \"pid\": 2, \"SysMenu_name\": \"1级1\", \"name\": \"1ji1\", \"url\": \"1ji111\", \"orderNo\": 1, \"remark\": \"1ji1\" }, { \"id\": 6, \"pid\": 2, \"SysMenu_name\": \"1级1\", \"name\": \"1ji1\", \"url\": \"1ji1111\", \"orderNo\": 1, \"remark\": \"1ji1\" }, { \"id\": 7, \"pid\": 2, \"SysMenu_name\": \"1级1\", \"name\": \"1ji1\", \"url\": \"1ji11111\", \"orderNo\": 1, \"remark\": \"1ji1\" }, { \"id\": 8, \"pid\": 2, \"SysMenu_name\": \"1级1\", \"name\": \"1ji1\", \"url\": \"1ji111111\", \"orderNo\": 1, \"remark\": \"1ji1\" } ], \"page\": { \"curPage\": 1, \"totalPage\": 1, \"pageSize\": 10, \"totalCount\": 7, \"beginIndex\": 0, \"hasPrePage\": false, \"hasNextPage\": false } }")
+
+    @RequestMapping(value = "/list",method=RequestMethod.GET,produces="application/json")
+    @ResponseBody
+    public Object list( HttpServletRequest request,@RequestParam(name="params",required=true) String paramStr) {
+        Map<String,Object> params = JsonUtil.fromJson(paramStr,Map.class);
+        Page page =  RequestUtil.getPage(params);
+        params.put("page",page);
+        List<SysMenu> sysMenus = sysMenuService.listByParams4Page(params);
+        return ResultUtil.getResult(sysMenus, page);
+    }
+
+
+
+    @API(summary = "菜单详情接口",
+
+            consumes = "application/x-www-form-urlencoded",
+            description = "菜单详情接口", parameters = {
+
+            @Param(name = "id", description = "/view/{id}", dataType = DataType.STRING, in="path",required = true),
+    })
+    @APIResponse(value = "{ \"r\": 0, \"data\": { \"id\": 123, \"username\": \"123\", \"password\": \"123\", \"nkname\": \"123\", \"status\": 1, \"telno\": \"13969696969\", \"idcard\": \"23\", \"sex\": 0, \"birth\": \"Feb 1, 2018 12:00:00 AM\", \"integral\": 123, \"address\": \"123\", \"wechat\": \"123\", \"qq\": 123, \"face\": \"static/img/timg.jpeg\", \"remark\": \"123\", \"createTime\": \"Feb 6, 2018 3:23:10 PM\", \"updateTime\": \"Feb 6, 2018 3:23:10 PM\" } }")
+
+    @RequestMapping(value = "/view/{id}" ,method=RequestMethod.GET,produces="application/json")
+    @ResponseBody
+    public Object viewRestFul(@PathVariable ("id") Long id , HttpServletRequest request) {
+
+        HashMap<String,Object> result =new HashMap<String,Object>();
+        if(id>0){
+            SysMenu bean = sysMenuService.selectByPrimaryKey(id);
+            return this.getResult(bean);
+
+        }
+        return this.getResult(10102300, ErrorMessage.getErrorMsg("err.param.null","id"));
+
+    }
+
+    @API(summary = "菜单资料删除接口",
+
+            consumes = "application/x-www-form-urlencoded",
+            description = " 菜单资料删除接口", parameters = {
+
+            @Param(name = "id", description = "id", dataType = DataType.LONG, in="PATH",required = true),
+    })
+    @APIResponse(value = "{\"r\":0,msg:'xxxx'}")
+
+    @RequestMapping(value = "/del/{id}" ,method=RequestMethod.DELETE,produces="application/json")
+    @ResponseBody
+    public Object deleteRestFul(@PathVariable("id") Long id, HttpServletRequest request ) {
+
+        if(id==null ){
+            return this.getResult(10202003, ErrorMessage.getErrorMsg("err.param.null","用户id"));
+        }
+
+        sysMenuService.delete(id);//将状态为改成9
+        return this.getResult(SUCC);
     }
 }

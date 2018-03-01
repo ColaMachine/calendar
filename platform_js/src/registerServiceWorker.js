@@ -39,7 +39,6 @@ export default function register() {
         // This is running on localhost. Lets check if a service worker still exists or not.
         checkValidServiceWorker(swUrl);
       }
-
     });
   }
 }

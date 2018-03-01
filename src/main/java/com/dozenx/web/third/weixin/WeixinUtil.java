@@ -6,16 +6,11 @@ import com.dozenx.util.*;
 import com.dozenx.web.core.Constants;
 import com.dozenx.web.core.log.MessagePropertiesResolver;
 import com.dozenx.web.third.weixin.bean.WeixinAccessTokenResult;
-
-import com.dozenx.web.third.weixin.bean.WeixinConstants;
 import com.dozenx.web.third.weixin.bean.WeixinOauthAccessTokenResult;
+import com.dozenx.web.third.weixin.bean.WeixinUser;
 import com.dozenx.web.util.ConfigUtil;
-import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by dozen.zhang on 2017/11/8.
@@ -55,11 +50,11 @@ public class WeixinUtil {
      * @Description: 通过前台http接口获得的code 到后台去获取accessTOken
      * @Date: 2018/1/21
      */
-    public static WeixinOauthAccessTokenResult  getOauthAccessToken(String code)throws Exception{
+    public static WeixinOauthAccessTokenResult getOauthAccessToken(String code)throws Exception{
 
         //从缓存中拿取token
 
-        //        { "access_token":"ACCESS_TOKEN",
+     //        { "access_token":"ACCESS_TOKEN",
 //                "expires_in":7200,
 //                "refresh_token":"REFRESH_TOKEN",
 //                "openid":"OPENID",
@@ -68,7 +63,7 @@ public class WeixinUtil {
         String  accessToken = CacheUtil.get(WeixinConstants.WEIXIN_OAUTH_ACCESSTOKEN_REDIS_KEY+code);
         String openId =  CacheUtil.get(WeixinConstants.WEIXIN_OAUTH_APPID_REDIS_KEY+code);
 
-        //  String.format(url,ConfigUtil.getConfig(WeixinConstants.WEIXIN_APPID),)
+      //  String.format(url,ConfigUtil.getConfig(WeixinConstants.WEIXIN_APPID),)
 
         if(!StringUtil.isBlank(accessToken) && !StringUtil.isBlank(openId)){//如果有值直接返回
             WeixinOauthAccessTokenResult weixinOauthToken = new WeixinOauthAccessTokenResult();
@@ -79,7 +74,7 @@ public class WeixinUtil {
         //缓存中没有去请求
         WeixinOauthAccessTokenResult weixinOauthAccessTokenResult = requestOauthAccessToken(code);
         //==============请求成功把token 放入缓存 并设置超时时间============================
-        CacheUtil.set(WeixinConstants.WEIXIN_OAUTH_ACCESSTOKEN_REDIS_KEY+code,weixinOauthAccessTokenResult.getAccess_token(),weixinOauthAccessTokenResult.getExpires_in());//放入缓存
+       CacheUtil.set(WeixinConstants.WEIXIN_OAUTH_ACCESSTOKEN_REDIS_KEY+code,weixinOauthAccessTokenResult.getAccess_token(),weixinOauthAccessTokenResult.getExpires_in());//放入缓存
         CacheUtil.set(WeixinConstants.WEIXIN_OAUTH_APPID_REDIS_KEY+code,weixinOauthAccessTokenResult.getOpenid(),weixinOauthAccessTokenResult.getExpires_in());//放入缓存
 
         return weixinOauthAccessTokenResult;
@@ -100,14 +95,14 @@ public class WeixinUtil {
             logger.error("调用微信accessToken 无返回值 the weixin accessToken request has no result return url:"+realWeixinAccessTokenUrl);
 
             throw new InterfaceException(new MessagePropertiesResolver("err.weixin.acctoken.request.null"));
-        }
-        WeixinAccessTokenResult weixinAccessTokenResult = JsonUtils.toJavaBean(result, WeixinAccessTokenResult.class);
+         }
+        WeixinAccessTokenResult weixinAccessTokenResult = JsonUtil.toJavaBean(result, WeixinAccessTokenResult.class);
         //==============请求成功把token 返回token============================
         if(weixinAccessTokenResult.getErrcode()==0){//请求成功了
 
             return weixinAccessTokenResult;
         }
-        // if(StringUtil.isBlank(weixinAccessTokenResult.getAccess_token())){
+       // if(StringUtil.isBlank(weixinAccessTokenResult.getAccess_token())){
         logger.error("请求微信accessToken失败  the weixin accessToken request fail url:"+realWeixinAccessTokenUrl+" and result "+result);
         //======================失败的异常处理====================================
         if(weixinAccessTokenResult.getErrcode()==-1){
@@ -127,7 +122,8 @@ public class WeixinUtil {
             logger.error("调用接口的IP地址不在白名单中，请在接口IP白名单中进行设置");
             throw new InterfaceException(new MessagePropertiesResolver("err.weixin.acctoken.ip"));
         }else{
-            throw new InterfaceException(new MessagePropertiesResolver("err.weixin.acctoken.ip"));
+            throw new InterfaceException(weixinAccessTokenResult.getErrcode()+"",weixinAccessTokenResult.getErrmsg());
+
         }
     }
 
@@ -150,7 +146,7 @@ public class WeixinUtil {
         String url = String.format("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi",accessToken);
         String responseText = HttpRequestUtil.sendGet(url,"");
         String jsapi_ticket = null;
-        JSONObject object = JsonUtils.toJsonObject(responseText);
+        JSONObject object = JsonUtil.toJsonObject(responseText);
 
         if (object.containsKey("errocode")) {
             logger.error("获取weixinticket失败 result:"+responseText);
@@ -159,9 +155,10 @@ public class WeixinUtil {
         if (object.containsKey("ticket")) {
             jsapi_ticket = object.getString("ticket");
         }else{
-            logger.error("获取weixinticket失败 result:"+ JsonUtils.toJsonString(object));
+            logger.error("获取weixinticket失败 result:"+ JsonUtil.toJsonString(object));
             throw new InterfaceException(new MessagePropertiesResolver("err.weixin.jsapiticket.request.fail"));
         }
+        CacheUtil.set(WeixinConstants.WEIXIN_JSAPITICKET_REDIS_KEY,jsapi_ticket,(int)object.get("expires_in"));
         return jsapi_ticket;
 
     }
@@ -194,14 +191,14 @@ public class WeixinUtil {
         //=============拼接请求url=================================
         String  realWeixinAccessTokenUrl = String.format(ConfigUtil.getConfig(WeixinConstants.WEXIN_OAUTH_ACCESSTOKEN_URL), ConfigUtil.getConfig(WeixinConstants.WEIXIN_APPID), ConfigUtil.getConfig(WeixinConstants.WEIXIN_APPSECRET),
                 code
-        );
+                );
 
         String result = HttpsConnection.doGet(realWeixinAccessTokenUrl,null, Constants.HTTP_CONNECT_TIME_OUT, Constants.HTTP_READ_TIME_OUT);
         if(StringUtil.isBlank(result)) {
             logger.error("调用微信accessToken 无返回值 the weixin accessToken request has no result return url:"+realWeixinAccessTokenUrl);
             throw new InterfaceException(new MessagePropertiesResolver("err.weixin.oauth.acctoken.request.null"));
         }
-        WeixinOauthAccessTokenResult weixinAccessTokenResult = JsonUtils.toJavaBean(result, WeixinOauthAccessTokenResult.class);
+        WeixinOauthAccessTokenResult weixinAccessTokenResult = JsonUtil.toJavaBean(result, WeixinOauthAccessTokenResult.class);
         //==============请求成功把token 返回token============================
         if(weixinAccessTokenResult.getErrcode()==0){//请求成功了
 
@@ -227,7 +224,40 @@ public class WeixinUtil {
             logger.error("invalid code");
             throw new InterfaceException(new MessagePropertiesResolver("err.weixin.oauth.invalid.code"));
         }else{
+            throw new InterfaceException(weixinAccessTokenResult.getErrcode()+"",weixinAccessTokenResult.getErrmsg());
+
+        }
+    }
+
+
+    public static WeixinUser getUserInfo(String accessToken, String openId) throws Exception {
+
+        //https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+        String  realWeixinAccessTokenUrl = String.format(ConfigUtil.getConfig(WeixinConstants.WEXIN_OAUTH_USER_URL), accessToken, openId);
+
+        String result = HttpsConnection.doGet(realWeixinAccessTokenUrl,null, Constants.HTTP_CONNECT_TIME_OUT, Constants.HTTP_READ_TIME_OUT);
+        if(StringUtil.isBlank(result)) {
+            logger.error("调用微信user接口 无返回值 the weixin user request has no result return url:"+realWeixinAccessTokenUrl);
+            throw new InterfaceException(new MessagePropertiesResolver("err.weixin.oauth.user.request.fial"));
+        }
+        WeixinUser weixinUser = JsonUtil.toJavaBean(result, WeixinUser.class);
+        //==============请求成功把token 返回token============================
+        if(weixinUser.getErrcode()==0){//请求成功了
+
+            return weixinUser;
+        }
+        // if(StringUtil.isBlank(weixinAccessTokenResult.getAccess_token())){
+        logger.error("请求微信accessToken失败  the weixin accessToken request fail url:"+realWeixinAccessTokenUrl+" and result "+result);
+        //======================失败的异常处理====================================
+        if(weixinUser.getErrcode()==-1){
+            logger.error(" 请求微信accessToken失败 系统繁忙，此时请开发者稍候再试");
+            Thread.sleep(1000);//停顿以秒后再发起请求
+            return getUserInfo(accessToken,openId);
+        }else if(weixinUser.getErrcode()==40164){
+            logger.error("调用接口的IP地址不在白名单中，请在接口IP白名单中进行设置");
             throw new InterfaceException(new MessagePropertiesResolver("err.weixin.acctoken.ip"));
+        }else{
+            throw new InterfaceException(weixinUser.getErrcode()+"",weixinUser.getErrmsg());
         }
     }
 
@@ -238,8 +268,6 @@ public class WeixinUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
 
     }
 }

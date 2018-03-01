@@ -24,31 +24,34 @@ export default {
         computed: {
             getItemClasses:function(){
                 if(this.collapse){
-                                return "zw-collapse-item";
+                        return "zw-collapse-item";
                 }else{
                      return "zw-collapse-item zw-collapse-item-active";
                }
                 return "zw-collapse-item";
             },
              getIconType:function(){
-                //if(this.collapse){
+                if(this.collapse){
                     return "arrow-right";
-                //}else{
-                 //    return "arrow-down";
-               // }
+                }else{
+                    return "arrow-down";
+                }
              }
         },
         mounted () {
             if(this.state && this.state=="open"){
                 this.collapse=false;
+            }else{
+              this.$refs.body.style.visibility="collapse";
+this.$refs.body.style.height="0px";
             }
 
         },
         methods: {
-            changeCollapse:function(){
+            changeCollapse:function(){//console.log("changeCollapse"+ this.collapse);
  this.collapse = !this.collapse;
-                   return;
-
+                 //  return;
+//console.log("changeCollapse end"+ this.collapse);
                 var body = this.$refs.body;
                 var totalHeight = 0;
                 for (var i = 0; i < body.childNodes.length; i++) {
@@ -59,7 +62,7 @@ export default {
                 totalHeight+=30;
 
                body.style.visibility="visible";
-                this.collapse=!this.collapse;
+              //  this.collapse=!this.collapse;
                  body.style.height=totalHeight+"px";
                   //body.style.overflow="auto";
 
@@ -81,7 +84,9 @@ export default {
 
                     setTimeout(function() {
 
-                        body.style.visibility="collapse";
+                        body.style.visibility="collapse";console.log("changeCollapse visibility collapse ");
+                        //console.log("changeCollapse end"+ this.collapse);
+
                     }, 300);
 
                 }

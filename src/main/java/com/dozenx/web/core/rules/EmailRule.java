@@ -14,7 +14,7 @@ public class EmailRule extends Rule {
 		if(this.getValue() == null || this.getValue().equals("")){
 			return true;
 		}else{
-			if (StringUtil.isEmail(this.getValue())) {
+			if (StringUtil.isEmail(this.getValue().toString())) {
 				return true;
 			}
 			else {

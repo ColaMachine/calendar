@@ -62,6 +62,34 @@ public class ErrorMessage {
      * @param key
      * @return
      */
+    public static String getErrorMsg(String key,Object suffix){
+        loadMsgProp();
+        Object obj=msgProp.get(key + ".msg");
+        if(obj!=null){
+            return String.format(obj.toString(),suffix);
+        }else{
+            return null;
+        }
+    }
+    /**
+     * 获取错误消息
+     * @param key
+     * @return
+     */
+    public static String getErrorMsg(String key,Object[] suffix){
+        loadMsgProp();
+        Object obj=msgProp.get(key + ".msg");
+        if(obj!=null){
+            return String.format(obj.toString(),suffix);
+        }else{
+            return null;
+        }
+    }
+    /**
+     * 获取错误消息
+     * @param key
+     * @return
+     */
     public static String getValue(String key){
         loadMsgProp();
         Object obj=msgProp.get(key );

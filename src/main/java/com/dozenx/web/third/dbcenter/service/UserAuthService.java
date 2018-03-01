@@ -1,6 +1,6 @@
 package com.dozenx.web.third.dbcenter.service;
 
-import com.dozenx.util.JsonUtils;
+import com.dozenx.util.JsonUtil;
 import com.dozenx.util.MD5Util;
 import com.dozenx.util.StringUtil;
 import com.dozenx.web.third.dbcenter.bean.PubUserAuth;
@@ -48,7 +48,7 @@ public class UserAuthService {
 
         String url = ConfigUtil.getConfig("UserAuthService_url")+"userauth?params={json}";
         String jsonStr= AwifiHttpRequestUtil.sendGet(url,param);
-        List<PubUserAuth> results = JsonUtils.toList(jsonStr, PubUserAuth.class);
+        List<PubUserAuth> results = JsonUtil.toList(jsonStr, PubUserAuth.class);
         return results;
     }
 
